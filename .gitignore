@@ -1,0 +1,7 @@
+/build*
+/install*
+/target/
+/.flatpak-builder/
+
+# Glade
+*.ui~

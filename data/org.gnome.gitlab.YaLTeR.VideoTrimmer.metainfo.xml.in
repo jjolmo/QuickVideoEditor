@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+	<id>org.gnome.gitlab.YaLTeR.VideoTrimmer</id>
+	<name>Video Trimmer</name>
+	<summary>Trim videos quickly</summary>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>GPL-3.0-or-later</project_license>
+	<launchable type="desktop-id">org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop</launchable>
+	<description>
+		<p>
+			Video Trimmer cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality.
+		</p>
+	</description>
+</component>
