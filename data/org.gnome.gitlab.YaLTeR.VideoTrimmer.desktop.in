@@ -1,5 +1,7 @@
 [Desktop Entry]
 Name=Video Trimmer
+Comment=Trim videos quickly
+Keywords=Cut;Movie;Film;Clip;
 Exec=video-trimmer %u
 Terminal=false
 Type=Application
