@@ -23,6 +23,17 @@
         "*.la",
         "*.a"
     ],
+    "build-options": {
+        "append-path" : "/usr/lib/sdk/rust-stable/bin",
+        "build-args" : [
+            "--share=network"
+        ],
+        "env" : {
+            "CARGO_HOME" : "/run/build/video-trimmer/cargo",
+            "RUST_BACKTRACE" : "1",
+            "RUST_LOG" : "video-trimmer=debug"
+        }
+    },
     "modules" : [
         {
             "name": "ffmpeg",
@@ -52,17 +63,6 @@
             "name" : "video-trimmer",
             "builddir" : true,
             "buildsystem" : "meson",
-            "build-options": {
-                "append-path" : "/usr/lib/sdk/rust-stable/bin",
-                "build-args" : [
-                    "--share=network"
-                ],
-                "env" : {
-                    "CARGO_HOME" : "/run/build/video-trimmer/cargo",
-                    "RUST_BACKTRACE" : "1",
-                    "RUST_LOG" : "video-trimmer=debug"
-                }
-            },
             "sources" : [
                 {
                     "type" : "git",
