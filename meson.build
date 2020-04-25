@@ -15,3 +15,9 @@ subdir('src')
 subdir('po')
 
 meson.add_install_script('build-aux/meson/postinstall.py')
+
+meson.add_dist_script(
+  'build-aux/dist-vendor.sh',
+  meson.build_root() / 'meson-dist' / meson.project_name() + '-' + meson.project_version(),
+  meson.source_root()
+)
