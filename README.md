@@ -1,4 +1,4 @@
-![Screenshot of the window.](/uploads/aeff89de22e501823c3703dfe9caefe3/image.png)
+![Screenshot of the window.](/uploads/5a92c2c41ef7e1641d57c7429845c75d/image.png)
 
 # Video Trimmer
 
