@@ -10,6 +10,7 @@ use gio::prelude::*;
 use gtk::prelude::*;
 
 mod config;
+mod parse;
 mod window;
 use crate::window::Window;
 
