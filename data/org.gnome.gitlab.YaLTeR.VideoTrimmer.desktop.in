@@ -3,6 +3,7 @@ Name=Video Trimmer
 Comment=Trim videos quickly
 Keywords=Cut;Movie;Film;Clip;
 Exec=video-trimmer %u
+Icon=org.gnome.gitlab.YaLTeR.VideoTrimmer
 Terminal=false
 Type=Application
 Categories=GNOME;GTK;Video;AudioVideo;
