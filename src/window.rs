@@ -173,11 +173,26 @@ fn trim(
 }
 
 impl Window {
-    pub fn new(application: gtk::Application, file: gio::File) -> Self {
+    pub fn new(application: gtk::Application) -> Self {
         let builder =
             gtk::Builder::new_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
 
         let window: gtk::ApplicationWindow = builder.get_object("window").unwrap();
+
+        Self { window }
+    }
+
+    pub fn with_file(application: gtk::Application, file: gio::File) -> Self {
+        let builder =
+            gtk::Builder::new_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
+
+        let window: gtk::ApplicationWindow = builder.get_object("window").unwrap();
+
+        let stack_main: gtk::Stack = builder.get_object("stack_main").unwrap();
+        let stack_header_bar: gtk::Stack = builder.get_object("stack_header_bar").unwrap();
+        stack_main.set_visible_child_name("page_main");
+        stack_header_bar.set_visible_child_name("page_main");
+
         let header_bar: gtk::HeaderBar = builder.get_object("header_bar").unwrap();
         let content_type = Rc::new(RefCell::new(None));
 

@@ -60,21 +60,18 @@ fn main() {
 
     app.connect_activate(move |app| {
         let file = file.replace(None);
-        if file.is_none() {
-            fatal_error("Video Trimmer must be passed a filename to open.");
-            app.quit();
-            return;
-        }
 
-        let file = file.unwrap();
-        if file.get_path().is_none() {
-            fatal_error("Video Trimmer can only operate on local files.");
-            app.quit();
-            return;
-        }
-        debug!("file path: {:?}", file.get_path().unwrap());
+        let window = if let Some(file) = file {
+            if file.get_path().is_none() {
+                fatal_error("Video Trimmer can only operate on local files.");
+                app.quit();
+                return;
+            }
 
-        let window = Window::new(app.clone(), file);
+            Window::with_file(app.clone(), file)
+        } else {
+            Window::new(app.clone())
+        };
 
         window.window.set_application(Some(app));
         app.add_window(&window.window);
