@@ -13,6 +13,55 @@ use once_cell::unsync::OnceCell;
 
 use crate::parse;
 
+// Extracted from Totem.
+const VIDEO_MIME_TYPES: &[&str] = &[
+    "video/3gp",
+    "video/3gpp",
+    "video/3gpp2",
+    "video/dv",
+    "video/divx",
+    "video/fli",
+    "video/flv",
+    "video/mp2t",
+    "video/mp4",
+    "video/mp4v-es",
+    "video/mpeg",
+    "video/mpeg-system",
+    "video/msvideo",
+    "video/ogg",
+    "video/quicktime",
+    "video/vivo",
+    "video/vnd.divx",
+    "video/vnd.mpegurl",
+    "video/vnd.rn-realvideo",
+    "video/vnd.vivo",
+    "video/webm",
+    "video/x-anim",
+    "video/x-avi",
+    "video/x-flc",
+    "video/x-fli",
+    "video/x-flic",
+    "video/x-flv",
+    "video/x-m4v",
+    "video/x-matroska",
+    "video/x-mjpeg",
+    "video/x-mpeg",
+    "video/x-mpeg2",
+    "video/x-ms-asf",
+    "video/x-ms-asf-plugin",
+    "video/x-ms-asx",
+    "video/x-msvideo",
+    "video/x-ms-wm",
+    "video/x-ms-wmv",
+    "video/x-ms-wmx",
+    "video/x-ms-wvx",
+    "video/x-nsv",
+    "video/x-ogm+ogg",
+    "video/x-theora",
+    "video/x-theora+ogg",
+    "video/x-totem-stream",
+];
+
 #[derive(Debug)]
 struct Widgets {
     header_bar: gtk::HeaderBar,
@@ -70,6 +119,25 @@ impl ObjectImpl for VtWindowPrivate {
         self_.set_titlebar(Some(&stack_header_bar));
         self_.set_resizable(false);
 
+        // The open button.
+        button_open.connect_clicked(clone!(@weak self_ => move |_| {
+            let filter = gtk::FileFilter::new();
+            for mime_type in VIDEO_MIME_TYPES {
+                filter.add_mime_type(mime_type);
+            }
+
+            let file_chooser = gtk::FileChooserNativeBuilder::new()
+                .transient_for(&self_)
+                .action(gtk::FileChooserAction::Open)
+                .filter(&filter)
+                .build();
+
+            let response = file_chooser.run();
+            if response == gtk::ResponseType::Accept {
+                self_.open(file_chooser.get_file().unwrap());
+            }
+        }));
+
         // Start and end timestamp validation.
         let on_entry_change = Rc::new(
             clone!(@weak entry_from, @weak entry_to, @weak button_trim => move || {
@@ -86,6 +154,7 @@ impl ObjectImpl for VtWindowPrivate {
         }));
         entry_to.connect_property_text_notify(move |_| on_entry_change());
 
+        // The trim button.
         button_trim.connect_clicked(clone!(@weak self_ => move |_| {
             let priv_ = VtWindowPrivate::from_instance(&self_);
             let widgets = priv_.widgets.get().unwrap();
@@ -170,6 +239,9 @@ impl VtWindow {
 
         widgets.stack_main.set_visible_child_name("page_main");
         widgets.stack_header_bar.set_visible_child_name("page_main");
+
+        // Focus the entry when coming from the empty state.
+        widgets.entry_from.grab_focus();
 
         // Verified in callers.
         *priv_.input_path.borrow_mut() = Some(file.get_path().unwrap());
