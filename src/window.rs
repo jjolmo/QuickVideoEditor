@@ -5,6 +5,7 @@ use std::{
     rc::Rc,
 };
 
+use gettextrs::*;
 use futures::prelude::*;
 use gio::prelude::*;
 use glib::{subclass, subclass::prelude::*, translate::*};
@@ -129,7 +130,8 @@ impl ObjectImpl for VtWindowPrivate {
             let file_chooser = gtk::FileChooserNativeBuilder::new()
                 .transient_for(&self_)
                 .action(gtk::FileChooserAction::Open)
-                .title("Open video")
+                // Translators: file chooser dialog title.
+                .title(&gettext("Open video"))
                 .filter(&filter)
                 .build();
 
@@ -280,7 +282,9 @@ impl VtWindow {
                     // Fails when the file does not exist.
                     Err(err) => {
                         let dialog = gtk::MessageDialogBuilder::new()
-                            .text("Could not get input video information")
+                            // Translators: error dialog text when the input file information could
+                            // not be retrieved (e.g. there's no such file on disk).
+                            .text(&gettext("Could not get input video information"))
                             .secondary_text(&format!("{}", err))
                             .message_type(gtk::MessageType::Error)
                             .buttons(gtk::ButtonsType::Ok)
@@ -342,7 +346,8 @@ fn trim(
         .action(gtk::FileChooserAction::Save)
         .do_overwrite_confirmation(true)
         .build();
-    file_chooser.set_current_name(format!("Trimmed video.{}", extension));
+    // Translators: this is the name part of the default filename presented in the save dialog.
+    file_chooser.set_current_name(format!("{}.{}", gettext("Trimmed video"), extension));
 
     let response = file_chooser.run();
     if response == gtk::ResponseType::Accept {
@@ -377,7 +382,8 @@ fn trim(
         ) {
             Ok(subprocess) => {
                 let trimming_dialog = gtk::MessageDialogBuilder::new()
-                    .text("Trimming…")
+                    // Translators: message dialog text.
+                    .text(&gettext("Trimming…"))
                     .message_type(gtk::MessageType::Info)
                     .buttons(gtk::ButtonsType::Cancel)
                     .transient_for(&window)
@@ -395,7 +401,8 @@ fn trim(
                                 && subprocess_clone.get_exit_status() == 0
                             {
                                 let dialog = gtk::MessageDialogBuilder::new()
-                                    .text("Done!")
+                                    // Translators: message dialog text.
+                                    .text(&gettext("Done!"))
                                     .message_type(gtk::MessageType::Info)
                                     .buttons(gtk::ButtonsType::Ok)
                                     .transient_for(&window)
@@ -404,7 +411,8 @@ fn trim(
                                 dialog.destroy();
                             } else {
                                 let dialog = gtk::MessageDialogBuilder::new()
-                                    .text("Error trimming video")
+                                    // Translators: error dialog text.
+                                    .text(&gettext("Error trimming video"))
                                     .secondary_text(stderr.as_str())
                                     .message_type(gtk::MessageType::Error)
                                     .buttons(gtk::ButtonsType::Ok)
@@ -418,7 +426,8 @@ fn trim(
                             trimming_dialog_clone.destroy();
 
                             let dialog = gtk::MessageDialogBuilder::new()
-                                .text("Could not communicate with the ffmpeg subprocess")
+                                // Translators: error dialog text.
+                                .text(&gettext("Could not communicate with the ffmpeg subprocess"))
                                 .secondary_text(&format!("{}", err))
                                 .message_type(gtk::MessageType::Error)
                                 .buttons(gtk::ButtonsType::Ok)
@@ -444,7 +453,8 @@ fn trim(
             }
             Err(err) => {
                 let dialog = gtk::MessageDialogBuilder::new()
-                    .text("Could not create the ffmpeg subprocess")
+                    // Translators: error dialog text.
+                    .text(&gettext("Could not create the ffmpeg subprocess"))
                     .secondary_text(&format!("{}", err))
                     .message_type(gtk::MessageType::Error)
                     .buttons(gtk::ButtonsType::Ok)

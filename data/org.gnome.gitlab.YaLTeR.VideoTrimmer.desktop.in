@@ -1,6 +1,7 @@
 [Desktop Entry]
 Name=Video Trimmer
 Comment=Trim videos quickly
+# Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 Keywords=Cut;Movie;Film;Clip;
 Exec=video-trimmer %u
 Icon=org.gnome.gitlab.YaLTeR.VideoTrimmer

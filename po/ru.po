@@ -1,0 +1,133 @@
+# Russian translations for video-trimmer package.
+# Copyright (C) 2020 THE video-trimmer'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the video-trimmer package.
+# Automatically generated, 2020.
+# Ivan Molodetskikh <yalterz@gmail.com>, 2020.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: video-trimmer\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-28 21:22+0300\n"
+"PO-Revision-Date: 2020-04-28 21:20+0300\n"
+"Last-Translator: Ivan Molodetskikh <yalterz@gmail.com>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"X-Generator: Gtranslator 3.36.0\n"
+
+#. Translators: fatal error message dialog title.
+#: src/main.rs:20
+msgid "Fatal Error"
+msgstr "Фатальная ошибка"
+
+#. Translators: error dialog text.
+#: src/main.rs:69
+msgid "Video Trimmer can only operate on local files."
+msgstr ""
+"Программа обрезки видео может работать только на файлах с этого компьютера."
+
+#. Translators: file chooser dialog title.
+#: src/window.rs:134
+msgid "Open video"
+msgstr "Открыть видео"
+
+#. Translators: error dialog text when the input file information could
+#. not be retrieved (e.g. there's no such file on disk).
+#: src/window.rs:287
+msgid "Could not get input video information"
+msgstr "Не удалось получить информацию о входном видео"
+
+#. Translators: this is the name part of the default filename presented in the save dialog.
+#: src/window.rs:350
+msgid "Trimmed video"
+msgstr "Обрезанное видео"
+
+#. Translators: message dialog text.
+#: src/window.rs:386
+msgid "Trimming…"
+msgstr "Обрезка…"
+
+#. Translators: message dialog text.
+#: src/window.rs:405
+msgid "Done!"
+msgstr "Готово!"
+
+#. Translators: error dialog text.
+#: src/window.rs:415
+msgid "Error trimming video"
+msgstr "Ошибка при обрезке видео"
+
+#. Translators: error dialog text.
+#: src/window.rs:430
+msgid "Could not communicate with the ffmpeg subprocess"
+msgstr "Не удалось связаться с подпроцессом ffmpeg"
+
+#. Translators: error dialog text.
+#: src/window.rs:457
+msgid "Could not create the ffmpeg subprocess"
+msgstr "Не удалось создать подпроцесс ffmpeg"
+
+#. Main window title.
+#: src/window.ui:13 src/window.ui:32
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in:5
+msgid "Video Trimmer"
+msgstr "Обрезка видео"
+
+#. Video open button label.
+#: src/window.ui:17
+msgid "Open"
+msgstr "Открыть"
+
+#. Trim button.
+#: src/window.ui:36
+msgid "Trim"
+msgstr "Обрезать"
+
+#. Label on the initial state.
+#: src/window.ui:88
+msgid "Press the Open button to open a video file."
+msgstr "Нажмите на кнопку Открыть, чтобы выбрать видео."
+
+#. Label for the entry for the end timestamp.
+#: src/window.ui:136
+msgid "End"
+msgstr "Конец"
+
+#. Label for the entry for the start timestamp.
+#: src/window.ui:150
+msgid "Start"
+msgstr "Начало"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in:6
+msgid "Trim videos quickly"
+msgstr "Быстрая обрезка видео-файлов"
+
+#. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in:6
+msgid "Cut;Movie;Film;Clip;"
+msgstr "Cut;Movie;Film;Clip;Укоротить;Фильм;Клип;"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in:12
+msgid "Ivan Molodetskikh"
+msgstr "Ivan Molodetskikh"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in:16
+msgid ""
+"Video Trimmer cuts out a fragment of a video given the start and end "
+"timestamps. The video is never re-encoded, so the process is very fast and "
+"does not reduce the video quality."
+msgstr ""
+"Программа обрезки видео вырезает часть видео по начальной и конечной "
+"временной метке. Видео не перекодируется, поэтому вся процедура очень "
+"быстрая и не приводит к потере качества видео."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in:23
+msgid "Main Window"
+msgstr "Основное окно"

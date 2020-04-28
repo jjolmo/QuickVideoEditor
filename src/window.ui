@@ -85,7 +85,7 @@
           <object class="GtkLabel">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Press the Open button to open a video file.</property>
+            <property name="label" translatable="yes" comments="Label on the initial state.">Press the Open button to open a video file.</property>
           </object>
           <packing>
             <property name="expand">False</property>

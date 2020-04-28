@@ -16,7 +16,8 @@ use crate::window::VtWindow;
 
 fn fatal_error(text: &str) {
     let dialog = gtk::MessageDialogBuilder::new()
-        .text("Fatal Error")
+        // Translators: fatal error message dialog title.
+        .text(&gettext("Fatal Error"))
         .secondary_text(text)
         .message_type(gtk::MessageType::Error)
         .buttons(gtk::ButtonsType::Ok)
@@ -64,7 +65,8 @@ fn main() {
         let window = VtWindow::new(app);
         if let Some(file) = file {
             if file.get_path().is_none() {
-                fatal_error("Video Trimmer can only operate on local files.");
+                // Translators: error dialog text.
+                fatal_error(&gettext("Video Trimmer can only operate on local files."));
                 app.quit();
                 return;
             }
