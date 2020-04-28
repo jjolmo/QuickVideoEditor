@@ -129,6 +129,7 @@ impl ObjectImpl for VtWindowPrivate {
             let file_chooser = gtk::FileChooserNativeBuilder::new()
                 .transient_for(&self_)
                 .action(gtk::FileChooserAction::Open)
+                .title("Open video")
                 .filter(&filter)
                 .build();
 
