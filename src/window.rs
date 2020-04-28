@@ -1,13 +1,227 @@
-use std::{cell::RefCell, ffi::OsStr, rc::Rc};
+use std::{
+    cell::RefCell,
+    ffi::OsStr,
+    path::{Path, PathBuf},
+    rc::Rc,
+};
 
 use futures::prelude::*;
 use gio::prelude::*;
-use gtk::prelude::*;
+use glib::{subclass, subclass::prelude::*, translate::*};
+use gtk::{prelude::*, subclass::prelude::*};
+use once_cell::unsync::OnceCell;
 
 use crate::parse;
 
-pub struct Window {
-    pub window: gtk::ApplicationWindow,
+#[derive(Debug)]
+struct Widgets {
+    header_bar: gtk::HeaderBar,
+    stack_main: gtk::Stack,
+    stack_header_bar: gtk::Stack,
+    button_open: gtk::Button,
+    button_trim: gtk::Button,
+    entry_from: gtk::Entry,
+    entry_to: gtk::Entry,
+}
+
+#[derive(Debug)]
+pub struct VtWindowPrivate {
+    widgets: OnceCell<Widgets>,
+    content_type: RefCell<Option<glib::GString>>,
+    input_path: RefCell<Option<PathBuf>>,
+}
+
+impl ObjectSubclass for VtWindowPrivate {
+    const NAME: &'static str = "VtWindow";
+    type ParentType = gtk::ApplicationWindow;
+    type Instance = subclass::simple::InstanceStruct<Self>;
+    type Class = subclass::simple::ClassStruct<Self>;
+
+    glib_object_subclass!();
+
+    fn new() -> Self {
+        Self {
+            widgets: OnceCell::new(),
+            content_type: RefCell::new(None),
+            input_path: RefCell::new(None),
+        }
+    }
+}
+
+impl ObjectImpl for VtWindowPrivate {
+    glib_object_impl!();
+
+    fn constructed(&self, obj: &glib::Object) {
+        self.parent_constructed(obj);
+
+        let builder =
+            gtk::Builder::new_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
+
+        let stack_main: gtk::Stack = builder.get_object("stack_main").unwrap();
+        let stack_header_bar: gtk::Stack = builder.get_object("stack_header_bar").unwrap();
+        let header_bar: gtk::HeaderBar = builder.get_object("header_bar").unwrap();
+        let button_open: gtk::Button = builder.get_object("button_open").unwrap();
+        let button_trim: gtk::Button = builder.get_object("button_trim").unwrap();
+        let entry_from: gtk::Entry = builder.get_object("entry_from").unwrap();
+        let entry_to: gtk::Entry = builder.get_object("entry_to").unwrap();
+
+        let self_ = obj.downcast_ref::<VtWindow>().unwrap();
+        self_.add(&stack_main);
+        self_.set_titlebar(Some(&stack_header_bar));
+        self_.set_resizable(false);
+
+        // Start and end timestamp validation.
+        let on_entry_change = Rc::new(
+            clone!(@weak entry_from, @weak entry_to, @weak button_trim => move || {
+                if validate_entries(&entry_from, &entry_to).is_some() {
+                    button_trim.set_sensitive(true);
+                } else {
+                    button_trim.set_sensitive(false);
+                }
+            }),
+        );
+
+        entry_from.connect_property_text_notify(clone!(@strong on_entry_change => move |_| {
+            on_entry_change()
+        }));
+        entry_to.connect_property_text_notify(move |_| on_entry_change());
+
+        button_trim.connect_clicked(clone!(@weak self_ => move |_| {
+            let priv_ = VtWindowPrivate::from_instance(&self_);
+            let widgets = priv_.widgets.get().unwrap();
+
+            let result = validate_entries(&widgets.entry_from, &widgets.entry_to);
+            if result.is_none() {
+                // This should not happen normally because the button should be disabled.
+                warn!("Trim pressed with invalid timestamps");
+                return;
+            }
+
+            let (from, to) = result.unwrap();
+
+            let extension = priv_.content_type
+                .borrow()
+                .as_ref()
+                .and_then(mime_db::extension)
+                .unwrap_or("mp4");
+
+            let input_path = priv_.input_path.borrow();
+            if input_path.is_none() {
+                // This should not happen normally because if the button is visible then we should
+                // have the input path already.
+                warn!("Trim pressed without input path");
+                return;
+            }
+
+            let input_path = input_path.as_deref().unwrap();
+
+            trim(self_.clone(), input_path, extension, from, to);
+        }));
+
+        let widgets = Widgets {
+            header_bar,
+            stack_main,
+            stack_header_bar,
+            button_open,
+            button_trim,
+            entry_from,
+            entry_to,
+        };
+        self.widgets.set(widgets).unwrap();
+    }
+}
+
+impl WidgetImpl for VtWindowPrivate {}
+impl ContainerImpl for VtWindowPrivate {}
+impl BinImpl for VtWindowPrivate {}
+impl WindowImpl for VtWindowPrivate {}
+impl ApplicationWindowImpl for VtWindowPrivate {}
+
+glib_wrapper! {
+    pub struct VtWindow(
+        Object<
+            subclass::simple::InstanceStruct<VtWindowPrivate>,
+            subclass::simple::ClassStruct<VtWindowPrivate>,
+            VtAppWindowClass
+        >
+    )
+        @extends gtk::Widget, gtk::Container, gtk::Bin, gtk::Window, gtk::ApplicationWindow;
+
+    match fn {
+        get_type => || VtWindowPrivate::get_type().to_glib(),
+    }
+}
+
+impl VtWindow {
+    pub fn new(app: &gtk::Application) -> Self {
+        let window = glib::Object::new(Self::static_type(), &[("application", app)])
+            .expect("Failed to create VtWindow")
+            .downcast::<VtWindow>()
+            .expect("Created VtWindow is of wrong type");
+
+        app.add_window(&window);
+
+        window
+    }
+
+    pub fn open(&self, file: gio::File) {
+        let priv_ = VtWindowPrivate::from_instance(self);
+        let widgets = priv_.widgets.get().unwrap();
+
+        widgets.stack_main.set_visible_child_name("page_main");
+        widgets.stack_header_bar.set_visible_child_name("page_main");
+
+        // Verified in callers.
+        *priv_.input_path.borrow_mut() = Some(file.get_path().unwrap());
+
+        // Get the display name and content type.
+        let future = {
+            let self_ = self.clone();
+            async move {
+                let priv_ = VtWindowPrivate::from_instance(&self_);
+                let widgets = priv_.widgets.get().unwrap();
+
+                // May take a long time on a network mount.
+                let info = file
+                    .query_info_async_future(
+                        "standard::display-name,standard::fast-content-type",
+                        gio::FileQueryInfoFlags::NONE,
+                        glib::PRIORITY_DEFAULT,
+                    )
+                    .await;
+
+                match info {
+                    Ok(info) => {
+                        let display_name = info.get_display_name();
+                        widgets
+                            .header_bar
+                            .set_subtitle(display_name.as_ref().map(glib::GString::as_str));
+
+                        if let Some(fast_content_type) =
+                            info.get_attribute_string("standard::fast-content-type")
+                        {
+                            debug!("fast-content-type: {}", fast_content_type);
+                            *priv_.content_type.borrow_mut() = Some(fast_content_type);
+                        }
+                    }
+                    // Fails when the file does not exist.
+                    Err(err) => {
+                        let dialog = gtk::MessageDialogBuilder::new()
+                            .text("Could not get input video information")
+                            .secondary_text(&format!("{}", err))
+                            .message_type(gtk::MessageType::Error)
+                            .buttons(gtk::ButtonsType::Ok)
+                            .transient_for(&self_)
+                            .build();
+                        dialog.run();
+                        self_.get_application().unwrap().quit();
+                        return;
+                    }
+                }
+            }
+        };
+        glib::MainContext::default().spawn_local(future);
+    }
 }
 
 fn validate_entries(
@@ -42,8 +256,8 @@ fn validate_entries(
 }
 
 fn trim(
-    window: gtk::ApplicationWindow,
-    file: &gio::File,
+    window: VtWindow,
+    input_path: &Path,
     extension: &str,
     from: glib::GString,
     to: glib::GString,
@@ -62,7 +276,6 @@ fn trim(
         let filename = file_chooser.get_filename().unwrap();
         debug!("filename: {:?}", filename);
 
-        let input_path = file.get_path().unwrap(); // Checked in main().
         let mut args: Vec<&OsStr> = [
             "ffmpeg".as_ref(),
             "-loglevel".as_ref(),
@@ -169,115 +382,5 @@ fn trim(
                 return;
             }
         }
-    }
-}
-
-impl Window {
-    pub fn new(application: gtk::Application) -> Self {
-        let builder =
-            gtk::Builder::new_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
-
-        let window: gtk::ApplicationWindow = builder.get_object("window").unwrap();
-
-        Self { window }
-    }
-
-    pub fn with_file(application: gtk::Application, file: gio::File) -> Self {
-        let builder =
-            gtk::Builder::new_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
-
-        let window: gtk::ApplicationWindow = builder.get_object("window").unwrap();
-
-        let stack_main: gtk::Stack = builder.get_object("stack_main").unwrap();
-        let stack_header_bar: gtk::Stack = builder.get_object("stack_header_bar").unwrap();
-        stack_main.set_visible_child_name("page_main");
-        stack_header_bar.set_visible_child_name("page_main");
-
-        let header_bar: gtk::HeaderBar = builder.get_object("header_bar").unwrap();
-        let content_type = Rc::new(RefCell::new(None));
-
-        // Get the display name and content type.
-        let future = {
-            let content_type = content_type.clone();
-            let file = file.clone();
-            let window = window.clone();
-            async move {
-                // May take a long time on a network mount.
-                let info = file
-                    .query_info_async_future(
-                        "standard::display-name,standard::fast-content-type",
-                        gio::FileQueryInfoFlags::NONE,
-                        glib::PRIORITY_DEFAULT,
-                    )
-                    .await;
-
-                match info {
-                    Ok(info) => {
-                        let display_name = info.get_display_name();
-                        header_bar.set_subtitle(display_name.as_ref().map(glib::GString::as_str));
-
-                        if let Some(fast_content_type) =
-                            info.get_attribute_string("standard::fast-content-type")
-                        {
-                            debug!("fast-content-type: {}", fast_content_type);
-                            *content_type.borrow_mut() = Some(fast_content_type);
-                        }
-                    }
-                    // Fails when the file does not exist.
-                    Err(err) => {
-                        let dialog = gtk::MessageDialogBuilder::new()
-                            .text("Could not get input video information")
-                            .secondary_text(&format!("{}", err))
-                            .message_type(gtk::MessageType::Error)
-                            .buttons(gtk::ButtonsType::Ok)
-                            .transient_for(&window)
-                            .build();
-                        dialog.run();
-                        application.quit();
-                        return;
-                    }
-                }
-            }
-        };
-        glib::MainContext::default().spawn_local(future);
-
-        let button_trim: gtk::Button = builder.get_object("button_trim").unwrap();
-        let entry_from: gtk::Entry = builder.get_object("entry_from").unwrap();
-        let entry_to: gtk::Entry = builder.get_object("entry_to").unwrap();
-
-        let on_entry_change = Rc::new(
-            clone!(@weak entry_from, @weak entry_to, @weak button_trim => move || {
-                if validate_entries(&entry_from, &entry_to).is_some() {
-                    button_trim.set_sensitive(true);
-                } else {
-                    button_trim.set_sensitive(false);
-                }
-            }),
-        );
-
-        entry_from.connect_property_text_notify(clone!(@strong on_entry_change => move |_| {
-            on_entry_change()
-        }));
-        entry_to.connect_property_text_notify(move |_| on_entry_change());
-
-        button_trim.connect_clicked(clone!(@weak window => move |_| {
-            let result = validate_entries(&entry_from, &entry_to);
-            if result.is_none() {
-                // This should not happen normally because the button should be disabled.
-                return;
-            }
-
-            let (from, to) = result.unwrap();
-
-            let extension = content_type
-                .borrow()
-                .as_ref()
-                .and_then(mime_db::extension)
-                .unwrap_or("mp4");
-
-            trim(window, &file, extension, from, to);
-        }));
-
-        Self { window }
     }
 }

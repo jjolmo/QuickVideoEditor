@@ -12,7 +12,7 @@ use gtk::prelude::*;
 mod config;
 mod parse;
 mod window;
-use crate::window::Window;
+use crate::window::VtWindow;
 
 fn fatal_error(text: &str) {
     let dialog = gtk::MessageDialogBuilder::new()
@@ -61,21 +61,18 @@ fn main() {
     app.connect_activate(move |app| {
         let file = file.replace(None);
 
-        let window = if let Some(file) = file {
+        let window = VtWindow::new(app);
+        if let Some(file) = file {
             if file.get_path().is_none() {
                 fatal_error("Video Trimmer can only operate on local files.");
                 app.quit();
                 return;
             }
 
-            Window::with_file(app.clone(), file)
-        } else {
-            Window::new(app.clone())
-        };
+            window.open(file);
+        }
 
-        window.window.set_application(Some(app));
-        app.add_window(&window.window);
-        window.window.show_all();
+        window.show_all();
     });
 
     let ret = app.run(&std::env::args().collect::<Vec<_>>());
