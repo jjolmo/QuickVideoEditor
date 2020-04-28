@@ -69,8 +69,8 @@ struct Widgets {
     stack_header_bar: gtk::Stack,
     button_open: gtk::Button,
     button_trim: gtk::Button,
-    entry_from: gtk::Entry,
-    entry_to: gtk::Entry,
+    entry_start: gtk::Entry,
+    entry_end: gtk::Entry,
 }
 
 #[derive(Debug)]
@@ -111,8 +111,8 @@ impl ObjectImpl for VtWindowPrivate {
         let header_bar: gtk::HeaderBar = builder.get_object("header_bar").unwrap();
         let button_open: gtk::Button = builder.get_object("button_open").unwrap();
         let button_trim: gtk::Button = builder.get_object("button_trim").unwrap();
-        let entry_from: gtk::Entry = builder.get_object("entry_from").unwrap();
-        let entry_to: gtk::Entry = builder.get_object("entry_to").unwrap();
+        let entry_start: gtk::Entry = builder.get_object("entry_start").unwrap();
+        let entry_end: gtk::Entry = builder.get_object("entry_end").unwrap();
 
         let self_ = obj.downcast_ref::<VtWindow>().unwrap();
         self_.add(&stack_main);
@@ -140,8 +140,8 @@ impl ObjectImpl for VtWindowPrivate {
 
         // Start and end timestamp validation.
         let on_entry_change = Rc::new(
-            clone!(@weak entry_from, @weak entry_to, @weak button_trim => move || {
-                if validate_entries(&entry_from, &entry_to).is_some() {
+            clone!(@weak entry_start, @weak entry_end, @weak button_trim => move || {
+                if validate_entries(&entry_start, &entry_end).is_some() {
                     button_trim.set_sensitive(true);
                 } else {
                     button_trim.set_sensitive(false);
@@ -149,24 +149,24 @@ impl ObjectImpl for VtWindowPrivate {
             }),
         );
 
-        entry_from.connect_property_text_notify(clone!(@strong on_entry_change => move |_| {
+        entry_start.connect_property_text_notify(clone!(@strong on_entry_change => move |_| {
             on_entry_change()
         }));
-        entry_to.connect_property_text_notify(move |_| on_entry_change());
+        entry_end.connect_property_text_notify(move |_| on_entry_change());
 
         // The trim button.
         button_trim.connect_clicked(clone!(@weak self_ => move |_| {
             let priv_ = VtWindowPrivate::from_instance(&self_);
             let widgets = priv_.widgets.get().unwrap();
 
-            let result = validate_entries(&widgets.entry_from, &widgets.entry_to);
+            let result = validate_entries(&widgets.entry_start, &widgets.entry_end);
             if result.is_none() {
                 // This should not happen normally because the button should be disabled.
                 warn!("Trim pressed with invalid timestamps");
                 return;
             }
 
-            let (from, to) = result.unwrap();
+            let (start, end) = result.unwrap();
 
             let extension = priv_.content_type
                 .borrow()
@@ -184,7 +184,7 @@ impl ObjectImpl for VtWindowPrivate {
 
             let input_path = input_path.as_deref().unwrap();
 
-            trim(self_.clone(), input_path, extension, from, to);
+            trim(self_.clone(), input_path, extension, start, end);
         }));
 
         let widgets = Widgets {
@@ -193,8 +193,8 @@ impl ObjectImpl for VtWindowPrivate {
             stack_header_bar,
             button_open,
             button_trim,
-            entry_from,
-            entry_to,
+            entry_start,
+            entry_end,
         };
         self.widgets.set(widgets).unwrap();
     }
@@ -241,7 +241,7 @@ impl VtWindow {
         widgets.stack_header_bar.set_visible_child_name("page_main");
 
         // Focus the entry when coming from the empty state.
-        widgets.entry_from.grab_focus();
+        widgets.entry_start.grab_focus();
 
         // Verified in callers.
         *priv_.input_path.borrow_mut() = Some(file.get_path().unwrap());
@@ -297,30 +297,30 @@ impl VtWindow {
 }
 
 fn validate_entries(
-    entry_from: &gtk::Entry,
-    entry_to: &gtk::Entry,
+    entry_start: &gtk::Entry,
+    entry_end: &gtk::Entry,
 ) -> Option<(glib::GString, glib::GString)> {
-    let style_from = entry_from.get_style_context();
-    let style_to = entry_to.get_style_context();
-    style_from.remove_class("error");
-    style_to.remove_class("error");
+    let style_start = entry_start.get_style_context();
+    let style_end = entry_end.get_style_context();
+    style_start.remove_class("error");
+    style_end.remove_class("error");
 
-    let text_from = entry_from.get_text().unwrap();
-    let timestamp_from = parse::timestamp(text_from.as_str());
-    let text_to = entry_to.get_text().unwrap();
-    let timestamp_to = parse::timestamp(text_to.as_str());
+    let text_start = entry_start.get_text().unwrap();
+    let timestamp_start = parse::timestamp(text_start.as_str());
+    let text_end = entry_end.get_text().unwrap();
+    let timestamp_end = parse::timestamp(text_end.as_str());
 
-    if timestamp_from.is_none() {
-        style_from.add_class("error");
+    if timestamp_start.is_none() {
+        style_start.add_class("error");
     }
-    if timestamp_to.is_none() {
-        style_to.add_class("error");
+    if timestamp_end.is_none() {
+        style_end.add_class("error");
     }
-    if let (Some(timestamp_from), Some(timestamp_to)) = (timestamp_from, timestamp_to) {
-        if timestamp_from >= timestamp_to {
-            style_to.add_class("error");
+    if let (Some(timestamp_start), Some(timestamp_end)) = (timestamp_start, timestamp_end) {
+        if timestamp_start >= timestamp_end {
+            style_end.add_class("error");
         } else {
-            return Some((text_from, text_to));
+            return Some((text_start, text_end));
         }
     }
 
@@ -331,10 +331,10 @@ fn trim(
     window: VtWindow,
     input_path: &Path,
     extension: &str,
-    from: glib::GString,
-    to: glib::GString,
+    start: glib::GString,
+    end: glib::GString,
 ) {
-    debug!("trim: from {} to {}", from, to);
+    debug!("trim: from {} to {}", start, end);
 
     let file_chooser = gtk::FileChooserNativeBuilder::new()
         .transient_for(&window)
@@ -353,9 +353,9 @@ fn trim(
             "-loglevel".as_ref(),
             "error".as_ref(),
             "-ss".as_ref(),
-            from.as_ref(),
+            start.as_ref(),
             "-to".as_ref(),
-            to.as_ref(),
+            end.as_ref(),
             "-i".as_ref(),
             input_path.as_ref(),
             "-c".as_ref(),

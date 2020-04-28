@@ -111,7 +111,7 @@
             <property name="margin_top">18</property>
             <property name="margin_bottom">18</property>
             <child>
-              <object class="GtkEntry" id="entry_to">
+              <object class="GtkEntry" id="entry_end">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="width_chars">7</property>
@@ -156,7 +156,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="entry_from">
+              <object class="GtkEntry" id="entry_start">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="margin_end">24</property>
