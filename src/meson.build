@@ -9,9 +9,11 @@ gnome.compile_resources('video-trimmer',
 )
 
 conf = configuration_data()
-conf.set_quoted('VERSION', meson.project_version())
-conf.set_quoted('localedir', join_paths(get_option('prefix'), get_option('localedir')))
-conf.set_quoted('pkgdatadir', pkgdatadir)
+conf.set_quoted('LOCALEDIR', join_paths(get_option('prefix'), get_option('localedir')))
+conf.set_quoted('PKGDATADIR', pkgdatadir)
+conf.set_quoted('VERSION', meson.project_version() + version_suffix)
+conf.set_quoted('NAME_SUFFIX', name_suffix)
+conf.set_quoted('APP_ID', app_id)
 
 configure_file(
     input: 'config.rs.in',
@@ -48,7 +50,7 @@ cargo_release = custom_target(
     meson.build_root(),
     meson.source_root(),
     '@OUTPUT@',
-    get_option('buildtype'),
+    app_id_suffix,
     meson.project_name(),
   ]
 )

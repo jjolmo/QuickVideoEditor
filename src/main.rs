@@ -27,6 +27,7 @@ fn fatal_error(text: &str) {
 
 fn main() {
     env_logger::init();
+    info!("Video Trimmer version {}", config::VERSION);
 
     gtk::init().unwrap_or_else(|_| panic!("Failed to initialize GTK."));
 
@@ -34,12 +35,18 @@ fn main() {
     bindtextdomain("video-trimmer", config::LOCALEDIR);
     textdomain("video-trimmer");
 
+    glib::set_application_name(&format!(
+        "{}{}",
+        gettext("Video Trimmer"),
+        config::NAME_SUFFIX
+    ));
+
     let res = gio::Resource::load(config::PKGDATADIR.to_owned() + "/video-trimmer.gresource")
         .expect("Could not load resources");
     gio::resources_register(&res);
 
     let app = gtk::Application::new(
-        Some("org.gnome.gitlab.YaLTeR.VideoTrimmer"),
+        Some(config::APP_ID),
         gio::ApplicationFlags::NON_UNIQUE | gio::ApplicationFlags::HANDLES_OPEN,
     )
     .unwrap();

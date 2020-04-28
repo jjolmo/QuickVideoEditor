@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2020 Ivan Molodetskikh -->
 <component type="desktop-application">
-	<id>org.gnome.gitlab.YaLTeR.VideoTrimmer</id>
+	<id>@app_id@</id>
 	<name>Video Trimmer</name>
 	<summary>Trim videos quickly</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
-	<launchable type="desktop-id">org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop</launchable>
+	<launchable type="desktop-id">@app_id@.desktop</launchable>
 	<translation type="gettext">video-trimmer</translation>
 	<content_rating type="oars-1.0" />
 	<developer_name>Ivan Molodetskikh</developer_name>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-trimmer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-28 21:22+0300\n"
+"POT-Creation-Date: 2020-04-28 22:28+0300\n"
 "PO-Revision-Date: 2020-04-28 21:20+0300\n"
 "Last-Translator: Ivan Molodetskikh <yalterz@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
@@ -25,8 +25,15 @@ msgstr ""
 msgid "Fatal Error"
 msgstr "Фатальная ошибка"
 
+#. Main window title.
+#: src/main.rs:40 src/window.ui:13 src/window.ui:32
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
+msgid "Video Trimmer"
+msgstr "Обрезка видео"
+
 #. Translators: error dialog text.
-#: src/main.rs:69
+#: src/main.rs:76
 msgid "Video Trimmer can only operate on local files."
 msgstr ""
 "Программа обрезки видео может работать только на файлах с этого компьютера."
@@ -72,13 +79,6 @@ msgstr "Не удалось связаться с подпроцессом ffmpe
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Не удалось создать подпроцесс ffmpeg"
 
-#. Main window title.
-#: src/window.ui:13 src/window.ui:32
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in:3
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in:5
-msgid "Video Trimmer"
-msgstr "Обрезка видео"
-
 #. Video open button label.
 #: src/window.ui:17
 msgid "Open"
@@ -104,21 +104,21 @@ msgstr "Конец"
 msgid "Start"
 msgstr "Начало"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in:4
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in:6
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
 msgid "Trim videos quickly"
 msgstr "Быстрая обрезка видео-файлов"
 
 #. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in:6
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Cut;Movie;Film;Clip;Укоротить;Фильм;Клип;"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in:12
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
 msgid "Ivan Molodetskikh"
 msgstr "Ivan Molodetskikh"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in:16
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:16
 msgid ""
 "Video Trimmer cuts out a fragment of a video given the start and end "
 "timestamps. The video is never re-encoded, so the process is very fast and "
@@ -128,6 +128,6 @@ msgstr ""
 "временной метке. Видео не перекодируется, поэтому вся процедура очень "
 "быстрая и не приводит к потере качества видео."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in:23
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:23
 msgid "Main Window"
 msgstr "Основное окно"

@@ -5,8 +5,8 @@ use std::{
     rc::Rc,
 };
 
-use gettextrs::*;
 use futures::prelude::*;
+use gettextrs::*;
 use gio::prelude::*;
 use glib::{subclass, subclass::prelude::*, translate::*};
 use gtk::{prelude::*, subclass::prelude::*};

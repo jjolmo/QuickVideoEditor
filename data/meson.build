@@ -1,12 +1,19 @@
 subdir('icons')
 
+data_conf = configuration_data()
+data_conf.set('app_id', app_id)
+
 desktop_file = i18n.merge_file(
-  input: 'org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in',
-  output: 'org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop',
+  input: configure_file(
+    input: base_id + '.desktop.in.in',
+    output: '@BASENAME@',
+    configuration: data_conf
+  ),
+  output: app_id + '.desktop',
   type: 'desktop',
   po_dir: '../po',
   install: true,
-  install_dir: join_paths(get_option('datadir'), 'applications')
+  install_dir: get_option('datadir') / 'applications'
 )
 
 desktop_utils = find_program('desktop-file-validate', required: false)
@@ -17,11 +24,15 @@ if desktop_utils.found()
 endif
 
 appstream_file = i18n.merge_file(
-  input: 'org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in',
-  output: 'org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml',
+  input: configure_file(
+    input: base_id + '.metainfo.xml.in.in',
+    output: '@BASENAME@',
+    configuration: data_conf
+  ),
+  output: app_id + '.metainfo.xml',
   po_dir: '../po',
   install: true,
-  install_dir: join_paths(get_option('datadir'), 'metainfo')
+  install_dir: get_option('datadir') / 'metainfo'
 )
 
 appstream_util = find_program('appstream-util', required: false)
@@ -31,8 +42,14 @@ if appstream_util.found()
   )
 endif
 
-install_data('org.gnome.gitlab.YaLTeR.VideoTrimmer.gschema.xml',
-  install_dir: join_paths(get_option('datadir'), 'glib-2.0/schemas')
+gschema_file = configure_file(
+  input: base_id + '.gschema.xml.in',
+  output: app_id + '.gschema.xml',
+  configuration: data_conf
+)
+
+install_data(gschema_file,
+  install_dir: get_option('datadir') / 'glib-2.0' / 'schemas'
 )
 
 compile_schemas = find_program('glib-compile-schemas', required: false)

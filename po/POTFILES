@@ -2,6 +2,6 @@ src/main.rs
 src/window.rs
 src/window.ui
 
-data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in
-data/org.gnome.gitlab.YaLTeR.VideoTrimmer.gschema.xml
-data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in
+data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in
+data/org.gnome.gitlab.YaLTeR.VideoTrimmer.gschema.xml.in
+data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in

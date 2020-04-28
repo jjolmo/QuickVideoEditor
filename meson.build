@@ -3,12 +3,27 @@ project('video-trimmer',
           version: '0.1.0',
     meson_version: '>= 0.50.0',
           license: 'GPL3+',
-  default_options: [ 'warning_level=2',
-                   ],
 )
 
 i18n = import('i18n')
 
+if get_option('profile') == 'development'
+  app_id_suffix = 'Devel'
+  name_suffix = ' (Devel)'
+  vcs_tag = run_command('git', 'rev-parse', '--short', 'HEAD').stdout().strip()
+  if vcs_tag == ''
+    version_suffix = '-devel'
+  else
+    version_suffix = '-' + vcs_tag
+  endif
+else
+  app_id_suffix = ''
+  name_suffix = ''
+  version_suffix = ''
+endif
+
+base_id = 'org.gnome.gitlab.YaLTeR.VideoTrimmer'
+app_id = base_id + app_id_suffix
 
 subdir('data')
 subdir('src')

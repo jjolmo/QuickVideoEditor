@@ -1,0 +1,73 @@
+{
+    "app-id" : "org.gnome.gitlab.YaLTeR.VideoTrimmer",
+    "runtime" : "org.gnome.Platform",
+    "runtime-version" : "3.36",
+    "sdk" : "org.gnome.Sdk",
+    "sdk-extensions" : [
+        "org.freedesktop.Sdk.Extension.rust-stable"
+    ],
+    "command" : "video-trimmer",
+    "finish-args" : [
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--socket=wayland"
+    ],
+    "cleanup" : [
+        "/include",
+        "/lib/pkgconfig",
+        "/man",
+        "/share/doc",
+        "/share/gtk-doc",
+        "/share/man",
+        "/share/pkgconfig",
+        "*.la",
+        "*.a"
+    ],
+    "build-options" : {
+        "append-path" : "/usr/lib/sdk/rust-stable/bin",
+        "build-args" : [
+            "--share=network"
+        ],
+        "env" : {
+            "CARGO_HOME" : "/run/build/video-trimmer/cargo",
+            "RUST_BACKTRACE" : "1",
+            "RUST_LOG" : "video-trimmer=debug"
+        }
+    },
+    "modules" : [
+        {
+            "name" : "ffmpeg",
+            "config-opts" : [
+                "--disable-doc",
+                "--disable-decoders",
+                "--disable-encoders",
+                "--disable-devices",
+                "--disable-ffplay",
+                "--disable-ffprobe",
+                "--enable-gpl"
+            ],
+            "cleanup" : [
+                "/include",
+                "/lib",
+                "/share"
+            ],
+            "sources" : [
+                {
+                    "type" : "archive",
+                    "url" : "https://www.ffmpeg.org/releases/ffmpeg-4.2.2.tar.xz",
+                    "sha256" : "cb754255ab0ee2ea5f66f8850e1bd6ad5cac1cd855d0a2f4990fb8c668b0d29c"
+                }
+            ]
+        },
+        {
+            "name" : "video-trimmer",
+            "buildsystem" : "meson",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/YaLTeR/video-trimmer.git"
+                }
+            ]
+        }
+    ]
+}

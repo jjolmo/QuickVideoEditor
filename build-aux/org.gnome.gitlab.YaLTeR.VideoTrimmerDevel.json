@@ -1,5 +1,5 @@
 {
-    "app-id" : "org.gnome.gitlab.YaLTeR.VideoTrimmer",
+    "app-id" : "org.gnome.gitlab.YaLTeR.VideoTrimmerDevel",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "3.36",
     "sdk" : "org.gnome.Sdk",
@@ -7,6 +7,10 @@
         "org.freedesktop.Sdk.Extension.rust-stable"
     ],
     "command" : "video-trimmer",
+    "tags" : [
+        "nightly"
+    ],
+    "desktop-file-name-suffix" : " (Devel)",
     "finish-args" : [
         "--share=ipc",
         "--socket=fallback-x11",
@@ -23,7 +27,7 @@
         "*.la",
         "*.a"
     ],
-    "build-options": {
+    "build-options" : {
         "append-path" : "/usr/lib/sdk/rust-stable/bin",
         "build-args" : [
             "--share=network"
@@ -36,8 +40,8 @@
     },
     "modules" : [
         {
-            "name": "ffmpeg",
-            "config-opts": [
+            "name" : "ffmpeg",
+            "config-opts" : [
                 "--disable-doc",
                 "--disable-decoders",
                 "--disable-encoders",
@@ -46,23 +50,25 @@
                 "--disable-ffprobe",
                 "--enable-gpl"
             ],
-            "cleanup": [
+            "cleanup" : [
                 "/include",
                 "/lib",
                 "/share"
             ],
-            "sources": [
+            "sources" : [
                 {
-                    "type": "archive",
-                    "url": "https://www.ffmpeg.org/releases/ffmpeg-4.2.2.tar.xz",
-                    "sha256": "cb754255ab0ee2ea5f66f8850e1bd6ad5cac1cd855d0a2f4990fb8c668b0d29c"
+                    "type" : "archive",
+                    "url" : "https://www.ffmpeg.org/releases/ffmpeg-4.2.2.tar.xz",
+                    "sha256" : "cb754255ab0ee2ea5f66f8850e1bd6ad5cac1cd855d0a2f4990fb8c668b0d29c"
                 }
             ]
         },
         {
             "name" : "video-trimmer",
-            "builddir" : true,
             "buildsystem" : "meson",
+            "config-opts" : [
+                "-Dprofile=development"
+            ],
             "sources" : [
                 {
                     "type" : "git",
