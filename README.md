@@ -10,6 +10,6 @@ The easiest way is to clone the repository with GNOME Builder and press the Buil
 
 Alternatively, you can build it manually:
 ```
-meson -Dprefix=$PWD/install build
+meson -Dprofile=development -Dprefix=$PWD/install build
 ninja -C build install
 ```
