@@ -23,6 +23,13 @@
 			<caption>Main Window</caption>
 		</screenshot>
 	</screenshots>
+	<releases>
+		<release version="0.1.0" date="2020-04-29">
+			<description>
+				<p>First release</p>
+			</description>
+		</release>
+	</releases>
 	<kudos>
 		<!--
 			GNOME Software kudos:
