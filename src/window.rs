@@ -174,8 +174,10 @@ impl ObjectImpl for VtWindowPrivate {
             let extension = priv_.content_type
                 .borrow()
                 .as_ref()
-                .and_then(mime_db::extension)
-                .unwrap_or("mp4");
+                .map(glib::GString::as_str)
+                .and_then(mime_guess::get_mime_extensions_str)
+                .and_then(|exts| exts.get(0))
+                .unwrap_or(&"mp4");
 
             let input_path = priv_.input_path.borrow();
             if input_path.is_none() {
