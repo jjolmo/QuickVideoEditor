@@ -16,6 +16,7 @@ use crate::parse;
 
 // Extracted from Totem.
 const VIDEO_MIME_TYPES: &[&str] = &[
+    "image/gif",
     "video/3gp",
     "video/3gpp",
     "video/3gpp2",
