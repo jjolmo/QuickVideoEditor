@@ -23,4 +23,12 @@
 			<caption>Main Window</caption>
 		</screenshot>
 	</screenshots>
+	<kudos>
+		<!--
+			GNOME Software kudos:
+			https://gitlab.gnome.org/GNOME/gnome-software/blob/master/doc/kudos.md
+		-->
+		<kudo>ModernToolkit</kudo>
+		<kudo>HiDpiIcon</kudo>
+	</kudos>
 </component>
