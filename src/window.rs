@@ -5,7 +5,7 @@ use std::{
     rc::Rc,
 };
 
-use futures::prelude::*;
+use futures_util::future::{abortable, FutureExt};
 use gettextrs::*;
 use gio::prelude::*;
 use glib::{subclass, subclass::prelude::*, translate::*};
@@ -440,7 +440,7 @@ fn trim(
                         }
                     }
                 };
-                let (future, handle) = futures::future::abortable(future);
+                let (future, handle) = abortable(future);
                 let future = future.map(|_| ());
 
                 trimming_dialog.connect_response(move |dialog, _| {
