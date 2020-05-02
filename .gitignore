@@ -3,6 +3,11 @@
 /target/
 /.flatpak-builder/
 src/config.rs
-
-# Glade
 *.ui~
+*#*.ui#
+/build-dir/
+/build-dir-devel/
+/po/video-trimmer.pot
+/repository/
+/*.flatpak
+/_build/
