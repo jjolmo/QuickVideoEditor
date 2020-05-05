@@ -2,6 +2,7 @@
 extern crate log;
 #[macro_use]
 extern crate glib;
+extern crate gstreamer as gst;
 
 use std::{cell::Cell, rc::Rc};
 
@@ -29,6 +30,7 @@ fn main() {
     env_logger::init();
     info!("Video Trimmer version {}", config::VERSION);
 
+    gst::init().unwrap();
     gtk::init().unwrap_or_else(|_| panic!("Failed to initialize GTK."));
 
     setlocale(LocaleCategory::LcAll, "");

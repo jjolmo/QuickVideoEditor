@@ -96,10 +96,9 @@
       </object>
     </child>
     <child>
-      <object class="GtkBox">
+      <object class="GtkBox" id="box_main">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="valign">center</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox">
@@ -180,6 +179,72 @@
             <property name="pack_type">end</property>
             <property name="position">0</property>
           </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">18</property>
+            <property name="margin_end">18</property>
+            <property name="margin_top">12</property>
+            <child>
+              <object class="GtkButton" id="button_play_pause">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_end">12</property>
+                <child>
+                  <object class="GtkImage" id="button_play_pause_image">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">media-playback-pause-symbolic</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label_current_time">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label">&lt;span font_features="tnum"&gt;0:00&lt;/span&gt;</property>
+                <property name="use_markup">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkScale" id="seek_slider">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="restrict_to_fill_level">False</property>
+                <property name="round_digits">1</property>
+                <property name="draw_value">False</property>
+                <property name="value_pos">left</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="pack_type">end</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
       <packing>

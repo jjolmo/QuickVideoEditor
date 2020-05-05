@@ -1,5 +1,5 @@
 use std::{
-    cell::RefCell,
+    cell::{Cell, RefCell},
     ffi::OsStr,
     path::{Path, PathBuf},
     rc::Rc,
@@ -9,6 +9,7 @@ use futures_util::future::{abortable, FutureExt};
 use gettextrs::*;
 use gio::prelude::*;
 use glib::{subclass, subclass::prelude::*, translate::*};
+use gst::prelude::*;
 use gtk::{prelude::*, subclass::prelude::*};
 use once_cell::unsync::OnceCell;
 
@@ -72,6 +73,8 @@ struct Widgets {
     button_trim: gtk::Button,
     entry_start: gtk::Entry,
     entry_end: gtk::Entry,
+    label_current_time: gtk::Label,
+    seek_slider: gtk::Scale,
 }
 
 #[derive(Debug)]
@@ -79,6 +82,46 @@ pub struct VtWindowPrivate {
     widgets: OnceCell<Widgets>,
     content_type: RefCell<Option<glib::GString>>,
     input_path: RefCell<Option<PathBuf>>,
+    pipeline: OnceCell<gst::Pipeline>,
+    playbin: OnceCell<gst::Element>,
+    seek_slider_value_changed: OnceCell<glib::SignalHandlerId>,
+    pipeline_playing: Cell<bool>,
+}
+
+impl VtWindowPrivate {
+    fn refresh_ui(&self) {
+        let pipeline = self.pipeline.get().unwrap();
+        let widgets = self.widgets.get().unwrap();
+        let id = self.seek_slider_value_changed.get().unwrap();
+
+        if let Some(position) = pipeline.query_position::<gst::ClockTime>() {
+            let nanoseconds = position.nanoseconds().unwrap();
+            let mut seconds = nanoseconds / 1_000_000_000;
+            let mut minutes = seconds / 60;
+            let hours = minutes / 60;
+            seconds %= 60;
+            minutes %= 60;
+
+            let time = if hours == 0 {
+                format!("{}:{:02}", minutes, seconds)
+            } else {
+                format!("{}:{:02}:{:02}", hours, minutes, seconds)
+            };
+
+            widgets
+                .label_current_time
+                .set_markup(&format!("<span font_features=\"tnum\">{}</span>", time));
+
+            if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
+                let value =
+                    position.nanoseconds().unwrap() as f64 / duration.nanoseconds().unwrap() as f64;
+
+                widgets.seek_slider.block_signal(&id);
+                widgets.seek_slider.set_value(value);
+                widgets.seek_slider.unblock_signal(&id);
+            }
+        }
+    }
 }
 
 impl ObjectSubclass for VtWindowPrivate {
@@ -94,6 +137,10 @@ impl ObjectSubclass for VtWindowPrivate {
             widgets: OnceCell::new(),
             content_type: RefCell::new(None),
             input_path: RefCell::new(None),
+            pipeline: OnceCell::new(),
+            playbin: OnceCell::new(),
+            seek_slider_value_changed: OnceCell::new(),
+            pipeline_playing: Cell::new(false),
         }
     }
 }
@@ -103,6 +150,7 @@ impl ObjectImpl for VtWindowPrivate {
 
     fn constructed(&self, obj: &glib::Object) {
         self.parent_constructed(obj);
+        let self_ = obj.downcast_ref::<VtWindow>().unwrap();
 
         let builder =
             gtk::Builder::new_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
@@ -114,11 +162,163 @@ impl ObjectImpl for VtWindowPrivate {
         let button_trim: gtk::Button = builder.get_object("button_trim").unwrap();
         let entry_start: gtk::Entry = builder.get_object("entry_start").unwrap();
         let entry_end: gtk::Entry = builder.get_object("entry_end").unwrap();
+        let seek_slider: gtk::Scale = builder.get_object("seek_slider").unwrap();
+        let box_main: gtk::Box = builder.get_object("box_main").unwrap();
+        let label_current_time: gtk::Label = builder.get_object("label_current_time").unwrap();
+        let button_play_pause: gtk::Button = builder.get_object("button_play_pause").unwrap();
+        let button_play_pause_image: gtk::Image =
+            builder.get_object("button_play_pause_image").unwrap();
 
-        let self_ = obj.downcast_ref::<VtWindow>().unwrap();
+        let adjustment = gtk::Adjustment::new(0., 0., 1., 0., 0., 0.);
+        seek_slider.set_adjustment(&adjustment);
+
+        // Create the GStreamer objects.
+        let gtkglsink = gst::ElementFactory::make("gtkglsink", None).expect("TODO");
+        let glsinkbin = gst::ElementFactory::make("glsinkbin", None).unwrap();
+        glsinkbin
+            .set_property("sink", &gtkglsink.to_value())
+            .unwrap();
+        let widget = gtkglsink
+            .get_property("widget")
+            .unwrap()
+            .get::<gtk::Widget>()
+            .unwrap()
+            .unwrap();
+
+        let playbin = gst::ElementFactory::make("playbin3", None).unwrap();
+        playbin
+            .set_property("video-sink", &glsinkbin.to_value())
+            .unwrap();
+
+        let pipeline = gst::Pipeline::new(None);
+        pipeline.add(&playbin).unwrap();
+        self.playbin.set(playbin).unwrap();
+
+        // Connect the seek slider.
+        self.seek_slider_value_changed
+            .set(seek_slider.connect_value_changed({
+                let pipeline = pipeline.downgrade();
+                move |seek_slider| {
+                    if let Some(pipeline) = pipeline.upgrade() {
+                        let value = seek_slider.get_value();
+                        if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
+                            let time = duration.nanoseconds().unwrap() as f64 * value;
+                            let time = gst::ClockTime::from_nseconds(time as u64);
+                            pipeline.seek_simple(gst::SeekFlags::FLUSH, time).unwrap();
+                        }
+                    }
+                }
+            }))
+            .unwrap();
+
+        // Connect the play-pause button.
+        button_play_pause.connect_clicked({
+            let self_ = self_.downgrade();
+            move |_| {
+                let self_ = self_.upgrade().unwrap();
+                let priv_ = VtWindowPrivate::from_instance(&self_);
+                priv_
+                    .pipeline
+                    .get()
+                    .unwrap()
+                    .set_state(if priv_.pipeline_playing.get() {
+                        gst::State::Paused
+                    } else {
+                        gst::State::Playing
+                    })
+                    .unwrap();
+            }
+        });
+
+        // Refresh the time label and seek slider position on a timer.
+        let timeout_id = gtk::timeout_add(100, {
+            let self_ = self_.downgrade();
+            move || {
+                if let Some(self_) = self_.upgrade() {
+                    let priv_ = VtWindowPrivate::from_instance(&self_);
+                    priv_.refresh_ui();
+                    glib::Continue(true)
+                } else {
+                    glib::Continue(false)
+                }
+            }
+        });
+
+        // Handle GStreamer messages.
+        let bus = pipeline.get_bus().unwrap();
+        bus.add_watch_local({
+            let self_ = self_.downgrade();
+            move |_, msg| {
+                let self_ = if let Some(self_) = self_.upgrade() {
+                    self_
+                } else {
+                    return glib::Continue(false);
+                };
+                let priv_ = VtWindowPrivate::from_instance(&self_);
+
+                use gst::MessageView;
+                match msg.view() {
+                    MessageView::Eos(_) => {
+                        button_play_pause_image
+                            .set_property_icon_name(Some("media-playback-start-symbolic"));
+
+                        priv_.refresh_ui();
+                    }
+                    MessageView::StateChanged(state_changed) => {
+                        if state_changed.get_current() == gst::State::Playing {
+                            priv_.pipeline_playing.set(true);
+                            button_play_pause_image
+                                .set_property_icon_name(Some("media-playback-pause-symbolic"));
+                        } else {
+                            priv_.pipeline_playing.set(false);
+                            button_play_pause_image
+                                .set_property_icon_name(Some("media-playback-start-symbolic"));
+                        }
+
+                        priv_.refresh_ui();
+                    }
+                    MessageView::Error(err) => {
+                        warn!(
+                            "Error from {:?}: {} ({:?})",
+                            err.get_src().map(|s| s.get_path_string()),
+                            err.get_error(),
+                            err.get_debug()
+                        );
+                    }
+                    _ => (),
+                };
+
+                glib::Continue(true)
+            }
+        })
+        .unwrap();
+
+        // Clean up upon window closing.
+        let timeout_id = RefCell::new(Some(timeout_id));
+        self_.connect_destroy(move |self_| {
+            let self_ = self_.clone().downcast::<VtWindow>().unwrap();
+            let priv_ = VtWindowPrivate::from_instance(&self_);
+
+            priv_
+                .pipeline
+                .get()
+                .unwrap()
+                .set_state(gst::State::Null)
+                .unwrap();
+
+            bus.remove_watch().unwrap();
+            if let Some(timeout_id) = timeout_id.borrow_mut().take() {
+                glib::source_remove(timeout_id);
+            }
+        });
+
+        self.pipeline.set(pipeline).unwrap();
+
+        // Add the video widget to the UI.
+        box_main.pack_start(&widget, true, true, 0);
+
         self_.add(&stack_main);
         self_.set_titlebar(Some(&stack_header_bar));
-        self_.set_resizable(false);
 
         // The open button.
         button_open.connect_clicked(clone!(@weak self_ => move |_| {
@@ -200,6 +400,8 @@ impl ObjectImpl for VtWindowPrivate {
             button_trim,
             entry_start,
             entry_end,
+            label_current_time,
+            seek_slider,
         };
         self.widgets.set(widgets).unwrap();
     }
@@ -244,6 +446,19 @@ impl VtWindow {
 
         widgets.stack_main.set_visible_child_name("page_main");
         widgets.stack_header_bar.set_visible_child_name("page_main");
+
+        priv_
+            .playbin
+            .get()
+            .unwrap()
+            .set_property("uri", &file.get_uri())
+            .unwrap();
+        priv_
+            .pipeline
+            .get()
+            .unwrap()
+            .set_state(gst::State::Playing)
+            .unwrap();
 
         // Focus the entry when coming from the empty state.
         widgets.entry_start.grab_focus();
