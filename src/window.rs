@@ -55,7 +55,6 @@ const VIDEO_MIME_TYPES: &[&str] = &[
     "video/x-msvideo",
     "video/x-ms-wm",
     "video/x-ms-wmv",
-    "video/x-ms-wmx",
     "video/x-ms-wvx",
     "video/x-nsv",
     "video/x-ogm+ogg",
