@@ -27,6 +27,21 @@ fn fatal_error(text: &str) {
 }
 
 fn main() {
+    // This is required for doing GStreamer pipeline.set_state(Playing) asynchronously. Otherwise,
+    // on X11 the process aborts with an xcb assertion failure.
+    //
+    // TODO: change this cfg to gdk_backend = "x11" when this is released:
+    // https://github.com/gtk-rs/sys/pull/167
+    #[cfg(target_os = "linux")]
+    unsafe {
+        #[link(name = "X11")]
+        extern "C" {
+            fn XInitThreads() -> std::os::raw::c_int;
+        }
+
+        XInitThreads();
+    }
+
     env_logger::init();
     info!("Video Trimmer version {}", config::VERSION);
 

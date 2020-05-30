@@ -453,12 +453,14 @@ impl VtWindow {
             .unwrap()
             .set_property("uri", &file.get_uri())
             .unwrap();
+
+        // Start the playback.
+        // Do it asynchronously since it can take a while on a network mount.
         priv_
             .pipeline
             .get()
             .unwrap()
-            .set_state(gst::State::Playing)
-            .unwrap();
+            .call_async(|pipeline| drop(pipeline.set_state(gst::State::Playing).unwrap()));
 
         // Focus the entry when coming from the empty state.
         widgets.entry_start.grab_focus();
