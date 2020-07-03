@@ -373,14 +373,14 @@ impl ObjectImpl for VtWindowPrivate {
             let priv_ = VtWindowPrivate::from_instance(&self_);
             let widgets = priv_.widgets.get().unwrap();
 
-            let result = validate_entries(&widgets.entry_start, &widgets.entry_end);
-            if result.is_none() {
+            if validate_entries(&widgets.entry_start, &widgets.entry_end).is_none() {
                 // This should not happen normally because the button should be disabled.
                 warn!("Trim pressed with invalid timestamps");
                 return;
             }
 
-            let (start, end) = result.unwrap();
+            let start = widgets.entry_start.get_text().unwrap();
+            let end = widgets.entry_end.get_text().unwrap();
 
             let extension = priv_.content_type
                 .borrow()
@@ -531,10 +531,7 @@ impl VtWindow {
     }
 }
 
-fn validate_entries(
-    entry_start: &gtk::Entry,
-    entry_end: &gtk::Entry,
-) -> Option<(glib::GString, glib::GString)> {
+fn validate_entries(entry_start: &gtk::Entry, entry_end: &gtk::Entry) -> Option<(u32, u32)> {
     let style_start = entry_start.get_style_context();
     let style_end = entry_end.get_style_context();
     style_start.remove_class("error");
@@ -555,7 +552,7 @@ fn validate_entries(
         if timestamp_start >= timestamp_end {
             style_end.add_class("error");
         } else {
-            return Some((text_start, text_end));
+            return Some((timestamp_start, timestamp_end));
         }
     }
 
