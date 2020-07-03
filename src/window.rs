@@ -74,6 +74,8 @@ struct Widgets {
     entry_end: gtk::Entry,
     label_current_time: gtk::Label,
     seek_slider: gtk::Scale,
+    box_timeline_bg: gtk::Box,
+    box_timeline_selection: gtk::Box,
 }
 
 #[derive(Debug)]
@@ -123,6 +125,29 @@ impl VtWindowPrivate {
         }
     }
 
+    fn refresh_timeline(&self) {
+        let pipeline = self.pipeline.get().unwrap();
+        let widgets = self.widgets.get().unwrap();
+
+        let (start, end) = if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
+            let duration = duration.mseconds().unwrap() as f64;
+            let (start, end) = self.start_end.get();
+            let start = start as f64 / duration;
+            let end = end as f64 / duration;
+            (start, end)
+        } else {
+            (0., 0.)
+        };
+
+        let width = widgets.box_timeline_bg.get_allocated_width();
+        let margin_start = (start * width as f64).round() as i32;
+        let margin_end = ((1. - end) * width as f64).round() as i32;
+        widgets
+            .box_timeline_selection
+            .set_margin_start(margin_start);
+        widgets.box_timeline_selection.set_margin_end(margin_end);
+    }
+
     fn on_entry_changed(&self) {
         let widgets = self.widgets.get().unwrap();
 
@@ -130,6 +155,7 @@ impl VtWindowPrivate {
             widgets.button_trim.set_sensitive(true);
 
             self.start_end.set(start_end);
+            self.refresh_timeline();
         } else {
             widgets.button_trim.set_sensitive(false);
         }
@@ -181,6 +207,12 @@ impl ObjectImpl for VtWindowPrivate {
         let button_play_pause: gtk::Button = builder.get_object("button_play_pause").unwrap();
         let button_play_pause_image: gtk::Image =
             builder.get_object("button_play_pause_image").unwrap();
+        let overlay_timeline: gtk::Overlay = builder.get_object("overlay_timeline").unwrap();
+        let box_timeline_bg: gtk::Box = builder.get_object("box_timeline_bg").unwrap();
+        let box_timeline_selection: gtk::Box =
+            builder.get_object("box_timeline_selection").unwrap();
+
+        overlay_timeline.add_overlay(&box_timeline_selection);
 
         let adjustment = gtk::Adjustment::new(0., 0., 1., 0., 0., 0.);
         seek_slider.set_adjustment(&adjustment);
@@ -206,6 +238,16 @@ impl ObjectImpl for VtWindowPrivate {
         let pipeline = gst::Pipeline::new(None);
         pipeline.add(&playbin).unwrap();
         self.playbin.set(playbin).unwrap();
+
+        // Connect the timeline resize.
+        box_timeline_bg.connect_size_allocate({
+            let self_ = self_.downgrade();
+            move |_, _| {
+                let self_ = self_.upgrade().unwrap();
+                let priv_ = VtWindowPrivate::from_instance(&self_);
+                priv_.refresh_timeline();
+            }
+        });
 
         // Connect the seek slider.
         self.seek_slider_value_changed
@@ -417,6 +459,8 @@ impl ObjectImpl for VtWindowPrivate {
             entry_end,
             label_current_time,
             seek_slider,
+            box_timeline_bg,
+            box_timeline_selection,
         };
         self.widgets.set(widgets).unwrap();
     }
@@ -449,6 +493,14 @@ impl VtWindow {
             .expect("Failed to create VtWindow")
             .downcast::<VtWindow>()
             .expect("Created VtWindow is of wrong type");
+
+        let provider = gtk::CssProvider::new();
+        provider.load_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/style.css");
+        gtk::StyleContext::add_provider_for_screen(
+            &gdk::Screen::get_default().unwrap(),
+            &provider,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
 
         app.add_window(&window);
 
