@@ -85,6 +85,7 @@ pub struct VtWindowPrivate {
     playbin: OnceCell<gst::Element>,
     seek_slider_value_changed: OnceCell<glib::SignalHandlerId>,
     pipeline_playing: Cell<bool>,
+    start_end: Cell<(u32, u32)>,
 }
 
 impl VtWindowPrivate {
@@ -125,8 +126,10 @@ impl VtWindowPrivate {
     fn on_entry_changed(&self) {
         let widgets = self.widgets.get().unwrap();
 
-        if validate_entries(&widgets.entry_start, &widgets.entry_end).is_some() {
+        if let Some(start_end) = validate_entries(&widgets.entry_start, &widgets.entry_end) {
             widgets.button_trim.set_sensitive(true);
+
+            self.start_end.set(start_end);
         } else {
             widgets.button_trim.set_sensitive(false);
         }
@@ -150,6 +153,7 @@ impl ObjectSubclass for VtWindowPrivate {
             playbin: OnceCell::new(),
             seek_slider_value_changed: OnceCell::new(),
             pipeline_playing: Cell::new(false),
+            start_end: Cell::new((0, 0)),
         }
     }
 }
