@@ -2,7 +2,6 @@ use std::{
     cell::{Cell, RefCell},
     ffi::OsStr,
     path::{Path, PathBuf},
-    rc::Rc,
 };
 
 use futures_util::future::{abortable, FutureExt};
@@ -120,6 +119,16 @@ impl VtWindowPrivate {
                 widgets.seek_slider.set_value(value);
                 widgets.seek_slider.unblock_signal(&id);
             }
+        }
+    }
+
+    fn on_entry_changed(&self) {
+        let widgets = self.widgets.get().unwrap();
+
+        if validate_entries(&widgets.entry_start, &widgets.entry_end).is_some() {
+            widgets.button_trim.set_sensitive(true);
+        } else {
+            widgets.button_trim.set_sensitive(false);
         }
     }
 }
@@ -341,21 +350,23 @@ impl ObjectImpl for VtWindowPrivate {
             }
         }));
 
-        // Start and end timestamp validation.
-        let on_entry_change = Rc::new(
-            clone!(@weak entry_start, @weak entry_end, @weak button_trim => move || {
-                if validate_entries(&entry_start, &entry_end).is_some() {
-                    button_trim.set_sensitive(true);
-                } else {
-                    button_trim.set_sensitive(false);
-                }
-            }),
-        );
-
-        entry_start.connect_property_text_notify(clone!(@strong on_entry_change => move |_| {
-            on_entry_change()
-        }));
-        entry_end.connect_property_text_notify(move |_| on_entry_change());
+        // Start and end timestamp validation and visualization.
+        entry_start.connect_property_text_notify({
+            let self_ = self_.downgrade();
+            move |_| {
+                let self_ = self_.upgrade().unwrap();
+                let priv_ = VtWindowPrivate::from_instance(&self_);
+                priv_.on_entry_changed();
+            }
+        });
+        entry_end.connect_property_text_notify({
+            let self_ = self_.downgrade();
+            move |_| {
+                let self_ = self_.upgrade().unwrap();
+                let priv_ = VtWindowPrivate::from_instance(&self_);
+                priv_.on_entry_changed();
+            }
+        });
 
         // The trim button.
         button_trim.connect_clicked(clone!(@weak self_ => move |_| {
