@@ -89,6 +89,8 @@ pub struct VtWindowPrivate {
     seek_slider_value_changed: OnceCell<glib::SignalHandlerId>,
     pipeline_playing: Cell<bool>,
     start_end: Cell<(u32, u32)>,
+    gesture_drag: OnceCell<gtk::GestureDrag>,
+    drag_start: Cell<f64>,
 }
 
 impl VtWindowPrivate {
@@ -165,6 +167,34 @@ impl VtWindowPrivate {
             widgets.button_trim.set_sensitive(false);
         }
     }
+
+    fn on_timeline_drag_start(&self, x: f64, _y: f64) {
+        self.drag_start.set(x);
+        self.on_timeline_drag_update(0., 0.);
+    }
+
+    fn on_timeline_drag_update(&self, offset_x: f64, _offset_y: f64) {
+        let widgets = self.widgets.get().unwrap();
+        let pipeline = self.pipeline.get().unwrap();
+
+        let x = self.drag_start.get() + offset_x;
+        let width = widgets.box_timeline_bg.get_allocated_width() as f64;
+
+        // Sanitize (this can get weird values when resizing the window while dragging).
+        let x = x.min(width).max(0.);
+        let value = x / width;
+
+        let position_width = widgets.box_timeline_position.get_allocated_width() as f64;
+        widgets
+            .box_timeline_position
+            .set_margin_start(x.min(width - position_width) as i32);
+
+        if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
+            let time = duration.nanoseconds().unwrap() as f64 * value;
+            let time = gst::ClockTime::from_nseconds(time as u64);
+            pipeline.seek_simple(gst::SeekFlags::FLUSH, time).unwrap();
+        }
+    }
 }
 
 impl ObjectSubclass for VtWindowPrivate {
@@ -185,6 +215,8 @@ impl ObjectSubclass for VtWindowPrivate {
             seek_slider_value_changed: OnceCell::new(),
             pipeline_playing: Cell::new(false),
             start_end: Cell::new((0, 0)),
+            gesture_drag: OnceCell::new(),
+            drag_start: Cell::new(0.),
         }
     }
 }
@@ -213,13 +245,39 @@ impl ObjectImpl for VtWindowPrivate {
         let button_play_pause_image: gtk::Image =
             builder.get_object("button_play_pause_image").unwrap();
         let overlay_timeline: gtk::Overlay = builder.get_object("overlay_timeline").unwrap();
+        let event_box_timeline_bg: gtk::EventBox =
+            builder.get_object("event_box_timeline_bg").unwrap();
         let box_timeline_bg: gtk::Box = builder.get_object("box_timeline_bg").unwrap();
         let box_timeline_selection: gtk::Box =
             builder.get_object("box_timeline_selection").unwrap();
         let box_timeline_position: gtk::Box = builder.get_object("box_timeline_position").unwrap();
 
         overlay_timeline.add_overlay(&box_timeline_selection);
+        overlay_timeline.set_overlay_pass_through(&box_timeline_selection, true);
         overlay_timeline.add_overlay(&box_timeline_position);
+        overlay_timeline.set_overlay_pass_through(&box_timeline_position, true);
+
+        // Set up the drag gesture.
+        event_box_timeline_bg.set_events(gdk::EventMask::all());
+
+        let gesture_drag = gtk::GestureDrag::new(&event_box_timeline_bg);
+        gesture_drag.connect_drag_begin({
+            let self_ = self_.downgrade();
+            move |_, x, y| {
+                let self_ = self_.upgrade().unwrap();
+                let priv_ = VtWindowPrivate::from_instance(&self_);
+                priv_.on_timeline_drag_start(x, y);
+            }
+        });
+        gesture_drag.connect_drag_update({
+            let self_ = self_.downgrade();
+            move |_, offset_x, offset_y| {
+                let self_ = self_.upgrade().unwrap();
+                let priv_ = VtWindowPrivate::from_instance(&self_);
+                priv_.on_timeline_drag_update(offset_x, offset_y);
+            }
+        });
+        self.gesture_drag.set(gesture_drag).unwrap();
 
         let adjustment = gtk::Adjustment::new(0., 0., 1., 0., 0., 0.);
         seek_slider.set_adjustment(&adjustment);
