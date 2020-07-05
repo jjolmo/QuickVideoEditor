@@ -237,7 +237,11 @@ impl VtWindowPrivate {
         if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
             let time = duration.nanoseconds().unwrap() as f64 * value;
             let time = gst::ClockTime::from_nseconds(time as u64);
-            pipeline.seek_simple(gst::SeekFlags::FLUSH, time).unwrap();
+
+            // Seek asynchronously as it takes longer than desirable.
+            pipeline.call_async(move |pipeline| {
+                drop(pipeline.seek_simple(gst::SeekFlags::FLUSH, time).unwrap())
+            });
 
             let (start, end) = self.start_end.get();
             let start = gst::ClockTime::from_mseconds(start as u64);
