@@ -73,7 +73,6 @@ struct Widgets {
     entry_start: gtk::Entry,
     entry_end: gtk::Entry,
     label_current_time: gtk::Label,
-    seek_slider: gtk::Scale,
     box_timeline_bg: gtk::Box,
     box_timeline_selection: gtk::Box,
     box_timeline_position: gtk::Box,
@@ -86,7 +85,6 @@ pub struct VtWindowPrivate {
     input_path: RefCell<Option<PathBuf>>,
     pipeline: OnceCell<gst::Pipeline>,
     playbin: OnceCell<gst::Element>,
-    seek_slider_value_changed: OnceCell<glib::SignalHandlerId>,
     pipeline_playing: Cell<bool>,
     start_end: Cell<(u32, u32)>,
     gesture_drag: OnceCell<gtk::GestureDrag>,
@@ -97,7 +95,6 @@ impl VtWindowPrivate {
     fn refresh_ui(&self) {
         let pipeline = self.pipeline.get().unwrap();
         let widgets = self.widgets.get().unwrap();
-        let id = self.seek_slider_value_changed.get().unwrap();
 
         if let Some(position) = pipeline.query_position::<gst::ClockTime>() {
             let nanoseconds = position.nanoseconds().unwrap();
@@ -120,10 +117,6 @@ impl VtWindowPrivate {
             if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
                 let value =
                     position.nanoseconds().unwrap() as f64 / duration.nanoseconds().unwrap() as f64;
-
-                widgets.seek_slider.block_signal(&id);
-                widgets.seek_slider.set_value(value);
-                widgets.seek_slider.unblock_signal(&id);
 
                 let width = widgets.box_timeline_bg.get_allocated_width();
                 let margin_start = (value * width as f64).round() as i32;
@@ -212,7 +205,6 @@ impl ObjectSubclass for VtWindowPrivate {
             input_path: RefCell::new(None),
             pipeline: OnceCell::new(),
             playbin: OnceCell::new(),
-            seek_slider_value_changed: OnceCell::new(),
             pipeline_playing: Cell::new(false),
             start_end: Cell::new((0, 0)),
             gesture_drag: OnceCell::new(),
@@ -238,7 +230,6 @@ impl ObjectImpl for VtWindowPrivate {
         let button_trim: gtk::Button = builder.get_object("button_trim").unwrap();
         let entry_start: gtk::Entry = builder.get_object("entry_start").unwrap();
         let entry_end: gtk::Entry = builder.get_object("entry_end").unwrap();
-        let seek_slider: gtk::Scale = builder.get_object("seek_slider").unwrap();
         let box_main: gtk::Box = builder.get_object("box_main").unwrap();
         let label_current_time: gtk::Label = builder.get_object("label_current_time").unwrap();
         let button_play_pause: gtk::Button = builder.get_object("button_play_pause").unwrap();
@@ -279,9 +270,6 @@ impl ObjectImpl for VtWindowPrivate {
         });
         self.gesture_drag.set(gesture_drag).unwrap();
 
-        let adjustment = gtk::Adjustment::new(0., 0., 1., 0., 0., 0.);
-        seek_slider.set_adjustment(&adjustment);
-
         // Create the GStreamer objects.
         let gtkglsink = gst::ElementFactory::make("gtkglsink", None).expect("TODO");
         let glsinkbin = gst::ElementFactory::make("glsinkbin", None).unwrap();
@@ -314,23 +302,6 @@ impl ObjectImpl for VtWindowPrivate {
                 priv_.refresh_ui();
             }
         });
-
-        // Connect the seek slider.
-        self.seek_slider_value_changed
-            .set(seek_slider.connect_value_changed({
-                let pipeline = pipeline.downgrade();
-                move |seek_slider| {
-                    if let Some(pipeline) = pipeline.upgrade() {
-                        let value = seek_slider.get_value();
-                        if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
-                            let time = duration.nanoseconds().unwrap() as f64 * value;
-                            let time = gst::ClockTime::from_nseconds(time as u64);
-                            pipeline.seek_simple(gst::SeekFlags::FLUSH, time).unwrap();
-                        }
-                    }
-                }
-            }))
-            .unwrap();
 
         // Connect the play-pause button.
         button_play_pause.connect_clicked({
@@ -524,7 +495,6 @@ impl ObjectImpl for VtWindowPrivate {
             entry_start,
             entry_end,
             label_current_time,
-            seek_slider,
             box_timeline_bg,
             box_timeline_selection,
             box_timeline_position,

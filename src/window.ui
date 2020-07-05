@@ -204,43 +204,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkOverlay" id="overlay_timeline">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_start">12</property>
-            <property name="margin_end">12</property>
-            <child>
-              <object class="GtkEventBox" id="event_box_timeline_bg">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkBox" id="box_timeline_bg">
-                    <property name="height_request">50</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <style>
-                      <class name="vt-timeline-bg"/>
-                      <class name="vt-timeline"/>
-                    </style>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="index">-1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkBox">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -272,6 +235,7 @@
               <object class="GtkLabel" id="label_current_time">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="margin_end">12</property>
                 <property name="label">&lt;span font_features="tnum"&gt;0:00&lt;/span&gt;</property>
                 <property name="use_markup">True</property>
               </object>
@@ -282,17 +246,36 @@
               </packing>
             </child>
             <child>
-              <object class="GtkScale" id="seek_slider">
+              <object class="GtkOverlay" id="overlay_timeline">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="restrict_to_fill_level">False</property>
-                <property name="round_digits">1</property>
-                <property name="draw_value">False</property>
-                <property name="value_pos">left</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkEventBox" id="event_box_timeline_bg">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkBox" id="box_timeline_bg">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <style>
+                          <class name="vt-timeline-bg"/>
+                          <class name="vt-timeline"/>
+                        </style>
+                      </object>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="index">-1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
+                <property name="pack_type">end</property>
                 <property name="position">2</property>
               </packing>
             </child>
@@ -301,7 +284,7 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="pack_type">end</property>
-            <property name="position">2</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
