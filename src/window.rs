@@ -5,6 +5,7 @@ use std::{
 };
 
 use futures_util::future::{abortable, FutureExt};
+use gdk::prelude::*;
 use gettextrs::*;
 use gio::prelude::*;
 use glib::{subclass, subclass::prelude::*, translate::*};
@@ -63,11 +64,19 @@ const VIDEO_MIME_TYPES: &[&str] = &[
     "video/x-totem-stream",
 ];
 
+const TOLERANCE: f64 = 5.;
+
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 enum DragType {
     Playback,
     Start,
     End,
+}
+
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+enum CursorType {
+    Normal,
+    StartEnd,
 }
 
 #[derive(Debug)]
@@ -97,6 +106,8 @@ pub struct VtWindowPrivate {
     gesture_drag: OnceCell<gtk::GestureDrag>,
     drag_start: Cell<f64>,
     drag_type: Cell<DragType>,
+    event_controller_motion: OnceCell<gtk::EventControllerMotion>,
+    cursor_type: Cell<CursorType>,
 }
 
 fn time_to_entry_text(time: gst::ClockTime) -> String {
@@ -194,7 +205,6 @@ impl VtWindowPrivate {
         let start = widgets.box_timeline_selection.get_margin_start() as f64;
         let end = width - widgets.box_timeline_selection.get_margin_end() as f64;
 
-        const TOLERANCE: f64 = 5.;
         if (x - end).abs() <= TOLERANCE {
             self.drag_type.set(DragType::End);
             self.drag_start.set(end);
@@ -260,6 +270,42 @@ impl VtWindowPrivate {
             }
         }
     }
+
+    fn on_timeline_motion(&self, x: f64, _y: f64) {
+        // Don't change the cursor while in drag.
+        if self.gesture_drag.get().unwrap().is_active() {
+            return;
+        }
+
+        let widgets = self.widgets.get().unwrap();
+        let width = widgets.box_timeline_bg.get_allocated_width() as f64;
+        let start = widgets.box_timeline_selection.get_margin_start() as f64;
+        let end = width - widgets.box_timeline_selection.get_margin_end() as f64;
+
+        if (x - end).abs() <= TOLERANCE || (x - start).abs() <= TOLERANCE {
+            if self.cursor_type.get() != CursorType::StartEnd {
+                let display = widgets.box_timeline_bg.get_display();
+                let cursor = gdk::Cursor::from_name(&display, "col-resize").unwrap();
+                widgets
+                    .box_timeline_bg
+                    .get_window()
+                    .unwrap()
+                    .set_cursor(Some(&cursor));
+                self.cursor_type.set(CursorType::StartEnd);
+            }
+        } else {
+            if self.cursor_type.get() != CursorType::Normal {
+                let display = widgets.box_timeline_bg.get_display();
+                let cursor = gdk::Cursor::from_name(&display, "default").unwrap();
+                widgets
+                    .box_timeline_bg
+                    .get_window()
+                    .unwrap()
+                    .set_cursor(Some(&cursor));
+                self.cursor_type.set(CursorType::Normal);
+            }
+        }
+    }
 }
 
 impl ObjectSubclass for VtWindowPrivate {
@@ -282,6 +328,8 @@ impl ObjectSubclass for VtWindowPrivate {
             gesture_drag: OnceCell::new(),
             drag_start: Cell::new(0.),
             drag_type: Cell::new(DragType::Playback),
+            event_controller_motion: OnceCell::new(),
+            cursor_type: Cell::new(CursorType::Normal),
         }
     }
 }
@@ -342,6 +390,19 @@ impl ObjectImpl for VtWindowPrivate {
             }
         });
         self.gesture_drag.set(gesture_drag).unwrap();
+
+        let event_controller_motion = gtk::EventControllerMotion::new(&event_box_timeline_bg);
+        event_controller_motion.connect_motion({
+            let self_ = self_.downgrade();
+            move |_, x, y| {
+                let self_ = self_.upgrade().unwrap();
+                let priv_ = VtWindowPrivate::from_instance(&self_);
+                priv_.on_timeline_motion(x, y);
+            }
+        });
+        self.event_controller_motion
+            .set(event_controller_motion)
+            .unwrap();
 
         // Create the GStreamer objects.
         let gtkglsink = gst::ElementFactory::make("gtkglsink", None).expect("TODO");
