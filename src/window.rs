@@ -76,6 +76,7 @@ struct Widgets {
     seek_slider: gtk::Scale,
     box_timeline_bg: gtk::Box,
     box_timeline_selection: gtk::Box,
+    box_timeline_position: gtk::Box,
 }
 
 #[derive(Debug)]
@@ -121,6 +122,10 @@ impl VtWindowPrivate {
                 widgets.seek_slider.block_signal(&id);
                 widgets.seek_slider.set_value(value);
                 widgets.seek_slider.unblock_signal(&id);
+
+                let width = widgets.box_timeline_bg.get_allocated_width();
+                let margin_start = (value * width as f64).round() as i32;
+                widgets.box_timeline_position.set_margin_start(margin_start);
             }
         }
     }
@@ -211,8 +216,10 @@ impl ObjectImpl for VtWindowPrivate {
         let box_timeline_bg: gtk::Box = builder.get_object("box_timeline_bg").unwrap();
         let box_timeline_selection: gtk::Box =
             builder.get_object("box_timeline_selection").unwrap();
+        let box_timeline_position: gtk::Box = builder.get_object("box_timeline_position").unwrap();
 
         overlay_timeline.add_overlay(&box_timeline_selection);
+        overlay_timeline.add_overlay(&box_timeline_position);
 
         let adjustment = gtk::Adjustment::new(0., 0., 1., 0., 0., 0.);
         seek_slider.set_adjustment(&adjustment);
@@ -246,6 +253,7 @@ impl ObjectImpl for VtWindowPrivate {
                 let self_ = self_.upgrade().unwrap();
                 let priv_ = VtWindowPrivate::from_instance(&self_);
                 priv_.refresh_timeline();
+                priv_.refresh_ui();
             }
         });
 
@@ -461,6 +469,7 @@ impl ObjectImpl for VtWindowPrivate {
             seek_slider,
             box_timeline_bg,
             box_timeline_selection,
+            box_timeline_position,
         };
         self.widgets.set(widgets).unwrap();
     }
