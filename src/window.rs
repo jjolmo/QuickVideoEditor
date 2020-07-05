@@ -63,6 +63,13 @@ const VIDEO_MIME_TYPES: &[&str] = &[
     "video/x-totem-stream",
 ];
 
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
+enum DragType {
+    Playback,
+    Start,
+    End,
+}
+
 #[derive(Debug)]
 struct Widgets {
     header_bar: gtk::HeaderBar,
@@ -89,6 +96,24 @@ pub struct VtWindowPrivate {
     start_end: Cell<(u32, u32)>,
     gesture_drag: OnceCell<gtk::GestureDrag>,
     drag_start: Cell<f64>,
+    drag_type: Cell<DragType>,
+}
+
+fn time_to_entry_text(time: gst::ClockTime) -> String {
+    let nanoseconds = time.nanoseconds().unwrap();
+    let mut seconds = nanoseconds / 1_000_000_000;
+    let mut minutes = seconds / 60;
+    let hours = minutes / 60;
+    seconds %= 60;
+    minutes %= 60;
+
+    let fractional = (nanoseconds / 100_000_000) % 10;
+
+    if hours == 0 {
+        format!("{}:{:02}.{}", minutes, seconds, fractional)
+    } else {
+        format!("{}:{:02}:{:02}.{}", hours, minutes, seconds, fractional)
+    }
 }
 
 impl VtWindowPrivate {
@@ -163,6 +188,23 @@ impl VtWindowPrivate {
 
     fn on_timeline_drag_start(&self, x: f64, _y: f64) {
         self.drag_start.set(x);
+
+        let widgets = self.widgets.get().unwrap();
+        let width = widgets.box_timeline_bg.get_allocated_width() as f64;
+        let start = widgets.box_timeline_selection.get_margin_start() as f64;
+        let end = width - widgets.box_timeline_selection.get_margin_end() as f64;
+
+        const TOLERANCE: f64 = 5.;
+        if (x - end).abs() <= TOLERANCE {
+            self.drag_type.set(DragType::End);
+            self.drag_start.set(end);
+        } else if (x - start).abs() <= TOLERANCE {
+            self.drag_type.set(DragType::Start);
+            self.drag_start.set(start);
+        } else {
+            self.drag_type.set(DragType::Playback);
+        }
+
         self.on_timeline_drag_update(0., 0.);
     }
 
@@ -186,6 +228,40 @@ impl VtWindowPrivate {
             let time = duration.nanoseconds().unwrap() as f64 * value;
             let time = gst::ClockTime::from_nseconds(time as u64);
             pipeline.seek_simple(gst::SeekFlags::FLUSH, time).unwrap();
+
+            let (start, end) = self.start_end.get();
+            let start = gst::ClockTime::from_mseconds(start as u64);
+            let end = gst::ClockTime::from_mseconds(end as u64);
+
+            match self.drag_type.get() {
+                DragType::Start => {
+                    let text = time_to_entry_text(time);
+
+                    if time <= end {
+                        widgets.entry_start.set_text(&text);
+                    } else {
+                        widgets
+                            .entry_start
+                            .set_text(&widgets.entry_end.get_text().unwrap());
+                        widgets.entry_end.set_text(&text);
+                        self.drag_type.set(DragType::End);
+                    }
+                }
+                DragType::End => {
+                    let text = time_to_entry_text(time);
+
+                    if time >= start {
+                        widgets.entry_end.set_text(&text);
+                    } else {
+                        widgets
+                            .entry_end
+                            .set_text(&widgets.entry_start.get_text().unwrap());
+                        widgets.entry_start.set_text(&text);
+                        self.drag_type.set(DragType::Start);
+                    }
+                }
+                _ => (),
+            }
         }
     }
 }
@@ -209,6 +285,7 @@ impl ObjectSubclass for VtWindowPrivate {
             start_end: Cell::new((0, 0)),
             gesture_drag: OnceCell::new(),
             drag_start: Cell::new(0.),
+            drag_type: Cell::new(DragType::Playback),
         }
     }
 }
