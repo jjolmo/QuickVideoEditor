@@ -216,7 +216,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="margin_end">12</property>
+                <property name="margin_end">8</property>
                 <child>
                   <object class="GtkImage" id="button_play_pause_image">
                     <property name="visible">True</property>
@@ -235,9 +235,10 @@
               <object class="GtkLabel" id="label_current_time">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_end">12</property>
+                <property name="margin_end">8</property>
                 <property name="label">&lt;span font_features="tnum"&gt;0:00&lt;/span&gt;</property>
                 <property name="use_markup">True</property>
+                <property name="width_chars">5</property>
               </object>
               <packing>
                 <property name="expand">False</property>
