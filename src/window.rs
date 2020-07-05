@@ -240,9 +240,7 @@ impl VtWindowPrivate {
                     if time <= end {
                         widgets.entry_start.set_text(&text);
                     } else {
-                        widgets
-                            .entry_start
-                            .set_text(&widgets.entry_end.get_text().unwrap());
+                        widgets.entry_start.set_text(&widgets.entry_end.get_text());
                         widgets.entry_end.set_text(&text);
                         self.drag_type.set(DragType::End);
                     }
@@ -253,9 +251,7 @@ impl VtWindowPrivate {
                     if time >= start {
                         widgets.entry_end.set_text(&text);
                     } else {
-                        widgets
-                            .entry_end
-                            .set_text(&widgets.entry_start.get_text().unwrap());
+                        widgets.entry_end.set_text(&widgets.entry_start.get_text());
                         widgets.entry_start.set_text(&text);
                         self.drag_type.set(DragType::Start);
                     }
@@ -298,7 +294,7 @@ impl ObjectImpl for VtWindowPrivate {
         let self_ = obj.downcast_ref::<VtWindow>().unwrap();
 
         let builder =
-            gtk::Builder::new_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
+            gtk::Builder::from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
 
         let stack_main: gtk::Stack = builder.get_object("stack_main").unwrap();
         let stack_header_bar: gtk::Stack = builder.get_object("stack_header_bar").unwrap();
@@ -539,8 +535,8 @@ impl ObjectImpl for VtWindowPrivate {
                 return;
             }
 
-            let start = widgets.entry_start.get_text().unwrap();
-            let end = widgets.entry_end.get_text().unwrap();
+            let start = widgets.entry_start.get_text();
+            let end = widgets.entry_end.get_text();
 
             let extension = priv_.content_type
                 .borrow()
@@ -707,9 +703,9 @@ fn validate_entries(entry_start: &gtk::Entry, entry_end: &gtk::Entry) -> Option<
     style_start.remove_class("error");
     style_end.remove_class("error");
 
-    let text_start = entry_start.get_text().unwrap();
+    let text_start = entry_start.get_text();
     let timestamp_start = parse::timestamp(text_start.as_str());
-    let text_end = entry_end.get_text().unwrap();
+    let text_end = entry_end.get_text();
     let timestamp_end = parse::timestamp(text_end.as_str());
 
     if timestamp_start.is_none() {
@@ -792,7 +788,9 @@ fn trim(
                 let future = async move {
                     match subprocess_clone.communicate_utf8_async_future(None).await {
                         Ok((_, stderr)) => {
-                            trimming_dialog_clone.destroy();
+                            unsafe {
+                                trimming_dialog_clone.destroy();
+                            }
 
                             if subprocess_clone.get_if_exited()
                                 && subprocess_clone.get_exit_status() == 0
@@ -805,22 +803,28 @@ fn trim(
                                     .transient_for(&window)
                                     .build();
                                 dialog.run();
-                                dialog.destroy();
+                                unsafe {
+                                    dialog.destroy();
+                                }
                             } else {
                                 let dialog = gtk::MessageDialogBuilder::new()
                                     // Translators: error dialog text.
                                     .text(&gettext("Error trimming video"))
-                                    .secondary_text(stderr.as_str())
+                                    .secondary_text(stderr.as_deref().unwrap_or(""))
                                     .message_type(gtk::MessageType::Error)
                                     .buttons(gtk::ButtonsType::Ok)
                                     .transient_for(&window)
                                     .build();
                                 dialog.run();
-                                dialog.destroy();
+                                unsafe {
+                                    dialog.destroy();
+                                }
                             }
                         }
                         Err(err) => {
-                            trimming_dialog_clone.destroy();
+                            unsafe {
+                                trimming_dialog_clone.destroy();
+                            }
 
                             let dialog = gtk::MessageDialogBuilder::new()
                                 // Translators: error dialog text.
@@ -831,7 +835,9 @@ fn trim(
                                 .transient_for(&window)
                                 .build();
                             dialog.run();
-                            dialog.destroy();
+                            unsafe {
+                                dialog.destroy();
+                            }
                         }
                     }
                 };
@@ -842,7 +848,9 @@ fn trim(
                     debug!("force exiting the subprocess");
                     subprocess.force_exit();
                     handle.abort();
-                    dialog.destroy();
+                    unsafe {
+                        dialog.destroy();
+                    }
                 });
                 trimming_dialog.show_all();
 
@@ -858,7 +866,9 @@ fn trim(
                     .transient_for(&window)
                     .build();
                 dialog.run();
-                dialog.destroy();
+                unsafe {
+                    dialog.destroy();
+                }
                 return;
             }
         }
