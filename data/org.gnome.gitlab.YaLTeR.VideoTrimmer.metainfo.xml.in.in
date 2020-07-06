@@ -19,14 +19,19 @@
 	</description>
 	<screenshots>
 		<screenshot type="default">
-			<image>https://gitlab.gnome.org/YaLTeR/video-trimmer/uploads/5a92c2c41ef7e1641d57c7429845c75d/image.png</image>
+			<image>https://gitlab.gnome.org/YaLTeR/video-trimmer/uploads/717fa281218d3649a9d72e46e3ab4e08/image.png</image>
 			<caption>Main Window</caption>
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.2.0" date="2020-07-06">
+			<description>
+				<p>This release adds a video preview and a timeline where the target region can be adjusted using the mouse.</p>
+			</description>
+		</release>
 		<release version="0.1.0" date="2020-04-29">
 			<description>
-				<p>First release</p>
+				<p>First release.</p>
 			</description>
 		</release>
 	</releases>
