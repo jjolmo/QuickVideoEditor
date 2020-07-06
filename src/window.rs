@@ -187,8 +187,8 @@ impl VtWindowPrivate {
         let duration = duration.unwrap();
 
         let duration = duration.mseconds().unwrap() as f64;
-        let start = start as f64 / duration;
-        let end = end as f64 / duration;
+        let start = (start as f64 / duration).min(1.).max(0.);
+        let end = (end as f64 / duration).min(1.).max(0.);
 
         let width = widgets.box_timeline_bg.get_allocated_width();
         let margin_start = (start * width as f64).round() as i32;
