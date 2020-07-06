@@ -682,7 +682,14 @@ impl ObjectImpl for VtWindowPrivate {
                 .borrow()
                 .as_ref()
                 .map(glib::GString::as_str)
-                .and_then(mime_guess::get_mime_extensions_str)
+                .and_then(|content_type| {
+                    if content_type == "video/x-matroska" {
+                        // mime_guess returns "mk3d" for matroska which is weird.
+                        Some(&["mkv"][..])
+                    } else {
+                        mime_guess::get_mime_extensions_str(content_type)
+                    }
+                })
                 .and_then(|exts| exts.get(0))
                 .unwrap_or(&"mp4");
 
