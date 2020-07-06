@@ -272,7 +272,11 @@ impl VtWindowPrivate {
             match self.drag_type.get() {
                 DragType::Start => {
                     let text = time_to_entry_text(time);
-                    if text == widgets.entry_end.get_text() {
+
+                    if gst::ClockTime::from_mseconds(parse::timestamp(&text).unwrap() as u64) == end
+                    {
+                        // Don't set the text if the timestamps will match as that counts as an
+                        // invalid region.
                         return;
                     }
 
@@ -286,7 +290,12 @@ impl VtWindowPrivate {
                 }
                 DragType::End => {
                     let text = time_to_entry_text(time);
-                    if text == widgets.entry_start.get_text() {
+
+                    if gst::ClockTime::from_mseconds(parse::timestamp(&text).unwrap() as u64)
+                        == start
+                    {
+                        // Don't set the text if the timestamps will match as that counts as an
+                        // invalid region.
                         return;
                     }
 
