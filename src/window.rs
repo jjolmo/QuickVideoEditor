@@ -118,6 +118,7 @@ pub struct VtWindowPrivate {
     event_controller_motion: OnceCell<gtk::EventControllerMotion>,
     cursor_type: Cell<CursorType>,
     received_duration: Cell<bool>,
+    seeking: Cell<bool>,
 }
 
 fn time_to_entry_text(time: gst::ClockTime) -> String {
@@ -163,12 +164,15 @@ impl VtWindowPrivate {
             if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
                 self.on_got_duration(duration);
 
-                let value =
-                    position.nanoseconds().unwrap() as f64 / duration.nanoseconds().unwrap() as f64;
+                // Don't modify the position during seeking as it's out of date.
+                if !self.seeking.get() {
+                    let value = position.nanoseconds().unwrap() as f64
+                        / duration.nanoseconds().unwrap() as f64;
 
-                let width = widgets.box_timeline_bg.get_allocated_width();
-                let margin_start = (value * width as f64).round() as i32;
-                widgets.box_timeline_position.set_margin_start(margin_start);
+                    let width = widgets.box_timeline_bg.get_allocated_width();
+                    let margin_start = (value * width as f64).round() as i32;
+                    widgets.box_timeline_position.set_margin_start(margin_start);
+                }
             }
         }
     }
@@ -254,6 +258,8 @@ impl VtWindowPrivate {
         if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
             let time = duration.nanoseconds().unwrap() as f64 * value;
             let time = gst::ClockTime::from_nseconds(time as u64);
+
+            self.seeking.set(true);
 
             // Seek asynchronously as it takes longer than desirable.
             pipeline.call_async(move |pipeline| {
@@ -409,6 +415,7 @@ impl ObjectSubclass for VtWindowPrivate {
             event_controller_motion: OnceCell::new(),
             cursor_type: Cell::new(CursorType::Normal),
             received_duration: Cell::new(false),
+            seeking: Cell::new(false),
         }
     }
 }
@@ -580,6 +587,11 @@ impl ObjectImpl for VtWindowPrivate {
                                 .set_property_icon_name(Some("media-playback-start-symbolic"));
                         }
 
+                        priv_.refresh_ui();
+                    }
+                    MessageView::AsyncDone(_) => {
+                        // The seek has finished.
+                        priv_.seeking.set(false);
                         priv_.refresh_ui();
                     }
                     MessageView::Error(err) => {
