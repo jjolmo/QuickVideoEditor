@@ -111,7 +111,7 @@ pub struct VtWindowPrivate {
     pipeline: OnceCell<gst::Pipeline>,
     playbin: OnceCell<gst::Element>,
     pipeline_playing: Cell<bool>,
-    start_end: Cell<(u32, u32)>,
+    start_end: Cell<Option<(u32, u32)>>,
     gesture_drag: OnceCell<gtk::GestureDrag>,
     drag_start: Cell<f64>,
     drag_type: Cell<DragType>,
@@ -174,15 +174,21 @@ impl VtWindowPrivate {
         let pipeline = self.pipeline.get().unwrap();
         let widgets = self.widgets.get().unwrap();
 
-        let (start, end) = if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
-            let duration = duration.mseconds().unwrap() as f64;
-            let (start, end) = self.start_end.get();
-            let start = start as f64 / duration;
-            let end = end as f64 / duration;
-            (start, end)
-        } else {
-            (0., 0.)
-        };
+        let start_end = self.start_end.get();
+        let duration = pipeline.query_duration::<gst::ClockTime>();
+
+        if start_end.is_none() || duration.is_none() {
+            widgets.box_timeline_selection.set_opacity(0.);
+            return;
+        }
+
+        widgets.box_timeline_selection.set_opacity(1.);
+        let (start, end) = start_end.unwrap();
+        let duration = duration.unwrap();
+
+        let duration = duration.mseconds().unwrap() as f64;
+        let start = start as f64 / duration;
+        let end = end as f64 / duration;
 
         let width = widgets.box_timeline_bg.get_allocated_width();
         let margin_start = (start * width as f64).round() as i32;
@@ -196,32 +202,31 @@ impl VtWindowPrivate {
     fn on_entry_changed(&self) {
         let widgets = self.widgets.get().unwrap();
 
-        if let Some(start_end) = validate_entries(&widgets.entry_start, &widgets.entry_end) {
-            widgets.button_trim.set_sensitive(true);
+        let start_end = validate_entries(&widgets.entry_start, &widgets.entry_end);
+        self.start_end.set(start_end);
 
-            self.start_end.set(start_end);
-            self.refresh_timeline();
-        } else {
-            widgets.button_trim.set_sensitive(false);
-        }
+        widgets.button_trim.set_sensitive(start_end.is_some());
+
+        self.refresh_timeline();
     }
 
     fn on_timeline_drag_start(&self, x: f64, _y: f64) {
         self.drag_start.set(x);
+        self.drag_type.set(DragType::Playback);
 
-        let widgets = self.widgets.get().unwrap();
-        let width = widgets.box_timeline_bg.get_allocated_width() as f64;
-        let start = widgets.box_timeline_selection.get_margin_start() as f64;
-        let end = width - widgets.box_timeline_selection.get_margin_end() as f64;
+        if self.start_end.get().is_some() {
+            let widgets = self.widgets.get().unwrap();
+            let width = widgets.box_timeline_bg.get_allocated_width() as f64;
+            let start = widgets.box_timeline_selection.get_margin_start() as f64;
+            let end = width - widgets.box_timeline_selection.get_margin_end() as f64;
 
-        if (x - end).abs() <= TOLERANCE {
-            self.drag_type.set(DragType::End);
-            self.drag_start.set(end);
-        } else if (x - start).abs() <= TOLERANCE {
-            self.drag_type.set(DragType::Start);
-            self.drag_start.set(start);
-        } else {
-            self.drag_type.set(DragType::Playback);
+            if (x - end).abs() <= TOLERANCE {
+                self.drag_type.set(DragType::End);
+                self.drag_start.set(end);
+            } else if (x - start).abs() <= TOLERANCE {
+                self.drag_type.set(DragType::Start);
+                self.drag_start.set(start);
+            }
         }
 
         self.on_timeline_drag_update(0., 0.);
@@ -252,13 +257,21 @@ impl VtWindowPrivate {
                 drop(pipeline.seek_simple(gst::SeekFlags::FLUSH, time).unwrap())
             });
 
-            let (start, end) = self.start_end.get();
+            let start_end = self.start_end.get();
+            if start_end.is_none() {
+                return;
+            }
+
+            let (start, end) = start_end.unwrap();
             let start = gst::ClockTime::from_mseconds(start as u64);
             let end = gst::ClockTime::from_mseconds(end as u64);
 
             match self.drag_type.get() {
                 DragType::Start => {
                     let text = time_to_entry_text(time);
+                    if text == widgets.entry_end.get_text() {
+                        return;
+                    }
 
                     if time <= end {
                         widgets.entry_start.set_text(&text);
@@ -270,6 +283,9 @@ impl VtWindowPrivate {
                 }
                 DragType::End => {
                     let text = time_to_entry_text(time);
+                    if text == widgets.entry_start.get_text() {
+                        return;
+                    }
 
                     if time >= start {
                         widgets.entry_end.set_text(&text);
@@ -291,11 +307,17 @@ impl VtWindowPrivate {
         }
 
         let widgets = self.widgets.get().unwrap();
-        let width = widgets.box_timeline_bg.get_allocated_width() as f64;
-        let start = widgets.box_timeline_selection.get_margin_start() as f64;
-        let end = width - widgets.box_timeline_selection.get_margin_end() as f64;
 
-        let resizing_cursor = (x - end).abs() <= TOLERANCE || (x - start).abs() <= TOLERANCE;
+        let resizing_cursor = if self.start_end.get().is_some() {
+            let width = widgets.box_timeline_bg.get_allocated_width() as f64;
+            let start = widgets.box_timeline_selection.get_margin_start() as f64;
+            let end = width - widgets.box_timeline_selection.get_margin_end() as f64;
+
+            (x - end).abs() <= TOLERANCE || (x - start).abs() <= TOLERANCE
+        } else {
+            false
+        };
+
         let cursor_type = if resizing_cursor {
             CursorType::StartEnd
         } else {
@@ -331,7 +353,7 @@ impl ObjectSubclass for VtWindowPrivate {
             pipeline: OnceCell::new(),
             playbin: OnceCell::new(),
             pipeline_playing: Cell::new(false),
-            start_end: Cell::new((0, 0)),
+            start_end: Cell::new(None),
             gesture_drag: OnceCell::new(),
             drag_start: Cell::new(0.),
             drag_type: Cell::new(DragType::Playback),
