@@ -6,6 +6,16 @@
     "sdk-extensions" : [
         "org.freedesktop.Sdk.Extension.rust-stable"
     ],
+    "add-extensions": {
+        "org.freedesktop.Platform.ffmpeg-full": {
+            "directory": "lib/ffmpeg",
+            "version": "19.08",
+            "add-ld-path": "."
+        }
+    },
+    "cleanup-commands": [
+        "mkdir -p ${FLATPAK_DEST}/lib/ffmpeg"
+    ],
     "command" : "video-trimmer",
     "tags" : [
         "nightly"
