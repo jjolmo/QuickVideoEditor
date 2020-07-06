@@ -79,6 +79,15 @@ enum CursorType {
     StartEnd,
 }
 
+impl CursorType {
+    fn gtk_cursor_name(self) -> &'static str {
+        match self {
+            CursorType::Normal => "default",
+            CursorType::StartEnd => "col-resize",
+        }
+    }
+}
+
 #[derive(Debug)]
 struct Widgets {
     header_bar: gtk::HeaderBar,
@@ -286,28 +295,22 @@ impl VtWindowPrivate {
         let start = widgets.box_timeline_selection.get_margin_start() as f64;
         let end = width - widgets.box_timeline_selection.get_margin_end() as f64;
 
-        if (x - end).abs() <= TOLERANCE || (x - start).abs() <= TOLERANCE {
-            if self.cursor_type.get() != CursorType::StartEnd {
-                let display = widgets.box_timeline_bg.get_display();
-                let cursor = gdk::Cursor::from_name(&display, "col-resize").unwrap();
-                widgets
-                    .box_timeline_bg
-                    .get_window()
-                    .unwrap()
-                    .set_cursor(Some(&cursor));
-                self.cursor_type.set(CursorType::StartEnd);
-            }
+        let resizing_cursor = (x - end).abs() <= TOLERANCE || (x - start).abs() <= TOLERANCE;
+        let cursor_type = if resizing_cursor {
+            CursorType::StartEnd
         } else {
-            if self.cursor_type.get() != CursorType::Normal {
-                let display = widgets.box_timeline_bg.get_display();
-                let cursor = gdk::Cursor::from_name(&display, "default").unwrap();
-                widgets
-                    .box_timeline_bg
-                    .get_window()
-                    .unwrap()
-                    .set_cursor(Some(&cursor));
-                self.cursor_type.set(CursorType::Normal);
-            }
+            CursorType::Normal
+        };
+
+        if self.cursor_type.get() != cursor_type {
+            let display = widgets.box_timeline_bg.get_display();
+            let cursor = gdk::Cursor::from_name(&display, cursor_type.gtk_cursor_name()).unwrap();
+            widgets
+                .box_timeline_bg
+                .get_window()
+                .unwrap()
+                .set_cursor(Some(&cursor));
+            self.cursor_type.set(cursor_type);
         }
     }
 }
