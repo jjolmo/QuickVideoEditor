@@ -117,6 +117,7 @@ pub struct VtWindowPrivate {
     drag_type: Cell<DragType>,
     event_controller_motion: OnceCell<gtk::EventControllerMotion>,
     cursor_type: Cell<CursorType>,
+    received_duration: Cell<bool>,
 }
 
 fn time_to_entry_text(time: gst::ClockTime) -> String {
@@ -160,6 +161,8 @@ impl VtWindowPrivate {
                 .set_markup(&format!("<span font_features=\"tnum\">{}</span>", time));
 
             if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
+                self.on_got_duration(duration);
+
                 let value =
                     position.nanoseconds().unwrap() as f64 / duration.nanoseconds().unwrap() as f64;
 
@@ -335,6 +338,43 @@ impl VtWindowPrivate {
             self.cursor_type.set(cursor_type);
         }
     }
+
+    fn on_got_duration(&self, duration: gst::ClockTime) {
+        if self.received_duration.get() {
+            return;
+        }
+
+        self.received_duration.set(true);
+
+        let widgets = self.widgets.get().unwrap();
+
+        // If the user hasn't started typing in the timestamp entries, fill them with default
+        // values.
+        if !widgets.entry_start.get_text().is_empty() || !widgets.entry_end.get_text().is_empty() {
+            return;
+        }
+
+        let duration = duration.nanoseconds().unwrap() as f64;
+        let start = duration / 3.;
+        let end = start * 2.;
+
+        let start = start as u64;
+        let end = (end as u64).max(start + 1);
+
+        let start = gst::ClockTime::from_nseconds(start);
+        let end = gst::ClockTime::from_nseconds(end);
+
+        widgets.entry_start.set_text(&time_to_entry_text(start));
+        widgets.entry_end.set_text(&time_to_entry_text(end));
+
+        // Select the text so the behavior of typing doesn't change compared to if we hadn't set
+        // the text.
+        if widgets.entry_start.is_focus() {
+            widgets.entry_start.select_region(0, -1);
+        } else if widgets.entry_end.is_focus() {
+            widgets.entry_end.select_region(0, -1);
+        }
+    }
 }
 
 impl ObjectSubclass for VtWindowPrivate {
@@ -359,6 +399,7 @@ impl ObjectSubclass for VtWindowPrivate {
             drag_type: Cell::new(DragType::Playback),
             event_controller_motion: OnceCell::new(),
             cursor_type: Cell::new(CursorType::Normal),
+            received_duration: Cell::new(false),
         }
     }
 }
