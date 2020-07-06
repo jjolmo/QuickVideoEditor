@@ -689,10 +689,18 @@ glib_wrapper! {
 
 impl VtWindow {
     pub fn new(app: &gtk::Application) -> Self {
-        let window = glib::Object::new(Self::static_type(), &[("application", app)])
-            .expect("Failed to create VtWindow")
-            .downcast::<VtWindow>()
-            .expect("Created VtWindow is of wrong type");
+        let window = glib::Object::new(
+            Self::static_type(),
+            &[
+                ("application", app),
+                // These parameters are chosen to make the default size of the video 640×360.
+                ("default-width", &640),
+                ("default-height", &488),
+            ],
+        )
+        .expect("Failed to create VtWindow")
+        .downcast::<VtWindow>()
+        .expect("Created VtWindow is of wrong type");
 
         let provider = gtk::CssProvider::new();
         provider.load_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/style.css");
