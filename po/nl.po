@@ -1,0 +1,114 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the video-trimmer package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: video-trimmer\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-07 13:46+0200\n"
+"PO-Revision-Date: 2020-07-07 13:49+0200\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3.1\n"
+"Last-Translator: Heimen Stoffels <vistausss@outlook.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: nl\n"
+
+#. Translators: fatal error message dialog title.
+#: src/main.rs:21
+msgid "Fatal Error"
+msgstr "Fatale fout"
+
+#. Main window title.
+#: src/main.rs:57 src/window.ui:36 src/window.ui:55
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+msgid "Video Trimmer"
+msgstr "Videotrimmer"
+
+#. Translators: error dialog text.
+#: src/main.rs:93
+msgid "Video Trimmer can only operate on local files."
+msgstr "Videotrimmer kan alleen werken met lokale bestanden."
+
+#. Translators: file chooser dialog title.
+#: src/window.rs:651
+msgid "Open video"
+msgstr "Video openen"
+
+#. Translators: error dialog text when the input file information could
+#. not be retrieved (e.g. there's no such file on disk).
+#: src/window.rs:850
+msgid "Could not get input video information"
+msgstr "De video-informatie kan niet worden opgehaald"
+
+#. Translators: this is the name part of the default filename presented in the save dialog.
+#: src/window.rs:910
+msgid "Trimmed video"
+msgstr "De video is getrimd"
+
+#. Translators: message dialog text.
+#: src/window.rs:946
+msgid "Trimming…"
+msgstr "Bezig met trimmen…"
+
+#. Translators: message dialog text.
+#: src/window.rs:967
+msgid "Done!"
+msgstr "Klaar!"
+
+#. Translators: error dialog text.
+#: src/window.rs:979
+msgid "Error trimming video"
+msgstr "Fout tijdens trimmen"
+
+#. Translators: error dialog text.
+#: src/window.rs:998
+msgid "Could not communicate with the ffmpeg subprocess"
+msgstr "Er kan niet worden gecommuniceerd met het ffmpeg-subproces"
+
+#. Translators: error dialog text.
+#: src/window.rs:1029
+msgid "Could not create the ffmpeg subprocess"
+msgstr "Er kan geen ffmpeg-subproces worden aangemaakt"
+
+#. Video open button label.
+#: src/window.ui:40
+msgid "Open"
+msgstr "Openen"
+
+#. Trim button.
+#: src/window.ui:59
+msgid "Trim"
+msgstr "Trimmen"
+
+#. Label on the initial state.
+#: src/window.ui:111
+msgid "Press the Open button to open a video file."
+msgstr "Klik op 'Openen' om een videobestand te openen."
+
+#. Label for the entry for the end timestamp.
+#: src/window.ui:158
+msgid "End"
+msgstr "Einde"
+
+#. Label for the entry for the start timestamp.
+#: src/window.ui:172
+msgid "Start"
+msgstr "Begin"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+msgid "Trim videos quickly"
+msgstr "Trim snel je video's"
+
+#. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
+msgid "Cut;Movie;Film;Clip;"
+msgstr "Knippen;Film;Video;Clip;"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:8
+msgid "@app_id@"
+msgstr ""
