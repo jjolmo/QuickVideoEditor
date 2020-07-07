@@ -6,6 +6,12 @@ Video Trimmer cuts out a fragment of a video given the start and end timestamps.
 
 ![Screenshot of the window.](/uploads/717fa281218d3649a9d72e46e3ab4e08/image.png)
 
+## Format support
+
+For trimming the `ffmpeg` binary is used and thus the non-Flatpak version depends on the muxers and demuxers available in your system's `ffmpeg`. The Flatpak package contains `ffmpeg` built with `--enable-gpl` muxers and demuxers which should support everything imaginable.
+
+The video preview relies on GStreamer, and therefore your system's or Flatpak GNOME Platform's installed GStreamer plugins.
+
 ## Building
 
 The easiest way is to clone the repository with GNOME Builder and press the Build button.
