@@ -101,6 +101,17 @@ fn main() {
         window.show_all();
     });
 
+    let action = gio::SimpleAction::new("quit", None);
+    action.connect_activate({
+        let app = app.downgrade();
+        move |_, _| {
+            let app = app.upgrade().unwrap();
+            app.quit();
+        }
+    });
+    app.add_action(&action);
+    app.set_accels_for_action("app.quit", &["<Ctrl>q"]);
+
     let ret = app.run(&std::env::args().collect::<Vec<_>>());
     std::process::exit(ret);
 }
