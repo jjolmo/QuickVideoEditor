@@ -957,32 +957,28 @@ fn trim(
                         Ok((_, stderr)) => {
                             trimming_dialog_clone.close();
 
-                            if subprocess_clone.get_if_exited()
+                            let builder = if subprocess_clone.get_if_exited()
                                 && subprocess_clone.get_exit_status() == 0
                             {
-                                let dialog = gtk::MessageDialogBuilder::new()
+                                gtk::MessageDialogBuilder::new()
                                     // Translators: message dialog text.
                                     .text(&gettext("Done!"))
                                     .message_type(gtk::MessageType::Info)
-                                    .buttons(gtk::ButtonsType::Ok)
-                                    .transient_for(&window)
-                                    .modal(true)
-                                    .build();
-                                dialog.connect_response(move |dialog, _| dialog.close());
-                                dialog.show_all();
                             } else {
-                                let dialog = gtk::MessageDialogBuilder::new()
+                                gtk::MessageDialogBuilder::new()
                                     // Translators: error dialog text.
                                     .text(&gettext("Error trimming video"))
                                     .secondary_text(stderr.as_deref().unwrap_or(""))
                                     .message_type(gtk::MessageType::Error)
-                                    .buttons(gtk::ButtonsType::Ok)
-                                    .transient_for(&window)
-                                    .modal(true)
-                                    .build();
-                                dialog.connect_response(move |dialog, _| dialog.close());
-                                dialog.show_all();
-                            }
+                            };
+
+                            let dialog = builder
+                                .buttons(gtk::ButtonsType::Ok)
+                                .transient_for(&window)
+                                .modal(true)
+                                .build();
+                            dialog.connect_response(move |dialog, _| dialog.close());
+                            dialog.show_all();
                         }
                         Err(err) => {
                             trimming_dialog_clone.close();
