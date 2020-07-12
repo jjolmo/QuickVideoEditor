@@ -955,9 +955,7 @@ fn trim(
                 let future = async move {
                     match subprocess_clone.communicate_utf8_async_future(None).await {
                         Ok((_, stderr)) => {
-                            unsafe {
-                                trimming_dialog_clone.destroy();
-                            }
+                            trimming_dialog_clone.close();
 
                             if subprocess_clone.get_if_exited()
                                 && subprocess_clone.get_exit_status() == 0
@@ -968,11 +966,10 @@ fn trim(
                                     .message_type(gtk::MessageType::Info)
                                     .buttons(gtk::ButtonsType::Ok)
                                     .transient_for(&window)
+                                    .modal(true)
                                     .build();
-                                dialog.run();
-                                unsafe {
-                                    dialog.destroy();
-                                }
+                                dialog.connect_response(move |dialog, _| dialog.close());
+                                dialog.show_all();
                             } else {
                                 let dialog = gtk::MessageDialogBuilder::new()
                                     // Translators: error dialog text.
@@ -981,17 +978,14 @@ fn trim(
                                     .message_type(gtk::MessageType::Error)
                                     .buttons(gtk::ButtonsType::Ok)
                                     .transient_for(&window)
+                                    .modal(true)
                                     .build();
-                                dialog.run();
-                                unsafe {
-                                    dialog.destroy();
-                                }
+                                dialog.connect_response(move |dialog, _| dialog.close());
+                                dialog.show_all();
                             }
                         }
                         Err(err) => {
-                            unsafe {
-                                trimming_dialog_clone.destroy();
-                            }
+                            trimming_dialog_clone.close();
 
                             let dialog = gtk::MessageDialogBuilder::new()
                                 // Translators: error dialog text.
@@ -1000,11 +994,10 @@ fn trim(
                                 .message_type(gtk::MessageType::Error)
                                 .buttons(gtk::ButtonsType::Ok)
                                 .transient_for(&window)
+                                .modal(true)
                                 .build();
-                            dialog.run();
-                            unsafe {
-                                dialog.destroy();
-                            }
+                            dialog.connect_response(move |dialog, _| dialog.close());
+                            dialog.show_all();
                         }
                     }
                 };
@@ -1015,9 +1008,7 @@ fn trim(
                     debug!("force exiting the subprocess");
                     subprocess.force_exit();
                     handle.abort();
-                    unsafe {
-                        dialog.destroy();
-                    }
+                    dialog.close();
                 });
                 trimming_dialog.show_all();
 
@@ -1031,12 +1022,10 @@ fn trim(
                     .message_type(gtk::MessageType::Error)
                     .buttons(gtk::ButtonsType::Ok)
                     .transient_for(&window)
+                    .modal(true)
                     .build();
-                dialog.run();
-                unsafe {
-                    dialog.destroy();
-                }
-                return;
+                dialog.connect_response(move |dialog, _| dialog.close());
+                dialog.show_all();
             }
         }
     }
