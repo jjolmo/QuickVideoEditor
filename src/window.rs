@@ -263,7 +263,7 @@ impl VtWindowPrivate {
 
             // Seek asynchronously as it takes longer than desirable.
             pipeline.call_async(move |pipeline| {
-                drop(pipeline.seek_simple(gst::SeekFlags::FLUSH, time).unwrap())
+                pipeline.seek_simple(gst::SeekFlags::FLUSH, time).unwrap()
             });
 
             let start_end = self.start_end.get();
@@ -800,11 +800,9 @@ impl VtWindow {
 
         // Start the playback.
         // Do it asynchronously since it can take a while on a network mount.
-        priv_
-            .pipeline
-            .get()
-            .unwrap()
-            .call_async(|pipeline| drop(pipeline.set_state(gst::State::Playing).unwrap()));
+        priv_.pipeline.get().unwrap().call_async(|pipeline| {
+            pipeline.set_state(gst::State::Playing).unwrap();
+        });
 
         // Focus the entry when coming from the empty state.
         widgets.entry_start.grab_focus();
