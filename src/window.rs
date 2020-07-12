@@ -951,11 +951,9 @@ fn trim(
                 let trimming_dialog_clone = trimming_dialog.clone();
                 let subprocess_clone = subprocess.clone();
                 let future = async move {
-                    match subprocess_clone.communicate_utf8_async_future(None).await {
+                    let builder = match subprocess_clone.communicate_utf8_async_future(None).await {
                         Ok((_, stderr)) => {
-                            trimming_dialog_clone.close();
-
-                            let builder = if subprocess_clone.get_if_exited()
+                            if subprocess_clone.get_if_exited()
                                 && subprocess_clone.get_exit_status() == 0
                             {
                                 gtk::MessageDialogBuilder::new()
@@ -968,32 +966,26 @@ fn trim(
                                     .text(&gettext("Error trimming video"))
                                     .secondary_text(stderr.as_deref().unwrap_or(""))
                                     .message_type(gtk::MessageType::Error)
-                            };
-
-                            let dialog = builder
-                                .buttons(gtk::ButtonsType::Ok)
-                                .transient_for(&window)
-                                .modal(true)
-                                .build();
-                            dialog.connect_response(move |dialog, _| dialog.close());
-                            dialog.show_all();
+                            }
                         }
                         Err(err) => {
-                            trimming_dialog_clone.close();
-
-                            let dialog = gtk::MessageDialogBuilder::new()
+                            gtk::MessageDialogBuilder::new()
                                 // Translators: error dialog text.
                                 .text(&gettext("Could not communicate with the ffmpeg subprocess"))
                                 .secondary_text(&format!("{}", err))
                                 .message_type(gtk::MessageType::Error)
-                                .buttons(gtk::ButtonsType::Ok)
-                                .transient_for(&window)
-                                .modal(true)
-                                .build();
-                            dialog.connect_response(move |dialog, _| dialog.close());
-                            dialog.show_all();
                         }
-                    }
+                    };
+
+                    trimming_dialog_clone.close();
+
+                    let dialog = builder
+                        .buttons(gtk::ButtonsType::Ok)
+                        .transient_for(&window)
+                        .modal(true)
+                        .build();
+                    dialog.connect_response(move |dialog, _| dialog.close());
+                    dialog.show_all();
                 };
                 let (future, handle) = abortable(future);
                 let future = future.map(|_| ());
