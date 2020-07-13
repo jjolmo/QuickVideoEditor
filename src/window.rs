@@ -977,6 +977,8 @@ fn trim(
                         }
                     };
 
+                    // This will invoke the signal handler, but it shouldn't be a big deal since
+                    // the process has already exited and the future has already completed by then.
                     trimming_dialog_clone.close();
 
                     let dialog = builder
