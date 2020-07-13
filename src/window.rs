@@ -985,7 +985,13 @@ fn trim(
                         .modal(true)
                         .build();
                     dialog.connect_response(move |dialog, _| dialog.close());
-                    dialog.show_all();
+
+                    // Has to be in an idle to not block the close() above.
+                    // https://gitlab.gnome.org/GNOME/gtk/-/issues/2926
+                    gtk::idle_add(move || {
+                        dialog.show_all();
+                        Continue(false)
+                    });
                 };
                 let (future, handle) = abortable(future);
                 let future = future.map(|_| ());
