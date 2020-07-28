@@ -802,7 +802,17 @@ impl VtWindow {
         // Start the playback.
         // Do it asynchronously since it can take a while on a network mount.
         priv_.pipeline.get().unwrap().call_async(|pipeline| {
-            pipeline.set_state(gst::State::Playing).unwrap();
+            if let Err(err) = pipeline.set_state(gst::State::Playing) {
+                // This fails for example when the GL dependencies aren't installed for the flatpak
+                // (when installing from Ubuntu 18.04 Software on a clean system, it doesn't
+                // install the dependencies properly).
+
+                g_warning!(
+                    config::LOG_DOMAIN,
+                    "pipeline.set_state(Playing) error: {}",
+                    err
+                );
+            }
         });
 
         // Focus the entry when coming from the empty state.
