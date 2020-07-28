@@ -1,6 +1,4 @@
 #[macro_use]
-extern crate log;
-#[macro_use]
 extern crate glib;
 extern crate gstreamer as gst;
 
@@ -42,8 +40,11 @@ fn main() {
         XInitThreads();
     }
 
-    env_logger::init();
-    info!("Video Trimmer version {}", config::VERSION);
+    g_message!(
+        config::LOG_DOMAIN,
+        "Video Trimmer version {}",
+        config::VERSION
+    );
 
     gst::init().unwrap();
     gtk::init().unwrap_or_else(|_| panic!("Failed to initialize GTK."));
@@ -70,7 +71,8 @@ fn main() {
 
     let file = Rc::new(Cell::new(None));
     app.connect_open(clone!(@weak file => move |app, files, _hint| {
-        debug!(
+        g_debug!(
+            config::LOG_DOMAIN,
             "open: {:?}",
             files
                 .iter()

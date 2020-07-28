@@ -3,3 +3,4 @@ pub static LOCALEDIR: &str = @LOCALEDIR@;
 pub static VERSION: &str = @VERSION@;
 pub static NAME_SUFFIX: &str = @NAME_SUFFIX@;
 pub static APP_ID: &str = @APP_ID@;
+pub static LOG_DOMAIN: &str = @LOG_DOMAIN@;

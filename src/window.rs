@@ -13,7 +13,7 @@ use gst::prelude::*;
 use gtk::{prelude::*, subclass::prelude::*};
 use once_cell::unsync::OnceCell;
 
-use crate::parse;
+use crate::{config, parse};
 
 // Extracted from Totem.
 const VIDEO_MIME_TYPES: &[&str] = &[
@@ -595,7 +595,8 @@ impl ObjectImpl for VtWindowPrivate {
                         priv_.refresh_ui();
                     }
                     MessageView::Error(err) => {
-                        warn!(
+                        g_warning!(
+                            config::LOG_DOMAIN,
                             "Error from {:?}: {} ({:?})",
                             err.get_src().map(|s| s.get_path_string()),
                             err.get_error(),
@@ -683,7 +684,7 @@ impl ObjectImpl for VtWindowPrivate {
 
             if validate_entries(&widgets.entry_start, &widgets.entry_end).is_none() {
                 // This should not happen normally because the button should be disabled.
-                warn!("Trim pressed with invalid timestamps");
+                g_warning!(config::LOG_DOMAIN,"Trim pressed with invalid timestamps");
                 return;
             }
 
@@ -709,7 +710,7 @@ impl ObjectImpl for VtWindowPrivate {
             if input_path.is_none() {
                 // This should not happen normally because if the button is visible then we should
                 // have the input path already.
-                warn!("Trim pressed without input path");
+                g_warning!(config::LOG_DOMAIN,"Trim pressed without input path");
                 return;
             }
 
@@ -836,7 +837,11 @@ impl VtWindow {
                         if let Some(fast_content_type) =
                             info.get_attribute_string("standard::fast-content-type")
                         {
-                            debug!("fast-content-type: {}", fast_content_type);
+                            g_debug!(
+                                config::LOG_DOMAIN,
+                                "fast-content-type: {}",
+                                fast_content_type
+                            );
                             *priv_.content_type.borrow_mut() = Some(fast_content_type);
                         }
                     }
@@ -897,7 +902,7 @@ fn trim(
     start: glib::GString,
     end: glib::GString,
 ) {
-    debug!("trim: from {} to {}", start, end);
+    g_debug!(config::LOG_DOMAIN, "trim: from {} to {}", start, end);
 
     let file_chooser = gtk::FileChooserNativeBuilder::new()
         .transient_for(&window)
@@ -910,7 +915,7 @@ fn trim(
     let response = file_chooser.run();
     if response == gtk::ResponseType::Accept {
         let filename = file_chooser.get_filename().unwrap();
-        debug!("filename: {:?}", filename);
+        g_debug!(config::LOG_DOMAIN, "filename: {:?}", filename);
 
         let mut args: Vec<&OsStr> = [
             "ffmpeg".as_ref(),
@@ -932,7 +937,7 @@ fn trim(
             args.push("+faststart".as_ref());
         }
         args.push(filename.as_ref());
-        debug!("invoking: {:?}", args);
+        g_debug!(config::LOG_DOMAIN, "invoking: {:?}", args);
 
         match gio::Subprocess::newv(
             &args,
@@ -999,7 +1004,7 @@ fn trim(
                 let future = future.map(|_| ());
 
                 trimming_dialog.connect_response(move |dialog, _| {
-                    debug!("force exiting the subprocess");
+                    g_debug!(config::LOG_DOMAIN, "force exiting the subprocess");
                     subprocess.force_exit();
                     handle.abort();
                     dialog.close();
