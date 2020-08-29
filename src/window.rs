@@ -432,7 +432,7 @@ impl ObjectImpl for VtWindowPrivate {
         let builder =
             gtk::Builder::from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
 
-        let video_preview = VtVideoPreview::new();
+        let video_preview = VtVideoPreview::new(&builder);
         self.video_preview.set(video_preview).unwrap();
 
         let stack_main: gtk::Stack = builder.get_object("stack_main").unwrap();
