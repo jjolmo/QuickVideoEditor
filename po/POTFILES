@@ -1,4 +1,5 @@
 src/main.rs
+src/video_preview.rs
 src/window.rs
 src/window.ui
 
