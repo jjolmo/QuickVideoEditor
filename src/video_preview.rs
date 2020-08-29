@@ -590,7 +590,14 @@ impl VtVideoPreviewPrivate {
 
             // Seek asynchronously as it takes longer than desirable.
             imm.pipeline.call_async(move |pipeline| {
-                pipeline.seek_simple(gst::SeekFlags::FLUSH, time).unwrap()
+                if let Err(err) = pipeline.seek_simple(gst::SeekFlags::FLUSH, time) {
+                    // This can fail on .ivf files.
+                    g_warning!(
+                        config::LOG_DOMAIN,
+                        "pipeline.seek_simple() error: {}",
+                        err
+                    );
+                }
             });
 
             let start_end = self.start_end.get();
