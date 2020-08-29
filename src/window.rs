@@ -447,18 +447,12 @@ impl ObjectImpl for VtWindowPrivate {
         let button_play_pause: gtk::Button = builder.get_object("button_play_pause").unwrap();
         let button_play_pause_image: gtk::Image =
             builder.get_object("button_play_pause_image").unwrap();
-        let overlay_timeline: gtk::Overlay = builder.get_object("overlay_timeline").unwrap();
         let event_box_timeline_bg: gtk::EventBox =
             builder.get_object("event_box_timeline_bg").unwrap();
         let box_timeline_bg: gtk::Box = builder.get_object("box_timeline_bg").unwrap();
         let box_timeline_selection: gtk::Box =
             builder.get_object("box_timeline_selection").unwrap();
         let box_timeline_position: gtk::Box = builder.get_object("box_timeline_position").unwrap();
-
-        overlay_timeline.add_overlay(&box_timeline_selection);
-        overlay_timeline.set_overlay_pass_through(&box_timeline_selection, true);
-        overlay_timeline.add_overlay(&box_timeline_position);
-        overlay_timeline.set_overlay_pass_through(&box_timeline_position, true);
 
         // Set up the drag gesture.
         event_box_timeline_bg.set_events(gdk::EventMask::all());

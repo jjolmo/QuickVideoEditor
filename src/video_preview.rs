@@ -1,5 +1,6 @@
 use gdk::prelude::*;
 use glib::{subclass, subclass::prelude::*, translate::*};
+use gtk::prelude::*;
 use once_cell::unsync::OnceCell;
 
 static PROPERTIES: [subclass::Property; 1] = [subclass::Property("builder", |name| {
@@ -57,6 +58,22 @@ impl ObjectImpl for VtVideoPreviewPrivate {
             subclass::Property("builder", ..) => Ok(self.builder.get().unwrap().to_value()),
             _ => unreachable!(),
         }
+    }
+
+    fn constructed(&self, obj: &glib::Object) {
+        self.parent_constructed(obj);
+
+        let builder = self.builder.get().unwrap();
+
+        let overlay_timeline: gtk::Overlay = builder.get_object("overlay_timeline").unwrap();
+        let box_timeline_selection: gtk::Box =
+            builder.get_object("box_timeline_selection").unwrap();
+        let box_timeline_position: gtk::Box = builder.get_object("box_timeline_position").unwrap();
+
+        overlay_timeline.add_overlay(&box_timeline_selection);
+        overlay_timeline.set_overlay_pass_through(&box_timeline_selection, true);
+        overlay_timeline.add_overlay(&box_timeline_position);
+        overlay_timeline.set_overlay_pass_through(&box_timeline_position, true);
     }
 }
 
