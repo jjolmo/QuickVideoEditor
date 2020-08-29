@@ -113,6 +113,7 @@ impl ObjectSubclass for VtVideoPreviewPrivate {
             &[glib::Type::U32, glib::Type::U32],
             glib::Type::Unit,
         );
+        klass.add_signal("error", glib::SignalFlags::RUN_FIRST, &[], glib::Type::Unit);
     }
 }
 
@@ -308,6 +309,8 @@ impl ObjectImpl for VtVideoPreviewPrivate {
                             err.get_error(),
                             err.get_debug()
                         );
+
+                        let _ = self_.emit("error", &[]);
                     }
                     _ => (),
                 };
@@ -380,7 +383,9 @@ impl VtVideoPreviewPrivate {
         let imm = self.immutable.get().unwrap();
 
         imm.pipeline.set_state(gst::State::Null).unwrap();
-        imm.bus.remove_watch().unwrap();
+
+        // This returns Err if called multiple times.
+        let _ = imm.bus.remove_watch();
 
         if let Some(timeout_id) = self.timeout_id.borrow_mut().take() {
             glib::source_remove(timeout_id);
@@ -392,9 +397,11 @@ impl VtVideoPreviewPrivate {
 
         imm.playbin.set_property("uri", uri).unwrap();
 
+        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+
         // Start the playback.
         // Do it asynchronously since it can take a while on a network mount.
-        imm.pipeline.call_async(|pipeline| {
+        imm.pipeline.call_async(move |pipeline| {
             if let Err(err) = pipeline.set_state(gst::State::Playing) {
                 // This fails for example when the GL dependencies aren't installed for the flatpak
                 // (when installing from Ubuntu 18.04 Software on a clean system, it doesn't
@@ -405,6 +412,19 @@ impl VtVideoPreviewPrivate {
                     "pipeline.set_state(Playing) error: {}",
                     err
                 );
+
+                let _ = tx.send(());
+            }
+        });
+
+        rx.attach(None, {
+            let self_ = self.get_instance().downgrade();
+            move |_| {
+                if let Some(self_) = self_.upgrade() {
+                    let _ = self_.emit("error", &[]);
+                }
+
+                glib::Continue(false)
             }
         });
     }

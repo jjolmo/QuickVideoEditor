@@ -72,6 +72,7 @@ struct Widgets {
     button_trim: gtk::Button,
     entry_start: gtk::Entry,
     entry_end: gtk::Entry,
+    stack_video_preview: gtk::Stack,
 }
 
 #[derive(Debug)]
@@ -161,6 +162,15 @@ impl VtWindowPrivate {
             widgets.entry_end.set_text(&text);
         }
     }
+
+    fn on_video_preview_error(&self) {
+        self.video_preview.get().unwrap().destroy();
+        self.widgets
+            .get()
+            .unwrap()
+            .stack_video_preview
+            .set_visible_child_name("page_error");
+    }
 }
 
 impl ObjectSubclass for VtWindowPrivate {
@@ -239,6 +249,19 @@ impl ObjectImpl for VtWindowPrivate {
             })
             .unwrap();
 
+        video_preview
+            .connect_local("error", false, {
+                let self_ = self_.downgrade();
+                move |_| {
+                    let self_ = self_.upgrade().unwrap();
+                    let priv_ = VtWindowPrivate::from_instance(&self_);
+                    priv_.on_video_preview_error();
+
+                    None
+                }
+            })
+            .unwrap();
+
         self.video_preview.set(video_preview).unwrap();
 
         let stack_main: gtk::Stack = builder.get_object("stack_main").unwrap();
@@ -248,6 +271,7 @@ impl ObjectImpl for VtWindowPrivate {
         let button_trim: gtk::Button = builder.get_object("button_trim").unwrap();
         let entry_start: gtk::Entry = builder.get_object("entry_start").unwrap();
         let entry_end: gtk::Entry = builder.get_object("entry_end").unwrap();
+        let stack_video_preview: gtk::Stack = builder.get_object("stack_video_preview").unwrap();
 
         self_.add(&stack_main);
         self_.set_titlebar(Some(&stack_header_bar));
@@ -348,6 +372,7 @@ impl ObjectImpl for VtWindowPrivate {
             button_trim,
             entry_start,
             entry_end,
+            stack_video_preview,
         };
         self.widgets.set(widgets).unwrap();
     }

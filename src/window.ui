@@ -204,97 +204,137 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="box_video_preview">
+          <object class="GtkStack" id="stack_video_preview">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="orientation">vertical</property>
+            <property name="transition_type">over-down-up</property>
             <child>
-              <object class="GtkBox">
+              <object class="GtkBox" id="box_video_preview">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="margin_start">18</property>
-                <property name="margin_end">18</property>
-                <property name="margin_top">12</property>
-                <property name="margin_bottom">12</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkButton" id="button_play_pause">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="margin_end">8</property>
-                    <child>
-                      <object class="GtkImage" id="button_play_pause_image">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="icon_name">media-playback-pause-symbolic</property>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="label_current_time">
+                  <object class="GtkBox">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="margin_end">8</property>
-                    <property name="label">&lt;span font_features="tnum"&gt;0:00&lt;/span&gt;</property>
-                    <property name="use_markup">True</property>
-                    <property name="width_chars">5</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkOverlay" id="overlay_timeline">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="margin_start">18</property>
+                    <property name="margin_end">18</property>
+                    <property name="margin_top">12</property>
+                    <property name="margin_bottom">12</property>
                     <child>
-                      <object class="GtkEventBox" id="event_box_timeline_bg">
+                      <object class="GtkButton" id="button_play_pause">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="margin_end">8</property>
                         <child>
-                          <object class="GtkBox" id="box_timeline_bg">
+                          <object class="GtkImage" id="button_play_pause_image">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <child>
-                              <placeholder/>
-                            </child>
-                            <style>
-                              <class name="vt-timeline-bg"/>
-                              <class name="vt-timeline"/>
-                            </style>
+                            <property name="icon_name">media-playback-pause-symbolic</property>
                           </object>
                         </child>
                       </object>
                       <packing>
-                        <property name="index">-1</property>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="label_current_time">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_end">8</property>
+                        <property name="label">&lt;span font_features="tnum"&gt;0:00&lt;/span&gt;</property>
+                        <property name="use_markup">True</property>
+                        <property name="width_chars">5</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkOverlay" id="overlay_timeline">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <child>
+                          <object class="GtkEventBox" id="event_box_timeline_bg">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkBox" id="box_timeline_bg">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <style>
+                                  <class name="vt-timeline-bg"/>
+                                  <class name="vt-timeline"/>
+                                </style>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="index">-1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="pack_type">end</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
                   <packing>
-                    <property name="expand">True</property>
+                    <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="pack_type">end</property>
-                    <property name="position">2</property>
+                    <property name="position">0</property>
                   </packing>
                 </child>
+                <child>
+                  <placeholder/>
+                </child>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack_type">end</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
-              <placeholder/>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_start">18</property>
+                    <property name="margin_end">18</property>
+                    <property name="margin_top">18</property>
+                    <property name="margin_bottom">18</property>
+                    <property name="label" translatable="yes" comments="Label that is shown upon video preview loading error.">The video preview has failed to load.
+
+Please enter the start and end timestamps manually.</property>
+                    <property name="wrap">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <style>
+                  <class name="background"/>
+                </style>
+              </object>
+              <packing>
+                <property name="name">page_error</property>
+                <property name="position">1</property>
+              </packing>
             </child>
           </object>
           <packing>
