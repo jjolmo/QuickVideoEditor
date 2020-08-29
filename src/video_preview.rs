@@ -44,6 +44,7 @@ struct Immutable {
     gesture_drag: gtk::GestureDrag,
     event_controller_motion: gtk::EventControllerMotion,
     bus: gst::Bus,
+    seek_fail_sender: glib::Sender<()>,
 }
 
 static PROPERTIES: [subclass::Property; 2] = [
@@ -357,6 +358,21 @@ impl ObjectImpl for VtVideoPreviewPrivate {
         })
         .unwrap();
 
+        let (seek_fail_sender, seek_fail_receiver) =
+            glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        seek_fail_receiver.attach(None, {
+            let self_ = self_.downgrade();
+            move |_| {
+                if let Some(self_) = self_.upgrade() {
+                    let priv_ = VtVideoPreviewPrivate::from_instance(&self_);
+                    priv_.seeking.set(false);
+                    priv_.refresh_ui();
+                }
+
+                glib::Continue(true)
+            }
+        });
+
         self.immutable
             .set(Immutable {
                 label_current_time,
@@ -368,6 +384,7 @@ impl ObjectImpl for VtVideoPreviewPrivate {
                 gesture_drag,
                 event_controller_motion,
                 bus,
+                seek_fail_sender,
             })
             .unwrap();
     }
@@ -589,14 +606,15 @@ impl VtVideoPreviewPrivate {
             self.seeking.set(true);
 
             // Seek asynchronously as it takes longer than desirable.
-            imm.pipeline.call_async(move |pipeline| {
-                if let Err(err) = pipeline.seek_simple(gst::SeekFlags::FLUSH, time) {
-                    // This can fail on .ivf files.
-                    g_warning!(
-                        config::LOG_DOMAIN,
-                        "pipeline.seek_simple() error: {}",
-                        err
-                    );
+            imm.pipeline.call_async({
+                let seek_fail_sender = imm.seek_fail_sender.clone();
+                move |pipeline| {
+                    if let Err(err) = pipeline.seek_simple(gst::SeekFlags::FLUSH, time) {
+                        // This can fail on .ivf files.
+                        g_warning!(config::LOG_DOMAIN, "pipeline.seek_simple() error: {}", err);
+
+                        let _ = seek_fail_sender.send(());
+                    }
                 }
             });
 
