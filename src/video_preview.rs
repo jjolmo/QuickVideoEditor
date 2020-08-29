@@ -39,7 +39,8 @@ struct Immutable {
     box_timeline_selection: gtk::Box,
     box_timeline_position: gtk::Box,
     pipeline: gst::Pipeline,
-    playbin: gst::Element,
+    // If there's an error creating one of the GStreamer elements, this will be set to None.
+    playbin: Option<gst::Element>,
     gesture_drag: gtk::GestureDrag,
     event_controller_motion: gtk::EventControllerMotion,
     bus: gst::Bus,
@@ -197,25 +198,61 @@ impl ObjectImpl for VtVideoPreviewPrivate {
         });
 
         // Create the GStreamer objects.
-        let gtkglsink = gst::ElementFactory::make("gtkglsink", None).expect("TODO");
-        let glsinkbin = gst::ElementFactory::make("glsinkbin", None).unwrap();
-        glsinkbin
-            .set_property("sink", &gtkglsink.to_value())
-            .unwrap();
-        let widget = gtkglsink
-            .get_property("widget")
-            .unwrap()
-            .get::<gtk::Widget>()
-            .unwrap()
-            .unwrap();
-
-        let playbin = gst::ElementFactory::make("playbin3", None).unwrap();
-        playbin
-            .set_property("video-sink", &glsinkbin.to_value())
-            .unwrap();
-
         let pipeline = gst::Pipeline::new(None);
-        pipeline.add(&playbin).unwrap();
+
+        let gtkglsink = gst::ElementFactory::make("gtkglsink", None);
+        let glsinkbin = gst::ElementFactory::make("glsinkbin", None);
+        let playbin = gst::ElementFactory::make("playbin3", None);
+
+        // The creation can fail if the corresponding GStreamer plugins aren't installed.
+        if let Err(ref err) = gtkglsink {
+            g_warning!(config::LOG_DOMAIN, "Error making gtkglsink: {}", err);
+        }
+        if let Err(ref err) = glsinkbin {
+            g_warning!(config::LOG_DOMAIN, "Error making glsinkbin: {}", err);
+        }
+        if let Err(ref err) = playbin {
+            g_warning!(config::LOG_DOMAIN, "Error making playbin3: {}", err);
+        }
+
+        let playbin = match (gtkglsink, glsinkbin, playbin) {
+            (Ok(gtkglsink), Ok(glsinkbin), Ok(playbin)) => {
+                glsinkbin
+                    .set_property("sink", &gtkglsink.to_value())
+                    .unwrap();
+
+                playbin
+                    .set_property("video-sink", &glsinkbin.to_value())
+                    .unwrap();
+
+                pipeline.add(&playbin).unwrap();
+
+                // Add the video widget to the UI.
+                let widget = gtkglsink
+                    .get_property("widget")
+                    .unwrap()
+                    .get::<gtk::Widget>()
+                    .unwrap()
+                    .unwrap();
+
+                box_video_preview.pack_start(&widget, true, true, 0);
+
+                Some(playbin)
+            }
+            _ => {
+                // Emit an error on the next good occasion.
+                glib::idle_add_local({
+                    let self_ = self_.downgrade();
+                    move || {
+                        let self_ = self_.upgrade().unwrap();
+                        self_.emit("error", &[]).unwrap();
+                        glib::Continue(false)
+                    }
+                });
+
+                None
+            }
+        };
 
         // Connect the timeline resize.
         box_timeline_bg.connect_size_allocate({
@@ -320,9 +357,6 @@ impl ObjectImpl for VtVideoPreviewPrivate {
         })
         .unwrap();
 
-        // Add the video widget to the UI.
-        box_video_preview.pack_start(&widget, true, true, 0);
-
         self.immutable
             .set(Immutable {
                 label_current_time,
@@ -395,7 +429,15 @@ impl VtVideoPreviewPrivate {
     pub fn open(&self, uri: &glib::GString) {
         let imm = self.immutable.get().unwrap();
 
-        imm.playbin.set_property("uri", uri).unwrap();
+        let playbin = match imm.playbin.as_ref() {
+            Some(playbin) => playbin,
+            None => {
+                // There was an error creating the GStreamer elements.
+                return;
+            }
+        };
+
+        playbin.set_property("uri", uri).unwrap();
 
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
         rx.attach(None, {
