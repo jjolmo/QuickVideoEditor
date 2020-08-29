@@ -1,5 +1,5 @@
 use std::{
-    cell::{Cell, RefCell},
+    cell::RefCell,
     ffi::OsStr,
     path::{Path, PathBuf},
 };
@@ -9,7 +9,6 @@ use gdk::prelude::*;
 use gettextrs::*;
 use gio::prelude::*;
 use glib::{subclass, subclass::prelude::*, translate::*};
-use gst::prelude::*;
 use gtk::{prelude::*, subclass::prelude::*};
 use once_cell::unsync::OnceCell;
 
@@ -64,30 +63,6 @@ const VIDEO_MIME_TYPES: &[&str] = &[
     "video/x-totem-stream",
 ];
 
-const TOLERANCE: f64 = 5.;
-
-#[derive(Debug, Clone, Copy, Eq, PartialEq)]
-enum DragType {
-    Playback,
-    Start,
-    End,
-}
-
-#[derive(Debug, Clone, Copy, Eq, PartialEq)]
-enum CursorType {
-    Normal,
-    StartEnd,
-}
-
-impl CursorType {
-    fn gtk_cursor_name(self) -> &'static str {
-        match self {
-            CursorType::Normal => "default",
-            CursorType::StartEnd => "col-resize",
-        }
-    }
-}
-
 #[derive(Debug)]
 struct Widgets {
     header_bar: gtk::HeaderBar,
@@ -97,10 +72,6 @@ struct Widgets {
     button_trim: gtk::Button,
     entry_start: gtk::Entry,
     entry_end: gtk::Entry,
-    label_current_time: gtk::Label,
-    box_timeline_bg: gtk::Box,
-    box_timeline_selection: gtk::Box,
-    box_timeline_position: gtk::Box,
 }
 
 #[derive(Debug)]
@@ -109,20 +80,9 @@ pub struct VtWindowPrivate {
     content_type: RefCell<Option<glib::GString>>,
     input_path: RefCell<Option<PathBuf>>,
     video_preview: OnceCell<VtVideoPreview>,
-    pipeline: OnceCell<gst::Pipeline>,
-    playbin: OnceCell<gst::Element>,
-    pipeline_playing: Cell<bool>,
-    start_end: Cell<Option<(u32, u32)>>,
-    gesture_drag: OnceCell<gtk::GestureDrag>,
-    drag_start: Cell<f64>,
-    drag_type: Cell<DragType>,
-    event_controller_motion: OnceCell<gtk::EventControllerMotion>,
-    cursor_type: Cell<CursorType>,
-    received_duration: Cell<bool>,
-    seeking: Cell<bool>,
 }
 
-fn time_to_entry_text(time: gst::ClockTime) -> String {
+pub fn time_to_entry_text(time: gst::ClockTime) -> String {
     let nanoseconds = time.nanoseconds().unwrap();
     let mut seconds = nanoseconds / 1_000_000_000;
     let mut minutes = seconds / 60;
@@ -140,228 +100,18 @@ fn time_to_entry_text(time: gst::ClockTime) -> String {
 }
 
 impl VtWindowPrivate {
-    fn refresh_ui(&self) {
-        let pipeline = self.pipeline.get().unwrap();
-        let widgets = self.widgets.get().unwrap();
-
-        if let Some(position) = pipeline.query_position::<gst::ClockTime>() {
-            let nanoseconds = position.nanoseconds().unwrap();
-            let mut seconds = nanoseconds / 1_000_000_000;
-            let mut minutes = seconds / 60;
-            let hours = minutes / 60;
-            seconds %= 60;
-            minutes %= 60;
-
-            let time = if hours == 0 {
-                format!("{}:{:02}", minutes, seconds)
-            } else {
-                format!("{}:{:02}:{:02}", hours, minutes, seconds)
-            };
-
-            widgets
-                .label_current_time
-                .set_markup(&format!("<span font_features=\"tnum\">{}</span>", time));
-
-            if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
-                self.on_got_duration(duration);
-
-                // Don't modify the position during seeking as it's out of date.
-                if !self.seeking.get() {
-                    let value = position.nanoseconds().unwrap() as f64
-                        / duration.nanoseconds().unwrap() as f64;
-
-                    let width = widgets.box_timeline_bg.get_allocated_width();
-                    let margin_start = (value * width as f64).round() as i32;
-                    widgets.box_timeline_position.set_margin_start(margin_start);
-                }
-            }
-        }
-    }
-
-    fn refresh_timeline(&self) {
-        let pipeline = self.pipeline.get().unwrap();
-        let widgets = self.widgets.get().unwrap();
-
-        let start_end = self.start_end.get();
-        let duration = pipeline.query_duration::<gst::ClockTime>();
-
-        if start_end.is_none() || duration.is_none() {
-            widgets.box_timeline_selection.set_opacity(0.);
-            return;
-        }
-
-        widgets.box_timeline_selection.set_opacity(1.);
-        let (start, end) = start_end.unwrap();
-        let duration = duration.unwrap();
-
-        let duration = duration.mseconds().unwrap() as f64;
-        let start = (start as f64 / duration).min(1.).max(0.);
-        let end = (end as f64 / duration).min(1.).max(0.);
-
-        let width = widgets.box_timeline_bg.get_allocated_width();
-        let margin_start = (start * width as f64).round() as i32;
-        let margin_end = ((1. - end) * width as f64).round() as i32;
-        widgets
-            .box_timeline_selection
-            .set_margin_start(margin_start);
-        widgets.box_timeline_selection.set_margin_end(margin_end);
-    }
-
     fn on_entry_changed(&self) {
         let widgets = self.widgets.get().unwrap();
+        let video_preview = self.video_preview.get().unwrap();
 
         let start_end = validate_entries(&widgets.entry_start, &widgets.entry_end);
-        self.start_end.set(start_end);
+        video_preview.set_start_end(start_end);
+        video_preview.refresh_timeline();
 
         widgets.button_trim.set_sensitive(start_end.is_some());
-
-        self.refresh_timeline();
-    }
-
-    fn on_timeline_drag_start(&self, x: f64, _y: f64) {
-        self.drag_start.set(x);
-        self.drag_type.set(DragType::Playback);
-
-        if self.start_end.get().is_some() {
-            let widgets = self.widgets.get().unwrap();
-            let width = widgets.box_timeline_bg.get_allocated_width() as f64;
-            let start = widgets.box_timeline_selection.get_margin_start() as f64;
-            let end = width - widgets.box_timeline_selection.get_margin_end() as f64;
-
-            if (x - end).abs() <= TOLERANCE {
-                self.drag_type.set(DragType::End);
-                self.drag_start.set(end);
-            } else if (x - start).abs() <= TOLERANCE {
-                self.drag_type.set(DragType::Start);
-                self.drag_start.set(start);
-            }
-        }
-
-        self.on_timeline_drag_update(0., 0.);
-    }
-
-    fn on_timeline_drag_update(&self, offset_x: f64, _offset_y: f64) {
-        let widgets = self.widgets.get().unwrap();
-        let pipeline = self.pipeline.get().unwrap();
-
-        let x = self.drag_start.get() + offset_x;
-        let width = widgets.box_timeline_bg.get_allocated_width() as f64;
-
-        // Sanitize (this can get weird values when resizing the window while dragging).
-        let x = x.min(width).max(0.);
-        let value = x / width;
-
-        let position_width = widgets.box_timeline_position.get_allocated_width() as f64;
-        widgets
-            .box_timeline_position
-            .set_margin_start(x.min(width - position_width) as i32);
-
-        if let Some(duration) = pipeline.query_duration::<gst::ClockTime>() {
-            let time = duration.nanoseconds().unwrap() as f64 * value;
-            let time = gst::ClockTime::from_nseconds(time as u64);
-
-            self.seeking.set(true);
-
-            // Seek asynchronously as it takes longer than desirable.
-            pipeline.call_async(move |pipeline| {
-                pipeline.seek_simple(gst::SeekFlags::FLUSH, time).unwrap()
-            });
-
-            let start_end = self.start_end.get();
-            if start_end.is_none() {
-                return;
-            }
-
-            let (start, end) = start_end.unwrap();
-            let start = gst::ClockTime::from_mseconds(start as u64);
-            let end = gst::ClockTime::from_mseconds(end as u64);
-
-            match self.drag_type.get() {
-                DragType::Start => {
-                    let text = time_to_entry_text(time);
-
-                    if gst::ClockTime::from_mseconds(parse::timestamp(&text).unwrap() as u64) == end
-                    {
-                        // Don't set the text if the timestamps will match as that counts as an
-                        // invalid region.
-                        return;
-                    }
-
-                    if time <= end {
-                        widgets.entry_start.set_text(&text);
-                    } else {
-                        widgets.entry_start.set_text(&widgets.entry_end.get_text());
-                        widgets.entry_end.set_text(&text);
-                        self.drag_type.set(DragType::End);
-                    }
-                }
-                DragType::End => {
-                    let text = time_to_entry_text(time);
-
-                    if gst::ClockTime::from_mseconds(parse::timestamp(&text).unwrap() as u64)
-                        == start
-                    {
-                        // Don't set the text if the timestamps will match as that counts as an
-                        // invalid region.
-                        return;
-                    }
-
-                    if time >= start {
-                        widgets.entry_end.set_text(&text);
-                    } else {
-                        widgets.entry_end.set_text(&widgets.entry_start.get_text());
-                        widgets.entry_start.set_text(&text);
-                        self.drag_type.set(DragType::Start);
-                    }
-                }
-                _ => (),
-            }
-        }
-    }
-
-    fn on_timeline_motion(&self, x: f64, _y: f64) {
-        // Don't change the cursor while in drag.
-        if self.gesture_drag.get().unwrap().is_active() {
-            return;
-        }
-
-        let widgets = self.widgets.get().unwrap();
-
-        let resizing_cursor = if self.start_end.get().is_some() {
-            let width = widgets.box_timeline_bg.get_allocated_width() as f64;
-            let start = widgets.box_timeline_selection.get_margin_start() as f64;
-            let end = width - widgets.box_timeline_selection.get_margin_end() as f64;
-
-            (x - end).abs() <= TOLERANCE || (x - start).abs() <= TOLERANCE
-        } else {
-            false
-        };
-
-        let cursor_type = if resizing_cursor {
-            CursorType::StartEnd
-        } else {
-            CursorType::Normal
-        };
-
-        if self.cursor_type.get() != cursor_type {
-            let display = widgets.box_timeline_bg.get_display();
-            let cursor = gdk::Cursor::from_name(&display, cursor_type.gtk_cursor_name()).unwrap();
-            widgets
-                .box_timeline_bg
-                .get_window()
-                .unwrap()
-                .set_cursor(Some(&cursor));
-            self.cursor_type.set(cursor_type);
-        }
     }
 
     fn on_got_duration(&self, duration: gst::ClockTime) {
-        if self.received_duration.get() {
-            return;
-        }
-
-        self.received_duration.set(true);
-
         let widgets = self.widgets.get().unwrap();
 
         // If the user hasn't started typing in the timestamp entries, fill them with default
@@ -391,6 +141,26 @@ impl VtWindowPrivate {
             widgets.entry_end.select_region(0, -1);
         }
     }
+
+    fn on_set_start_end(&self, start: gst::ClockTime, end: gst::ClockTime) {
+        let widgets = self.widgets.get().unwrap();
+
+        let text = time_to_entry_text(start);
+        if parse::timestamp(&widgets.entry_start.get_text())
+            .map(|x| x != parse::timestamp(&text).unwrap())
+            .unwrap_or(true)
+        {
+            widgets.entry_start.set_text(&text);
+        }
+
+        let text = time_to_entry_text(end);
+        if parse::timestamp(&widgets.entry_end.get_text())
+            .map(|x| x != parse::timestamp(&text).unwrap())
+            .unwrap_or(true)
+        {
+            widgets.entry_end.set_text(&text);
+        }
+    }
 }
 
 impl ObjectSubclass for VtWindowPrivate {
@@ -407,17 +177,6 @@ impl ObjectSubclass for VtWindowPrivate {
             content_type: RefCell::new(None),
             input_path: RefCell::new(None),
             video_preview: OnceCell::new(),
-            pipeline: OnceCell::new(),
-            playbin: OnceCell::new(),
-            pipeline_playing: Cell::new(false),
-            start_end: Cell::new(None),
-            gesture_drag: OnceCell::new(),
-            drag_start: Cell::new(0.),
-            drag_type: Cell::new(DragType::Playback),
-            event_controller_motion: OnceCell::new(),
-            cursor_type: Cell::new(CursorType::Normal),
-            received_duration: Cell::new(false),
-            seeking: Cell::new(false),
         }
     }
 }
@@ -433,6 +192,53 @@ impl ObjectImpl for VtWindowPrivate {
             gtk::Builder::from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
 
         let video_preview = VtVideoPreview::new(&builder);
+
+        video_preview
+            .connect_local("notify::duration", false, {
+                let self_ = self_.downgrade();
+                let video_preview = video_preview.downgrade();
+                move |_| {
+                    let value = video_preview
+                        .upgrade()
+                        .unwrap()
+                        .get_property("duration")
+                        .unwrap()
+                        .get()
+                        .unwrap()
+                        .unwrap();
+                    let duration = gst::ClockTime::from_glib(value);
+                    if duration.is_none() {
+                        return None;
+                    }
+
+                    let self_ = self_.upgrade().unwrap();
+                    let priv_ = VtWindowPrivate::from_instance(&self_);
+                    priv_.on_got_duration(duration);
+
+                    None
+                }
+            })
+            .unwrap();
+
+        video_preview
+            .connect_local("set-start-end", false, {
+                let self_ = self_.downgrade();
+                move |args| {
+                    let mut args = args.into_iter().skip(1).map(|x| {
+                        gst::ClockTime::from_mseconds(x.get::<u32>().unwrap().unwrap().into())
+                    });
+                    let start = args.next().unwrap();
+                    let end = args.next().unwrap();
+
+                    let self_ = self_.upgrade().unwrap();
+                    let priv_ = VtWindowPrivate::from_instance(&self_);
+                    priv_.on_set_start_end(start, end);
+
+                    None
+                }
+            })
+            .unwrap();
+
         self.video_preview.set(video_preview).unwrap();
 
         let stack_main: gtk::Stack = builder.get_object("stack_main").unwrap();
@@ -442,197 +248,6 @@ impl ObjectImpl for VtWindowPrivate {
         let button_trim: gtk::Button = builder.get_object("button_trim").unwrap();
         let entry_start: gtk::Entry = builder.get_object("entry_start").unwrap();
         let entry_end: gtk::Entry = builder.get_object("entry_end").unwrap();
-        let box_main: gtk::Box = builder.get_object("box_main").unwrap();
-        let label_current_time: gtk::Label = builder.get_object("label_current_time").unwrap();
-        let button_play_pause: gtk::Button = builder.get_object("button_play_pause").unwrap();
-        let button_play_pause_image: gtk::Image =
-            builder.get_object("button_play_pause_image").unwrap();
-        let event_box_timeline_bg: gtk::EventBox =
-            builder.get_object("event_box_timeline_bg").unwrap();
-        let box_timeline_bg: gtk::Box = builder.get_object("box_timeline_bg").unwrap();
-        let box_timeline_selection: gtk::Box =
-            builder.get_object("box_timeline_selection").unwrap();
-        let box_timeline_position: gtk::Box = builder.get_object("box_timeline_position").unwrap();
-
-        // Set up the drag gesture.
-        event_box_timeline_bg.set_events(gdk::EventMask::all());
-
-        let gesture_drag = gtk::GestureDrag::new(&event_box_timeline_bg);
-        gesture_drag.connect_drag_begin({
-            let self_ = self_.downgrade();
-            move |_, x, y| {
-                let self_ = self_.upgrade().unwrap();
-                let priv_ = VtWindowPrivate::from_instance(&self_);
-                priv_.on_timeline_drag_start(x, y);
-            }
-        });
-        gesture_drag.connect_drag_update({
-            let self_ = self_.downgrade();
-            move |_, offset_x, offset_y| {
-                let self_ = self_.upgrade().unwrap();
-                let priv_ = VtWindowPrivate::from_instance(&self_);
-                priv_.on_timeline_drag_update(offset_x, offset_y);
-            }
-        });
-        self.gesture_drag.set(gesture_drag).unwrap();
-
-        let event_controller_motion = gtk::EventControllerMotion::new(&event_box_timeline_bg);
-        event_controller_motion.connect_motion({
-            let self_ = self_.downgrade();
-            move |_, x, y| {
-                let self_ = self_.upgrade().unwrap();
-                let priv_ = VtWindowPrivate::from_instance(&self_);
-                priv_.on_timeline_motion(x, y);
-            }
-        });
-        self.event_controller_motion
-            .set(event_controller_motion)
-            .unwrap();
-
-        // Create the GStreamer objects.
-        let gtkglsink = gst::ElementFactory::make("gtkglsink", None).expect("TODO");
-        let glsinkbin = gst::ElementFactory::make("glsinkbin", None).unwrap();
-        glsinkbin
-            .set_property("sink", &gtkglsink.to_value())
-            .unwrap();
-        let widget = gtkglsink
-            .get_property("widget")
-            .unwrap()
-            .get::<gtk::Widget>()
-            .unwrap()
-            .unwrap();
-
-        let playbin = gst::ElementFactory::make("playbin3", None).unwrap();
-        playbin
-            .set_property("video-sink", &glsinkbin.to_value())
-            .unwrap();
-
-        let pipeline = gst::Pipeline::new(None);
-        pipeline.add(&playbin).unwrap();
-        self.playbin.set(playbin).unwrap();
-
-        // Connect the timeline resize.
-        box_timeline_bg.connect_size_allocate({
-            let self_ = self_.downgrade();
-            move |_, _| {
-                let self_ = self_.upgrade().unwrap();
-                let priv_ = VtWindowPrivate::from_instance(&self_);
-                priv_.refresh_timeline();
-                priv_.refresh_ui();
-            }
-        });
-
-        // Connect the play-pause button.
-        button_play_pause.connect_clicked({
-            let self_ = self_.downgrade();
-            move |_| {
-                let self_ = self_.upgrade().unwrap();
-                let priv_ = VtWindowPrivate::from_instance(&self_);
-                priv_
-                    .pipeline
-                    .get()
-                    .unwrap()
-                    .set_state(if priv_.pipeline_playing.get() {
-                        gst::State::Paused
-                    } else {
-                        gst::State::Playing
-                    })
-                    .unwrap();
-            }
-        });
-
-        // Refresh the time label and seek slider position on a timer.
-        let timeout_id = gtk::timeout_add(100, {
-            let self_ = self_.downgrade();
-            move || {
-                if let Some(self_) = self_.upgrade() {
-                    let priv_ = VtWindowPrivate::from_instance(&self_);
-                    priv_.refresh_ui();
-                    glib::Continue(true)
-                } else {
-                    glib::Continue(false)
-                }
-            }
-        });
-
-        // Handle GStreamer messages.
-        let bus = pipeline.get_bus().unwrap();
-        bus.add_watch_local({
-            let self_ = self_.downgrade();
-            move |_, msg| {
-                let self_ = if let Some(self_) = self_.upgrade() {
-                    self_
-                } else {
-                    return glib::Continue(false);
-                };
-                let priv_ = VtWindowPrivate::from_instance(&self_);
-
-                use gst::MessageView;
-                match msg.view() {
-                    MessageView::Eos(_) => {
-                        button_play_pause_image
-                            .set_property_icon_name(Some("media-playback-start-symbolic"));
-
-                        priv_.refresh_ui();
-                    }
-                    MessageView::StateChanged(state_changed) => {
-                        if state_changed.get_current() == gst::State::Playing {
-                            priv_.pipeline_playing.set(true);
-                            button_play_pause_image
-                                .set_property_icon_name(Some("media-playback-pause-symbolic"));
-                        } else {
-                            priv_.pipeline_playing.set(false);
-                            button_play_pause_image
-                                .set_property_icon_name(Some("media-playback-start-symbolic"));
-                        }
-
-                        priv_.refresh_ui();
-                    }
-                    MessageView::AsyncDone(_) => {
-                        // The seek has finished.
-                        priv_.seeking.set(false);
-                        priv_.refresh_ui();
-                    }
-                    MessageView::Error(err) => {
-                        g_warning!(
-                            config::LOG_DOMAIN,
-                            "Error from {:?}: {} ({:?})",
-                            err.get_src().map(|s| s.get_path_string()),
-                            err.get_error(),
-                            err.get_debug()
-                        );
-                    }
-                    _ => (),
-                };
-
-                glib::Continue(true)
-            }
-        })
-        .unwrap();
-
-        // Clean up upon window closing.
-        let timeout_id = RefCell::new(Some(timeout_id));
-        self_.connect_destroy(move |self_| {
-            let self_ = self_.clone().downcast::<VtWindow>().unwrap();
-            let priv_ = VtWindowPrivate::from_instance(&self_);
-
-            priv_
-                .pipeline
-                .get()
-                .unwrap()
-                .set_state(gst::State::Null)
-                .unwrap();
-
-            bus.remove_watch().unwrap();
-            if let Some(timeout_id) = timeout_id.borrow_mut().take() {
-                glib::source_remove(timeout_id);
-            }
-        });
-
-        self.pipeline.set(pipeline).unwrap();
-
-        // Add the video widget to the UI.
-        box_main.pack_start(&widget, true, true, 0);
 
         self_.add(&stack_main);
         self_.set_titlebar(Some(&stack_header_bar));
@@ -718,6 +333,13 @@ impl ObjectImpl for VtWindowPrivate {
             trim(self_.clone(), input_path, extension, start, end);
         }));
 
+        // Clean up upon window closing.
+        self_.connect_destroy(move |self_| {
+            let self_ = self_.clone().downcast::<VtWindow>().unwrap();
+            let priv_ = VtWindowPrivate::from_instance(&self_);
+            priv_.video_preview.get().unwrap().destroy();
+        });
+
         let widgets = Widgets {
             header_bar,
             stack_main,
@@ -726,10 +348,6 @@ impl ObjectImpl for VtWindowPrivate {
             button_trim,
             entry_start,
             entry_end,
-            label_current_time,
-            box_timeline_bg,
-            box_timeline_selection,
-            box_timeline_position,
         };
         self.widgets.set(widgets).unwrap();
     }
@@ -791,28 +409,7 @@ impl VtWindow {
         widgets.stack_main.set_visible_child_name("page_main");
         widgets.stack_header_bar.set_visible_child_name("page_main");
 
-        priv_
-            .playbin
-            .get()
-            .unwrap()
-            .set_property("uri", &file.get_uri())
-            .unwrap();
-
-        // Start the playback.
-        // Do it asynchronously since it can take a while on a network mount.
-        priv_.pipeline.get().unwrap().call_async(|pipeline| {
-            if let Err(err) = pipeline.set_state(gst::State::Playing) {
-                // This fails for example when the GL dependencies aren't installed for the flatpak
-                // (when installing from Ubuntu 18.04 Software on a clean system, it doesn't
-                // install the dependencies properly).
-
-                g_warning!(
-                    config::LOG_DOMAIN,
-                    "pipeline.set_state(Playing) error: {}",
-                    err
-                );
-            }
-        });
+        priv_.video_preview.get().unwrap().open(&file.get_uri());
 
         // Focus the entry when coming from the empty state.
         widgets.entry_start.grab_focus();
