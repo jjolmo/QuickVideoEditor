@@ -10,6 +10,7 @@ use gtk::prelude::*;
 
 mod config;
 mod parse;
+mod video_preview;
 mod window;
 use crate::window::VtWindow;
 

@@ -34,6 +34,7 @@ sources = files(
   'config.rs',
   'main.rs',
   'parse.rs',
+  'video_preview.rs',
   'window.rs',
 )
 

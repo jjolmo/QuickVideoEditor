@@ -13,7 +13,7 @@ use gst::prelude::*;
 use gtk::{prelude::*, subclass::prelude::*};
 use once_cell::unsync::OnceCell;
 
-use crate::{config, parse};
+use crate::{config, parse, video_preview::VtVideoPreview};
 
 // Extracted from Totem.
 const VIDEO_MIME_TYPES: &[&str] = &[
@@ -108,6 +108,7 @@ pub struct VtWindowPrivate {
     widgets: OnceCell<Widgets>,
     content_type: RefCell<Option<glib::GString>>,
     input_path: RefCell<Option<PathBuf>>,
+    video_preview: OnceCell<VtVideoPreview>,
     pipeline: OnceCell<gst::Pipeline>,
     playbin: OnceCell<gst::Element>,
     pipeline_playing: Cell<bool>,
@@ -405,6 +406,7 @@ impl ObjectSubclass for VtWindowPrivate {
             widgets: OnceCell::new(),
             content_type: RefCell::new(None),
             input_path: RefCell::new(None),
+            video_preview: OnceCell::new(),
             pipeline: OnceCell::new(),
             playbin: OnceCell::new(),
             pipeline_playing: Cell::new(false),
@@ -429,6 +431,9 @@ impl ObjectImpl for VtWindowPrivate {
 
         let builder =
             gtk::Builder::from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
+
+        let video_preview = VtVideoPreview::new();
+        self.video_preview.set(video_preview).unwrap();
 
         let stack_main: gtk::Stack = builder.get_object("stack_main").unwrap();
         let stack_header_bar: gtk::Stack = builder.get_object("stack_header_bar").unwrap();
