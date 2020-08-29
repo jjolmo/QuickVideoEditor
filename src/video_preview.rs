@@ -398,6 +398,16 @@ impl VtVideoPreviewPrivate {
         imm.playbin.set_property("uri", uri).unwrap();
 
         let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
+        rx.attach(None, {
+            let self_ = self.get_instance().downgrade();
+            move |_| {
+                if let Some(self_) = self_.upgrade() {
+                    let _ = self_.emit("error", &[]);
+                }
+
+                glib::Continue(false)
+            }
+        });
 
         // Start the playback.
         // Do it asynchronously since it can take a while on a network mount.
@@ -414,17 +424,6 @@ impl VtVideoPreviewPrivate {
                 );
 
                 let _ = tx.send(());
-            }
-        });
-
-        rx.attach(None, {
-            let self_ = self.get_instance().downgrade();
-            move |_| {
-                if let Some(self_) = self_.upgrade() {
-                    let _ = self_.emit("error", &[]);
-                }
-
-                glib::Continue(false)
             }
         });
     }
