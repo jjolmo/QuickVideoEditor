@@ -146,7 +146,7 @@ impl ObjectImpl for VtVideoPreviewPrivate {
 
         let builder = self.builder.get().unwrap();
 
-        let box_main: gtk::Box = builder.get_object("box_main").unwrap();
+        let box_video_preview: gtk::Box = builder.get_object("box_video_preview").unwrap();
         let label_current_time: gtk::Label = builder.get_object("label_current_time").unwrap();
         let button_play_pause: gtk::Button = builder.get_object("button_play_pause").unwrap();
         let button_play_pause_image: gtk::Image =
@@ -318,7 +318,7 @@ impl ObjectImpl for VtVideoPreviewPrivate {
         .unwrap();
 
         // Add the video widget to the UI.
-        box_main.pack_start(&widget, true, true, 0);
+        box_video_preview.pack_start(&widget, true, true, 0);
 
         self.immutable
             .set(Immutable {
