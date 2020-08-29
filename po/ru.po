@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-trimmer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-29 16:16+0300\n"
-"PO-Revision-Date: 2020-08-29 16:23+0300\n"
+"POT-Creation-Date: 2020-08-29 17:15+0300\n"
+"PO-Revision-Date: 2020-08-29 17:17+0300\n"
 "Last-Translator: Ivan Molodetskikh <yalterz@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -180,7 +180,12 @@ msgstr ""
 "Исправлено аварийное завершение при отсутствии необходимых подключаемых "
 "модулей GStreamer."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:42
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
+msgid "Fixed a crash on failing to change the playback position."
+msgstr ""
+"Исправлено аварийное завершение при ошибке изменения позиции воспроизведения."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:43
 msgid ""
 "This release adds a video preview and a timeline where the target region can "
 "be adjusted using the mouse."
@@ -188,6 +193,6 @@ msgstr ""
 "В этой версии добавлен предпросмотр видео и панель, на которой область "
 "обрезки можно откорректировать при помощи мыши."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:47
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:48
 msgid "First release."
 msgstr "Первая версия."

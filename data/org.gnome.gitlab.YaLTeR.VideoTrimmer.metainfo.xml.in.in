@@ -34,6 +34,7 @@
 					<li>Made video preview display an error message when it fails to load.</li>
 					<li>Fixed a crash when the GL runtime is not installed (e.g. when installing the Flathub package on clean Ubuntu 18.04 through Ubuntu Software).</li>
 					<li>Fixed a crash when required GStreamer plugins are not installed.</li>
+					<li>Fixed a crash on failing to change the playback position.</li>
 				</ul>
 			</description>
 		</release>
