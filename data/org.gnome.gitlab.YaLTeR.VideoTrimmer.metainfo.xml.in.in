@@ -25,6 +25,18 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.3.0" date="2020-08-29">
+			<description>
+				<p>This release fixes crashes related to video preview errors, adds a Ctrl+Q exit shortcut and a Dutch translation.</p>
+				<ul>
+					<li>Added a Ctrl+Q shortcut to quit Video Trimmer.</li>
+					<li>Added a Dutch translation.</li>
+					<li>Made video preview display an error message when it fails to load.</li>
+					<li>Fixed a crash when the GL runtime is not installed (e.g. when installing the Flathub package on clean Ubuntu 18.04 through Ubuntu Software).</li>
+					<li>Fixed a crash when required GStreamer plugins are not installed.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.2.0" date="2020-07-06">
 			<description>
 				<p>This release adds a video preview and a timeline where the target region can be adjusted using the mouse.</p>
