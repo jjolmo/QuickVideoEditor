@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-trimmer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-08-29 17:15+0300\n"
-"PO-Revision-Date: 2020-08-29 17:17+0300\n"
+"POT-Creation-Date: 2020-10-02 11:44+0300\n"
+"PO-Revision-Date: 2020-10-02 11:45+0300\n"
 "Last-Translator: Ivan Molodetskikh <yalterz@gmail.com>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
-"X-Generator: Gtranslator 3.36.0\n"
+"X-Generator: Gtranslator 3.38.0\n"
 
 #. Translators: fatal error message dialog title.
 #: src/main.rs:20
@@ -38,44 +38,49 @@ msgid "Video Trimmer can only operate on local files."
 msgstr ""
 "Программа обрезки видео может работать только на файлах с этого компьютера."
 
+#. Translators: file chooser file filter name.
+#: src/window.rs:283
+msgid "Video files"
+msgstr "Видео-файлы"
+
 #. Translators: file chooser dialog title.
-#: src/window.rs:290
+#: src/window.rs:292
 msgid "Open video"
 msgstr "Открыть видео"
 
 #. Translators: error dialog text when the input file information could
 #. not be retrieved (e.g. there's no such file on disk).
-#: src/window.rs:484
+#: src/window.rs:487
 msgid "Could not get input video information"
 msgstr "Не удалось получить информацию о входном видео"
 
 #. Translators: this is the name part of the default filename presented in the save dialog.
-#: src/window.rs:544
+#: src/window.rs:547
 msgid "Trimmed video"
 msgstr "Обрезанное видео"
 
 #. Translators: message dialog text.
-#: src/window.rs:580
+#: src/window.rs:583
 msgid "Trimming…"
 msgstr "Обрезка…"
 
 #. Translators: message dialog text.
-#: src/window.rs:597
+#: src/window.rs:600
 msgid "Done!"
 msgstr "Готово!"
 
 #. Translators: error dialog text.
-#: src/window.rs:602
+#: src/window.rs:605
 msgid "Error trimming video"
 msgstr "Ошибка при обрезке видео"
 
 #. Translators: error dialog text.
-#: src/window.rs:610
+#: src/window.rs:613
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Не удалось связаться с подпроцессом ffmpeg"
 
 #. Translators: error dialog text.
-#: src/window.rs:650
+#: src/window.rs:653
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Не удалось создать подпроцесс ffmpeg"
 
