@@ -279,6 +279,8 @@ impl ObjectImpl for VtWindowPrivate {
         // The open button.
         button_open.connect_clicked(clone!(@weak self_ => move |_| {
             let filter = gtk::FileFilter::new();
+            // Translators: file chooser file filter name.
+            filter.set_name(Some(&gettext("Video files")));
             for mime_type in VIDEO_MIME_TYPES {
                 filter.add_mime_type(mime_type);
             }
@@ -288,8 +290,9 @@ impl ObjectImpl for VtWindowPrivate {
                 .action(gtk::FileChooserAction::Open)
                 // Translators: file chooser dialog title.
                 .title(&gettext("Open video"))
-                .filter(&filter)
                 .build();
+
+            file_chooser.add_filter(&filter);
 
             let response = file_chooser.run();
             if response == gtk::ResponseType::Accept {
