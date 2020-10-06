@@ -171,6 +171,141 @@ impl VtWindowPrivate {
             .stack_video_preview
             .set_visible_child_name("page_error");
     }
+
+    fn trim(&self, input_path: &Path, extension: &str, start: glib::GString, end: glib::GString) {
+        g_debug!(config::LOG_DOMAIN, "trim: from {} to {}", start, end);
+
+        let window = self.get_instance();
+
+        let file_chooser = gtk::FileChooserNativeBuilder::new()
+            .transient_for(&window)
+            .action(gtk::FileChooserAction::Save)
+            .do_overwrite_confirmation(true)
+            .build();
+        // Translators: this is the name part of the default filename presented in the save dialog.
+        file_chooser.set_current_name(format!("{}.{}", gettext("Trimmed video"), extension));
+
+        let response = file_chooser.run();
+        if response == gtk::ResponseType::Accept {
+            let filename = file_chooser.get_filename().unwrap();
+            g_debug!(config::LOG_DOMAIN, "filename: {:?}", filename);
+
+            let mut args: Vec<&OsStr> = [
+                "ffmpeg".as_ref(),
+                "-loglevel".as_ref(),
+                "error".as_ref(),
+                "-ss".as_ref(),
+                start.as_ref(),
+                "-to".as_ref(),
+                end.as_ref(),
+                "-i".as_ref(),
+                input_path.as_ref(),
+                "-c".as_ref(),
+                "copy".as_ref(),
+                "-y".as_ref(),
+            ]
+            .to_vec();
+            if filename.extension().map(|x| x == "mp4").unwrap_or(false) {
+                args.push("-movflags".as_ref());
+                args.push("+faststart".as_ref());
+            }
+            args.push(filename.as_ref());
+            g_debug!(config::LOG_DOMAIN, "invoking: {:?}", args);
+
+            match gio::Subprocess::newv(
+                &args,
+                gio::SubprocessFlags::STDOUT_PIPE | gio::SubprocessFlags::STDERR_PIPE,
+            ) {
+                Ok(subprocess) => {
+                    let trimming_dialog = gtk::MessageDialogBuilder::new()
+                        // Translators: message dialog text.
+                        .text(&gettext("Trimming…"))
+                        .message_type(gtk::MessageType::Info)
+                        .buttons(gtk::ButtonsType::Cancel)
+                        .transient_for(&window)
+                        .modal(true)
+                        .build();
+
+                    let trimming_dialog_clone = trimming_dialog.clone();
+                    let subprocess_clone = subprocess.clone();
+                    let future = async move {
+                        let builder =
+                            match subprocess_clone.communicate_utf8_async_future(None).await {
+                                Ok((_, stderr)) => {
+                                    if subprocess_clone.get_if_exited()
+                                        && subprocess_clone.get_exit_status() == 0
+                                    {
+                                        gtk::MessageDialogBuilder::new()
+                                            // Translators: message dialog text.
+                                            .text(&gettext("Done!"))
+                                            .message_type(gtk::MessageType::Info)
+                                    } else {
+                                        gtk::MessageDialogBuilder::new()
+                                            // Translators: error dialog text.
+                                            .text(&gettext("Error trimming video"))
+                                            .secondary_text(stderr.as_deref().unwrap_or(""))
+                                            .message_type(gtk::MessageType::Error)
+                                    }
+                                }
+                                Err(err) => {
+                                    gtk::MessageDialogBuilder::new()
+                                        // Translators: error dialog text.
+                                        .text(&gettext(
+                                            "Could not communicate with the ffmpeg subprocess",
+                                        ))
+                                        .secondary_text(&format!("{}", err))
+                                        .message_type(gtk::MessageType::Error)
+                                }
+                            };
+
+                        // This will invoke the signal handler, but it shouldn't be a big deal
+                        // since the process has already exited and the future has already
+                        // completed by then.
+                        trimming_dialog_clone.close();
+
+                        let dialog = builder
+                            .buttons(gtk::ButtonsType::Ok)
+                            .transient_for(&window)
+                            .modal(true)
+                            .build();
+                        dialog.connect_response(move |dialog, _| dialog.close());
+
+                        // Has to be in an idle to not block the close() above.
+                        // https://gitlab.gnome.org/GNOME/gtk/-/issues/2926
+                        gtk::idle_add(move || {
+                            dialog.show_all();
+                            Continue(false)
+                        });
+                    };
+                    let (future, handle) = abortable(future);
+                    let future = future.map(|_| ());
+
+                    trimming_dialog.connect_response(move |dialog, _| {
+                        g_debug!(config::LOG_DOMAIN, "force exiting the subprocess");
+                        subprocess.force_exit();
+                        handle.abort();
+                        dialog.close();
+                    });
+                    trimming_dialog.show_all();
+
+                    glib::MainContext::default().spawn_local(future);
+                }
+                Err(err) => {
+                    let dialog = gtk::MessageDialogBuilder::new()
+                        // Translators: error dialog text.
+                        .text(&gettext("Could not create the ffmpeg subprocess"))
+                        .secondary_text(&format!("{}", err))
+                        .message_type(gtk::MessageType::Error)
+                        .buttons(gtk::ButtonsType::Ok)
+                        .transient_for(&window)
+                        .modal(true)
+                        .build();
+                    dialog.connect_response(move |dialog, _| dialog.close());
+                    dialog.show_all();
+                }
+            }
+        }
+    }
 }
 
 impl ObjectSubclass for VtWindowPrivate {
@@ -357,7 +492,7 @@ impl ObjectImpl for VtWindowPrivate {
 
             let input_path = input_path.as_deref().unwrap();
 
-            trim(self_.clone(), input_path, extension, start, end);
+            priv_.trim(input_path, extension, start, end);
         }));
 
         // Clean up upon window closing.
@@ -527,139 +662,4 @@ fn validate_entries(entry_start: &gtk::Entry, entry_end: &gtk::Entry) -> Option<
     }
 
     None
-}
-
-fn trim(
-    window: VtWindow,
-    input_path: &Path,
-    extension: &str,
-    start: glib::GString,
-    end: glib::GString,
-) {
-    g_debug!(config::LOG_DOMAIN, "trim: from {} to {}", start, end);
-
-    let file_chooser = gtk::FileChooserNativeBuilder::new()
-        .transient_for(&window)
-        .action(gtk::FileChooserAction::Save)
-        .do_overwrite_confirmation(true)
-        .build();
-    // Translators: this is the name part of the default filename presented in the save dialog.
-    file_chooser.set_current_name(format!("{}.{}", gettext("Trimmed video"), extension));
-
-    let response = file_chooser.run();
-    if response == gtk::ResponseType::Accept {
-        let filename = file_chooser.get_filename().unwrap();
-        g_debug!(config::LOG_DOMAIN, "filename: {:?}", filename);
-
-        let mut args: Vec<&OsStr> = [
-            "ffmpeg".as_ref(),
-            "-loglevel".as_ref(),
-            "error".as_ref(),
-            "-ss".as_ref(),
-            start.as_ref(),
-            "-to".as_ref(),
-            end.as_ref(),
-            "-i".as_ref(),
-            input_path.as_ref(),
-            "-c".as_ref(),
-            "copy".as_ref(),
-            "-y".as_ref(),
-        ]
-        .to_vec();
-        if filename.extension().map(|x| x == "mp4").unwrap_or(false) {
-            args.push("-movflags".as_ref());
-            args.push("+faststart".as_ref());
-        }
-        args.push(filename.as_ref());
-        g_debug!(config::LOG_DOMAIN, "invoking: {:?}", args);
-
-        match gio::Subprocess::newv(
-            &args,
-            gio::SubprocessFlags::STDOUT_PIPE | gio::SubprocessFlags::STDERR_PIPE,
-        ) {
-            Ok(subprocess) => {
-                let trimming_dialog = gtk::MessageDialogBuilder::new()
-                    // Translators: message dialog text.
-                    .text(&gettext("Trimming…"))
-                    .message_type(gtk::MessageType::Info)
-                    .buttons(gtk::ButtonsType::Cancel)
-                    .transient_for(&window)
-                    .modal(true)
-                    .build();
-
-                let trimming_dialog_clone = trimming_dialog.clone();
-                let subprocess_clone = subprocess.clone();
-                let future = async move {
-                    let builder = match subprocess_clone.communicate_utf8_async_future(None).await {
-                        Ok((_, stderr)) => {
-                            if subprocess_clone.get_if_exited()
-                                && subprocess_clone.get_exit_status() == 0
-                            {
-                                gtk::MessageDialogBuilder::new()
-                                    // Translators: message dialog text.
-                                    .text(&gettext("Done!"))
-                                    .message_type(gtk::MessageType::Info)
-                            } else {
-                                gtk::MessageDialogBuilder::new()
-                                    // Translators: error dialog text.
-                                    .text(&gettext("Error trimming video"))
-                                    .secondary_text(stderr.as_deref().unwrap_or(""))
-                                    .message_type(gtk::MessageType::Error)
-                            }
-                        }
-                        Err(err) => {
-                            gtk::MessageDialogBuilder::new()
-                                // Translators: error dialog text.
-                                .text(&gettext("Could not communicate with the ffmpeg subprocess"))
-                                .secondary_text(&format!("{}", err))
-                                .message_type(gtk::MessageType::Error)
-                        }
-                    };
-
-                    // This will invoke the signal handler, but it shouldn't be a big deal since
-                    // the process has already exited and the future has already completed by then.
-                    trimming_dialog_clone.close();
-
-                    let dialog = builder
-                        .buttons(gtk::ButtonsType::Ok)
-                        .transient_for(&window)
-                        .modal(true)
-                        .build();
-                    dialog.connect_response(move |dialog, _| dialog.close());
-
-                    // Has to be in an idle to not block the close() above.
-                    // https://gitlab.gnome.org/GNOME/gtk/-/issues/2926
-                    gtk::idle_add(move || {
-                        dialog.show_all();
-                        Continue(false)
-                    });
-                };
-                let (future, handle) = abortable(future);
-                let future = future.map(|_| ());
-
-                trimming_dialog.connect_response(move |dialog, _| {
-                    g_debug!(config::LOG_DOMAIN, "force exiting the subprocess");
-                    subprocess.force_exit();
-                    handle.abort();
-                    dialog.close();
-                });
-                trimming_dialog.show_all();
-
-                glib::MainContext::default().spawn_local(future);
-            }
-            Err(err) => {
-                let dialog = gtk::MessageDialogBuilder::new()
-                    // Translators: error dialog text.
-                    .text(&gettext("Could not create the ffmpeg subprocess"))
-                    .secondary_text(&format!("{}", err))
-                    .message_type(gtk::MessageType::Error)
-                    .buttons(gtk::ButtonsType::Ok)
-                    .transient_for(&window)
-                    .modal(true)
-                    .build();
-                dialog.connect_response(move |dialog, _| dialog.close());
-                dialog.show_all();
-            }
-        }
-    }
 }
