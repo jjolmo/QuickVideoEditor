@@ -25,6 +25,11 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.3.1" date="2020-10-11">
+			<description>
+				<p>This release fixes file filter not working on Flatpak and possibly a related file chooser crash.</p>
+			</description>
+		</release>
 		<release version="0.3.0" date="2020-08-29">
 			<description>
 				<p>This release fixes crashes related to video preview errors, adds a Ctrl+Q exit shortcut and a Dutch translation.</p>
