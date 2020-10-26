@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.36.0 -->
+<!-- Generated with glade 3.38.1 -->
 <interface>
   <requires lib="gtk+" version="3.24"/>
   <object class="GtkBox" id="box_timeline_position">
-    <property name="width_request">2</property>
+    <property name="width-request">2</property>
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="halign">start</property>
     <child>
       <placeholder/>
@@ -16,7 +16,7 @@
   </object>
   <object class="GtkBox" id="box_timeline_selection">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <child>
       <placeholder/>
     </child>
@@ -27,20 +27,20 @@
   </object>
   <object class="GtkStack" id="stack_header_bar">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="transition_type">crossfade</property>
+    <property name="can-focus">False</property>
+    <property name="transition-type">crossfade</property>
     <child>
       <object class="GtkHeaderBar">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="title" translatable="yes" comments="Main window title.">Video Trimmer</property>
-        <property name="show_close_button">True</property>
+        <property name="show-close-button">True</property>
         <child>
           <object class="GtkButton" id="button_open">
             <property name="label" translatable="yes" comments="Video open button label.">Open</property>
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
             <style>
               <class name="suggested-action"/>
             </style>
@@ -51,16 +51,16 @@
     <child>
       <object class="GtkHeaderBar" id="header_bar">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="title" translatable="yes" comments="Main window title.">Video Trimmer</property>
-        <property name="show_close_button">True</property>
+        <property name="show-close-button">True</property>
         <child>
           <object class="GtkButton" id="button_trim">
             <property name="label" translatable="yes" comments="Trim button.">Trim</property>
             <property name="visible">True</property>
             <property name="sensitive">False</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
             <style>
               <class name="suggested-action"/>
             </style>
@@ -75,25 +75,25 @@
   </object>
   <object class="GtkStack" id="stack_main">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="transition_type">crossfade</property>
+    <property name="can-focus">False</property>
+    <property name="transition-type">crossfade</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="valign">center</property>
-        <property name="margin_start">32</property>
-        <property name="margin_end">32</property>
-        <property name="margin_top">32</property>
-        <property name="margin_bottom">32</property>
+        <property name="margin-start">32</property>
+        <property name="margin-end">32</property>
+        <property name="margin-top">32</property>
+        <property name="margin-bottom">32</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkImage">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin_bottom">32</property>
-            <property name="pixel_size">128</property>
-            <property name="icon_name">video-x-generic-symbolic</property>
+            <property name="can-focus">False</property>
+            <property name="margin-bottom">32</property>
+            <property name="pixel-size">128</property>
+            <property name="icon-name">video-x-generic-symbolic</property>
             <style>
               <class name="dim-label"/>
             </style>
@@ -107,7 +107,7 @@
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes" comments="Label on the initial state.">Press the Open button to open a video file.</property>
           </object>
           <packing>
@@ -121,24 +121,24 @@
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
+        <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">center</property>
-            <property name="margin_start">18</property>
-            <property name="margin_end">18</property>
-            <property name="margin_top">18</property>
-            <property name="margin_bottom">18</property>
+            <property name="margin-start">18</property>
+            <property name="margin-end">18</property>
+            <property name="margin-top">18</property>
+            <property name="margin-bottom">18</property>
             <child>
               <object class="GtkEntry" id="entry_end">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="width_chars">7</property>
-                <property name="caps_lock_warning">False</property>
-                <property name="placeholder_text">0:00</property>
+                <property name="can-focus">True</property>
+                <property name="width-chars">7</property>
+                <property name="caps-lock-warning">False</property>
+                <property name="placeholder-text">0:00</property>
                 <style>
                   <class name="error"/>
                 </style>
@@ -146,29 +146,29 @@
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_end">12</property>
+                <property name="can-focus">False</property>
+                <property name="margin-end">12</property>
                 <property name="label" translatable="yes" comments="Label for the entry for the end timestamp.">End</property>
               </object>
               <packing>
                 <property name="expand">False</property>
                 <property name="fill">True</property>
-                <property name="pack_type">end</property>
+                <property name="pack-type">end</property>
                 <property name="position">1</property>
               </packing>
             </child>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_end">12</property>
+                <property name="can-focus">False</property>
+                <property name="margin-end">12</property>
                 <property name="label" translatable="yes" comments="Label for the entry for the start timestamp.">Start</property>
               </object>
               <packing>
@@ -180,11 +180,11 @@
             <child>
               <object class="GtkEntry" id="entry_start">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="margin_end">24</property>
-                <property name="width_chars">7</property>
-                <property name="caps_lock_warning">False</property>
-                <property name="placeholder_text">0:00</property>
+                <property name="can-focus">True</property>
+                <property name="margin-end">24</property>
+                <property name="width-chars">7</property>
+                <property name="caps-lock-warning">False</property>
+                <property name="placeholder-text">0:00</property>
                 <style>
                   <class name="error"/>
                 </style>
@@ -199,39 +199,39 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="pack_type">end</property>
+            <property name="pack-type">end</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
           <object class="GtkStack" id="stack_video_preview">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="transition_type">over-down-up</property>
+            <property name="can-focus">False</property>
+            <property name="transition-type">over-down-up</property>
             <child>
               <object class="GtkBox" id="box_video_preview">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_start">18</property>
-                    <property name="margin_end">18</property>
-                    <property name="margin_top">12</property>
-                    <property name="margin_bottom">12</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-start">18</property>
+                    <property name="margin-end">18</property>
+                    <property name="margin-top">12</property>
+                    <property name="margin-bottom">12</property>
                     <child>
                       <object class="GtkButton" id="button_play_pause">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="margin_end">8</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
+                        <property name="margin-end">8</property>
                         <child>
                           <object class="GtkImage" id="button_play_pause_image">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="icon_name">media-playback-pause-symbolic</property>
+                            <property name="can-focus">False</property>
+                            <property name="icon-name">media-playback-pause-symbolic</property>
                           </object>
                         </child>
                       </object>
@@ -244,11 +244,11 @@
                     <child>
                       <object class="GtkLabel" id="label_current_time">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_end">8</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-end">8</property>
                         <property name="label">&lt;span font_features="tnum"&gt;0:00&lt;/span&gt;</property>
-                        <property name="use_markup">True</property>
-                        <property name="width_chars">5</property>
+                        <property name="use-markup">True</property>
+                        <property name="width-chars">5</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -259,15 +259,15 @@
                     <child>
                       <object class="GtkOverlay" id="overlay_timeline">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <child>
                           <object class="GtkEventBox" id="event_box_timeline_bg">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <child>
                               <object class="GtkBox" id="box_timeline_bg">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <child>
                                   <placeholder/>
                                 </child>
@@ -286,7 +286,7 @@
                       <packing>
                         <property name="expand">True</property>
                         <property name="fill">True</property>
-                        <property name="pack_type">end</property>
+                        <property name="pack-type">end</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
@@ -294,7 +294,7 @@
                   <packing>
                     <property name="expand">False</property>
                     <property name="fill">True</property>
-                    <property name="pack_type">end</property>
+                    <property name="pack-type">end</property>
                     <property name="position">0</property>
                   </packing>
                 </child>
@@ -306,16 +306,16 @@
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_start">18</property>
-                    <property name="margin_end">18</property>
-                    <property name="margin_top">18</property>
-                    <property name="margin_bottom">18</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-start">18</property>
+                    <property name="margin-end">18</property>
+                    <property name="margin-top">18</property>
+                    <property name="margin-bottom">18</property>
                     <property name="label" translatable="yes" comments="Label that is shown upon video preview loading error.">The video preview has failed to load.
 
 Please enter the start and end timestamps manually.</property>
@@ -340,7 +340,7 @@ Please enter the start and end timestamps manually.</property>
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="pack_type">end</property>
+            <property name="pack-type">end</property>
             <property name="position">1</property>
           </packing>
         </child>
