@@ -1,6 +1,7 @@
 use std::{
     cell::RefCell,
     ffi::OsStr,
+    mem,
     path::{Path, PathBuf},
 };
 
@@ -73,6 +74,16 @@ struct Widgets {
     entry_start: gtk::Entry,
     entry_end: gtk::Entry,
     stack_video_preview: gtk::Stack,
+    revealer_done_notification: gtk::Revealer,
+    label_done_notification: gtk::Label,
+}
+
+#[derive(Debug)]
+enum NotificationState {
+    Closed,
+    Opening(glib::SourceId, Option<String>),
+    Open(glib::SourceId),
+    Closing(Option<String>),
 }
 
 #[derive(Debug)]
@@ -81,6 +92,7 @@ pub struct VtWindowPrivate {
     content_type: RefCell<Option<glib::GString>>,
     input_path: RefCell<Option<PathBuf>>,
     video_preview: OnceCell<VtVideoPreview>,
+    done_notification_state: RefCell<NotificationState>,
 }
 
 pub fn time_to_entry_text(time: gst::ClockTime) -> String {
@@ -172,6 +184,158 @@ impl VtWindowPrivate {
             .set_visible_child_name("page_error");
     }
 
+    fn show_done_notification(&self, file_name: String) {
+        let widgets = self.widgets.get().unwrap();
+
+        let mut state = self.done_notification_state.borrow_mut();
+        match *state {
+            NotificationState::Closed => {
+                let source = glib::timeout_add_local(5000, {
+                    let self_ = self.get_instance().downgrade();
+                    move || {
+                        let self_ = self_.upgrade().unwrap();
+                        let priv_ = VtWindowPrivate::from_instance(&self_);
+                        priv_.close_done_notification(None);
+
+                        glib::Continue(false)
+                    }
+                });
+
+                *state = NotificationState::Opening(source, None);
+                drop(state);
+
+                widgets.label_done_notification.set_text(&format!(
+                    "{} {}",
+                    file_name,
+                    // Translators: text on the in-app notification after trimming was done.
+                    // The template is: <video filename> has been saved
+                    gettext("has been saved")
+                ));
+                widgets.revealer_done_notification.set_reveal_child(true);
+            }
+            NotificationState::Opening(_, ref mut new_file_name)
+            | NotificationState::Closing(ref mut new_file_name) => {
+                *new_file_name = Some(file_name);
+            }
+            NotificationState::Open(_) => {
+                drop(state);
+                self.close_done_notification(Some(file_name));
+            }
+        }
+    }
+
+    fn close_done_notification(&self, new_file_name: Option<String>) {
+        let mut state = self.done_notification_state.borrow_mut();
+
+        if !matches!(*state, NotificationState::Open(_) | NotificationState::Opening(_, _)) {
+            return;
+        }
+
+        let file_name = if let NotificationState::Opening(_, file_name) = &mut *state {
+            file_name.take()
+        } else {
+            None
+        };
+
+        let new_file_name = new_file_name.or(file_name);
+        if let NotificationState::Open(source) | NotificationState::Opening(source, _) =
+            mem::replace(&mut *state, NotificationState::Closing(new_file_name))
+        {
+            glib::source_remove(source);
+        }
+        drop(state);
+
+        self.widgets
+            .get()
+            .unwrap()
+            .revealer_done_notification
+            .set_reveal_child(false);
+    }
+
+    fn on_child_revealed_changed(&self) {
+        let widgets = self.widgets.get().unwrap();
+        let mut state = self.done_notification_state.borrow_mut();
+
+        if widgets.revealer_done_notification.get_child_revealed() {
+            match *state {
+                NotificationState::Opening(_, None) => {
+                    let source = if let NotificationState::Opening(source, _) =
+                        mem::replace(&mut *state, NotificationState::Closed)
+                    {
+                        source
+                    } else {
+                        unreachable!()
+                    };
+                    *state = NotificationState::Open(source);
+                }
+                NotificationState::Opening(_, ref mut new_file_name @ Some(_)) => {
+                    let new_file_name = new_file_name.take();
+                    drop(state);
+                    self.close_done_notification(new_file_name);
+                }
+                ref other => {
+                    g_warning!(
+                        config::LOG_DOMAIN,
+                        "Unexpected notification state: {:?}",
+                        other
+                    );
+
+                    let source = glib::timeout_add_local(5000, {
+                        let self_ = self.get_instance().downgrade();
+                        move || {
+                            let self_ = self_.upgrade().unwrap();
+                            let priv_ = VtWindowPrivate::from_instance(&self_);
+                            priv_.close_done_notification(None);
+
+                            glib::Continue(false)
+                        }
+                    });
+
+                    *state = NotificationState::Open(source);
+                }
+            }
+        } else {
+            match *state {
+                NotificationState::Closing(None) => {
+                    *state = NotificationState::Closed;
+                }
+                NotificationState::Closing(ref mut new_file_name @ Some(_)) => {
+                    let new_file_name = new_file_name.take().unwrap();
+                    let source = glib::timeout_add_local(5000, {
+                        let self_ = self.get_instance().downgrade();
+                        move || {
+                            let self_ = self_.upgrade().unwrap();
+                            let priv_ = VtWindowPrivate::from_instance(&self_);
+                            priv_.close_done_notification(None);
+
+                            glib::Continue(false)
+                        }
+                    });
+                    *state = NotificationState::Opening(source, None);
+                    drop(state);
+
+                    widgets.label_done_notification.set_text(&format!(
+                        "{} {}",
+                        new_file_name,
+                        // Translators: text on the in-app notification after trimming was done.
+                        // The template is: <video filename> has been saved
+                        gettext("has been saved")
+                    ));
+                    widgets.revealer_done_notification.set_reveal_child(true);
+                }
+                ref other => {
+                    g_warning!(
+                        config::LOG_DOMAIN,
+                        "Unexpected notification state: {:?}",
+                        other
+                    );
+
+                    *state = NotificationState::Closed;
+                }
+            }
+        }
+    }
+
     fn trim(&self, input_path: &Path, extension: &str, start: glib::GString, end: glib::GString) {
         g_debug!(config::LOG_DOMAIN, "trim: from {} to {}", start, end);
 
@@ -235,10 +399,15 @@ impl VtWindowPrivate {
                                     if subprocess_clone.get_if_exited()
                                         && subprocess_clone.get_exit_status() == 0
                                     {
-                                        gtk::MessageDialogBuilder::new()
-                                            // Translators: message dialog text.
-                                            .text(&gettext("Done!"))
-                                            .message_type(gtk::MessageType::Info)
+                                        let file_name = filename
+                                            .file_name()
+                                            .map(|file_name| file_name.to_string_lossy())
+                                            .unwrap_or_else(|| filename.to_string_lossy());
+
+                                        let priv_ = VtWindowPrivate::from_instance(&self_);
+                                        priv_.show_done_notification(file_name.into());
+                                        trimming_dialog_clone.close();
+                                        return;
                                     } else {
                                         gtk::MessageDialogBuilder::new()
                                             // Translators: error dialog text.
@@ -322,6 +491,7 @@ impl ObjectSubclass for VtWindowPrivate {
             content_type: RefCell::new(None),
             input_path: RefCell::new(None),
             video_preview: OnceCell::new(),
+            done_notification_state: RefCell::new(NotificationState::Closed),
         }
     }
 }
@@ -407,8 +577,16 @@ impl ObjectImpl for VtWindowPrivate {
         let entry_start: gtk::Entry = builder.get_object("entry_start").unwrap();
         let entry_end: gtk::Entry = builder.get_object("entry_end").unwrap();
         let stack_video_preview: gtk::Stack = builder.get_object("stack_video_preview").unwrap();
+        let revealer_done_notification: gtk::Revealer =
+            builder.get_object("revealer_done_notification").unwrap();
+        let label_done_notification: gtk::Label =
+            builder.get_object("label_done_notification").unwrap();
+        let button_close_done_notification: gtk::Button = builder
+            .get_object("button_close_done_notification")
+            .unwrap();
+        let overlay_main: gtk::Overlay = builder.get_object("overlay_main").unwrap();
 
-        self_.add(&stack_main);
+        self_.add(&overlay_main);
         self_.set_titlebar(Some(&stack_header_bar));
 
         // The open button.
@@ -495,6 +673,24 @@ impl ObjectImpl for VtWindowPrivate {
             priv_.trim(input_path, extension, start, end);
         }));
 
+        revealer_done_notification.connect_property_child_revealed_notify({
+            let self_ = self_.downgrade();
+            move |_| {
+                let self_ = self_.upgrade().unwrap();
+                let priv_ = VtWindowPrivate::from_instance(&self_);
+                priv_.on_child_revealed_changed();
+            }
+        });
+
+        button_close_done_notification.connect_clicked({
+            let self_ = self_.downgrade();
+            move |_| {
+                let self_ = self_.upgrade().unwrap();
+                let priv_ = VtWindowPrivate::from_instance(&self_);
+                priv_.close_done_notification(None);
+            }
+        });
+
         // Clean up upon window closing.
         self_.connect_destroy(move |self_| {
             let self_ = self_.clone().downcast::<VtWindow>().unwrap();
@@ -511,6 +707,8 @@ impl ObjectImpl for VtWindowPrivate {
             entry_start,
             entry_end,
             stack_video_preview,
+            revealer_done_notification,
+            label_done_notification,
         };
         self.widgets.set(widgets).unwrap();
     }
