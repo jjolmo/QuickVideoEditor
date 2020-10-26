@@ -175,10 +175,10 @@ impl VtWindowPrivate {
     fn trim(&self, input_path: &Path, extension: &str, start: glib::GString, end: glib::GString) {
         g_debug!(config::LOG_DOMAIN, "trim: from {} to {}", start, end);
 
-        let window = self.get_instance();
+        let self_ = self.get_instance();
 
         let file_chooser = gtk::FileChooserNativeBuilder::new()
-            .transient_for(&window)
+            .transient_for(&self_)
             .action(gtk::FileChooserAction::Save)
             .do_overwrite_confirmation(true)
             .build();
@@ -222,7 +222,7 @@ impl VtWindowPrivate {
                         .text(&gettext("Trimming…"))
                         .message_type(gtk::MessageType::Info)
                         .buttons(gtk::ButtonsType::Cancel)
-                        .transient_for(&window)
+                        .transient_for(&self_)
                         .modal(true)
                         .build();
 
@@ -265,7 +265,7 @@ impl VtWindowPrivate {
 
                         let dialog = builder
                             .buttons(gtk::ButtonsType::Ok)
-                            .transient_for(&window)
+                            .transient_for(&self_)
                             .modal(true)
                             .build();
                         dialog.connect_response(move |dialog, _| dialog.close());
@@ -297,7 +297,7 @@ impl VtWindowPrivate {
                         .secondary_text(&format!("{}", err))
                         .message_type(gtk::MessageType::Error)
                         .buttons(gtk::ButtonsType::Ok)
-                        .transient_for(&window)
+                        .transient_for(&self_)
                         .modal(true)
                         .build();
                     dialog.connect_response(move |dialog, _| dialog.close());
