@@ -1,7 +1,7 @@
 {
     "app-id" : "org.gnome.gitlab.YaLTeR.VideoTrimmer",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "3.36",
+    "runtime-version" : "3.38",
     "sdk" : "org.gnome.Sdk",
     "sdk-extensions" : [
         "org.freedesktop.Sdk.Extension.rust-stable"
@@ -9,7 +9,7 @@
     "add-extensions": {
         "org.freedesktop.Platform.ffmpeg-full": {
             "directory": "lib/ffmpeg",
-            "version": "19.08",
+            "version": "20.08",
             "add-ld-path": "."
         }
     },
