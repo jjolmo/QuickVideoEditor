@@ -403,6 +403,9 @@ If you're running Video Trimmer under Flatpak, note that opening files by drag-a
             </style>
           </object>
         </child>
+        <style>
+          <class name="titlebar"/>
+        </style>
       </object>
     </child>
     <child>
@@ -423,6 +426,9 @@ If you're running Video Trimmer under Flatpak, note that opening files by drag-a
             </style>
           </object>
         </child>
+        <style>
+          <class name="titlebar"/>
+        </style>
       </object>
       <packing>
         <property name="name">page_main</property>

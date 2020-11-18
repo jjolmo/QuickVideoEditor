@@ -569,6 +569,10 @@ impl ObjectImpl for VtWindowPrivate {
 
         self.video_preview.set(video_preview).unwrap();
 
+        if config::PROFILE == "Devel" {
+            self_.get_style_context().add_class("devel");
+        }
+
         let stack_main: gtk::Stack = builder.get_object("stack_main").unwrap();
         let stack_header_bar: gtk::Stack = builder.get_object("stack_header_bar").unwrap();
         let header_bar: gtk::HeaderBar = builder.get_object("header_bar").unwrap();
