@@ -585,6 +585,7 @@ impl ObjectImpl for VtWindowPrivate {
             .get_object("button_close_done_notification")
             .unwrap();
         let overlay_main: gtk::Overlay = builder.get_object("overlay_main").unwrap();
+        let box_empty_state: gtk::Box = builder.get_object("box_empty_state").unwrap();
 
         self_.add(&overlay_main);
         self_.set_titlebar(Some(&stack_header_bar));
@@ -696,6 +697,22 @@ impl ObjectImpl for VtWindowPrivate {
             let self_ = self_.clone().downcast::<VtWindow>().unwrap();
             let priv_ = VtWindowPrivate::from_instance(&self_);
             priv_.video_preview.get().unwrap().destroy();
+        });
+
+        box_empty_state.drag_dest_set(gtk::DestDefaults::ALL, &[], gdk::DragAction::COPY);
+        box_empty_state.drag_dest_add_uri_targets();
+        box_empty_state.connect_drag_data_received({
+            let self_ = self_.downgrade();
+            move |_, context, _, _, data, _, time| {
+                let self_ = self_.upgrade().unwrap();
+
+                let uris = data.get_uris();
+                for uri in uris.get(0) {
+                    self_.open(gio::File::new_for_uri(&uri));
+                }
+
+                context.drag_finish(true, false, time);
+            }
         });
 
         let widgets = Widgets {

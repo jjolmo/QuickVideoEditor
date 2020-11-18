@@ -34,42 +34,53 @@
         <property name="can-focus">False</property>
         <property name="transition-type">crossfade</property>
         <child>
-          <object class="GtkBox">
+          <object class="GtkBox" id="box_empty_state">
             <property name="visible">True</property>
             <property name="can-focus">False</property>
-            <property name="valign">center</property>
-            <property name="margin-start">32</property>
-            <property name="margin-end">32</property>
-            <property name="margin-top">32</property>
-            <property name="margin-bottom">32</property>
-            <property name="orientation">vertical</property>
             <child>
-              <object class="GtkImage">
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
+                <property name="valign">center</property>
+                <property name="margin-start">32</property>
+                <property name="margin-end">32</property>
+                <property name="margin-top">32</property>
                 <property name="margin-bottom">32</property>
-                <property name="pixel-size">128</property>
-                <property name="icon-name">video-x-generic-symbolic</property>
-                <style>
-                  <class name="dim-label"/>
-                </style>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-bottom">32</property>
+                    <property name="pixel-size">128</property>
+                    <property name="icon-name">video-x-generic-symbolic</property>
+                    <style>
+                      <class name="dim-label"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <property name="label" translatable="yes" comments="Label on the initial state.">Press the Open button to open a video file.</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
-                <property name="expand">False</property>
+                <property name="expand">True</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes" comments="Label on the initial state.">Press the Open button to open a video file.</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
               </packing>
             </child>
           </object>
@@ -274,7 +285,9 @@
                         <property name="margin-bottom">18</property>
                         <property name="label" translatable="yes" comments="Label that is shown upon video preview loading error.">The video preview has failed to load.
 
-Please enter the start and end timestamps manually.</property>
+Please enter the start and end timestamps manually.
+
+If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work.</property>
                         <property name="wrap">True</property>
                       </object>
                       <packing>
