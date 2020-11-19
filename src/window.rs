@@ -336,27 +336,52 @@ impl VtWindowPrivate {
         }
     }
 
-    fn trim(&self, input_path: &Path, extension: &str, start: glib::GString, end: glib::GString) {
+    fn trim(
+        &self,
+        input_path: PathBuf,
+        extension: String,
+        start: glib::GString,
+        end: glib::GString,
+    ) {
         g_debug!(config::LOG_DOMAIN, "trim: from {} to {}", start, end);
 
         let self_ = self.get_instance();
 
-        let file_chooser = gtk::FileChooserNativeBuilder::new()
-            .transient_for(&self_)
-            .action(gtk::FileChooserAction::Save)
-            .do_overwrite_confirmation(true)
-            .build();
-        // Translators: this is the name part of the default filename presented in the save dialog.
-        file_chooser.set_current_name(format!("{}.{}", gettext("Trimmed video"), extension));
+        let future = async move {
+            let file_chooser = gtk::FileChooserNativeBuilder::new()
+                .transient_for(&self_)
+                .action(gtk::FileChooserAction::Save)
+                .do_overwrite_confirmation(true)
+                .build();
+            // Translators: this is the name part of the default filename presented in the save dialog.
+            file_chooser.set_current_name(format!("{}.{}", gettext("Trimmed video"), extension));
 
-        let response = file_chooser.run();
-        if response != gtk::ResponseType::Accept {
-            return;
-        }
+            let (tx, rx) = futures_channel::oneshot::channel();
 
-        let output_path = file_chooser.get_filename().unwrap();
+            let tx = RefCell::new(Some(tx));
+            file_chooser.connect_response(move |file_chooser, response| {
+                if let Some(tx) = tx.borrow_mut().take() {
+                    if response == gtk::ResponseType::Accept {
+                        tx.send(Some(file_chooser.get_filename().unwrap())).unwrap();
+                    } else {
+                        tx.send(None).unwrap();
+                    }
+                }
+            });
 
-        self.do_trim(input_path, output_path, start, end);
+            file_chooser.show();
+
+            let output_path = if let Some(output_path) = rx.await.unwrap() {
+                output_path
+            } else {
+                return;
+            };
+
+            let priv_ = VtWindowPrivate::from_instance(&self_);
+            priv_.do_trim(&input_path, output_path, start, end);
+        };
+
+        glib::MainContext::default().spawn_local(future);
     }
 
     fn do_trim(
@@ -675,7 +700,8 @@ impl ObjectImpl for VtWindowPrivate {
                     }
                 })
                 .and_then(|exts| exts.get(0))
-                .unwrap_or(&"mp4");
+                .unwrap_or(&"mp4")
+                .to_string();
 
             let input_path = priv_.input_path.borrow();
             if input_path.is_none() {
@@ -685,7 +711,7 @@ impl ObjectImpl for VtWindowPrivate {
                 return;
             }
 
-            let input_path = input_path.as_deref().unwrap();
+            let input_path = input_path.clone().unwrap();
 
             priv_.trim(input_path, extension, start, end);
         }));
