@@ -354,8 +354,8 @@ impl VtWindowPrivate {
             return;
         }
 
-        let filename = file_chooser.get_filename().unwrap();
-        g_debug!(config::LOG_DOMAIN, "filename: {:?}", filename);
+        let output_path = file_chooser.get_filename().unwrap();
+        g_debug!(config::LOG_DOMAIN, "output path: {:?}", output_path);
 
         let mut args: Vec<&OsStr> = [
             "ffmpeg".as_ref(),
@@ -372,11 +372,11 @@ impl VtWindowPrivate {
             "-y".as_ref(),
         ]
         .to_vec();
-        if filename.extension().map(|x| x == "mp4").unwrap_or(false) {
+        if output_path.extension().map(|x| x == "mp4").unwrap_or(false) {
             args.push("-movflags".as_ref());
             args.push("+faststart".as_ref());
         }
-        args.push(filename.as_ref());
+        args.push(output_path.as_ref());
         g_debug!(config::LOG_DOMAIN, "invoking: {:?}", args);
 
         match gio::Subprocess::newv(
@@ -401,10 +401,10 @@ impl VtWindowPrivate {
                             if subprocess_clone.get_if_exited()
                                 && subprocess_clone.get_exit_status() == 0
                             {
-                                let file_name = filename
+                                let file_name = output_path
                                     .file_name()
                                     .map(|file_name| file_name.to_string_lossy())
-                                    .unwrap_or_else(|| filename.to_string_lossy());
+                                    .unwrap_or_else(|| output_path.to_string_lossy());
 
                                 let priv_ = VtWindowPrivate::from_instance(&self_);
                                 priv_.show_done_notification(file_name.into());
