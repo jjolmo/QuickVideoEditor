@@ -355,6 +355,19 @@ impl VtWindowPrivate {
         }
 
         let output_path = file_chooser.get_filename().unwrap();
+
+        self.do_trim(input_path, output_path, start, end);
+    }
+
+    fn do_trim(
+        &self,
+        input_path: &Path,
+        output_path: PathBuf,
+        start: glib::GString,
+        end: glib::GString,
+    ) {
+        let self_ = self.get_instance();
+
         g_debug!(config::LOG_DOMAIN, "output path: {:?}", output_path);
 
         let mut args: Vec<&OsStr> = [
