@@ -352,6 +352,7 @@ impl VtWindowPrivate {
                 .transient_for(&self_)
                 .action(gtk::FileChooserAction::Save)
                 .do_overwrite_confirmation(true)
+                .modal(true)
                 .build();
             // Translators: this is the name part of the default filename presented in the save dialog.
             file_chooser.set_current_name(format!("{}.{}", gettext("Trimmed video"), extension));
