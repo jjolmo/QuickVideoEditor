@@ -64,6 +64,16 @@ const VIDEO_MIME_TYPES: &[&str] = &[
     "video/x-totem-stream",
 ];
 
+static PROPERTIES: [subclass::Property; 1] = [subclass::Property("output-file", |name| {
+    glib::ParamSpec::object(
+        name,
+        "output-file",
+        "output-file",
+        gio::File::static_type(),
+        glib::ParamFlags::WRITABLE | glib::ParamFlags::CONSTRUCT_ONLY,
+    )
+})];
+
 #[derive(Debug)]
 struct Widgets {
     header_bar: gtk::HeaderBar,
@@ -93,6 +103,7 @@ pub struct VtWindowPrivate {
     input_path: RefCell<Option<PathBuf>>,
     video_preview: OnceCell<VtVideoPreview>,
     done_notification_state: RefCell<NotificationState>,
+    output_file: RefCell<Option<gio::File>>,
 }
 
 pub fn time_to_entry_text(time: gst::ClockTime) -> String {
@@ -348,14 +359,31 @@ impl VtWindowPrivate {
         let self_ = self.get_instance();
 
         let future = async move {
+            let priv_ = VtWindowPrivate::from_instance(&self_);
+
+            let current_name = priv_
+                .output_file
+                .borrow()
+                .as_ref()
+                .and_then(|file| file.get_path())
+                .unwrap_or_else(|| {
+                    format!(
+                        "{}.{}",
+                        // Translators: this is the name part of the default filename
+                        // presented in the save dialog.
+                        gettext("Trimmed video"),
+                        extension
+                    )
+                    .into()
+                });
+
             let file_chooser = gtk::FileChooserNativeBuilder::new()
                 .transient_for(&self_)
                 .action(gtk::FileChooserAction::Save)
                 .do_overwrite_confirmation(true)
                 .modal(true)
                 .build();
-            // Translators: this is the name part of the default filename presented in the save dialog.
-            file_chooser.set_current_name(format!("{}.{}", gettext("Trimmed video"), extension));
+            file_chooser.set_current_name(current_name);
 
             let (tx, rx) = futures_channel::oneshot::channel();
 
@@ -378,7 +406,6 @@ impl VtWindowPrivate {
                 return;
             };
 
-            let priv_ = VtWindowPrivate::from_instance(&self_);
             priv_.do_trim(&input_path, output_path, start, end);
         };
 
@@ -530,12 +557,28 @@ impl ObjectSubclass for VtWindowPrivate {
             input_path: RefCell::new(None),
             video_preview: OnceCell::new(),
             done_notification_state: RefCell::new(NotificationState::Closed),
+            output_file: RefCell::new(None),
         }
+    }
+
+    fn class_init(klass: &mut Self::Class) {
+        klass.install_properties(&PROPERTIES);
     }
 }
 
 impl ObjectImpl for VtWindowPrivate {
     glib_object_impl!();
+
+    fn set_property(&self, _obj: &glib::Object, id: usize, value: &glib::Value) {
+        let prop = &PROPERTIES[id];
+
+        match *prop {
+            subclass::Property("output-file", ..) => {
+                *self.output_file.borrow_mut() = value.get().unwrap();
+            }
+            _ => unreachable!(),
+        }
+    }
 
     fn constructed(&self, obj: &glib::Object) {
         self.parent_constructed(obj);
@@ -796,11 +839,12 @@ glib_wrapper! {
 }
 
 impl VtWindow {
-    pub fn new(app: &gtk::Application) -> Self {
+    pub fn new(app: &gtk::Application, output_file: Option<gio::File>) -> Self {
         let window = glib::Object::new(
             Self::static_type(),
             &[
                 ("application", app),
+                ("output-file", &output_file),
                 // These parameters are chosen to make the default size of the video 640×360.
                 ("default-width", &640),
                 ("default-height", &488),

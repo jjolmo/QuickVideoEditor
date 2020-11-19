@@ -86,10 +86,35 @@ fn main() {
         app.activate();
     }));
 
+    app.add_main_option(
+        "output",
+        glib::Char::new('o').unwrap(),
+        glib::OptionFlags::NONE,
+        glib::OptionArg::String, // Can't extract filenames from a VariantDict yet.
+        "Output file path",
+        Some("PATH"),
+    );
+
+    let output_file = Rc::new(Cell::new(None));
+    app.connect_handle_local_options({
+        let output_file = Rc::downgrade(&output_file);
+
+        move |_, options| {
+            output_file.upgrade().unwrap().set(
+                options
+                    .lookup_value("output", None)
+                    .and_then(|x| x.get::<String>())
+                    .map(|x| gio::File::new_for_path(x)),
+            );
+            -1
+        }
+    });
+
     app.connect_activate(move |app| {
         let file = file.replace(None);
+        let output_file = output_file.replace(None);
 
-        let window = VtWindow::new(app);
+        let window = VtWindow::new(app, output_file);
         if let Some(file) = file {
             if file.get_path().is_none() {
                 // Translators: error dialog text.
