@@ -479,7 +479,7 @@ impl VtWindowPrivate {
 
                     // Has to be in an idle to not block the close() above.
                     // https://gitlab.gnome.org/GNOME/gtk/-/issues/2926
-                    gtk::idle_add(move || {
+                    glib::idle_add_local(move || {
                         dialog.show_all();
                         Continue(false)
                     });

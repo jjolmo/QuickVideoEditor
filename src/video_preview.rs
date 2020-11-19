@@ -287,7 +287,7 @@ impl ObjectImpl for VtVideoPreviewPrivate {
         });
 
         // Refresh the time label and seek slider position on a timer.
-        let timeout_id = gtk::timeout_add(100, {
+        let timeout_id = glib::timeout_add_local(100, {
             let self_ = self_.downgrade();
             move || {
                 if let Some(self_) = self_.upgrade() {
