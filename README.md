@@ -6,6 +6,20 @@ Video Trimmer cuts out a fragment of a video given the start and end timestamps.
 
 ![Screenshot of the window.](/uploads/717fa281218d3649a9d72e46e3ab4e08/image.png)
 
+## Command-line arguments
+
+You can pass the input video path and the default output video path as command-line arguments:
+
+```
+$ video-trimmer --output trimmed.mp4 input_video.mp4
+```
+
+The Flatpak version needs a special `--file-forwarding` flag and `@@` marker to pass the input video through the sandbox:
+
+```
+$ flatpak run --file-forwarding org.gnome.gitlab.YaLTeR.VideoTrimmer -o trimmed.mp4 @@ input_video.mp4
+```
+
 ## Format support
 
 For trimming Video Trimmer uses the `ffmpeg` binary, thus the non-Flatpak version depends on the muxers and demuxers available in your system's `ffmpeg`. The Flatpak package contains `ffmpeg` built with `--enable-gpl` muxers and demuxers which should support everything imaginable.
