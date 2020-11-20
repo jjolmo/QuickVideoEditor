@@ -25,6 +25,16 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.4.0" date="2020-11-20">
+			<description>
+				<p>This release replaces the Done dialog with an in-app notification and adds a command-line argument to specify the output file.</p>
+				<ul>
+					<li>Added an --output or -o argument to specify the output video path. It will be pre-filled in the save dialog.</li>
+					<li>Added support for opening videos with DnD, although it doesn't work on Flatpak unless Video Trimmer is given filesystem access.</li>
+					<li>Replaced the Done dialog with an in-app notification to better follow the GNOME HIG.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.3.1" date="2020-10-11">
 			<description>
 				<p>This release fixes file filter not working on Flatpak and possibly a related file chooser crash.</p>
