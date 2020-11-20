@@ -8,7 +8,7 @@ Video Trimmer cuts out a fragment of a video given the start and end timestamps.
 
 ## Format support
 
-For trimming the `ffmpeg` binary is used and thus the non-Flatpak version depends on the muxers and demuxers available in your system's `ffmpeg`. The Flatpak package contains `ffmpeg` built with `--enable-gpl` muxers and demuxers which should support everything imaginable.
+For trimming Video Trimmer uses the `ffmpeg` binary, thus the non-Flatpak version depends on the muxers and demuxers available in your system's `ffmpeg`. The Flatpak package contains `ffmpeg` built with `--enable-gpl` muxers and demuxers which should support everything imaginable.
 
 The video preview relies on GStreamer, and therefore your system's or Flatpak GNOME Platform's installed GStreamer plugins. In particular, the video preview won't work at all without the `playbin3` and `glsinkbin` elements (typically in `gst-plugins-base`) as well as the `gtkglsink` element (typically in `gst-plugins-good`, although sometimes extracted into its own package).
 
