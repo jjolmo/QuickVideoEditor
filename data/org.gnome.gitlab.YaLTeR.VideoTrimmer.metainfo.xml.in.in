@@ -25,6 +25,17 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.4.1" date="2021-01-14">
+			<description>
+				<p>This release fixes an issue where not all streams from the input file were copied into the output file.</p>
+				<ul>
+					<li>All input file streams are now copied to the output file rather than just a single of each type. Subtitles are now copied too rather than skipped.</li>
+					<li>Added Swedish translation (thanks Åke Engelbrektson).</li>
+					<li>Added Spanish translation (thanks Óscar Fernández Díaz).</li>
+					<li>Made the commandline argument description translatable.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.4.0" date="2020-11-20">
 			<description>
 				<p>This release replaces the Done dialog with an in-app notification and adds a command-line argument to specify the output file.</p>
