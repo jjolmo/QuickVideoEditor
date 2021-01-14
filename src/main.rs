@@ -91,8 +91,10 @@ fn main() {
         glib::Char::new('o').unwrap(),
         glib::OptionFlags::NONE,
         glib::OptionArg::String, // Can't extract filenames from a VariantDict yet.
-        "Output file path",
-        Some("PATH"),
+        // Translators: --output commandline option description.
+        &gettext("Output file path"),
+        // Translators: --output commandline option arg description.
+        Some(&gettext("PATH")),
     );
 
     let output_file = Rc::new(Cell::new(None));
