@@ -433,6 +433,11 @@ impl VtWindowPrivate {
             end.as_ref(),
             "-i".as_ref(),
             input_path.as_ref(),
+            // By default FFmpeg selects only a single ("best") stream of each type. We'd rather
+            // include all of them, however. This also fixes our trimmed down FFmpeg not including
+            // the subtitle track by default.
+            "-map".as_ref(),
+            "0".as_ref(),
             "-c".as_ref(),
             "copy".as_ref(),
             "-y".as_ref(),
