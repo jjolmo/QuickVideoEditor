@@ -625,7 +625,7 @@ impl ObjectImpl for VtWindowPrivate {
             .connect_local("set-start-end", false, {
                 let self_ = self_.downgrade();
                 move |args| {
-                    let mut args = args.into_iter().skip(1).map(|x| {
+                    let mut args = args.iter().skip(1).map(|x| {
                         gst::ClockTime::from_mseconds(x.get::<u32>().unwrap().unwrap().into())
                     });
                     let start = args.next().unwrap();
@@ -798,7 +798,7 @@ impl ObjectImpl for VtWindowPrivate {
                 let self_ = self_.upgrade().unwrap();
 
                 let uris = data.get_uris();
-                for uri in uris.get(0) {
+                if let Some(uri) = uris.get(0) {
                     self_.open(gio::File::new_for_uri(&uri));
                 }
 
@@ -934,7 +934,6 @@ impl VtWindow {
                             .build();
                         dialog.run();
                         self_.get_application().unwrap().quit();
-                        return;
                     }
                 }
             }

@@ -106,7 +106,7 @@ fn main() {
                 options
                     .lookup_value("output", None)
                     .and_then(|x| x.get::<String>())
-                    .map(|x| gio::File::new_for_path(x)),
+                    .map(gio::File::new_for_path),
             );
             -1
         }
