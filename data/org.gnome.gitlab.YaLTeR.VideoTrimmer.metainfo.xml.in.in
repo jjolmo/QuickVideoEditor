@@ -13,6 +13,7 @@
 	<update_contact>yalterz@gmail.com</update_contact>
 	<url type="homepage">https://gitlab.gnome.org/YaLTeR/video-trimmer</url>
 	<url type="bugtracker">https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues</url>
+	<url type="translate">https://poeditor.com/join/project?hash=5bXw9CXAAh</url>
 	<description>
 		<p>
 			Video Trimmer cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality.
