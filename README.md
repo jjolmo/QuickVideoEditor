@@ -26,6 +26,10 @@ For trimming Video Trimmer uses the `ffmpeg` binary, thus the non-Flatpak versio
 
 The video preview relies on GStreamer, and therefore your system's or Flatpak GNOME Platform's installed GStreamer plugins. In particular, the video preview won't work at all without the `playbin3` and `glsinkbin` elements (typically in `gst-plugins-base`) as well as the `gtkglsink` element (typically in `gst-plugins-good`, although sometimes extracted into its own package).
 
+## Contributing translations
+
+You can help translate Video Trimmer on POEditor: https://poeditor.com/join/project?hash=5bXw9CXAAh. Any help is appreciated!
+
 ## Building
 
 The easiest way is to clone the repository with GNOME Builder and press the Build button.
