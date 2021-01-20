@@ -26,7 +26,7 @@
 		</screenshot>
 	</screenshots>
 	<releases>
-		<release version="0.4.1" date="2021-01-14">
+		<release version="0.4.1" date="2021-01-20">
 			<description>
 				<p>This release fixes an issue where not all streams from the input file were copied into the output file.</p>
 				<ul>
