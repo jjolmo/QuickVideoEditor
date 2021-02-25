@@ -238,7 +238,10 @@ impl VtWindowPrivate {
     fn close_done_notification(&self, new_file_name: Option<String>) {
         let mut state = self.done_notification_state.borrow_mut();
 
-        if !matches!(*state, NotificationState::Open(_) | NotificationState::Opening(_, _)) {
+        if !matches!(
+            *state,
+            NotificationState::Open(_) | NotificationState::Opening(_, _)
+        ) {
             return;
         }
 
