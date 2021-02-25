@@ -86,7 +86,7 @@ msgstr "No se pudo obtener información del vídeo de entrada"
 #. Label on the initial state.
 #: src/window.ui:71
 msgid "Press the Open button to open a video file."
-msgstr "Pulsa el botón Abrir para abrir un archivo de video."
+msgstr "Pulse el botón Abrir para abrir un archivo de video."
 
 #. Label for the entry for the end timestamp.
 #: src/window.ui:125
@@ -109,7 +109,7 @@ msgstr "La vista previa del vídeo no se ha cargado.\n"
 "\n"
 "Por favor, introduzca las marcas de tiempo de inicio y fin manualmente.\n"
 "\n"
-"Si estás ejecutando el Recortador de vídeo en Flatpak, ten en cuenta que es posible que no funcione la apertura de archivos mediante arrastrar y soltar."
+"Si está ejecutando el Recortador de vídeo en Flatpak, tenga en cuenta que es posible que no funcione la apertura de archivos al arrastrar y soltar."
 
 #. Video open button label.
 #: src/window.ui:397
@@ -177,7 +177,7 @@ msgstr "Añadida una traducción al holandés."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:60
 msgid "Made video preview display an error message when it fails to load."
-msgstr "La vista previa del vídeo mostrara un mensaje de error cuando no se cargue."
+msgstr "La vista previa del vídeo muestra un mensaje de error cuando no carga."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:61
 msgid "Fixed a crash when the GL runtime is not installed (e.g. when installing the Flathub package on clean Ubuntu 18.04 through Ubuntu Software)."
