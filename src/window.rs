@@ -438,6 +438,10 @@ impl VtWindowPrivate {
             // the subtitle track by default.
             "-map".as_ref(),
             "0".as_ref(),
+            // GoPro recordings include data streams with "none" tag which FFmpeg fails to process.
+            // It fails to even simply copy them over, so I'm assuming this is an FFmpeg bug and
+            // disabling data stream copying altogether as a workaround.
+            "-dn".as_ref(),
             "-c".as_ref(),
             "copy".as_ref(),
             "-y".as_ref(),
