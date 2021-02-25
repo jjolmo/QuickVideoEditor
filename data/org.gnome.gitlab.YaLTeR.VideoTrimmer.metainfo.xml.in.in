@@ -26,6 +26,15 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.4.2" date="2021-02-25">
+			<description>
+				<p>This release fixes an error when trimming GoPro recordings.</p>
+				<ul>
+					<li>Data streams are no longer copied to the output file as a workaround to prevent errors on GoPro recordings.</li>
+					<li>Updated Spanish translation.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.4.1" date="2021-01-20">
 			<description>
 				<p>This release fixes an issue where not all streams from the input file were copied into the output file.</p>
