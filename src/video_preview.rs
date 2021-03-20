@@ -1,9 +1,11 @@
-use std::cell::{Cell, RefCell};
+use std::{
+    cell::{Cell, RefCell},
+    time::Duration,
+};
 
-use gdk::prelude::*;
-use glib::{subclass, subclass::prelude::*, translate::*};
+use glib::{g_debug, g_warning, subclass, subclass::prelude::*, translate::*};
 use gst::prelude::*;
-use gtk::prelude::*;
+use gtk::{gdk, glib, prelude::*};
 use once_cell::unsync::OnceCell;
 
 use crate::{config, parse, window::time_to_entry_text};
@@ -47,29 +49,6 @@ struct Immutable {
     seek_fail_sender: glib::Sender<()>,
 }
 
-static PROPERTIES: [subclass::Property; 2] = [
-    subclass::Property("builder", |name| {
-        glib::ParamSpec::object(
-            name,
-            "builder",
-            "builder",
-            gtk::Builder::static_type(),
-            glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-        )
-    }),
-    subclass::Property("duration", |name| {
-        glib::ParamSpec::uint64(
-            name,
-            "duration",
-            "duration",
-            0,
-            std::u64::MAX,
-            gst::CLOCK_TIME_NONE.to_glib(),
-            glib::ParamFlags::READABLE,
-        )
-    }),
-];
-
 #[derive(Debug)]
 pub struct VtVideoPreviewPrivate {
     immutable: OnceCell<Immutable>,
@@ -84,13 +63,11 @@ pub struct VtVideoPreviewPrivate {
     timeout_id: RefCell<Option<glib::SourceId>>,
 }
 
+#[glib::object_subclass]
 impl ObjectSubclass for VtVideoPreviewPrivate {
     const NAME: &'static str = "VtVideoPreview";
+    type Type = VtVideoPreview;
     type ParentType = glib::Object;
-    type Instance = subclass::simple::InstanceStruct<Self>;
-    type Class = subclass::simple::ClassStruct<Self>;
-
-    glib_object_subclass!();
 
     fn new() -> Self {
         Self {
@@ -106,46 +83,75 @@ impl ObjectSubclass for VtVideoPreviewPrivate {
             timeout_id: RefCell::new(None),
         }
     }
-
-    fn class_init(klass: &mut Self::Class) {
-        klass.install_properties(&PROPERTIES);
-        klass.add_signal(
-            "set-start-end",
-            glib::SignalFlags::RUN_FIRST,
-            &[glib::Type::U32, glib::Type::U32],
-            glib::Type::Unit,
-        );
-        klass.add_signal("error", glib::SignalFlags::RUN_FIRST, &[], glib::Type::Unit);
-    }
 }
 
 impl ObjectImpl for VtVideoPreviewPrivate {
-    glib_object_impl!();
+    fn properties() -> &'static [glib::ParamSpec] {
+        use once_cell::sync::Lazy;
+        static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+            vec![
+                glib::ParamSpec::object(
+                    "builder",
+                    "builder",
+                    "builder",
+                    gtk::Builder::static_type(),
+                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
+                ),
+                glib::ParamSpec::uint64(
+                    "duration",
+                    "duration",
+                    "duration",
+                    0,
+                    std::u64::MAX,
+                    gst::CLOCK_TIME_NONE.to_glib(),
+                    glib::ParamFlags::READABLE,
+                ),
+            ]
+        });
 
-    fn set_property(&self, _obj: &glib::Object, id: usize, value: &glib::Value) {
-        let prop = &PROPERTIES[id];
+        PROPERTIES.as_ref()
+    }
 
-        match *prop {
-            subclass::Property("builder", ..) => {
-                self.builder.set(value.get().unwrap().unwrap()).unwrap()
-            }
+    fn signals() -> &'static [subclass::Signal] {
+        use once_cell::sync::Lazy;
+        static SIGNALS: Lazy<Vec<subclass::Signal>> = Lazy::new(|| {
+            vec![
+                subclass::Signal::builder(
+                    "set-start-end",
+                    &[glib::Type::U32.into(), glib::Type::U32.into()],
+                    glib::Type::UNIT.into(),
+                )
+                .build(),
+                subclass::Signal::builder("error", &[], glib::Type::UNIT.into()).build(),
+            ]
+        });
+
+        SIGNALS.as_ref()
+    }
+
+    fn set_property(
+        &self,
+        _obj: &Self::Type,
+        _id: usize,
+        value: &glib::Value,
+        pspec: &glib::ParamSpec,
+    ) {
+        match pspec.get_name() {
+            "builder" => self.builder.set(value.get().unwrap().unwrap()).unwrap(),
             _ => unreachable!(),
         }
     }
 
-    fn get_property(&self, _obj: &glib::Object, id: usize) -> Result<glib::Value, ()> {
-        let prop = &PROPERTIES[id];
-
-        match *prop {
-            subclass::Property("builder", ..) => Ok(self.builder.get().unwrap().to_value()),
-            subclass::Property("duration", ..) => Ok(self.duration.get().to_value()),
+    fn get_property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        match pspec.get_name() {
+            "builder" => self.builder.get().unwrap().to_value(),
+            "duration" => self.duration.get().to_value(),
             _ => unreachable!(),
         }
     }
 
-    fn constructed(&self, obj: &glib::Object) {
-        self.parent_constructed(obj);
-        let self_ = obj.downcast_ref::<VtVideoPreview>().unwrap();
+    fn constructed(&self, self_: &Self::Type) {
+        self.parent_constructed(self_);
 
         let builder = self.builder.get().unwrap();
 
@@ -218,13 +224,9 @@ impl ObjectImpl for VtVideoPreviewPrivate {
 
         let playbin = match (gtkglsink, glsinkbin, playbin) {
             (Ok(gtkglsink), Ok(glsinkbin), Ok(playbin)) => {
-                glsinkbin
-                    .set_property("sink", &gtkglsink.to_value())
-                    .unwrap();
+                glsinkbin.set_property("sink", &gtkglsink).unwrap();
 
-                playbin
-                    .set_property("video-sink", &glsinkbin.to_value())
-                    .unwrap();
+                playbin.set_property("video-sink", &glsinkbin).unwrap();
 
                 pipeline.add(&playbin).unwrap();
 
@@ -246,7 +248,7 @@ impl ObjectImpl for VtVideoPreviewPrivate {
                     let self_ = self_.downgrade();
                     move || {
                         let self_ = self_.upgrade().unwrap();
-                        self_.emit("error", &[]).unwrap();
+                        self_.emit_by_name("error", &[]).unwrap();
                         glib::Continue(false)
                     }
                 });
@@ -287,7 +289,7 @@ impl ObjectImpl for VtVideoPreviewPrivate {
         });
 
         // Refresh the time label and seek slider position on a timer.
-        let timeout_id = glib::timeout_add_local(100, {
+        let timeout_id = glib::timeout_add_local(Duration::from_millis(100), {
             let self_ = self_.downgrade();
             move || {
                 if let Some(self_) = self_.upgrade() {
@@ -360,7 +362,7 @@ impl ObjectImpl for VtVideoPreviewPrivate {
                             err.get_debug()
                         );
 
-                        let _ = self_.emit("error", &[]);
+                        let _ = self_.emit_by_name("error", &[]);
                     }
                     _ => (),
                 };
@@ -402,26 +404,13 @@ impl ObjectImpl for VtVideoPreviewPrivate {
     }
 }
 
-glib_wrapper! {
-    pub struct VtVideoPreview(
-        Object<
-            subclass::simple::InstanceStruct<VtVideoPreviewPrivate>,
-            subclass::simple::ClassStruct<VtVideoPreviewPrivate>,
-            VtVideoPreviewClass
-        >
-    );
-
-    match fn {
-        get_type => || VtVideoPreviewPrivate::get_type().to_glib(),
-    }
+glib::wrapper! {
+    pub struct VtVideoPreview(ObjectSubclass<VtVideoPreviewPrivate>);
 }
 
 impl VtVideoPreview {
     pub fn new(builder: &gtk::Builder) -> Self {
-        glib::Object::new(Self::static_type(), &[("builder", builder)])
-            .unwrap()
-            .downcast()
-            .unwrap()
+        glib::Object::new(&[("builder", builder)]).unwrap()
     }
 
     pub fn open(&self, uri: &glib::GString) {
@@ -473,7 +462,7 @@ impl VtVideoPreviewPrivate {
             let self_ = self.get_instance().downgrade();
             move |_| {
                 if let Some(self_) = self_.upgrade() {
-                    let _ = self_.emit("error", &[]);
+                    let _ = self_.emit_by_name("error", &[]);
                 }
 
                 glib::Continue(false)
@@ -675,7 +664,7 @@ impl VtVideoPreviewPrivate {
             };
 
             self.get_instance()
-                .emit("set-start-end", &[&start, &end])
+                .emit_by_name("set-start-end", &[&start, &end])
                 .unwrap();
         }
     }

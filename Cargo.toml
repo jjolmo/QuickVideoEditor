@@ -12,26 +12,12 @@ mime_guess = "2.0.3"
 futures-channel = "0.3.8"
 
 [dependencies.gstreamer]
-version = "0.16.0"
+git = "https://gitlab.freedesktop.org/gstreamer/gstreamer-rs.git"
 features = ["v1_10"]
 
 [dependencies.gtk]
-version = "0.9.0"
+git = "https://github.com/gtk-rs/gtk-rs.git"
 features = ["v3_24"]
-
-[dependencies.gdk]
-version = "0.13.0"
-features = ["v3_24"]
-
-[dependencies.gio]
-version = "0.9.0"
-# v2_44 required by gtk v3_16
-features = ["v2_44"]
-
-[dependencies.glib]
-version = "0.10.0"
-# v2_44 required by gio v2_44
-features = ["v2_44"]
 
 [dependencies.gettext-rs]
 version = "0.4.4"

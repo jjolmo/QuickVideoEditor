@@ -3,14 +3,13 @@ use std::{
     ffi::OsStr,
     mem,
     path::{Path, PathBuf},
+    time::Duration,
 };
 
 use futures_util::future::{abortable, FutureExt};
-use gdk::prelude::*;
 use gettextrs::*;
-use gio::prelude::*;
-use glib::{subclass, subclass::prelude::*, translate::*};
-use gtk::{prelude::*, subclass::prelude::*};
+use glib::{clone, g_debug, g_warning};
+use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*};
 use once_cell::unsync::OnceCell;
 
 use crate::{config, parse, video_preview::VtVideoPreview};
@@ -63,16 +62,6 @@ const VIDEO_MIME_TYPES: &[&str] = &[
     "video/x-theora+ogg",
     "video/x-totem-stream",
 ];
-
-static PROPERTIES: [subclass::Property; 1] = [subclass::Property("output-file", |name| {
-    glib::ParamSpec::object(
-        name,
-        "output-file",
-        "output-file",
-        gio::File::static_type(),
-        glib::ParamFlags::WRITABLE | glib::ParamFlags::CONSTRUCT_ONLY,
-    )
-})];
 
 #[derive(Debug)]
 struct Widgets {
@@ -201,14 +190,12 @@ impl VtWindowPrivate {
         let mut state = self.done_notification_state.borrow_mut();
         match *state {
             NotificationState::Closed => {
-                let source = glib::timeout_add_local(5000, {
+                let source = glib::timeout_add_local_once(Duration::from_secs(5), {
                     let self_ = self.get_instance().downgrade();
                     move || {
                         let self_ = self_.upgrade().unwrap();
                         let priv_ = VtWindowPrivate::from_instance(&self_);
                         priv_.close_done_notification(None);
-
-                        glib::Continue(false)
                     }
                 });
 
@@ -294,14 +281,12 @@ impl VtWindowPrivate {
                         other
                     );
 
-                    let source = glib::timeout_add_local(5000, {
+                    let source = glib::timeout_add_local_once(Duration::from_secs(5), {
                         let self_ = self.get_instance().downgrade();
                         move || {
                             let self_ = self_.upgrade().unwrap();
                             let priv_ = VtWindowPrivate::from_instance(&self_);
                             priv_.close_done_notification(None);
-
-                            glib::Continue(false)
                         }
                     });
 
@@ -315,14 +300,12 @@ impl VtWindowPrivate {
                 }
                 NotificationState::Closing(ref mut new_file_name @ Some(_)) => {
                     let new_file_name = new_file_name.take().unwrap();
-                    let source = glib::timeout_add_local(5000, {
+                    let source = glib::timeout_add_local_once(Duration::from_secs(5), {
                         let self_ = self.get_instance().downgrade();
                         move || {
                             let self_ = self_.upgrade().unwrap();
                             let priv_ = VtWindowPrivate::from_instance(&self_);
                             priv_.close_done_notification(None);
-
-                            glib::Continue(false)
                         }
                     });
                     *state = NotificationState::Opening(source, None);
@@ -369,6 +352,7 @@ impl VtWindowPrivate {
                 .borrow()
                 .as_ref()
                 .and_then(|file| file.get_path())
+                .and_then(|path| path.into_os_string().into_string().ok())
                 .unwrap_or_else(|| {
                     format!(
                         "{}.{}",
@@ -377,7 +361,6 @@ impl VtWindowPrivate {
                         gettext("Trimmed video"),
                         extension
                     )
-                    .into()
                 });
 
             let file_chooser = gtk::FileChooserNativeBuilder::new()
@@ -386,7 +369,7 @@ impl VtWindowPrivate {
                 .do_overwrite_confirmation(true)
                 .modal(true)
                 .build();
-            file_chooser.set_current_name(current_name);
+            file_chooser.set_current_name(&current_name);
 
             let (tx, rx) = futures_channel::oneshot::channel();
 
@@ -554,13 +537,11 @@ impl VtWindowPrivate {
     }
 }
 
+#[glib::object_subclass]
 impl ObjectSubclass for VtWindowPrivate {
     const NAME: &'static str = "VtWindow";
+    type Type = VtWindow;
     type ParentType = gtk::ApplicationWindow;
-    type Instance = subclass::simple::InstanceStruct<Self>;
-    type Class = subclass::simple::ClassStruct<Self>;
-
-    glib_object_subclass!();
 
     fn new() -> Self {
         Self {
@@ -572,29 +553,41 @@ impl ObjectSubclass for VtWindowPrivate {
             output_file: RefCell::new(None),
         }
     }
-
-    fn class_init(klass: &mut Self::Class) {
-        klass.install_properties(&PROPERTIES);
-    }
 }
 
 impl ObjectImpl for VtWindowPrivate {
-    glib_object_impl!();
+    fn properties() -> &'static [glib::ParamSpec] {
+        use once_cell::sync::Lazy;
+        static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+            vec![glib::ParamSpec::object(
+                "output-file",
+                "output-file",
+                "output-file",
+                gio::File::static_type(),
+                glib::ParamFlags::WRITABLE | glib::ParamFlags::CONSTRUCT_ONLY,
+            )]
+        });
 
-    fn set_property(&self, _obj: &glib::Object, id: usize, value: &glib::Value) {
-        let prop = &PROPERTIES[id];
+        PROPERTIES.as_ref()
+    }
 
-        match *prop {
-            subclass::Property("output-file", ..) => {
+    fn set_property(
+        &self,
+        _obj: &Self::Type,
+        _id: usize,
+        value: &glib::Value,
+        pspec: &glib::ParamSpec,
+    ) {
+        match pspec.get_name() {
+            "output-file" => {
                 *self.output_file.borrow_mut() = value.get().unwrap();
             }
             _ => unreachable!(),
         }
     }
 
-    fn constructed(&self, obj: &glib::Object) {
-        self.parent_constructed(obj);
-        let self_ = obj.downcast_ref::<VtWindow>().unwrap();
+    fn constructed(&self, self_: &Self::Type) {
+        self.parent_constructed(self_);
 
         let builder =
             gtk::Builder::from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
@@ -606,7 +599,7 @@ impl ObjectImpl for VtWindowPrivate {
                 let self_ = self_.downgrade();
                 let video_preview = video_preview.downgrade();
                 move |_| {
-                    let value = video_preview
+                    let duration: gst::ClockTime = video_preview
                         .upgrade()
                         .unwrap()
                         .get_property("duration")
@@ -614,7 +607,6 @@ impl ObjectImpl for VtWindowPrivate {
                         .get()
                         .unwrap()
                         .unwrap();
-                    let duration = gst::ClockTime::from_glib(value);
                     if duration.is_none() {
                         return None;
                     }
@@ -835,36 +827,21 @@ impl BinImpl for VtWindowPrivate {}
 impl WindowImpl for VtWindowPrivate {}
 impl ApplicationWindowImpl for VtWindowPrivate {}
 
-glib_wrapper! {
-    pub struct VtWindow(
-        Object<
-            subclass::simple::InstanceStruct<VtWindowPrivate>,
-            subclass::simple::ClassStruct<VtWindowPrivate>,
-            VtAppWindowClass
-        >
-    )
+glib::wrapper! {
+    pub struct VtWindow(ObjectSubclass<VtWindowPrivate>)
         @extends gtk::Widget, gtk::Container, gtk::Bin, gtk::Window, gtk::ApplicationWindow;
-
-    match fn {
-        get_type => || VtWindowPrivate::get_type().to_glib(),
-    }
 }
 
 impl VtWindow {
     pub fn new(app: &gtk::Application, output_file: Option<gio::File>) -> Self {
-        let window = glib::Object::new(
-            Self::static_type(),
-            &[
-                ("application", app),
-                ("output-file", &output_file),
-                // These parameters are chosen to make the default size of the video 640×360.
-                ("default-width", &640),
-                ("default-height", &488),
-            ],
-        )
-        .expect("Failed to create VtWindow")
-        .downcast::<VtWindow>()
-        .expect("Created VtWindow is of wrong type");
+        let window = glib::Object::new(&[
+            ("application", app),
+            ("output-file", &output_file),
+            // These parameters are chosen to make the default size of the video 640×360.
+            ("default-width", &640),
+            ("default-height", &488),
+        ])
+        .unwrap();
 
         let provider = gtk::CssProvider::new();
         provider.load_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/style.css");
@@ -913,9 +890,7 @@ impl VtWindow {
                 match info {
                     Ok(info) => {
                         let display_name = info.get_display_name();
-                        widgets
-                            .header_bar
-                            .set_subtitle(display_name.as_ref().map(glib::GString::as_str));
+                        widgets.header_bar.set_subtitle(Some(display_name.as_str()));
 
                         if let Some(fast_content_type) =
                             info.get_attribute_string("standard::fast-content-type")

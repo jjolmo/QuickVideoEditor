@@ -1,12 +1,10 @@
-#[macro_use]
-extern crate glib;
 extern crate gstreamer as gst;
 
 use std::{cell::Cell, rc::Rc};
 
 use gettextrs::*;
-use gio::prelude::*;
-use gtk::prelude::*;
+use glib::{clone, g_debug, g_message};
+use gtk::{gio, glib, prelude::*};
 
 mod config;
 mod parse;
