@@ -304,6 +304,7 @@ impl ObjectImpl for VtVideoPreviewPrivate {
         // Handle GStreamer messages.
         let bus = pipeline.get_bus().unwrap();
         bus.add_watch_local({
+            let pipeline = pipeline.clone();
             let self_ = self_.downgrade();
             move |_, msg| {
                 let self_ = if let Some(self_) = self_.upgrade() {
@@ -321,7 +322,18 @@ impl ObjectImpl for VtVideoPreviewPrivate {
 
                         priv_.refresh_ui();
                     }
-                    MessageView::StateChanged(state_changed) => {
+                    MessageView::StateChanged(state_changed)
+                        if state_changed.get_src().as_ref()
+                            == Some(pipeline.upcast_ref::<gst::Object>()) =>
+                    {
+                        g_debug!(
+                            config::LOG_DOMAIN,
+                            "StateChanged old: {:?}, current: {:?}, pending: {:?}",
+                            state_changed.get_old(),
+                            state_changed.get_current(),
+                            state_changed.get_pending()
+                        );
+
                         if state_changed.get_current() == gst::State::Playing {
                             priv_.pipeline_playing.set(true);
                             button_play_pause_image
