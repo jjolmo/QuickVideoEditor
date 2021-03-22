@@ -3,7 +3,7 @@ extern crate gstreamer as gst;
 use std::{cell::Cell, rc::Rc};
 
 use gettextrs::*;
-use glib::{clone, g_debug, g_message};
+use glib::{clone, g_debug, g_message, g_warning};
 use gtk::{gio, glib, prelude::*};
 
 mod config;
@@ -49,8 +49,19 @@ fn main() {
     gtk::init().unwrap_or_else(|_| panic!("Failed to initialize GTK."));
 
     setlocale(LocaleCategory::LcAll, "");
-    bindtextdomain("video-trimmer", config::LOCALEDIR);
-    textdomain("video-trimmer");
+    if let Err(err) = bindtextdomain("video-trimmer", config::LOCALEDIR) {
+        g_warning!(config::LOG_DOMAIN, "Error in bindtextdomain(): {}", err);
+    }
+    if let Err(err) = bind_textdomain_codeset("video-trimmer", "UTF-8") {
+        g_warning!(
+            config::LOG_DOMAIN,
+            "Error in bind_textdomain_codeset(): {}",
+            err
+        );
+    }
+    if let Err(err) = textdomain("video-trimmer") {
+        g_warning!(config::LOG_DOMAIN, "Error in textdomain(): {}", err);
+    }
 
     glib::set_application_name(&format!(
         "{}{}",
