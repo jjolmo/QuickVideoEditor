@@ -64,3 +64,20 @@ pub fn timestamp(input: &str) -> Option<u32> {
 
     all_consuming(parser)(input).ok().map(|(_i, o)| o)
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn timestamp_works() {
+        assert_eq!(timestamp("1"), Some(1000));
+        assert_eq!(timestamp("1:23:45.678"), Some(5025678));
+        assert_eq!(timestamp("2.43"), Some(2430));
+        assert_eq!(timestamp("1."), None);
+        assert_eq!(timestamp("60"), None);
+        assert_eq!(timestamp(":3"), None);
+        assert_eq!(timestamp("2:"), None);
+        assert_eq!(timestamp("2:03"), Some(123000));
+    }
+}
