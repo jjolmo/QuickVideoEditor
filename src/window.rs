@@ -8,11 +8,14 @@ use std::{
 
 use futures_util::future::{abortable, FutureExt};
 use gettextrs::*;
-use glib::{clone, g_debug, g_warning};
-use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*};
-use once_cell::unsync::OnceCell;
+use glib::{clone, debug, warn};
+use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
-use crate::{config, parse, video_preview::VtVideoPreview};
+use crate::{
+    config::{self, G_LOG_DOMAIN},
+    parse,
+    video_preview::VtVideoPreview,
+};
 
 // Extracted from Totem.
 const VIDEO_MIME_TYPES: &[&str] = &[
@@ -64,20 +67,6 @@ const VIDEO_MIME_TYPES: &[&str] = &[
 ];
 
 #[derive(Debug)]
-struct Widgets {
-    header_bar: gtk::HeaderBar,
-    stack_main: gtk::Stack,
-    stack_header_bar: gtk::Stack,
-    button_open: gtk::Button,
-    button_trim: gtk::Button,
-    entry_start: gtk::Entry,
-    entry_end: gtk::Entry,
-    stack_video_preview: gtk::Stack,
-    revealer_done_notification: gtk::Revealer,
-    label_done_notification: gtk::Label,
-}
-
-#[derive(Debug)]
 enum NotificationState {
     Closed,
     Opening(glib::SourceId, Option<String>),
@@ -85,25 +74,21 @@ enum NotificationState {
     Closing(Option<String>),
 }
 
-#[derive(Debug)]
-pub struct VtWindowPrivate {
-    widgets: OnceCell<Widgets>,
-    content_type: RefCell<Option<glib::GString>>,
-    input_path: RefCell<Option<PathBuf>>,
-    video_preview: OnceCell<VtVideoPreview>,
-    done_notification_state: RefCell<NotificationState>,
-    output_file: RefCell<Option<gio::File>>,
+impl Default for NotificationState {
+    fn default() -> Self {
+        NotificationState::Closed
+    }
 }
 
-pub fn time_to_entry_text(time: gst::ClockTime) -> String {
-    let nanoseconds = time.nanoseconds().unwrap();
-    let mut seconds = nanoseconds / 1_000_000_000;
+pub fn time_to_entry_text(time: Duration) -> String {
+    let time = Duration::from_millis((time.as_millis() as f64 / 100.).round() as u64 * 100);
+    let mut seconds = time.as_secs();
     let mut minutes = seconds / 60;
     let hours = minutes / 60;
     seconds %= 60;
     minutes %= 60;
 
-    let fractional = (nanoseconds / 100_000_000) % 10;
+    let fractional = (time.subsec_nanos() / 100_000_000) % 10;
 
     if hours == 0 {
         format!("{}:{:02}.{}", minutes, seconds, fractional)
@@ -112,85 +97,107 @@ pub fn time_to_entry_text(time: gst::ClockTime) -> String {
     }
 }
 
+#[derive(Debug, Default, CompositeTemplate)]
+#[template(file = "window.ui")]
+pub struct VtWindowPrivate {
+    #[template_child]
+    video_preview: TemplateChild<VtVideoPreview>,
+    #[template_child]
+    button_trim: TemplateChild<gtk::Button>,
+    #[template_child]
+    entry_start: TemplateChild<gtk::Entry>,
+    #[template_child]
+    entry_end: TemplateChild<gtk::Entry>,
+    #[template_child]
+    stack_video_preview: TemplateChild<gtk::Stack>,
+    #[template_child]
+    revealer_done_notification: TemplateChild<gtk::Revealer>,
+    #[template_child]
+    label_done_notification: TemplateChild<gtk::Label>,
+    #[template_child]
+    button_open: TemplateChild<gtk::Button>,
+    #[template_child]
+    button_close_done_notification: TemplateChild<gtk::Button>,
+    #[template_child]
+    box_empty_state: TemplateChild<gtk::Box>,
+    #[template_child]
+    stack_main: TemplateChild<gtk::Stack>,
+    #[template_child]
+    stack_header_bar: TemplateChild<gtk::Stack>,
+    #[template_child]
+    label_subtitle: TemplateChild<gtk::Label>,
+
+    content_type: RefCell<Option<glib::GString>>,
+    input_path: RefCell<Option<PathBuf>>,
+    done_notification_state: RefCell<NotificationState>,
+    output_file: RefCell<Option<gio::File>>,
+}
+
 impl VtWindowPrivate {
     fn on_entry_changed(&self) {
-        let widgets = self.widgets.get().unwrap();
-        let video_preview = self.video_preview.get().unwrap();
-
-        let start_end = validate_entries(&widgets.entry_start, &widgets.entry_end);
-        video_preview.set_start_end(start_end);
-        video_preview.refresh_timeline();
-
-        widgets.button_trim.set_sensitive(start_end.is_some());
+        let start_end = validate_entries(&self.entry_start, &self.entry_end);
+        self.video_preview.set_start_end(start_end);
+        self.button_trim.set_sensitive(start_end.is_some());
     }
 
-    fn on_got_duration(&self, duration: gst::ClockTime) {
-        let widgets = self.widgets.get().unwrap();
-
+    fn on_got_duration(&self, duration: i64) {
         // If the user hasn't started typing in the timestamp entries, fill them with default
         // values.
-        if !widgets.entry_start.get_text().is_empty() || !widgets.entry_end.get_text().is_empty() {
+        if !self.entry_start.get_text().is_empty() || !self.entry_end.get_text().is_empty() {
             return;
         }
 
-        let duration = duration.nanoseconds().unwrap() as f64;
+        let duration = duration as f64;
         let start = duration / 3.;
         let end = start * 2.;
 
         let start = start as u64;
         let end = (end as u64).max(start + 1);
 
-        let start = gst::ClockTime::from_nseconds(start);
-        let end = gst::ClockTime::from_nseconds(end);
+        let start = Duration::from_micros(start);
+        let end = Duration::from_micros(end);
 
-        widgets.entry_start.set_text(&time_to_entry_text(start));
-        widgets.entry_end.set_text(&time_to_entry_text(end));
+        self.entry_start.set_text(&time_to_entry_text(start));
+        self.entry_end.set_text(&time_to_entry_text(end));
 
         // Select the text so the behavior of typing doesn't change compared to if we hadn't set
         // the text.
-        if widgets.entry_start.is_focus() {
-            widgets.entry_start.select_region(0, -1);
-        } else if widgets.entry_end.is_focus() {
-            widgets.entry_end.select_region(0, -1);
+        if self.entry_start.get_focus_child().is_some() {
+            self.entry_start.select_region(0, -1);
+        } else if self.entry_end.get_focus_child().is_some() {
+            self.entry_end.select_region(0, -1);
         }
     }
 
-    fn on_set_start_end(&self, start: gst::ClockTime, end: gst::ClockTime) {
-        let widgets = self.widgets.get().unwrap();
-
+    fn on_set_start_end(&self, start: Duration, end: Duration) {
         let text = time_to_entry_text(start);
-        if parse::timestamp(&widgets.entry_start.get_text())
+        if parse::timestamp(&self.entry_start.get_text())
             .map(|x| x != parse::timestamp(&text).unwrap())
             .unwrap_or(true)
         {
-            widgets.entry_start.set_text(&text);
+            self.entry_start.set_text(&text);
         }
 
         let text = time_to_entry_text(end);
-        if parse::timestamp(&widgets.entry_end.get_text())
+        if parse::timestamp(&self.entry_end.get_text())
             .map(|x| x != parse::timestamp(&text).unwrap())
             .unwrap_or(true)
         {
-            widgets.entry_end.set_text(&text);
+            self.entry_end.set_text(&text);
         }
     }
 
     fn on_video_preview_error(&self) {
-        self.video_preview.get().unwrap().destroy();
-        self.widgets
-            .get()
-            .unwrap()
-            .stack_video_preview
+        self.video_preview.destroy();
+        self.stack_video_preview
             .set_visible_child_name("page_error");
     }
 
     fn show_done_notification(&self, file_name: String) {
-        let widgets = self.widgets.get().unwrap();
-
         let mut state = self.done_notification_state.borrow_mut();
         match *state {
             NotificationState::Closed => {
-                let source = glib::timeout_add_local_once(Duration::from_secs(5), {
+                let source = glib::timeout_add_seconds_local_once(5, {
                     let self_ = self.get_instance().downgrade();
                     move || {
                         let self_ = self_.upgrade().unwrap();
@@ -202,14 +209,14 @@ impl VtWindowPrivate {
                 *state = NotificationState::Opening(source, None);
                 drop(state);
 
-                widgets.label_done_notification.set_text(&format!(
+                self.label_done_notification.set_text(&format!(
                     "{} {}",
                     file_name,
                     // Translators: text on the in-app notification after trimming was done.
                     // The template is: <video filename> has been saved
                     gettext("has been saved")
                 ));
-                widgets.revealer_done_notification.set_reveal_child(true);
+                self.revealer_done_notification.set_reveal_child(true);
             }
             NotificationState::Opening(_, ref mut new_file_name)
             | NotificationState::Closing(ref mut new_file_name) => {
@@ -246,18 +253,13 @@ impl VtWindowPrivate {
         }
         drop(state);
 
-        self.widgets
-            .get()
-            .unwrap()
-            .revealer_done_notification
-            .set_reveal_child(false);
+        self.revealer_done_notification.set_reveal_child(false);
     }
 
     fn on_child_revealed_changed(&self) {
-        let widgets = self.widgets.get().unwrap();
         let mut state = self.done_notification_state.borrow_mut();
 
-        if widgets.revealer_done_notification.get_child_revealed() {
+        if self.revealer_done_notification.get_child_revealed() {
             match *state {
                 NotificationState::Opening(_, None) => {
                     let source = if let NotificationState::Opening(source, _) =
@@ -275,13 +277,9 @@ impl VtWindowPrivate {
                     self.close_done_notification(new_file_name);
                 }
                 ref other => {
-                    g_warning!(
-                        config::LOG_DOMAIN,
-                        "Unexpected notification state: {:?}",
-                        other
-                    );
+                    warn!("Unexpected notification state: {:?}", other);
 
-                    let source = glib::timeout_add_local_once(Duration::from_secs(5), {
+                    let source = glib::timeout_add_seconds_local_once(5, {
                         let self_ = self.get_instance().downgrade();
                         move || {
                             let self_ = self_.upgrade().unwrap();
@@ -300,7 +298,7 @@ impl VtWindowPrivate {
                 }
                 NotificationState::Closing(ref mut new_file_name @ Some(_)) => {
                     let new_file_name = new_file_name.take().unwrap();
-                    let source = glib::timeout_add_local_once(Duration::from_secs(5), {
+                    let source = glib::timeout_add_seconds_local_once(5, {
                         let self_ = self.get_instance().downgrade();
                         move || {
                             let self_ = self_.upgrade().unwrap();
@@ -311,21 +309,17 @@ impl VtWindowPrivate {
                     *state = NotificationState::Opening(source, None);
                     drop(state);
 
-                    widgets.label_done_notification.set_text(&format!(
+                    self.label_done_notification.set_text(&format!(
                         "{} {}",
                         new_file_name,
                         // Translators: text on the in-app notification after trimming was done.
                         // The template is: <video filename> has been saved
                         gettext("has been saved")
                     ));
-                    widgets.revealer_done_notification.set_reveal_child(true);
+                    self.revealer_done_notification.set_reveal_child(true);
                 }
                 ref other => {
-                    g_warning!(
-                        config::LOG_DOMAIN,
-                        "Unexpected notification state: {:?}",
-                        other
-                    );
+                    warn!("Unexpected notification state: {:?}", other);
 
                     *state = NotificationState::Closed;
                 }
@@ -340,7 +334,7 @@ impl VtWindowPrivate {
         start: glib::GString,
         end: glib::GString,
     ) {
-        g_debug!(config::LOG_DOMAIN, "trim: from {} to {}", start, end);
+        debug!("trim: from {} to {}", start, end);
 
         let self_ = self.get_instance();
 
@@ -366,7 +360,6 @@ impl VtWindowPrivate {
             let file_chooser = gtk::FileChooserNativeBuilder::new()
                 .transient_for(&self_)
                 .action(gtk::FileChooserAction::Save)
-                .do_overwrite_confirmation(true)
                 .modal(true)
                 .build();
             file_chooser.set_current_name(&current_name);
@@ -377,7 +370,10 @@ impl VtWindowPrivate {
             file_chooser.connect_response(move |file_chooser, response| {
                 if let Some(tx) = tx.borrow_mut().take() {
                     if response == gtk::ResponseType::Accept {
-                        tx.send(Some(file_chooser.get_filename().unwrap())).unwrap();
+                        tx.send(Some(
+                            file_chooser.get_file().unwrap().get_path().expect("TODO"),
+                        ))
+                        .unwrap();
                     } else {
                         tx.send(None).unwrap();
                     }
@@ -407,7 +403,7 @@ impl VtWindowPrivate {
     ) {
         let self_ = self.get_instance();
 
-        g_debug!(config::LOG_DOMAIN, "output path: {:?}", output_path);
+        debug!("output path: {:?}", output_path);
 
         let mut args: Vec<&OsStr> = [
             "ffmpeg".as_ref(),
@@ -438,7 +434,7 @@ impl VtWindowPrivate {
             args.push("+faststart".as_ref());
         }
         args.push(output_path.as_ref());
-        g_debug!(config::LOG_DOMAIN, "invoking: {:?}", args);
+        debug!("invoking: {:?}", args);
 
         match gio::Subprocess::newv(
             &args,
@@ -502,21 +498,20 @@ impl VtWindowPrivate {
 
                     // Has to be in an idle to not block the close() above.
                     // https://gitlab.gnome.org/GNOME/gtk/-/issues/2926
-                    glib::idle_add_local(move || {
-                        dialog.show_all();
-                        Continue(false)
+                    glib::idle_add_local_once(move || {
+                        dialog.show();
                     });
                 };
                 let (future, handle) = abortable(future);
                 let future = future.map(|_| ());
 
                 trimming_dialog.connect_response(move |dialog, _| {
-                    g_debug!(config::LOG_DOMAIN, "force exiting the subprocess");
+                    debug!("force exiting the subprocess");
                     subprocess.force_exit();
                     handle.abort();
                     dialog.close();
                 });
-                trimming_dialog.show_all();
+                trimming_dialog.show();
 
                 glib::MainContext::default().spawn_local(future);
             }
@@ -531,7 +526,7 @@ impl VtWindowPrivate {
                     .modal(true)
                     .build();
                 dialog.connect_response(move |dialog, _| dialog.close());
-                dialog.show_all();
+                dialog.show();
             }
         }
     }
@@ -543,15 +538,12 @@ impl ObjectSubclass for VtWindowPrivate {
     type Type = VtWindow;
     type ParentType = gtk::ApplicationWindow;
 
-    fn new() -> Self {
-        Self {
-            widgets: OnceCell::new(),
-            content_type: RefCell::new(None),
-            input_path: RefCell::new(None),
-            video_preview: OnceCell::new(),
-            done_notification_state: RefCell::new(NotificationState::Closed),
-            output_file: RefCell::new(None),
-        }
+    fn class_init(klass: &mut Self::Class) {
+        Self::bind_template(klass);
+    }
+
+    fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
+        obj.init_template();
     }
 }
 
@@ -589,30 +581,28 @@ impl ObjectImpl for VtWindowPrivate {
     fn constructed(&self, self_: &Self::Type) {
         self.parent_constructed(self_);
 
-        let builder =
-            gtk::Builder::from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui");
+        if config::PROFILE == "Devel" {
+            self_.get_style_context().add_class("devel");
+        }
 
-        let video_preview = VtVideoPreview::new(&builder);
-
-        video_preview
+        self.video_preview
             .connect_local("notify::duration", false, {
                 let self_ = self_.downgrade();
-                let video_preview = video_preview.downgrade();
                 move |_| {
-                    let duration: gst::ClockTime = video_preview
-                        .upgrade()
-                        .unwrap()
+                    let self_ = self_.upgrade().unwrap();
+                    let priv_ = VtWindowPrivate::from_instance(&self_);
+
+                    let duration: i64 = priv_
+                        .video_preview
                         .get_property("duration")
                         .unwrap()
                         .get()
                         .unwrap()
                         .unwrap();
-                    if duration.is_none() {
+                    if duration == 0 {
                         return None;
                     }
 
-                    let self_ = self_.upgrade().unwrap();
-                    let priv_ = VtWindowPrivate::from_instance(&self_);
                     priv_.on_got_duration(duration);
 
                     None
@@ -620,13 +610,14 @@ impl ObjectImpl for VtWindowPrivate {
             })
             .unwrap();
 
-        video_preview
+        self.video_preview
             .connect_local("set-start-end", false, {
                 let self_ = self_.downgrade();
                 move |args| {
-                    let mut args = args.iter().skip(1).map(|x| {
-                        gst::ClockTime::from_mseconds(x.get::<u32>().unwrap().unwrap().into())
-                    });
+                    let mut args = args
+                        .iter()
+                        .skip(1)
+                        .map(|x| Duration::from_millis(x.get::<u32>().unwrap().unwrap().into()));
                     let start = args.next().unwrap();
                     let end = args.next().unwrap();
 
@@ -639,7 +630,7 @@ impl ObjectImpl for VtWindowPrivate {
             })
             .unwrap();
 
-        video_preview
+        self.video_preview
             .connect_local("error", false, {
                 let self_ = self_.downgrade();
                 move |_| {
@@ -652,59 +643,69 @@ impl ObjectImpl for VtWindowPrivate {
             })
             .unwrap();
 
-        self.video_preview.set(video_preview).unwrap();
-
-        if config::PROFILE == "Devel" {
-            self_.get_style_context().add_class("devel");
-        }
-
-        let stack_main: gtk::Stack = builder.get_object("stack_main").unwrap();
-        let stack_header_bar: gtk::Stack = builder.get_object("stack_header_bar").unwrap();
-        let header_bar: gtk::HeaderBar = builder.get_object("header_bar").unwrap();
-        let button_open: gtk::Button = builder.get_object("button_open").unwrap();
-        let button_trim: gtk::Button = builder.get_object("button_trim").unwrap();
-        let entry_start: gtk::Entry = builder.get_object("entry_start").unwrap();
-        let entry_end: gtk::Entry = builder.get_object("entry_end").unwrap();
-        let stack_video_preview: gtk::Stack = builder.get_object("stack_video_preview").unwrap();
-        let revealer_done_notification: gtk::Revealer =
-            builder.get_object("revealer_done_notification").unwrap();
-        let label_done_notification: gtk::Label =
-            builder.get_object("label_done_notification").unwrap();
-        let button_close_done_notification: gtk::Button = builder
-            .get_object("button_close_done_notification")
-            .unwrap();
-        let overlay_main: gtk::Overlay = builder.get_object("overlay_main").unwrap();
-        let box_empty_state: gtk::Box = builder.get_object("box_empty_state").unwrap();
-
-        self_.add(&overlay_main);
-        self_.set_titlebar(Some(&stack_header_bar));
-
         // The open button.
-        button_open.connect_clicked(clone!(@weak self_ => move |_| {
-            let filter = gtk::FileFilter::new();
-            // Translators: file chooser file filter name.
-            filter.set_name(Some(&gettext("Video files")));
-            for mime_type in VIDEO_MIME_TYPES {
-                filter.add_mime_type(mime_type);
+        self.button_open.connect_clicked({
+            let self_ = self_.downgrade();
+            move |_| {
+                let self_ = self_.upgrade().unwrap();
+                let filter = gtk::FileFilter::new();
+                // Translators: file chooser file filter name.
+                filter.set_name(Some(&gettext("Video files")));
+                for mime_type in VIDEO_MIME_TYPES {
+                    filter.add_mime_type(mime_type);
+                }
+
+                let file_chooser = gtk::FileChooserNativeBuilder::new()
+                    .transient_for(&self_)
+                    .action(gtk::FileChooserAction::Open)
+                    // Translators: file chooser dialog title.
+                    .title(&gettext("Open video"))
+                    .transient_for(&self_)
+                    .modal(true)
+                    .build();
+
+                file_chooser.add_filter(&filter);
+
+                file_chooser.connect_response({
+                    let file_chooser = RefCell::new(Some(file_chooser.clone()));
+                    move |_, response| {
+                        let file_chooser = file_chooser.borrow_mut().take().unwrap();
+
+                        if response != gtk::ResponseType::Accept {
+                            return;
+                        }
+
+                        let file = file_chooser.get_file().unwrap();
+                        if file.get_path().is_none() {
+                            let dialog = gtk::MessageDialogBuilder::new()
+                                // Translators: error dialog title.
+                                .text(&gettext("Error"))
+                                .secondary_text(&gettext(
+                                    // Translators: error dialog text.
+                                    "Video Trimmer can only operate on local files. Please choose another file.",
+                                ))
+                                .message_type(gtk::MessageType::Error)
+                                .buttons(gtk::ButtonsType::Ok)
+                                .transient_for(&self_)
+                                .modal(true)
+                                .build();
+                            dialog.connect_response(|dialog, _| {
+                                dialog.close();
+                            });
+                            dialog.show();
+                            return;
+                        }
+
+                        self_.open(file);
+                    }
+                });
+
+                file_chooser.show();
             }
-
-            let file_chooser = gtk::FileChooserNativeBuilder::new()
-                .transient_for(&self_)
-                .action(gtk::FileChooserAction::Open)
-                // Translators: file chooser dialog title.
-                .title(&gettext("Open video"))
-                .build();
-
-            file_chooser.add_filter(&filter);
-
-            let response = file_chooser.run();
-            if response == gtk::ResponseType::Accept {
-                self_.open(file_chooser.get_file().unwrap());
-            }
-        }));
+        });
 
         // Start and end timestamp validation and visualization.
-        entry_start.connect_property_text_notify({
+        self.entry_start.connect_property_text_notify({
             let self_ = self_.downgrade();
             move |_| {
                 let self_ = self_.upgrade().unwrap();
@@ -712,7 +713,7 @@ impl ObjectImpl for VtWindowPrivate {
                 priv_.on_entry_changed();
             }
         });
-        entry_end.connect_property_text_notify({
+        self.entry_end.connect_property_text_notify({
             let self_ = self_.downgrade();
             move |_| {
                 let self_ = self_.upgrade().unwrap();
@@ -722,58 +723,59 @@ impl ObjectImpl for VtWindowPrivate {
         });
 
         // The trim button.
-        button_trim.connect_clicked(clone!(@weak self_ => move |_| {
-            let priv_ = VtWindowPrivate::from_instance(&self_);
-            let widgets = priv_.widgets.get().unwrap();
-
-            if validate_entries(&widgets.entry_start, &widgets.entry_end).is_none() {
-                // This should not happen normally because the button should be disabled.
-                g_warning!(config::LOG_DOMAIN,"Trim pressed with invalid timestamps");
-                return;
-            }
-
-            let start = widgets.entry_start.get_text();
-            let end = widgets.entry_end.get_text();
-
-            let extension = priv_.content_type
-                .borrow()
-                .as_ref()
-                .map(glib::GString::as_str)
-                .and_then(|content_type| {
-                    if content_type == "video/x-matroska" {
-                        // mime_guess returns "mk3d" for matroska which is weird.
-                        Some(&["mkv"][..])
-                    } else {
-                        mime_guess::get_mime_extensions_str(content_type)
-                    }
-                })
-                .and_then(|exts| exts.get(0))
-                .unwrap_or(&"mp4")
-                .to_string();
-
-            let input_path = priv_.input_path.borrow();
-            if input_path.is_none() {
-                // This should not happen normally because if the button is visible then we should
-                // have the input path already.
-                g_warning!(config::LOG_DOMAIN,"Trim pressed without input path");
-                return;
-            }
-
-            let input_path = input_path.clone().unwrap();
-
-            priv_.trim(input_path, extension, start, end);
-        }));
-
-        revealer_done_notification.connect_property_child_revealed_notify({
-            let self_ = self_.downgrade();
-            move |_| {
-                let self_ = self_.upgrade().unwrap();
+        self.button_trim
+            .connect_clicked(clone!(@weak self_ => move |_| {
                 let priv_ = VtWindowPrivate::from_instance(&self_);
-                priv_.on_child_revealed_changed();
-            }
-        });
 
-        button_close_done_notification.connect_clicked({
+                if validate_entries(&priv_.entry_start, &priv_.entry_end).is_none() {
+                    // This should not happen normally because the button should be disabled.
+                    warn!("Trim pressed with invalid timestamps");
+                    return;
+                }
+
+                let start = priv_.entry_start.get_text();
+                let end = priv_.entry_end.get_text();
+
+                let extension = priv_.content_type
+                    .borrow()
+                    .as_ref()
+                    .map(glib::GString::as_str)
+                    .and_then(|content_type| {
+                        if content_type == "video/x-matroska" {
+                            // mime_guess returns "mk3d" for matroska which is weird.
+                            Some(&["mkv"][..])
+                        } else {
+                            mime_guess::get_mime_extensions_str(content_type)
+                        }
+                    })
+                    .and_then(|exts| exts.get(0))
+                    .unwrap_or(&"mp4")
+                    .to_string();
+
+                let input_path = priv_.input_path.borrow();
+                if input_path.is_none() {
+                    // This should not happen normally because if the button is visible then we should
+                    // have the input path already.
+                    warn!("Trim pressed without input path");
+                    return;
+                }
+
+                let input_path = input_path.clone().unwrap();
+
+                priv_.trim(input_path, extension, start, end);
+            }));
+
+        self.revealer_done_notification
+            .connect_property_child_revealed_notify({
+                let self_ = self_.downgrade();
+                move |_| {
+                    let self_ = self_.upgrade().unwrap();
+                    let priv_ = VtWindowPrivate::from_instance(&self_);
+                    priv_.on_child_revealed_changed();
+                }
+            });
+
+        self.button_close_done_notification.connect_clicked({
             let self_ = self_.downgrade();
             move |_| {
                 let self_ = self_.upgrade().unwrap();
@@ -786,67 +788,45 @@ impl ObjectImpl for VtWindowPrivate {
         self_.connect_destroy(move |self_| {
             let self_ = self_.clone().downcast::<VtWindow>().unwrap();
             let priv_ = VtWindowPrivate::from_instance(&self_);
-            priv_.video_preview.get().unwrap().destroy();
+            priv_.video_preview.destroy();
         });
 
-        box_empty_state.drag_dest_set(gtk::DestDefaults::ALL, &[], gdk::DragAction::COPY);
-        box_empty_state.drag_dest_add_uri_targets();
-        box_empty_state.connect_drag_data_received({
+        let drop_target = gtk::DropTarget::new(gio::File::static_type(), gdk::DragAction::COPY);
+        drop_target.connect_drop({
             let self_ = self_.downgrade();
-            move |_, context, _, _, data, _, time| {
-                let self_ = self_.upgrade().unwrap();
-
-                let uris = data.get_uris();
-                if let Some(uri) = uris.get(0) {
-                    self_.open(gio::File::new_for_uri(&uri));
+            move |_, data, _, _| {
+                if let Some(file) = data.downcast_ref::<gio::File>().and_then(|x| x.get()) {
+                    let self_ = self_.upgrade().unwrap();
+                    self_.open(file);
+                    return true;
                 }
 
-                context.drag_finish(true, false, time);
+                false
             }
         });
-
-        let widgets = Widgets {
-            header_bar,
-            stack_main,
-            stack_header_bar,
-            button_open,
-            button_trim,
-            entry_start,
-            entry_end,
-            stack_video_preview,
-            revealer_done_notification,
-            label_done_notification,
-        };
-        self.widgets.set(widgets).unwrap();
+        self.box_empty_state.add_controller(&drop_target);
     }
 }
 
 impl WidgetImpl for VtWindowPrivate {}
-impl ContainerImpl for VtWindowPrivate {}
-impl BinImpl for VtWindowPrivate {}
 impl WindowImpl for VtWindowPrivate {}
 impl ApplicationWindowImpl for VtWindowPrivate {}
 
 glib::wrapper! {
     pub struct VtWindow(ObjectSubclass<VtWindowPrivate>)
-        @extends gtk::Widget, gtk::Container, gtk::Bin, gtk::Window, gtk::ApplicationWindow;
+        @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow,
+        @implements gio::ActionMap, gio::ActionGroup;
 }
 
 impl VtWindow {
     pub fn new(app: &gtk::Application, output_file: Option<gio::File>) -> Self {
-        let window = glib::Object::new(&[
-            ("application", app),
-            ("output-file", &output_file),
-            // These parameters are chosen to make the default size of the video 640×360.
-            ("default-width", &640),
-            ("default-height", &488),
-        ])
-        .unwrap();
+        let window =
+            glib::Object::new(&[("application", app), ("output-file", &output_file)]).unwrap();
 
         let provider = gtk::CssProvider::new();
         provider.load_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/style.css");
-        gtk::StyleContext::add_provider_for_screen(
-            &gdk::Screen::get_default().unwrap(),
+        gtk::StyleContext::add_provider_for_display(
+            &gdk::Display::get_default().unwrap(),
             &provider,
             gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
         );
@@ -858,15 +838,15 @@ impl VtWindow {
 
     pub fn open(&self, file: gio::File) {
         let priv_ = VtWindowPrivate::from_instance(self);
-        let widgets = priv_.widgets.get().unwrap();
 
-        widgets.stack_main.set_visible_child_name("page_main");
-        widgets.stack_header_bar.set_visible_child_name("page_main");
+        priv_.stack_main.set_visible_child_name("page_main");
+        priv_.stack_header_bar.set_visible_child_name("page_main");
+        self.set_default_widget(Some(&*priv_.button_trim));
 
-        priv_.video_preview.get().unwrap().open(&file.get_uri());
+        priv_.video_preview.open(&file);
 
         // Focus the entry when coming from the empty state.
-        widgets.entry_start.grab_focus();
+        priv_.entry_start.grab_focus();
 
         // Verified in callers.
         *priv_.input_path.borrow_mut() = Some(file.get_path().unwrap());
@@ -876,7 +856,6 @@ impl VtWindow {
             let self_ = self.clone();
             async move {
                 let priv_ = VtWindowPrivate::from_instance(&self_);
-                let widgets = priv_.widgets.get().unwrap();
 
                 // May take a long time on a network mount.
                 let info = file
@@ -890,16 +869,13 @@ impl VtWindow {
                 match info {
                     Ok(info) => {
                         let display_name = info.get_display_name();
-                        widgets.header_bar.set_subtitle(Some(display_name.as_str()));
+                        priv_.label_subtitle.set_text(display_name.as_str());
+                        priv_.label_subtitle.set_visible(true);
 
                         if let Some(fast_content_type) =
                             info.get_attribute_string("standard::fast-content-type")
                         {
-                            g_debug!(
-                                config::LOG_DOMAIN,
-                                "fast-content-type: {}",
-                                fast_content_type
-                            );
+                            debug!("fast-content-type: {}", fast_content_type);
                             *priv_.content_type.borrow_mut() = Some(fast_content_type);
                         }
                     }
@@ -913,9 +889,12 @@ impl VtWindow {
                             .message_type(gtk::MessageType::Error)
                             .buttons(gtk::ButtonsType::Ok)
                             .transient_for(&self_)
+                            .modal(true)
                             .build();
-                        dialog.run();
-                        self_.get_application().unwrap().quit();
+                        dialog.connect_response(move |_, _| {
+                            self_.get_application().unwrap().quit();
+                        });
+                        dialog.show();
                     }
                 }
             }

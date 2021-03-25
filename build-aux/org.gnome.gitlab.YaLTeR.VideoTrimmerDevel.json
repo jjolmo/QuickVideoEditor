@@ -1,7 +1,7 @@
 {
     "app-id" : "org.gnome.gitlab.YaLTeR.VideoTrimmerDevel",
     "runtime" : "org.gnome.Platform",
-    "runtime-version" : "3.38",
+    "runtime-version" : "40",
     "sdk" : "org.gnome.Sdk",
     "sdk-extensions" : [
         "org.freedesktop.Sdk.Extension.rust-stable"
@@ -43,12 +43,7 @@
         "append-path" : "/usr/lib/sdk/rust-stable/bin",
         "build-args" : [
             "--share=network"
-        ],
-        "env" : {
-            "CARGO_HOME" : "/run/build/video-trimmer/cargo",
-            "RUST_BACKTRACE" : "1",
-            "RUST_LOG" : "video-trimmer=debug"
-        }
+        ]
     },
     "modules" : [
         {

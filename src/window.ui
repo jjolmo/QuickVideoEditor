@@ -1,439 +1,244 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.1 -->
 <interface>
-  <requires lib="gtk+" version="3.24"/>
-  <object class="GtkBox" id="box_timeline_position">
-    <property name="width-request">2</property>
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="halign">start</property>
-    <child>
-      <placeholder/>
-    </child>
-    <style>
-      <class name="vt-timeline-position"/>
-    </style>
-  </object>
-  <object class="GtkBox" id="box_timeline_selection">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <child>
-      <placeholder/>
-    </child>
-    <style>
-      <class name="vt-timeline"/>
-      <class name="vt-timeline-selection"/>
-    </style>
-  </object>
-  <object class="GtkOverlay" id="overlay_main">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <child>
-      <object class="GtkStack" id="stack_main">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
+  <requires lib="gtk" version="4.0"/>
+  <template class="VtWindow" parent="GtkApplicationWindow">
+    <property name="title" translatable="yes">Video Trimmer</property>
+    <!-- These parameters are chosen to make the default size of the video 640×360. -->
+    <property name="default-width">640</property>
+    <property name="default-height">535</property>
+    <child type="titlebar">
+      <object class="GtkStack" id="stack_header_bar">
         <property name="transition-type">crossfade</property>
         <child>
-          <object class="GtkBox" id="box_empty_state">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
+          <object class="GtkHeaderBar">
             <child>
-              <object class="GtkBox">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="valign">center</property>
-                <property name="margin-start">32</property>
-                <property name="margin-end">32</property>
-                <property name="margin-top">32</property>
-                <property name="margin-bottom">32</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="margin-bottom">32</property>
-                    <property name="pixel-size">128</property>
-                    <property name="icon-name">video-x-generic-symbolic</property>
-                    <style>
-                      <class name="dim-label"/>
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="label" translatable="yes" comments="Label on the initial state.">Press the Open button to open a video file.</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
+              <object class="GtkButton" id="button_open">
+                <property name="label" translatable="yes" comments="Video open button label.">Open</property>
+                <style>
+                  <class name="suggested-action"/>
+                </style>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
           </object>
         </child>
         <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="orientation">vertical</property>
-            <child>
-              <object class="GtkBox">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="halign">center</property>
-                <property name="margin-start">18</property>
-                <property name="margin-end">18</property>
-                <property name="margin-top">18</property>
-                <property name="margin-bottom">18</property>
+          <object class="GtkStackPage">
+            <property name="name">page_main</property>
+            <property name="child">
+              <object class="GtkHeaderBar">
+                <property name="title-widget">
+                  <object class="GtkBox" id="box">
+                  <property name="orientation">vertical</property>
+                  <property name="halign">center</property>
+                  <property name="valign">center</property>
+                  <child>
+                    <object class="GtkLabel">
+                      <property name="ellipsize">end</property>
+                      <property name="halign">center</property>
+                      <property name="wrap">False</property>
+                      <property name="single-line-mode">True</property>
+                      <property name="width-chars">5</property>
+                      <property name="label" bind-source="VtWindow" bind-property="title" bind-flags="sync-create"/>
+                      <style>
+                        <class name="title"/>
+                      </style>
+                    </object>
+                  </child>
+                  <child>
+                    <object class="GtkLabel" id="label_subtitle">
+                      <property name="ellipsize">end</property>
+                      <property name="halign">center</property>
+                      <property name="wrap">False</property>
+                      <property name="single-line-mode">True</property>
+                      <property name="visible">False</property>
+                      <style>
+                        <class name="subtitle"/>
+                      </style>
+                    </object>
+                  </child>
+                </object>
+                </property>
                 <child>
-                  <object class="GtkEntry" id="entry_end">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="width-chars">7</property>
-                    <property name="caps-lock-warning">False</property>
-                    <property name="placeholder-text">0:00</property>
+                  <object class="GtkButton" id="button_trim">
+                    <property name="label" translatable="yes" comments="Trim button.">Trim</property>
+                    <property name="sensitive">0</property>
                     <style>
-                      <class name="error"/>
+                      <class name="suggested-action"/>
                     </style>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="pack-type">end</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="margin-end">12</property>
-                    <property name="label" translatable="yes" comments="Label for the entry for the end timestamp.">End</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="pack-type">end</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="margin-end">12</property>
-                    <property name="label" translatable="yes" comments="Label for the entry for the start timestamp.">Start</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="entry_start">
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="margin-end">24</property>
-                    <property name="width-chars">7</property>
-                    <property name="caps-lock-warning">False</property>
-                    <property name="placeholder-text">0:00</property>
-                    <style>
-                      <class name="error"/>
-                    </style>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">3</property>
-                  </packing>
                 </child>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack-type">end</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
+            </property>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkOverlay" id="overlay_main">
+        <property name="child">
+          <object class="GtkStack" id="stack_main">
+            <property name="transition-type">crossfade</property>
             <child>
-              <object class="GtkStack" id="stack_video_preview">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="transition-type">over-down-up</property>
+              <object class="GtkBox" id="box_empty_state">
                 <child>
-                  <object class="GtkBox" id="box_video_preview">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
+                  <object class="GtkBox">
+                    <property name="hexpand">1</property>
+                    <property name="valign">center</property>
+                    <property name="margin-start">32</property>
+                    <property name="margin-end">32</property>
+                    <property name="margin-top">32</property>
+                    <property name="margin-bottom">32</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkBox">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="margin-start">18</property>
-                        <property name="margin-end">18</property>
-                        <property name="margin-top">12</property>
-                        <property name="margin-bottom">12</property>
-                        <child>
-                          <object class="GtkButton" id="button_play_pause">
-                            <property name="visible">True</property>
-                            <property name="can-focus">True</property>
-                            <property name="receives-default">True</property>
-                            <property name="margin-end">8</property>
-                            <child>
-                              <object class="GtkImage" id="button_play_pause_image">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <property name="icon-name">media-playback-pause-symbolic</property>
-                              </object>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkLabel" id="label_current_time">
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <property name="margin-end">8</property>
-                            <property name="label">&lt;span font_features="tnum"&gt;0:00&lt;/span&gt;</property>
-                            <property name="use-markup">True</property>
-                            <property name="width-chars">5</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">1</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkOverlay" id="overlay_timeline">
-                            <property name="visible">True</property>
-                            <property name="can-focus">False</property>
-                            <child>
-                              <object class="GtkEventBox" id="event_box_timeline_bg">
-                                <property name="visible">True</property>
-                                <property name="can-focus">False</property>
-                                <child>
-                                  <object class="GtkBox" id="box_timeline_bg">
-                                    <property name="visible">True</property>
-                                    <property name="can-focus">False</property>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                    <style>
-                                      <class name="vt-timeline-bg"/>
-                                      <class name="vt-timeline"/>
-                                    </style>
-                                  </object>
-                                </child>
-                              </object>
-                              <packing>
-                                <property name="index">-1</property>
-                              </packing>
-                            </child>
-                          </object>
-                          <packing>
-                            <property name="expand">True</property>
-                            <property name="fill">True</property>
-                            <property name="pack-type">end</property>
-                            <property name="position">2</property>
-                          </packing>
-                        </child>
+                      <object class="GtkImage">
+                        <property name="margin-bottom">32</property>
+                        <property name="pixel-size">128</property>
+                        <property name="icon-name">video-x-generic-symbolic</property>
+                        <style>
+                          <class name="dim-label"/>
+                        </style>
                       </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="pack-type">end</property>
-                        <property name="position">0</property>
-                      </packing>
                     </child>
                     <child>
-                      <placeholder/>
+                      <object class="GtkLabel">
+                        <property name="label" translatable="yes" comments="Label on the initial state.">Press the Open button to open a video file.</property>
+                      </object>
                     </child>
                   </object>
                 </child>
-                <child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkStackPage">
+                <property name="name">page_main</property>
+                <property name="child">
                   <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
+                      <object class="GtkStack" id="stack_video_preview">
+                        <property name="vexpand">1</property>
+                        <property name="transition-type">over-down-up</property>
+                        <child>
+                          <object class="VtVideoPreview" id="video_preview"/>
+                        </child>
+                        <child>
+                          <object class="GtkStackPage">
+                            <property name="name">page_error</property>
+                            <property name="child">
+                              <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="vexpand">1</property>
+                                    <property name="margin-start">18</property>
+                                    <property name="margin-end">18</property>
+                                    <property name="margin-top">18</property>
+                                    <property name="margin-bottom">18</property>
+                                    <property name="label" translatable="yes" comments="Label that is shown upon video preview loading error.">The video preview has failed to load.
+
+Please enter the start and end timestamps manually.
+
+If you&apos;re running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work.</property>
+                                    <property name="wrap">1</property>
+                                  </object>
+                                </child>
+                                <style>
+                                  <class name="background"/>
+                                </style>
+                              </object>
+                            </property>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="halign">center</property>
                         <property name="margin-start">18</property>
                         <property name="margin-end">18</property>
                         <property name="margin-top">18</property>
                         <property name="margin-bottom">18</property>
-                        <property name="label" translatable="yes" comments="Label that is shown upon video preview loading error.">The video preview has failed to load.
-
-Please enter the start and end timestamps manually.
-
-If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work.</property>
-                        <property name="wrap">True</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="margin-end">12</property>
+                            <property name="label" translatable="yes" comments="Label for the entry for the start timestamp.">Start</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="entry_start">
+                            <attributes>
+                              <attribute name="font-features" value="tnum=1"/>
+                            </attributes>
+                            <property name="margin-end">24</property>
+                            <property name="max-width-chars">7</property>
+                            <property name="placeholder-text">0:00</property>
+                            <style>
+                              <class name="error"/>
+                            </style>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="margin-end">12</property>
+                            <property name="label" translatable="yes" comments="Label for the entry for the end timestamp.">End</property>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="entry_end">
+                            <attributes>
+                              <attribute name="font-features" value="tnum=1"/>
+                            </attributes>
+                            <property name="max-width-chars">7</property>
+                            <property name="placeholder-text">0:00</property>
+                            <style>
+                              <class name="error"/>
+                            </style>
+                          </object>
+                        </child>
                       </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
                     </child>
-                    <style>
-                      <class name="background"/>
-                    </style>
                   </object>
-                  <packing>
-                    <property name="name">page_error</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
+                </property>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="pack-type">end</property>
-                <property name="position">1</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="name">page_main</property>
-            <property name="position">1</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="index">-1</property>
-      </packing>
-    </child>
-    <child type="overlay">
-      <object class="GtkRevealer" id="revealer_done_notification">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="halign">center</property>
-        <property name="valign">start</property>
-        <property name="transition-duration">200</property>
-        <child>
-          <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="margin-start">18</property>
-            <property name="margin-end">18</property>
-            <property name="spacing">12</property>
-            <child>
-              <object class="GtkLabel" id="label_done_notification">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="margin-start">12</property>
-                <property name="label">Trimmed video.mp4 has been saved</property>
-                <property name="ellipsize">start</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="button_close_done_notification">
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="focus-on-click">False</property>
-                <property name="receives-default">True</property>
-                <property name="relief">none</property>
+        </property>
+        <child type="overlay">
+          <object class="GtkRevealer" id="revealer_done_notification">
+            <property name="halign">center</property>
+            <property name="valign">start</property>
+            <property name="transition-duration">200</property>
+            <property name="child">
+              <object class="GtkBox">
+                <property name="margin-start">18</property>
+                <property name="margin-end">18</property>
+                <property name="spacing">12</property>
                 <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <property name="icon-name">window-close-symbolic</property>
+                  <object class="GtkLabel" id="label_done_notification">
+                    <property name="margin-start">12</property>
+                    <property name="label">Trimmed video.mp4 has been saved</property>
+                    <property name="ellipsize">start</property>
                   </object>
                 </child>
+                <child>
+                  <object class="GtkButton" id="button_close_done_notification">
+                    <property name="focus-on-click">0</property>
+                    <property name="has-frame">false</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="icon-name">window-close-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <style>
+                  <class name="app-notification"/>
+                </style>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="pack-type">end</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <style>
-              <class name="app-notification"/>
-            </style>
+            </property>
           </object>
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkStack" id="stack_header_bar">
-    <property name="visible">True</property>
-    <property name="can-focus">False</property>
-    <property name="transition-type">crossfade</property>
-    <child>
-      <object class="GtkHeaderBar">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="title" translatable="yes" comments="Main window title.">Video Trimmer</property>
-        <property name="show-close-button">True</property>
-        <child>
-          <object class="GtkButton" id="button_open">
-            <property name="label" translatable="yes" comments="Video open button label.">Open</property>
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <style>
-              <class name="suggested-action"/>
-            </style>
-          </object>
-        </child>
-        <style>
-          <class name="titlebar"/>
-        </style>
-      </object>
-    </child>
-    <child>
-      <object class="GtkHeaderBar" id="header_bar">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
-        <property name="title" translatable="yes" comments="Main window title.">Video Trimmer</property>
-        <property name="show-close-button">True</property>
-        <child>
-          <object class="GtkButton" id="button_trim">
-            <property name="label" translatable="yes" comments="Trim button.">Trim</property>
-            <property name="visible">True</property>
-            <property name="sensitive">False</property>
-            <property name="can-focus">True</property>
-            <property name="receives-default">True</property>
-            <style>
-              <class name="suggested-action"/>
-            </style>
-          </object>
-        </child>
-        <style>
-          <class name="titlebar"/>
-        </style>
-      </object>
-      <packing>
-        <property name="name">page_main</property>
-        <property name="position">1</property>
-      </packing>
-    </child>
-  </object>
+  </template>
 </interface>

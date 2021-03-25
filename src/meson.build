@@ -14,7 +14,7 @@ conf.set_quoted('PKGDATADIR', pkgdatadir)
 conf.set_quoted('VERSION', meson.project_version() + version_suffix)
 conf.set_quoted('NAME_SUFFIX', name_suffix)
 conf.set_quoted('APP_ID', app_id)
-conf.set_quoted('LOG_DOMAIN', 'VideoTrimmer')
+conf.set_quoted('G_LOG_DOMAIN', 'VideoTrimmer')
 conf.set_quoted('PROFILE', profile)
 
 configure_file(
@@ -35,6 +35,7 @@ sources = files(
   'config.rs',
   'main.rs',
   'parse.rs',
+  'timeline.rs',
   'video_preview.rs',
   'window.rs',
 )

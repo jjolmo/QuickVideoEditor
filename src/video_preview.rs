@@ -1,706 +1,234 @@
-use std::{
-    cell::{Cell, RefCell},
-    time::Duration,
-};
+use glib::subclass::prelude::*;
+use gtk::{gio, glib};
 
-use glib::{g_debug, g_warning, subclass, subclass::prelude::*, translate::*};
-use gst::prelude::*;
-use gtk::{gdk, glib, prelude::*};
-use once_cell::unsync::OnceCell;
+mod imp {
+    use super::*;
+    use crate::{config::G_LOG_DOMAIN, timeline::VtTimeline};
+    use glib::{subclass, warn};
+    use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use once_cell::unsync::OnceCell;
 
-use crate::{config, parse, window::time_to_entry_text};
+    #[derive(Debug, Default, CompositeTemplate)]
+    #[template(file = "video_preview.ui")]
+    pub struct VtVideoPreview {
+        #[template_child]
+        picture_video_preview: TemplateChild<gtk::Picture>,
+        #[template_child]
+        button_play_pause: TemplateChild<gtk::Button>,
+        #[template_child]
+        button_play_pause_image: TemplateChild<gtk::Image>,
+        #[template_child]
+        label_current_time: TemplateChild<gtk::Label>,
+        #[template_child]
+        timeline: TemplateChild<VtTimeline>,
 
-const TOLERANCE: f64 = 5.;
+        media_file: OnceCell<gtk::MediaFile>,
+    }
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq)]
-enum DragType {
-    Playback,
-    Start,
-    End,
-}
+    #[glib::object_subclass]
+    impl ObjectSubclass for VtVideoPreview {
+        const NAME: &'static str = "VtVideoPreview";
+        type Type = super::VtVideoPreview;
+        type ParentType = gtk::Widget;
 
-#[derive(Debug, Clone, Copy, Eq, PartialEq)]
-enum CursorType {
-    Normal,
-    StartEnd,
-}
+        fn class_init(klass: &mut Self::Class) {
+            Self::bind_template(klass);
+        }
 
-impl CursorType {
-    fn gtk_cursor_name(self) -> &'static str {
-        match self {
-            CursorType::Normal => "default",
-            CursorType::StartEnd => "col-resize",
+        fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
+            obj.init_template();
         }
     }
-}
 
-#[derive(Debug)]
-struct Immutable {
-    label_current_time: gtk::Label,
-    box_timeline_bg: gtk::Box,
-    box_timeline_selection: gtk::Box,
-    box_timeline_position: gtk::Box,
-    pipeline: gst::Pipeline,
-    // If there's an error creating one of the GStreamer elements, this will be set to None.
-    playbin: Option<gst::Element>,
-    gesture_drag: gtk::GestureDrag,
-    event_controller_motion: gtk::EventControllerMotion,
-    bus: gst::Bus,
-    seek_fail_sender: glib::Sender<()>,
-}
-
-#[derive(Debug)]
-pub struct VtVideoPreviewPrivate {
-    immutable: OnceCell<Immutable>,
-    builder: OnceCell<gtk::Builder>,
-    pipeline_playing: Cell<bool>,
-    start_end: Cell<Option<(u32, u32)>>,
-    drag_start: Cell<f64>,
-    drag_type: Cell<DragType>,
-    cursor_type: Cell<CursorType>,
-    duration: Cell<gst::ClockTime>,
-    seeking: Cell<bool>,
-    timeout_id: RefCell<Option<glib::SourceId>>,
-}
-
-#[glib::object_subclass]
-impl ObjectSubclass for VtVideoPreviewPrivate {
-    const NAME: &'static str = "VtVideoPreview";
-    type Type = VtVideoPreview;
-    type ParentType = glib::Object;
-
-    fn new() -> Self {
-        Self {
-            immutable: OnceCell::new(),
-            builder: OnceCell::new(),
-            pipeline_playing: Cell::new(false),
-            start_end: Cell::new(None),
-            drag_start: Cell::new(0.),
-            drag_type: Cell::new(DragType::Playback),
-            cursor_type: Cell::new(CursorType::Normal),
-            duration: Cell::new(gst::ClockTime::none()),
-            seeking: Cell::new(false),
-            timeout_id: RefCell::new(None),
-        }
-    }
-}
-
-impl ObjectImpl for VtVideoPreviewPrivate {
-    fn properties() -> &'static [glib::ParamSpec] {
-        use once_cell::sync::Lazy;
-        static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-            vec![
-                glib::ParamSpec::object(
-                    "builder",
-                    "builder",
-                    "builder",
-                    gtk::Builder::static_type(),
-                    glib::ParamFlags::READWRITE | glib::ParamFlags::CONSTRUCT_ONLY,
-                ),
-                glib::ParamSpec::uint64(
+    impl ObjectImpl for VtVideoPreview {
+        fn properties() -> &'static [glib::ParamSpec] {
+            use once_cell::sync::Lazy;
+            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
+                vec![glib::ParamSpec::int64(
                     "duration",
                     "duration",
                     "duration",
                     0,
-                    std::u64::MAX,
-                    gst::CLOCK_TIME_NONE.to_glib(),
+                    std::i64::MAX,
+                    0,
                     glib::ParamFlags::READABLE,
-                ),
-            ]
-        });
+                )]
+            });
 
-        PROPERTIES.as_ref()
-    }
-
-    fn signals() -> &'static [subclass::Signal] {
-        use once_cell::sync::Lazy;
-        static SIGNALS: Lazy<Vec<subclass::Signal>> = Lazy::new(|| {
-            vec![
-                subclass::Signal::builder(
-                    "set-start-end",
-                    &[glib::Type::U32.into(), glib::Type::U32.into()],
-                    glib::Type::UNIT.into(),
-                )
-                .build(),
-                subclass::Signal::builder("error", &[], glib::Type::UNIT.into()).build(),
-            ]
-        });
-
-        SIGNALS.as_ref()
-    }
-
-    fn set_property(
-        &self,
-        _obj: &Self::Type,
-        _id: usize,
-        value: &glib::Value,
-        pspec: &glib::ParamSpec,
-    ) {
-        match pspec.get_name() {
-            "builder" => self.builder.set(value.get().unwrap().unwrap()).unwrap(),
-            _ => unreachable!(),
+            PROPERTIES.as_ref()
         }
-    }
 
-    fn get_property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-        match pspec.get_name() {
-            "builder" => self.builder.get().unwrap().to_value(),
-            "duration" => self.duration.get().to_value(),
-            _ => unreachable!(),
+        fn signals() -> &'static [subclass::Signal] {
+            use once_cell::sync::Lazy;
+            static SIGNALS: Lazy<Vec<subclass::Signal>> = Lazy::new(|| {
+                vec![
+                    subclass::Signal::builder(
+                        "set-start-end",
+                        &[glib::Type::U32.into(), glib::Type::U32.into()],
+                        glib::Type::UNIT.into(),
+                    )
+                    .build(),
+                    subclass::Signal::builder("error", &[], glib::Type::UNIT.into()).build(),
+                ]
+            });
+
+            SIGNALS.as_ref()
         }
-    }
 
-    fn constructed(&self, self_: &Self::Type) {
-        self.parent_constructed(self_);
-
-        let builder = self.builder.get().unwrap();
-
-        let box_video_preview: gtk::Box = builder.get_object("box_video_preview").unwrap();
-        let label_current_time: gtk::Label = builder.get_object("label_current_time").unwrap();
-        let button_play_pause: gtk::Button = builder.get_object("button_play_pause").unwrap();
-        let button_play_pause_image: gtk::Image =
-            builder.get_object("button_play_pause_image").unwrap();
-        let overlay_timeline: gtk::Overlay = builder.get_object("overlay_timeline").unwrap();
-        let event_box_timeline_bg: gtk::EventBox =
-            builder.get_object("event_box_timeline_bg").unwrap();
-        let box_timeline_bg: gtk::Box = builder.get_object("box_timeline_bg").unwrap();
-        let box_timeline_selection: gtk::Box =
-            builder.get_object("box_timeline_selection").unwrap();
-        let box_timeline_position: gtk::Box = builder.get_object("box_timeline_position").unwrap();
-
-        overlay_timeline.add_overlay(&box_timeline_selection);
-        overlay_timeline.set_overlay_pass_through(&box_timeline_selection, true);
-        overlay_timeline.add_overlay(&box_timeline_position);
-        overlay_timeline.set_overlay_pass_through(&box_timeline_position, true);
-
-        // Set up the drag gesture.
-        event_box_timeline_bg.set_events(gdk::EventMask::all());
-
-        let gesture_drag = gtk::GestureDrag::new(&event_box_timeline_bg);
-        gesture_drag.connect_drag_begin({
-            let self_ = self_.downgrade();
-            move |_, x, y| {
-                let self_ = self_.upgrade().unwrap();
-                let priv_ = VtVideoPreviewPrivate::from_instance(&self_);
-                priv_.on_timeline_drag_start(x, y);
+        fn get_property(
+            &self,
+            _obj: &Self::Type,
+            _id: usize,
+            pspec: &glib::ParamSpec,
+        ) -> glib::Value {
+            match pspec.get_name() {
+                "duration" => self.media_file.get().unwrap().get_duration().to_value(),
+                _ => unreachable!(),
             }
-        });
-        gesture_drag.connect_drag_update({
-            let self_ = self_.downgrade();
-            move |_, offset_x, offset_y| {
-                let self_ = self_.upgrade().unwrap();
-                let priv_ = VtVideoPreviewPrivate::from_instance(&self_);
-                priv_.on_timeline_drag_update(offset_x, offset_y);
-            }
-        });
-
-        let event_controller_motion = gtk::EventControllerMotion::new(&event_box_timeline_bg);
-        event_controller_motion.connect_motion({
-            let self_ = self_.downgrade();
-            move |_, x, y| {
-                let self_ = self_.upgrade().unwrap();
-                let priv_ = VtVideoPreviewPrivate::from_instance(&self_);
-                priv_.on_timeline_motion(x, y);
-            }
-        });
-
-        // Create the GStreamer objects.
-        let pipeline = gst::Pipeline::new(None);
-
-        let gtkglsink = gst::ElementFactory::make("gtkglsink", None);
-        let glsinkbin = gst::ElementFactory::make("glsinkbin", None);
-        let playbin = gst::ElementFactory::make("playbin3", None);
-
-        // The creation can fail if the corresponding GStreamer plugins aren't installed.
-        if let Err(ref err) = gtkglsink {
-            g_warning!(config::LOG_DOMAIN, "Error making gtkglsink: {}", err);
-        }
-        if let Err(ref err) = glsinkbin {
-            g_warning!(config::LOG_DOMAIN, "Error making glsinkbin: {}", err);
-        }
-        if let Err(ref err) = playbin {
-            g_warning!(config::LOG_DOMAIN, "Error making playbin3: {}", err);
         }
 
-        let playbin = match (gtkglsink, glsinkbin, playbin) {
-            (Ok(gtkglsink), Ok(glsinkbin), Ok(playbin)) => {
-                glsinkbin.set_property("sink", &gtkglsink).unwrap();
+        fn constructed(&self, self_: &Self::Type) {
+            self.parent_constructed(self_);
 
-                playbin.set_property("video-sink", &glsinkbin).unwrap();
-
-                pipeline.add(&playbin).unwrap();
-
-                // Add the video widget to the UI.
-                let widget = gtkglsink
-                    .get_property("widget")
-                    .unwrap()
-                    .get::<gtk::Widget>()
-                    .unwrap()
-                    .unwrap();
-
-                box_video_preview.pack_start(&widget, true, true, 0);
-
-                Some(playbin)
-            }
-            _ => {
-                // Emit an error on the next good occasion.
-                glib::idle_add_local({
+            self.timeline
+                .connect_local("set-start-end", false, {
                     let self_ = self_.downgrade();
-                    move || {
+                    move |args| {
                         let self_ = self_.upgrade().unwrap();
-                        self_.emit_by_name("error", &[]).unwrap();
-                        glib::Continue(false)
+                        self_
+                            .emit_by_name_with_values("set-start-end", &args[1..])
+                            .unwrap()
                     }
-                });
+                })
+                .unwrap();
 
-                None
-            }
-        };
-
-        // Connect the timeline resize.
-        box_timeline_bg.connect_size_allocate({
-            let self_ = self_.downgrade();
-            move |_, _| {
-                let self_ = self_.upgrade().unwrap();
-                let priv_ = VtVideoPreviewPrivate::from_instance(&self_);
-                priv_.refresh_timeline();
-                priv_.refresh_ui();
-            }
-        });
-
-        // Connect the play-pause button.
-        button_play_pause.connect_clicked({
-            let self_ = self_.downgrade();
-            move |_| {
-                let self_ = self_.upgrade().unwrap();
-                let priv_ = VtVideoPreviewPrivate::from_instance(&self_);
-                priv_
-                    .immutable
-                    .get()
-                    .unwrap()
-                    .pipeline
-                    .set_state(if priv_.pipeline_playing.get() {
-                        gst::State::Paused
+            // Connect the play-pause button.
+            self.button_play_pause.connect_clicked({
+                let self_ = self_.downgrade();
+                move |_| {
+                    let self_ = self_.upgrade().unwrap();
+                    let priv_ = VtVideoPreview::from_instance(&self_);
+                    let media_file = priv_.media_file.get().unwrap();
+                    if media_file.get_playing() {
+                        media_file.pause();
                     } else {
-                        gst::State::Playing
-                    })
-                    .unwrap();
-            }
-        });
-
-        // Refresh the time label and seek slider position on a timer.
-        let timeout_id = glib::timeout_add_local(Duration::from_millis(100), {
-            let self_ = self_.downgrade();
-            move || {
-                if let Some(self_) = self_.upgrade() {
-                    let priv_ = VtVideoPreviewPrivate::from_instance(&self_);
-                    priv_.refresh_ui();
-                    glib::Continue(true)
-                } else {
-                    glib::Continue(false)
-                }
-            }
-        });
-        *self.timeout_id.borrow_mut() = Some(timeout_id);
-
-        // Handle GStreamer messages.
-        let bus = pipeline.get_bus().unwrap();
-        bus.add_watch_local({
-            let pipeline = pipeline.clone();
-            let self_ = self_.downgrade();
-            move |_, msg| {
-                let self_ = if let Some(self_) = self_.upgrade() {
-                    self_
-                } else {
-                    return glib::Continue(false);
-                };
-                let priv_ = VtVideoPreviewPrivate::from_instance(&self_);
-
-                use gst::MessageView;
-                match msg.view() {
-                    MessageView::Eos(_) => {
-                        button_play_pause_image
-                            .set_property_icon_name(Some("media-playback-start-symbolic"));
-
-                        priv_.refresh_ui();
-                    }
-                    MessageView::StateChanged(state_changed)
-                        if state_changed.get_src().as_ref()
-                            == Some(pipeline.upcast_ref::<gst::Object>()) =>
-                    {
-                        g_debug!(
-                            config::LOG_DOMAIN,
-                            "StateChanged old: {:?}, current: {:?}, pending: {:?}",
-                            state_changed.get_old(),
-                            state_changed.get_current(),
-                            state_changed.get_pending()
-                        );
-
-                        if state_changed.get_current() == gst::State::Playing {
-                            priv_.pipeline_playing.set(true);
-                            button_play_pause_image
-                                .set_property_icon_name(Some("media-playback-pause-symbolic"));
-                        } else {
-                            priv_.pipeline_playing.set(false);
-                            button_play_pause_image
-                                .set_property_icon_name(Some("media-playback-start-symbolic"));
-                        }
-
-                        priv_.refresh_ui();
-                    }
-                    MessageView::AsyncDone(_) => {
-                        // The seek has finished.
-                        priv_.seeking.set(false);
-                        priv_.refresh_ui();
-                    }
-                    MessageView::Error(err) => {
-                        g_warning!(
-                            config::LOG_DOMAIN,
-                            "Error from {:?}: {} ({:?})",
-                            err.get_src().map(|s| s.get_path_string()),
-                            err.get_error(),
-                            err.get_debug()
-                        );
-
-                        let _ = self_.emit_by_name("error", &[]);
-                    }
-                    _ => (),
-                };
-
-                glib::Continue(true)
-            }
-        })
-        .unwrap();
-
-        let (seek_fail_sender, seek_fail_receiver) =
-            glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-        seek_fail_receiver.attach(None, {
-            let self_ = self_.downgrade();
-            move |_| {
-                if let Some(self_) = self_.upgrade() {
-                    let priv_ = VtVideoPreviewPrivate::from_instance(&self_);
-                    priv_.seeking.set(false);
-                    priv_.refresh_ui();
-                }
-
-                glib::Continue(true)
-            }
-        });
-
-        self.immutable
-            .set(Immutable {
-                label_current_time,
-                box_timeline_bg,
-                box_timeline_selection,
-                box_timeline_position,
-                pipeline,
-                playbin,
-                gesture_drag,
-                event_controller_motion,
-                bus,
-                seek_fail_sender,
-            })
-            .unwrap();
-    }
-}
-
-glib::wrapper! {
-    pub struct VtVideoPreview(ObjectSubclass<VtVideoPreviewPrivate>);
-}
-
-impl VtVideoPreview {
-    pub fn new(builder: &gtk::Builder) -> Self {
-        glib::Object::new(&[("builder", builder)]).unwrap()
-    }
-
-    pub fn open(&self, uri: &glib::GString) {
-        VtVideoPreviewPrivate::from_instance(self).open(uri);
-    }
-
-    pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
-        VtVideoPreviewPrivate::from_instance(self).set_start_end(start_end);
-    }
-
-    pub fn refresh_timeline(&self) {
-        VtVideoPreviewPrivate::from_instance(self).refresh_timeline();
-    }
-
-    pub fn destroy(&self) {
-        VtVideoPreviewPrivate::from_instance(self).destroy();
-    }
-}
-
-impl VtVideoPreviewPrivate {
-    pub fn destroy(&self) {
-        let imm = self.immutable.get().unwrap();
-
-        imm.pipeline.set_state(gst::State::Null).unwrap();
-
-        // This returns Err if called multiple times.
-        let _ = imm.bus.remove_watch();
-
-        if let Some(timeout_id) = self.timeout_id.borrow_mut().take() {
-            glib::source_remove(timeout_id);
-        }
-    }
-
-    pub fn open(&self, uri: &glib::GString) {
-        let imm = self.immutable.get().unwrap();
-
-        let playbin = match imm.playbin.as_ref() {
-            Some(playbin) => playbin,
-            None => {
-                // There was an error creating the GStreamer elements.
-                return;
-            }
-        };
-
-        playbin.set_property("uri", uri).unwrap();
-
-        let (tx, rx) = glib::MainContext::channel(glib::PRIORITY_DEFAULT);
-        rx.attach(None, {
-            let self_ = self.get_instance().downgrade();
-            move |_| {
-                if let Some(self_) = self_.upgrade() {
-                    let _ = self_.emit_by_name("error", &[]);
-                }
-
-                glib::Continue(false)
-            }
-        });
-
-        // Start the playback.
-        // Do it asynchronously since it can take a while on a network mount.
-        imm.pipeline.call_async(move |pipeline| {
-            if let Err(err) = pipeline.set_state(gst::State::Playing) {
-                // This fails for example when the GL dependencies aren't installed for the flatpak
-                // (when installing from Ubuntu 18.04 Software on a clean system, it doesn't
-                // install the dependencies properly).
-
-                g_warning!(
-                    config::LOG_DOMAIN,
-                    "pipeline.set_state(Playing) error: {}",
-                    err
-                );
-
-                let _ = tx.send(());
-            }
-        });
-    }
-
-    pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
-        self.start_end.set(start_end);
-    }
-
-    fn refresh_ui(&self) {
-        let imm = self.immutable.get().unwrap();
-
-        if let Some(position) = imm.pipeline.query_position::<gst::ClockTime>() {
-            let nanoseconds = position.nanoseconds().unwrap();
-            let mut seconds = nanoseconds / 1_000_000_000;
-            let mut minutes = seconds / 60;
-            let hours = minutes / 60;
-            seconds %= 60;
-            minutes %= 60;
-
-            let time = if hours == 0 {
-                format!("{}:{:02}", minutes, seconds)
-            } else {
-                format!("{}:{:02}:{:02}", hours, minutes, seconds)
-            };
-
-            imm.label_current_time
-                .set_markup(&format!("<span font_features=\"tnum\">{}</span>", time));
-
-            if let Some(duration) = imm.pipeline.query_duration::<gst::ClockTime>() {
-                // There's a DurationChanged message, however it is delivered before the first
-                // AsyncDone, which means it's possible that query_duration won't work yet. For
-                // instance, with GST_DEBUG=5 querying the duration upon receiving DurationChanged
-                // returns None all of the time.
-                //
-                // Hence, update the duration from here; this callback is called on a timer as well
-                // as upon receiving AsyncDone.
-                if self.duration.get() != duration {
-                    self.duration.set(duration);
-                    self.get_instance().notify("duration");
-                }
-
-                // Don't modify the position during seeking as it's out of date.
-                if !self.seeking.get() {
-                    let value = position.nanoseconds().unwrap() as f64
-                        / duration.nanoseconds().unwrap() as f64;
-
-                    let width = imm.box_timeline_bg.get_allocated_width();
-                    let margin_start = (value * width as f64).round() as i32;
-                    imm.box_timeline_position.set_margin_start(margin_start);
-                }
-            }
-        }
-    }
-
-    pub fn refresh_timeline(&self) {
-        let imm = self.immutable.get().unwrap();
-
-        let start_end = self.start_end.get();
-        let duration = imm.pipeline.query_duration::<gst::ClockTime>();
-
-        if start_end.is_none() || duration.is_none() {
-            imm.box_timeline_selection.set_opacity(0.);
-            return;
-        }
-
-        imm.box_timeline_selection.set_opacity(1.);
-        let (start, end) = start_end.unwrap();
-        let duration = duration.unwrap();
-
-        let duration = duration.mseconds().unwrap() as f64;
-        let start = (start as f64 / duration).min(1.).max(0.);
-        let end = (end as f64 / duration).min(1.).max(0.);
-
-        let width = imm.box_timeline_bg.get_allocated_width();
-        let margin_start = (start * width as f64).round() as i32;
-        let margin_end = ((1. - end) * width as f64).round() as i32;
-        imm.box_timeline_selection.set_margin_start(margin_start);
-        imm.box_timeline_selection.set_margin_end(margin_end);
-    }
-
-    fn on_timeline_drag_start(&self, x: f64, _y: f64) {
-        self.drag_start.set(x);
-        self.drag_type.set(DragType::Playback);
-
-        if self.start_end.get().is_some() {
-            let imm = self.immutable.get().unwrap();
-            let width = imm.box_timeline_bg.get_allocated_width() as f64;
-            let start = imm.box_timeline_selection.get_margin_start() as f64;
-            let end = width - imm.box_timeline_selection.get_margin_end() as f64;
-
-            if (x - end).abs() <= TOLERANCE {
-                self.drag_type.set(DragType::End);
-                self.drag_start.set(end);
-            } else if (x - start).abs() <= TOLERANCE {
-                self.drag_type.set(DragType::Start);
-                self.drag_start.set(start);
-            }
-        }
-
-        self.on_timeline_drag_update(0., 0.);
-    }
-
-    fn on_timeline_drag_update(&self, offset_x: f64, _offset_y: f64) {
-        let imm = self.immutable.get().unwrap();
-
-        let x = self.drag_start.get() + offset_x;
-        let width = imm.box_timeline_bg.get_allocated_width() as f64;
-
-        // Sanitize (this can get weird values when resizing the window while dragging).
-        let x = x.min(width).max(0.);
-        let value = x / width;
-
-        let position_width = imm.box_timeline_position.get_allocated_width() as f64;
-        imm.box_timeline_position
-            .set_margin_start(x.min(width - position_width) as i32);
-
-        if let Some(duration) = imm.pipeline.query_duration::<gst::ClockTime>() {
-            let time = duration.nanoseconds().unwrap() as f64 * value;
-            let time = gst::ClockTime::from_nseconds(time as u64);
-
-            self.seeking.set(true);
-
-            // Seek asynchronously as it takes longer than desirable.
-            imm.pipeline.call_async({
-                let seek_fail_sender = imm.seek_fail_sender.clone();
-                move |pipeline| {
-                    if let Err(err) = pipeline.seek_simple(gst::SeekFlags::FLUSH, time) {
-                        // This can fail on .ivf files.
-                        g_warning!(config::LOG_DOMAIN, "pipeline.seek_simple() error: {}", err);
-
-                        let _ = seek_fail_sender.send(());
+                        media_file.play();
                     }
                 }
             });
 
-            let start_end = self.start_end.get();
-            if start_end.is_none() {
-                return;
-            }
+            // Media file callbacks.
+            let media_file = gtk::MediaFile::new();
+            media_file.connect_property_playing_notify({
+                let self_ = self_.downgrade();
+                move |media_file| {
+                    let self_ = self_.upgrade().unwrap();
+                    let priv_ = VtVideoPreview::from_instance(&self_);
 
-            let (start, end) = start_end.unwrap();
-            let time = time.mseconds().unwrap() as u32;
-
-            let (start, end) = match self.drag_type.get() {
-                DragType::Start => {
-                    let text = time_to_entry_text(gst::ClockTime::from_mseconds(time.into()));
-
-                    if parse::timestamp(&text).unwrap() == end {
-                        // Don't set the text if the timestamps will match as that counts as an
-                        // invalid region.
-                        return;
-                    }
-
-                    if time <= end {
-                        (time, end)
+                    if media_file.get_playing() {
+                        priv_
+                            .button_play_pause_image
+                            .set_property_icon_name(Some("media-playback-pause-symbolic"));
                     } else {
-                        self.drag_type.set(DragType::End);
-                        (end, time)
+                        priv_
+                            .button_play_pause_image
+                            .set_property_icon_name(Some("media-playback-start-symbolic"));
                     }
                 }
-                DragType::End => {
-                    let text = time_to_entry_text(gst::ClockTime::from_mseconds(time.into()));
+            });
 
-                    if parse::timestamp(&text).unwrap() == start {
-                        // Don't set the text if the timestamps will match as that counts as an
-                        // invalid region.
-                        return;
-                    }
+            media_file.connect_property_error_notify({
+                let self_ = self_.downgrade();
+                move |media_file| {
+                    let error = media_file.get_error().unwrap();
 
-                    if time >= start {
-                        (start, time)
-                    } else {
-                        self.drag_type.set(DragType::Start);
-                        (time, start)
-                    }
+                    warn!("Error in MediaFile: {}", error);
+
+                    let self_ = self_.upgrade().unwrap();
+                    let _ = self_.emit_by_name("error", &[]);
                 }
-                _ => return,
-            };
+            });
 
-            self.get_instance()
-                .emit_by_name("set-start-end", &[&start, &end])
+            media_file.connect_property_duration_notify({
+                let self_ = self_.downgrade();
+                move |_| {
+                    let self_ = self_.upgrade().unwrap();
+                    self_.notify("duration");
+                }
+            });
+
+            media_file.connect_property_timestamp_notify({
+                let self_ = self_.downgrade();
+                move |media_file| {
+                    let self_ = self_.upgrade().unwrap();
+                    let priv_ = VtVideoPreview::from_instance(&self_);
+
+                    let position = media_file.get_timestamp();
+                    let mut seconds = position / 1_000_000;
+                    let mut minutes = seconds / 60;
+                    let hours = minutes / 60;
+                    seconds %= 60;
+                    minutes %= 60;
+
+                    let time = if hours == 0 {
+                        format!("{}:{:02}", minutes, seconds)
+                    } else {
+                        format!("{}:{:02}:{:02}", hours, minutes, seconds)
+                    };
+
+                    priv_.label_current_time.set_text(&time);
+                }
+            });
+
+            self.picture_video_preview.set_paintable(Some(&media_file));
+            self.timeline
+                .set_property("media-file", &media_file)
                 .unwrap();
+
+            self.media_file.set(media_file).unwrap();
+        }
+
+        fn dispose(&self, obj: &Self::Type) {
+            while let Some(child) = obj.get_first_child() {
+                child.unparent();
+            }
         }
     }
 
-    fn on_timeline_motion(&self, x: f64, _y: f64) {
-        let imm = self.immutable.get().unwrap();
+    impl WidgetImpl for VtVideoPreview {}
 
-        // Don't change the cursor while in drag.
-        if imm.gesture_drag.is_active() {
-            return;
+    impl VtVideoPreview {
+        pub fn open(&self, file: &gio::File) {
+            let media_file = self.media_file.get().unwrap();
+            media_file.set_file(Some(file));
+            media_file.play();
         }
 
-        let resizing_cursor = if self.start_end.get().is_some() {
-            let width = imm.box_timeline_bg.get_allocated_width() as f64;
-            let start = imm.box_timeline_selection.get_margin_start() as f64;
-            let end = width - imm.box_timeline_selection.get_margin_end() as f64;
-
-            (x - end).abs() <= TOLERANCE || (x - start).abs() <= TOLERANCE
-        } else {
-            false
-        };
-
-        let cursor_type = if resizing_cursor {
-            CursorType::StartEnd
-        } else {
-            CursorType::Normal
-        };
-
-        if self.cursor_type.get() != cursor_type {
-            let display = imm.box_timeline_bg.get_display();
-            let cursor = gdk::Cursor::from_name(&display, cursor_type.gtk_cursor_name()).unwrap();
-            imm.box_timeline_bg
-                .get_window()
-                .unwrap()
-                .set_cursor(Some(&cursor));
-            self.cursor_type.set(cursor_type);
+        pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
+            self.timeline.set_start_end(start_end);
         }
+
+        pub fn destroy(&self) {
+            self.media_file.get().unwrap().clear();
+        }
+    }
+}
+
+glib::wrapper! {
+    pub struct VtVideoPreview(ObjectSubclass<imp::VtVideoPreview>)
+        @extends gtk::Widget;
+}
+
+impl VtVideoPreview {
+    pub fn open(&self, file: &gio::File) {
+        imp::VtVideoPreview::from_instance(self).open(file);
+    }
+
+    pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
+        imp::VtVideoPreview::from_instance(self).set_start_end(start_end);
+    }
+
+    pub fn destroy(&self) {
+        imp::VtVideoPreview::from_instance(self).destroy();
     }
 }

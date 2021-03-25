@@ -1,66 +1,37 @@
-extern crate gstreamer as gst;
-
 use std::{cell::Cell, rc::Rc};
 
 use gettextrs::*;
-use glib::{clone, g_debug, g_message, g_warning};
+use glib::{clone, debug, info, warn, GlibLogger, GlibLoggerDomain, GlibLoggerFormat};
 use gtk::{gio, glib, prelude::*};
 
 mod config;
+use config::G_LOG_DOMAIN;
 mod parse;
+mod timeline;
 mod video_preview;
 mod window;
 use crate::window::VtWindow;
 
-fn fatal_error(text: &str) {
-    let dialog = gtk::MessageDialogBuilder::new()
-        // Translators: fatal error message dialog title.
-        .text(&gettext("Fatal Error"))
-        .secondary_text(text)
-        .message_type(gtk::MessageType::Error)
-        .buttons(gtk::ButtonsType::Ok)
-        .build();
-    dialog.run();
-}
-
 fn main() {
-    // This is required for doing GStreamer pipeline.set_state(Playing) asynchronously. Otherwise,
-    // on X11 the process aborts with an xcb assertion failure.
-    //
-    // TODO: change this cfg to gdk_backend = "x11" when this is released:
-    // https://github.com/gtk-rs/sys/pull/167
-    #[cfg(target_os = "linux")]
-    unsafe {
-        #[link(name = "X11")]
-        extern "C" {
-            fn XInitThreads() -> std::os::raw::c_int;
-        }
+    static GLIB_LOGGER: GlibLogger =
+        GlibLogger::new(GlibLoggerFormat::LineAndFile, GlibLoggerDomain::CrateTarget);
 
-        XInitThreads();
-    }
+    let _ = log::set_logger(&GLIB_LOGGER);
+    log::set_max_level(log::LevelFilter::Debug);
 
-    g_message!(
-        config::LOG_DOMAIN,
-        "Video Trimmer version {}",
-        config::VERSION
-    );
+    info!("Video Trimmer version {}", config::VERSION);
 
-    gst::init().unwrap();
     gtk::init().unwrap_or_else(|_| panic!("Failed to initialize GTK."));
 
     setlocale(LocaleCategory::LcAll, "");
     if let Err(err) = bindtextdomain("video-trimmer", config::LOCALEDIR) {
-        g_warning!(config::LOG_DOMAIN, "Error in bindtextdomain(): {}", err);
+        warn!("Error in bindtextdomain(): {}", err);
     }
     if let Err(err) = bind_textdomain_codeset("video-trimmer", "UTF-8") {
-        g_warning!(
-            config::LOG_DOMAIN,
-            "Error in bind_textdomain_codeset(): {}",
-            err
-        );
+        warn!("Error in bind_textdomain_codeset(): {}", err);
     }
     if let Err(err) = textdomain("video-trimmer") {
-        g_warning!(config::LOG_DOMAIN, "Error in textdomain(): {}", err);
+        warn!("Error in textdomain(): {}", err);
     }
 
     glib::set_application_name(&format!(
@@ -73,6 +44,9 @@ fn main() {
         .expect("Could not load resources");
     gio::resources_register(&res);
 
+    // Make GTK aware of the custom widgets.
+    let _ = window::VtWindow::static_type();
+
     let app = gtk::Application::new(
         Some(config::APP_ID),
         gio::ApplicationFlags::NON_UNIQUE | gio::ApplicationFlags::HANDLES_OPEN,
@@ -81,8 +55,7 @@ fn main() {
 
     let file = Rc::new(Cell::new(None));
     app.connect_open(clone!(@weak file => move |app, files, _hint| {
-        g_debug!(
-            config::LOG_DOMAIN,
+        debug!(
             "open: {:?}",
             files
                 .iter()
@@ -128,16 +101,28 @@ fn main() {
         let window = VtWindow::new(app, output_file);
         if let Some(file) = file {
             if file.get_path().is_none() {
-                // Translators: error dialog text.
-                fatal_error(&gettext("Video Trimmer can only operate on local files."));
-                app.quit();
+                let dialog = gtk::MessageDialogBuilder::new()
+                    // Translators: fatal error message dialog title.
+                    .text(&gettext("Fatal Error"))
+                    // Translators: error dialog text.
+                    .secondary_text(&gettext("Video Trimmer can only operate on local files."))
+                    .message_type(gtk::MessageType::Error)
+                    .buttons(gtk::ButtonsType::Ok)
+                    .build();
+                dialog.connect_response({
+                    let app = app.clone();
+                    move |_, _| {
+                        app.quit();
+                    }
+                });
+                dialog.show();
                 return;
             }
 
             window.open(file);
         }
 
-        window.show_all();
+        window.show();
     });
 
     let action = gio::SimpleAction::new("quit", None);

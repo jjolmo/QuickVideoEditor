@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="VtTimeline" parent="GtkWidget">
+    <style>
+      <class name="vt-timeline-bg"/>
+    </style>
+    <child>
+      <object class="GtkBox" id="box_timeline_selection">
+        <property name="can-target">0</property>
+        <style>
+          <class name="vt-timeline-selection"/>
+        </style>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="box_timeline_position">
+        <property name="width-request">2</property>
+        <property name="halign">start</property>
+        <property name="can-target">0</property>
+        <style>
+          <class name="vt-timeline-position"/>
+        </style>
+      </object>
+    </child>
+  </template>
+</interface>
