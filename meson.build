@@ -5,6 +5,8 @@ project('video-trimmer',
           license: 'GPL3+',
 )
 
+dependency('gtk4', version: '>= 4.0.0')
+
 i18n = import('i18n')
 
 if get_option('profile') == 'development'
