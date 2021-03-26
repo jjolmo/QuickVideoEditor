@@ -32,6 +32,7 @@ run_command(
 )
 
 sources = files(
+  'application.rs',
   'config.rs',
   'main.rs',
   'parse.rs',
