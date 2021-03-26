@@ -43,8 +43,8 @@ mod imp {
     impl ObjectImpl for VtVideoPreview {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpec::int64(
+            static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
+                [glib::ParamSpec::int64(
                     "duration",
                     "duration",
                     "duration",
@@ -60,8 +60,8 @@ mod imp {
 
         fn signals() -> &'static [subclass::Signal] {
             use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<Vec<subclass::Signal>> = Lazy::new(|| {
-                vec![
+            static SIGNALS: Lazy<[subclass::Signal; 2]> = Lazy::new(|| {
+                [
                     subclass::Signal::builder(
                         "set-start-end",
                         &[glib::Type::U32.into(), glib::Type::U32.into()],

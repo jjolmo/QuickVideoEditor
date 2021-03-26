@@ -550,8 +550,8 @@ impl ObjectSubclass for VtWindowPrivate {
 impl ObjectImpl for VtWindowPrivate {
     fn properties() -> &'static [glib::ParamSpec] {
         use once_cell::sync::Lazy;
-        static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-            vec![glib::ParamSpec::object(
+        static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
+            [glib::ParamSpec::object(
                 "output-file",
                 "output-file",
                 "output-file",

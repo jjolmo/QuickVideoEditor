@@ -83,8 +83,8 @@ mod imp {
     impl ObjectImpl for VtTimeline {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<Vec<glib::ParamSpec>> = Lazy::new(|| {
-                vec![glib::ParamSpec::object(
+            static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
+                [glib::ParamSpec::object(
                     "media-file",
                     "media-file",
                     "media-file",
@@ -98,8 +98,8 @@ mod imp {
 
         fn signals() -> &'static [subclass::Signal] {
             use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<Vec<subclass::Signal>> = Lazy::new(|| {
-                vec![subclass::Signal::builder(
+            static SIGNALS: Lazy<[subclass::Signal; 1]> = Lazy::new(|| {
+                [subclass::Signal::builder(
                     "set-start-end",
                     &[glib::Type::U32.into(), glib::Type::U32.into()],
                     glib::Type::UNIT.into(),
