@@ -44,9 +44,6 @@ fn main() {
         .expect("Could not load resources");
     gio::resources_register(&res);
 
-    // Make GTK aware of the custom widgets.
-    let _ = window::VtWindow::static_type();
-
     let app = gtk::Application::new(
         Some(config::APP_ID),
         gio::ApplicationFlags::NON_UNIQUE | gio::ApplicationFlags::HANDLES_OPEN,
