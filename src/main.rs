@@ -2,7 +2,7 @@ use std::{cell::Cell, rc::Rc};
 
 use gettextrs::*;
 use glib::{clone, debug, info, warn, GlibLogger, GlibLoggerDomain, GlibLoggerFormat};
-use gtk::{gio, glib, prelude::*};
+use gtk::{gdk, gio, glib, prelude::*};
 
 mod config;
 use config::G_LOG_DOMAIN;
@@ -97,6 +97,14 @@ fn main() {
     app.connect_activate(move |app| {
         let file = file.replace(None);
         let output_file = output_file.replace(None);
+
+        let provider = gtk::CssProvider::new();
+        provider.load_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/style.css");
+        gtk::StyleContext::add_provider_for_display(
+            &gdk::Display::get_default().unwrap(),
+            &provider,
+            gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
+        );
 
         let window = VtWindow::new(app, output_file);
         if let Some(file) = file {

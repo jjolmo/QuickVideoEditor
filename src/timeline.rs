@@ -3,7 +3,7 @@ use gtk::glib;
 
 mod imp {
     use super::*;
-    use crate::{parse, window::time_to_entry_text};
+    use crate::parse::{self, time_to_entry_text};
     use gtk::{gdk, glib::subclass, prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::{cell::Cell, time::Duration};

@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{str::FromStr, time::Duration};
 
 use nom::{
     branch::alt,
@@ -65,12 +65,29 @@ pub fn timestamp(input: &str) -> Option<u32> {
     all_consuming(parser)(input).ok().map(|(_i, o)| o)
 }
 
+pub fn time_to_entry_text(time: Duration) -> String {
+    let time = Duration::from_millis((time.as_millis() as f64 / 100.).round() as u64 * 100);
+    let mut seconds = time.as_secs();
+    let mut minutes = seconds / 60;
+    let hours = minutes / 60;
+    seconds %= 60;
+    minutes %= 60;
+
+    let fractional = (time.subsec_nanos() / 100_000_000) % 10;
+
+    if hours == 0 {
+        format!("{}:{:02}.{}", minutes, seconds, fractional)
+    } else {
+        format!("{}:{:02}:{:02}.{}", hours, minutes, seconds, fractional)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
-    fn timestamp_works() {
+    fn test_timestamp() {
         assert_eq!(timestamp("1"), Some(1000));
         assert_eq!(timestamp("1:23:45.678"), Some(5025678));
         assert_eq!(timestamp("2.43"), Some(2430));
@@ -79,5 +96,16 @@ mod tests {
         assert_eq!(timestamp(":3"), None);
         assert_eq!(timestamp("2:"), None);
         assert_eq!(timestamp("2:03"), Some(123000));
+    }
+
+    #[test]
+    fn test_time_to_entry_text() {
+        assert_eq!(&time_to_entry_text(Duration::from_millis(1234)), "0:01.2");
+        assert_eq!(&time_to_entry_text(Duration::from_millis(2000)), "0:02.0");
+        assert_eq!(&time_to_entry_text(Duration::from_millis(67890)), "1:07.9");
+        assert_eq!(
+            &time_to_entry_text(Duration::from_millis(3600000)),
+            "1:00:00.0"
+        );
     }
 }
