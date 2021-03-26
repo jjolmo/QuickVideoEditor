@@ -1,4 +1,4 @@
-project('video-trimmer',  
+project('video-trimmer',
         'rust',
           version: '0.4.2',
     meson_version: '>= 0.50.0',
