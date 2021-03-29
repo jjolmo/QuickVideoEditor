@@ -26,6 +26,17 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.5.0" date="2021-03-29">
+			<description>
+				<p>Video Trimmer is now a GTK 4 application!</p>
+				<ul>
+					<li>The GTK 4 port hopefully fixes video-driver-related crashes.</li>
+					<li>Improved window animations when opening videos.</li>
+					<li>Added Croatian translation (thanks milotype).</li>
+					<li>Updated translations.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.4.2" date="2021-02-25">
 			<description>
 				<p>This release fixes an error when trimming GoPro recordings.</p>
