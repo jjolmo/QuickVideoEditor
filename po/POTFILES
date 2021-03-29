@@ -1,5 +1,13 @@
+src/application.rs
+src/config.rs
 src/main.rs
+src/notification.rs
+src/notification.ui
+src/parse.rs
+src/timeline.rs
+src/timeline.ui
 src/video_preview.rs
+src/video_preview.ui
 src/window.rs
 src/window.ui
 
