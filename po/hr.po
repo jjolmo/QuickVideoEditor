@@ -1,250 +1,186 @@
-# Croatian translations for video-trimmer package.
-# Copyright (C) 2021 THE video-trimmer'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the video-trimmer package.
-# Automatically generated, 2021.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: video-trimmer\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-03-29 18:52+0300\n"
-"PO-Revision-Date: 2021-03-29 18:51+0300\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
-"Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Video Trimmer\n"
+"Language: hr\n"
 
 #. Translators: fatal error message dialog title.
 #: src/main.rs:20
 msgid "Fatal Error"
-msgstr ""
+msgstr "Fatalna greška"
 
 #. Main window title.
 #: src/main.rs:59 src/window.ui:393 src/window.ui:415
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
-msgstr ""
+msgstr "Kraćenje videa"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
 #: src/main.rs:95
 msgid "Output file path"
-msgstr ""
+msgstr "Staza datoteke rezultata"
 
 #. Translators: --output commandline option arg description.
 #: src/main.rs:97
 msgid "PATH"
-msgstr ""
+msgstr "STAZA"
 
 #. Translators: error dialog text.
 #: src/main.rs:123
 msgid "Video Trimmer can only operate on local files."
-msgstr ""
+msgstr "Program „Kraćenje videa” radi samo s lokalnim datotekema."
 
 #. Translators: text on the in-app notification after trimming was done.
 #. The template is: <video filename> has been saved
 #: src/window.rs:223 src/window.rs:336
 msgid "has been saved"
-msgstr ""
+msgstr "je spremljeno"
 
 #. Translators: this is the name part of the default filename
 #. presented in the save dialog.
 #: src/window.rs:377
 msgid "Trimmed video"
-msgstr ""
+msgstr "Skraćeni video"
 
 #. Translators: message dialog text.
 #: src/window.rs:467
 msgid "Trimming…"
-msgstr ""
+msgstr "Kraćenje …"
 
 #. Translators: error dialog text.
 #: src/window.rs:494
 msgid "Error trimming video"
-msgstr ""
+msgstr "Greška prilikom kraćenja videa"
 
 #. Translators: error dialog text.
 #: src/window.rs:502
 msgid "Could not communicate with the ffmpeg subprocess"
-msgstr ""
+msgstr "Neuspjela komunikacija s ffmpeg potprocesom"
 
 #. Translators: error dialog text.
 #: src/window.rs:543
 msgid "Could not create the ffmpeg subprocess"
-msgstr ""
+msgstr "Neuspjelo stvaranje ffmpeg potprocesa"
 
 #. Translators: file chooser file filter name.
 #: src/window.rs:694
 msgid "Video files"
-msgstr ""
+msgstr "Video datoteke"
 
 #. Translators: file chooser dialog title.
 #: src/window.rs:703
 msgid "Open video"
-msgstr ""
+msgstr "Otvori video"
 
 #. Translators: error dialog text when the input file information could
 #. not be retrieved (e.g. there's no such file on disk).
 #: src/window.rs:936
 msgid "Could not get input video information"
-msgstr ""
+msgstr "Neuspjelo dobivanje podataka videa unosa"
 
 #. Label on the initial state.
 #: src/window.ui:71
 msgid "Press the Open button to open a video file."
-msgstr ""
+msgstr "Za otvaranje videa pritisni gumb „Otvori”."
 
 #. Label for the entry for the end timestamp.
 #: src/window.ui:125
 msgid "End"
-msgstr ""
+msgstr "Kraj"
 
 #. Label for the entry for the start timestamp.
 #: src/window.ui:139
 msgid "Start"
-msgstr ""
+msgstr "Pokreni"
 
 #. Label that is shown upon video preview loading error.
 #: src/window.ui:286
-msgid ""
-"The video preview has failed to load.\n"
+msgid "The video preview has failed to load.\n"
 "\n"
 "Please enter the start and end timestamps manually.\n"
 "\n"
-"If you're running Video Trimmer under Flatpak, note that opening files by "
-"drag-and-drop may not work."
-msgstr ""
+"If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
+msgstr "Učitavanje pregleda videozapisa nije uspjelo.\n"
+"\n"
+"Upiši vremensku oznaku početka i kraja ručno.\n"
+"\n"
+"Ako koristiš „Kraćenje videa” na Flatpaku, imaj na umu da se datoteke možda ne mogu otvoriti povlačenjem i ispuštanjem."
 
 #. Video open button label.
 #: src/window.ui:397
 msgid "Open"
-msgstr ""
+msgstr "Otvori"
 
 #. Trim button.
 #: src/window.ui:419
 msgid "Trim"
-msgstr ""
+msgstr "Skrati"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
 msgid "Trim videos quickly"
-msgstr ""
+msgstr "Skrati videa brzo"
 
 #. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
 msgid "Cut;Movie;Film;Clip;"
-msgstr ""
+msgstr "Izreži;Skrati;Film;Video;Isječak;"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
 msgid "Ivan Molodetskikh"
-msgstr ""
+msgstr "Ivan Molodetskikh"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
-msgid ""
-"Video Trimmer cuts out a fragment of a video given the start and end "
-"timestamps. The video is never re-encoded, so the process is very fast and "
-"does not reduce the video quality."
-msgstr ""
+msgid "Video Trimmer cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality."
+msgstr "Programom „Kraćenje videa” izrezuje se dio videa s obzirom na vremensku oznaku početka i kraja. Video se ne kodira ponovo, stoga je postupak vrlo brz i ne smanjuje kvalitetu videa."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
 msgid "Main Window"
-msgstr ""
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
-msgid "This release fixes an error when trimming GoPro recordings."
-msgstr ""
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
-msgid ""
-"Data streams are no longer copied to the output file as a workaround to "
-"prevent errors on GoPro recordings."
-msgstr ""
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
-msgid "Updated Spanish translation."
-msgstr ""
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:40
-msgid ""
-"This release fixes an issue where not all streams from the input file were "
-"copied into the output file."
-msgstr ""
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:42
-msgid ""
-"All input file streams are now copied to the output file rather than just a "
-"single of each type. Subtitles are now copied too rather than skipped."
-msgstr ""
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:43
-msgid "Added Swedish translation (thanks Åke Engelbrektson)."
-msgstr ""
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:44
-msgid "Added Spanish translation (thanks Óscar Fernández Díaz)."
-msgstr ""
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:45
-msgid "Made the commandline argument description translatable."
-msgstr ""
+msgstr "Glavni prozor"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:51
-msgid ""
-"This release replaces the Done dialog with an in-app notification and adds a "
-"command-line argument to specify the output file."
-msgstr ""
+msgid "This release replaces the Done dialog with an in-app notification and adds a command-line argument to specify the output file."
+msgstr "Ovo izdanje zamjenjuje dijalog „Gotovo” s programskom obavijesti i dodaje argument naredbenog retka za određivanje datoteke rezultata."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:53
-msgid ""
-"Added an --output or -o argument to specify the output video path. It will "
-"be pre-filled in the save dialog."
-msgstr ""
+msgid "Added an --output or -o argument to specify the output video path. It will be pre-filled in the save dialog."
+msgstr "Dodan je argument --output ili -o za određivanje putanje video rezultata. Bit će unaprijed popunjen u dijalogu za spremanje."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:54
-msgid ""
-"Added support for opening videos with DnD, although it doesn't work on "
-"Flatpak unless Video Trimmer is given filesystem access."
-msgstr ""
+msgid "Added support for opening videos with DnD, although it doesn't work on Flatpak unless Video Trimmer is given filesystem access."
+msgstr "Dodana je podrška za otvaranje videa pomoću DnD-a, ali ne radi na Flatpaku ako program nema prava pristupa datotečnom sustavu."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:55
-msgid ""
-"Replaced the Done dialog with an in-app notification to better follow the "
-"GNOME HIG."
-msgstr ""
+msgid "Replaced the Done dialog with an in-app notification to better follow the GNOME HIG."
+msgstr "Dijalog „Gotovo” zamijenjen je s programskom obavijesti kako bi se bolje slijedile GNOME smjernice za sučelje."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:61
-msgid ""
-"This release fixes file filter not working on Flatpak and possibly a related "
-"file chooser crash."
-msgstr ""
+msgid "This release fixes file filter not working on Flatpak and possibly a related file chooser crash."
+msgstr "Ovo izdanje ispravlja filtar datoteke koji ne radi na Flatpaku i moguće prekide programa tijekom biranja datoteka."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:66
-msgid ""
-"This release fixes crashes related to video preview errors, adds a Ctrl+Q "
-"exit shortcut and a Dutch translation."
-msgstr ""
+msgid "This release fixes crashes related to video preview errors, adds a Ctrl+Q exit shortcut and a Dutch translation."
+msgstr "Ovo izdanje ispravlja prekide programa povezane s greškama pregleda videa, dodaje prečac Ctrl+Q za zatvaranje programa i prijevod na nizozemski jezik."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:68
 msgid "Added a Ctrl+Q shortcut to quit Video Trimmer."
-msgstr ""
+msgstr "Dodan je prečac Ctrl+Q za zatvaranje programa."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:69
 msgid "Added a Dutch translation."
-msgstr ""
+msgstr "Dodan je prijevod za nizozemski."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:70
 msgid "Made video preview display an error message when it fails to load."
 msgstr ""
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:71
-msgid ""
-"Fixed a crash when the GL runtime is not installed (e.g. when installing the "
-"Flathub package on clean Ubuntu 18.04 through Ubuntu Software)."
+msgid "Fixed a crash when the GL runtime is not installed (e.g. when installing the Flathub package on clean Ubuntu 18.04 through Ubuntu Software)."
 msgstr ""
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:72
@@ -256,11 +192,42 @@ msgid "Fixed a crash on failing to change the playback position."
 msgstr ""
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:79
-msgid ""
-"This release adds a video preview and a timeline where the target region can "
-"be adjusted using the mouse."
+msgid "This release adds a video preview and a timeline where the target region can be adjusted using the mouse."
 msgstr ""
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:84
 msgid "First release."
+msgstr "Prvo izdanje."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:40
+msgid "This release fixes an issue where not all streams from the input file were copied into the output file."
 msgstr ""
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:42
+msgid "All input file streams are now copied to the output file rather than just a single of each type. Subtitles are now copied too rather than skipped."
+msgstr ""
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:43
+msgid "Added Swedish translation (thanks Åke Engelbrektson)."
+msgstr "Dodan je prijevod za švedski (hvala Åke Engelbrektson)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:44
+msgid "Added Spanish translation (thanks Óscar Fernández Díaz)."
+msgstr "Dodan je prijevod za španjolski (hvala Óscar Fernández Díaz)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:45
+msgid "Made the commandline argument description translatable."
+msgstr ""
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
+msgid "This release fixes an error when trimming GoPro recordings."
+msgstr "Ovo izdanje ispravlja grešku tijekom kraćenja GoPro snimaka."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
+msgid "Data streams are no longer copied to the output file as a workaround to prevent errors on GoPro recordings."
+msgstr ""
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
+msgid "Updated Spanish translation."
+msgstr "Aktualiziran je prijevod za španjolski."
+
