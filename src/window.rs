@@ -601,64 +601,64 @@ mod imp {
 
             // The open button.
             self.button_open.connect_clicked({
-            let self_ = self_.downgrade();
-            move |_| {
-                let self_ = self_.upgrade().unwrap();
-                let filter = gtk::FileFilter::new();
-                // Translators: file chooser file filter name.
-                filter.set_name(Some(&gettext("Video files")));
-                for mime_type in VIDEO_MIME_TYPES {
-                    filter.add_mime_type(mime_type);
-                }
-
-                let file_chooser = gtk::FileChooserNativeBuilder::new()
-                    .transient_for(&self_)
-                    .action(gtk::FileChooserAction::Open)
-                    // Translators: file chooser dialog title.
-                    .title(&gettext("Open video"))
-                    .transient_for(&self_)
-                    .modal(true)
-                    .build();
-
-                file_chooser.add_filter(&filter);
-
-                file_chooser.connect_response({
-                    let file_chooser = RefCell::new(Some(file_chooser.clone()));
-                    move |_, response| {
-                        let file_chooser = file_chooser.borrow_mut().take().unwrap();
-
-                        if response != gtk::ResponseType::Accept {
-                            return;
-                        }
-
-                        let file = file_chooser.get_file().unwrap();
-                        if file.get_path().is_none() {
-                            let dialog = gtk::MessageDialogBuilder::new()
-                                // Translators: error dialog title.
-                                .text(&gettext("Error"))
-                                .secondary_text(&gettext(
-                                    // Translators: error dialog text.
-                                    "Video Trimmer can only operate on local files. Please choose another file.",
-                                ))
-                                .message_type(gtk::MessageType::Error)
-                                .buttons(gtk::ButtonsType::Ok)
-                                .transient_for(&self_)
-                                .modal(true)
-                                .build();
-                            dialog.connect_response(|dialog, _| {
-                                dialog.close();
-                            });
-                            dialog.show();
-                            return;
-                        }
-
-                        self_.open(file);
+                let self_ = self_.downgrade();
+                move |_| {
+                    let self_ = self_.upgrade().unwrap();
+                    let filter = gtk::FileFilter::new();
+                    // Translators: file chooser file filter name.
+                    filter.set_name(Some(&gettext("Video files")));
+                    for mime_type in VIDEO_MIME_TYPES {
+                        filter.add_mime_type(mime_type);
                     }
-                });
 
-                file_chooser.show();
-            }
-        });
+                    let file_chooser = gtk::FileChooserNativeBuilder::new()
+                        .transient_for(&self_)
+                        .action(gtk::FileChooserAction::Open)
+                        // Translators: file chooser dialog title.
+                        .title(&gettext("Open video"))
+                        .transient_for(&self_)
+                        .modal(true)
+                        .build();
+
+                    file_chooser.add_filter(&filter);
+
+                    file_chooser.connect_response({
+                        let file_chooser = RefCell::new(Some(file_chooser.clone()));
+                        move |_, response| {
+                            let file_chooser = file_chooser.borrow_mut().take().unwrap();
+
+                            if response != gtk::ResponseType::Accept {
+                                return;
+                            }
+
+                            let file = file_chooser.get_file().unwrap();
+                            if file.get_path().is_none() {
+                                let dialog = gtk::MessageDialogBuilder::new()
+                                    // Translators: error dialog title.
+                                    .text(&gettext("Error"))
+                                    .secondary_text(&gettext(
+                                        // Translators: error dialog text.
+                                        "Video Trimmer can only operate on local files. Please choose another file.",
+                                    ))
+                                    .message_type(gtk::MessageType::Error)
+                                    .buttons(gtk::ButtonsType::Ok)
+                                    .transient_for(&self_)
+                                    .modal(true)
+                                    .build();
+                                dialog.connect_response(|dialog, _| {
+                                    dialog.close();
+                                });
+                                dialog.show();
+                                return;
+                            }
+
+                            self_.open(file);
+                        }
+                    });
+
+                    file_chooser.show();
+                }
+            });
 
             // Start and end timestamp validation and visualization.
             self.entry_start.connect_property_text_notify({
