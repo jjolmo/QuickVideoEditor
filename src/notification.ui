@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <requires lib="gtk" version="4.0"/>
+  <template class="VtNotification" parent="GtkWidget">
+    <property name="layout-manager">
+      <object class="GtkBinLayout"/>
+    </property>
+    <property name="halign">center</property>
+    <property name="valign">start</property>
+    <child>
+      <object class="GtkRevealer" id="revealer">
+        <property name="transition-duration">200</property>
+        <property name="child">
+          <object class="GtkBox">
+            <property name="margin-start">18</property>
+            <property name="margin-end">18</property>
+            <property name="spacing">12</property>
+            <child>
+              <object class="GtkLabel" id="label">
+                <property name="margin-start">12</property>
+                <property name="label">Trimmed video.mp4 has been saved</property>
+                <property name="ellipsize">start</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="button_close">
+                <property name="focus-on-click">0</property>
+                <property name="has-frame">false</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">window-close-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <style>
+              <class name="app-notification"/>
+            </style>
+          </object>
+        </property>
+      </object>
+    </child>
+  </template>
+</interface>

@@ -2,6 +2,7 @@
 <gresources>
   <gresource prefix="/org/gnome/gitlab/YaLTeR/VideoTrimmer">
     <file>style.css</file>
+    <file>notification.ui</file>
     <file>timeline.ui</file>
     <file>video_preview.ui</file>
     <file>window.ui</file>

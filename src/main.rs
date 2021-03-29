@@ -6,6 +6,7 @@ mod application;
 use application::VtApplication;
 mod config;
 use config::G_LOG_DOMAIN;
+mod notification;
 mod parse;
 mod timeline;
 mod video_preview;

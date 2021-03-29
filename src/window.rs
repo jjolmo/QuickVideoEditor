@@ -5,7 +5,6 @@ mod imp {
     use std::{
         cell::RefCell,
         ffi::OsStr,
-        mem,
         path::{Path, PathBuf},
         time::Duration,
     };
@@ -17,6 +16,7 @@ mod imp {
 
     use crate::{
         config::{self, G_LOG_DOMAIN},
+        notification::VtNotification,
         parse::{self, time_to_entry_text},
         video_preview::VtVideoPreview,
     };
@@ -70,20 +70,6 @@ mod imp {
         "video/x-totem-stream",
     ];
 
-    #[derive(Debug)]
-    enum NotificationState {
-        Closed,
-        Opening(glib::SourceId, Option<String>),
-        Open(glib::SourceId),
-        Closing(Option<String>),
-    }
-
-    impl Default for NotificationState {
-        fn default() -> Self {
-            NotificationState::Closed
-        }
-    }
-
     #[derive(Debug, Default, CompositeTemplate)]
     #[template(file = "window.ui")]
     pub struct VtWindow {
@@ -98,13 +84,7 @@ mod imp {
         #[template_child]
         stack_video_preview: TemplateChild<gtk::Stack>,
         #[template_child]
-        revealer_done_notification: TemplateChild<gtk::Revealer>,
-        #[template_child]
-        label_done_notification: TemplateChild<gtk::Label>,
-        #[template_child]
         button_open: TemplateChild<gtk::Button>,
-        #[template_child]
-        button_close_done_notification: TemplateChild<gtk::Button>,
         #[template_child]
         box_empty_state: TemplateChild<gtk::Box>,
         #[template_child]
@@ -113,10 +93,11 @@ mod imp {
         stack_header_bar: TemplateChild<gtk::Stack>,
         #[template_child]
         label_subtitle: TemplateChild<gtk::Label>,
+        #[template_child]
+        done_notification: TemplateChild<VtNotification>,
 
         content_type: RefCell<Option<glib::GString>>,
         input_path: RefCell<Option<PathBuf>>,
-        done_notification_state: RefCell<NotificationState>,
         output_file: RefCell<Option<gio::File>>,
     }
 
@@ -178,140 +159,6 @@ mod imp {
             self.video_preview.destroy();
             self.stack_video_preview
                 .set_visible_child_name("page_error");
-        }
-
-        fn show_done_notification(&self, file_name: String) {
-            let mut state = self.done_notification_state.borrow_mut();
-            match *state {
-                NotificationState::Closed => {
-                    let source = glib::timeout_add_seconds_local_once(5, {
-                        let self_ = self.get_instance().downgrade();
-                        move || {
-                            let self_ = self_.upgrade().unwrap();
-                            let priv_ = VtWindow::from_instance(&self_);
-                            priv_.close_done_notification(None);
-                        }
-                    });
-
-                    *state = NotificationState::Opening(source, None);
-                    drop(state);
-
-                    self.label_done_notification.set_text(&format!(
-                        "{} {}",
-                        file_name,
-                        // Translators: text on the in-app notification after trimming was done.
-                        // The template is: <video filename> has been saved
-                        gettext("has been saved")
-                    ));
-                    self.revealer_done_notification.set_reveal_child(true);
-                }
-                NotificationState::Opening(_, ref mut new_file_name)
-                | NotificationState::Closing(ref mut new_file_name) => {
-                    *new_file_name = Some(file_name);
-                }
-                NotificationState::Open(_) => {
-                    drop(state);
-                    self.close_done_notification(Some(file_name));
-                }
-            }
-        }
-
-        fn close_done_notification(&self, new_file_name: Option<String>) {
-            let mut state = self.done_notification_state.borrow_mut();
-
-            if !matches!(
-                *state,
-                NotificationState::Open(_) | NotificationState::Opening(_, _)
-            ) {
-                return;
-            }
-
-            let file_name = if let NotificationState::Opening(_, file_name) = &mut *state {
-                file_name.take()
-            } else {
-                None
-            };
-
-            let new_file_name = new_file_name.or(file_name);
-            if let NotificationState::Open(source) | NotificationState::Opening(source, _) =
-                mem::replace(&mut *state, NotificationState::Closing(new_file_name))
-            {
-                glib::source_remove(source);
-            }
-            drop(state);
-
-            self.revealer_done_notification.set_reveal_child(false);
-        }
-
-        fn on_child_revealed_changed(&self) {
-            let mut state = self.done_notification_state.borrow_mut();
-
-            if self.revealer_done_notification.get_child_revealed() {
-                match *state {
-                    NotificationState::Opening(_, None) => {
-                        let source = if let NotificationState::Opening(source, _) =
-                            mem::replace(&mut *state, NotificationState::Closed)
-                        {
-                            source
-                        } else {
-                            unreachable!()
-                        };
-                        *state = NotificationState::Open(source);
-                    }
-                    NotificationState::Opening(_, ref mut new_file_name @ Some(_)) => {
-                        let new_file_name = new_file_name.take();
-                        drop(state);
-                        self.close_done_notification(new_file_name);
-                    }
-                    ref other => {
-                        warn!("Unexpected notification state: {:?}", other);
-
-                        let source = glib::timeout_add_seconds_local_once(5, {
-                            let self_ = self.get_instance().downgrade();
-                            move || {
-                                let self_ = self_.upgrade().unwrap();
-                                let priv_ = VtWindow::from_instance(&self_);
-                                priv_.close_done_notification(None);
-                            }
-                        });
-
-                        *state = NotificationState::Open(source);
-                    }
-                }
-            } else {
-                match *state {
-                    NotificationState::Closing(None) => {
-                        *state = NotificationState::Closed;
-                    }
-                    NotificationState::Closing(ref mut new_file_name @ Some(_)) => {
-                        let new_file_name = new_file_name.take().unwrap();
-                        let source = glib::timeout_add_seconds_local_once(5, {
-                            let self_ = self.get_instance().downgrade();
-                            move || {
-                                let self_ = self_.upgrade().unwrap();
-                                let priv_ = VtWindow::from_instance(&self_);
-                                priv_.close_done_notification(None);
-                            }
-                        });
-                        *state = NotificationState::Opening(source, None);
-                        drop(state);
-
-                        self.label_done_notification.set_text(&format!(
-                            "{} {}",
-                            new_file_name,
-                            // Translators: text on the in-app notification after trimming was done.
-                            // The template is: <video filename> has been saved
-                            gettext("has been saved")
-                        ));
-                        self.revealer_done_notification.set_reveal_child(true);
-                    }
-                    ref other => {
-                        warn!("Unexpected notification state: {:?}", other);
-
-                        *state = NotificationState::Closed;
-                    }
-                }
-            }
         }
 
         fn trim(
@@ -473,7 +320,7 @@ mod imp {
                                             .unwrap_or_else(|| output_path.to_string_lossy());
 
                                         let priv_ = VtWindow::from_instance(&self_);
-                                        priv_.show_done_notification(file_name.into());
+                                        priv_.done_notification.show_notification(file_name.into());
                                         trimming_dialog_clone.close();
                                         return;
                                     } else {
@@ -837,25 +684,6 @@ mod imp {
 
                     priv_.trim(input_path, extension, start, end);
                 }));
-
-            self.revealer_done_notification
-                .connect_property_child_revealed_notify({
-                    let self_ = self_.downgrade();
-                    move |_| {
-                        let self_ = self_.upgrade().unwrap();
-                        let priv_ = VtWindow::from_instance(&self_);
-                        priv_.on_child_revealed_changed();
-                    }
-                });
-
-            self.button_close_done_notification.connect_clicked({
-                let self_ = self_.downgrade();
-                move |_| {
-                    let self_ = self_.upgrade().unwrap();
-                    let priv_ = VtWindow::from_instance(&self_);
-                    priv_.close_done_notification(None);
-                }
-            });
 
             // Clean up upon window closing.
             self_.connect_destroy(move |self_| {

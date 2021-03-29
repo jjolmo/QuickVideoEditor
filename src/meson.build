@@ -35,6 +35,7 @@ sources = files(
   'application.rs',
   'config.rs',
   'main.rs',
+  'notification.rs',
   'parse.rs',
   'timeline.rs',
   'video_preview.rs',
