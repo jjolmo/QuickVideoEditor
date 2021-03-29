@@ -202,38 +202,38 @@ mod imp {
 
                 let tx = RefCell::new(Some(tx));
                 file_chooser.connect_response({
-                let self_ = self_.downgrade();
-                move |file_chooser, response| {
-                    if let Some(tx) = tx.borrow_mut().take() {
-                        if response == gtk::ResponseType::Accept {
-                            if let Some(path) = file_chooser.get_file().unwrap().get_path() {
-                                tx.send(Some(path)).unwrap();
-                            } else {
-                                let dialog = gtk::MessageDialogBuilder::new()
-                                    // Translators: error dialog title.
-                                    .text(&gettext("Error"))
-                                    .secondary_text(&gettext(
-                                        // Translators: error dialog text.
-                                        "Video Trimmer can only operate on local files. Please choose another file.",
-                                    ))
-                                    .message_type(gtk::MessageType::Error)
-                                    .buttons(gtk::ButtonsType::Ok)
-                                    .transient_for(&self_.upgrade().unwrap())
-                                    .modal(true)
-                                    .build();
-                                dialog.connect_response(|dialog, _| {
-                                    dialog.close();
-                                });
-                                dialog.show();
+                    let self_ = self_.downgrade();
+                    move |file_chooser, response| {
+                        if let Some(tx) = tx.borrow_mut().take() {
+                            if response == gtk::ResponseType::Accept {
+                                if let Some(path) = file_chooser.get_file().unwrap().get_path() {
+                                    tx.send(Some(path)).unwrap();
+                                } else {
+                                    let dialog = gtk::MessageDialogBuilder::new()
+                                        // Translators: error dialog title.
+                                        .text(&gettext("Error"))
+                                        .secondary_text(&gettext(
+                                            // Translators: error dialog text.
+                                            "Video Trimmer can only operate on local files. Please choose another file.",
+                                        ))
+                                        .message_type(gtk::MessageType::Error)
+                                        .buttons(gtk::ButtonsType::Ok)
+                                        .transient_for(&self_.upgrade().unwrap())
+                                        .modal(true)
+                                        .build();
+                                    dialog.connect_response(|dialog, _| {
+                                        dialog.close();
+                                    });
+                                    dialog.show();
 
+                                    tx.send(None).unwrap();
+                                }
+                            } else {
                                 tx.send(None).unwrap();
                             }
-                        } else {
-                            tx.send(None).unwrap();
                         }
                     }
-                }
-            });
+                });
 
                 file_chooser.show();
 
