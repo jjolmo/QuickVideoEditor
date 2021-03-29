@@ -389,17 +389,44 @@ mod imp {
             }
         }
 
-        pub fn open(&self, file: gio::File) {
+        fn switch_to_main_page(&self) {
+            if self
+                .stack_main
+                .get_visible_child_name()
+                .as_ref()
+                .map(|x| x.as_str())
+                == Some("page_main")
+            {
+                return;
+            }
+
             let self_ = self.get_instance();
 
             self.stack_main.set_visible_child_name("page_main");
             self.stack_header_bar.set_visible_child_name("page_main");
             self_.set_default_widget(Some(&*self.button_trim));
 
-            self.video_preview.open(&file);
-
             // Focus the entry when coming from the empty state.
             self.entry_start.grab_focus();
+
+            self_.show();
+        }
+
+        pub fn open(&self, file: gio::File) {
+            let self_ = self.get_instance();
+
+            self.video_preview.open(&file);
+
+            // Unconditionally switch to main page after 300 ms
+            // (if the video takes too long to load).
+            glib::timeout_add_local_once(Duration::from_millis(300), {
+                let self_ = self_.downgrade();
+                move || {
+                    let self_ = self_.upgrade().unwrap();
+                    let priv_ = VtWindow::from_instance(&self_);
+                    priv_.switch_to_main_page();
+                }
+            });
 
             // Verified in callers.
             *self.input_path.borrow_mut() = Some(file.get_path().unwrap());
@@ -432,6 +459,8 @@ mod imp {
                     }
                     // Fails when the file does not exist.
                     Err(err) => {
+                        self_.show();
+
                         let dialog = gtk::MessageDialogBuilder::new()
                             // Translators: error dialog text when the input file information could
                             // not be retrieved (e.g. there's no such file on disk).
@@ -520,6 +549,12 @@ mod imp {
                             .get()
                             .unwrap()
                             .unwrap();
+
+                        priv_
+                            .stack_video_preview
+                            .set_visible_child(&*priv_.video_preview);
+                        priv_.switch_to_main_page();
+
                         if duration == 0 {
                             return None;
                         }
@@ -557,6 +592,7 @@ mod imp {
                         let self_ = self_.upgrade().unwrap();
                         let priv_ = VtWindow::from_instance(&self_);
                         priv_.on_video_preview_error();
+                        priv_.switch_to_main_page();
 
                         None
                     }

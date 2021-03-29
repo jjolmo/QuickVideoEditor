@@ -77,7 +77,7 @@
       <object class="GtkOverlay" id="overlay_main">
         <property name="child">
           <object class="GtkStack" id="stack_main">
-            <property name="transition-type">crossfade</property>
+            <property name="transition-type">under-up</property>
             <child>
               <object class="GtkBox" id="box_empty_state">
                 <child>
@@ -118,8 +118,17 @@
                       <object class="GtkStack" id="stack_video_preview">
                         <property name="vexpand">1</property>
                         <property name="transition-type">over-down-up</property>
+                        <property name="visible-child">spinner_video_preview</property>
                         <child>
                           <object class="VtVideoPreview" id="video_preview"/>
+                        </child>
+                        <child>
+                          <object class="GtkSpinner" id="spinner_video_preview">
+                            <property name="halign">center</property>
+                            <property name="height-request">32</property>
+                            <property name="width-request">32</property>
+                            <property name="spinning">true</property>
+                          </object>
                         </child>
                         <child>
                           <object class="GtkStackPage">

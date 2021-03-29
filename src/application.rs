@@ -65,9 +65,9 @@ mod imp {
                 }
 
                 window.open(file);
+            } else {
+                window.show();
             }
-
-            window.show();
         }
 
         fn open(&self, self_: &Self::Type, files: &[gio::File], _hint: &str) {

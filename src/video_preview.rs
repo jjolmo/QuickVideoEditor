@@ -137,6 +137,15 @@ mod imp {
                 }
             });
 
+            // HACK: GTK doesn't notify duration or anything else for images currently.
+            media_file.connect_property_ended_notify({
+                let self_ = self_.downgrade();
+                move |_| {
+                    let self_ = self_.upgrade().unwrap();
+                    self_.notify("duration");
+                }
+            });
+
             media_file.connect_property_error_notify({
                 let self_ = self_.downgrade();
                 move |media_file| {
