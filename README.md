@@ -4,7 +4,7 @@ Video Trimmer cuts out a fragment of a video given the start and end timestamps.
 
 <a href='https://flathub.org/apps/details/org.gnome.gitlab.YaLTeR.VideoTrimmer'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 
-![Screenshot of the window.](/uploads/717fa281218d3649a9d72e46e3ab4e08/image.png)
+![Screenshot of the window.](/uploads/0596c5d3be7de3204c4dc40baa23a1a0/image.png)
 
 ## Command-line arguments
 
@@ -24,7 +24,7 @@ $ flatpak run --file-forwarding org.gnome.gitlab.YaLTeR.VideoTrimmer -o trimmed.
 
 For trimming Video Trimmer uses the `ffmpeg` binary, thus the non-Flatpak version depends on the muxers and demuxers available in your system's `ffmpeg`. The Flatpak package contains `ffmpeg` built with `--enable-gpl` muxers and demuxers which should support everything imaginable.
 
-The video preview relies on GStreamer, and therefore your system's or Flatpak GNOME Platform's installed GStreamer plugins. In particular, the video preview won't work at all without the `playbin3` and `glsinkbin` elements (typically in `gst-plugins-base`) as well as the `gtkglsink` element (typically in `gst-plugins-good`, although sometimes extracted into its own package).
+The video preview goes through GTK 4 which usually relies on GStreamer, and therefore your system's or Flatpak GNOME Platform's installed GStreamer plugins.
 
 ## Contributing translations
 
