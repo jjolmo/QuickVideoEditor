@@ -5,7 +5,7 @@ mod imp {
     use std::{
         cell::RefCell,
         ffi::OsStr,
-        path::{Path, PathBuf},
+        path::{Component, Path, PathBuf},
         time::Duration,
     };
 
@@ -169,27 +169,52 @@ mod imp {
             end: glib::GString,
         ) {
             debug!("trim: from {} to {}", start, end);
+            debug!("input_path: {:?}", input_path);
 
             let self_ = self.get_instance();
 
             let future = async move {
                 let priv_ = VtWindow::from_instance(&self_);
 
-                let current_name = priv_
+                let output_path = priv_
                     .output_file
                     .borrow()
                     .as_ref()
                     .and_then(|file| file.get_path())
-                    .and_then(|path| path.into_os_string().into_string().ok())
                     .unwrap_or_else(|| {
-                        format!(
+                        let document_portal_components = [
+                            Component::RootDir,
+                            Component::Normal(OsStr::new("run")),
+                            Component::Normal(OsStr::new("user")),
+                            Component::Normal(OsStr::new("doc")),
+                        ];
+
+                        let mut components = input_path.components();
+
+                        let prefix = if components.next() == Some(document_portal_components[0])
+                            && components.next() == Some(document_portal_components[1])
+                            && components.next() == Some(document_portal_components[2])
+                            && components.nth(1) == Some(document_portal_components[3])
+                        {
+                            // input_path comes from the document portal, no use in opening the
+                            // file chooser there.
+                            None
+                        } else {
+                            input_path.parent().map(Path::to_path_buf)
+                        };
+
+                        let mut path = prefix.unwrap_or_default();
+
+                        path.push(format!(
                             "{}{}.{}",
                             input_path.file_stem().and_then(OsStr::to_str).unwrap_or(""),
                             // Translators: this is appended to the output video file name.
                             // So for example "my video.mp4" will become "my video (trimmed).mp4".
                             gettext(" (trimmed)"),
                             extension
-                        )
+                        ));
+
+                        path
                     });
 
                 let file_chooser = gtk::FileChooserNativeBuilder::new()
@@ -197,7 +222,16 @@ mod imp {
                     .action(gtk::FileChooserAction::Save)
                     .modal(true)
                     .build();
-                file_chooser.set_current_name(&current_name);
+                if let Some(parent) = output_path.parent() {
+                    if parent.to_str().map(|x| !x.is_empty()).unwrap_or(false) {
+                        debug!("setting current folder to {:?}", parent);
+                        let _ = file_chooser.set_current_folder(&gio::File::new_for_path(parent));
+                    }
+                }
+                if let Some(name) = output_path.file_name().and_then(OsStr::to_str) {
+                    debug!("setting current name to {:?}", name);
+                    file_chooser.set_current_name(name);
+                }
 
                 let (tx, rx) = futures_channel::oneshot::channel();
 
