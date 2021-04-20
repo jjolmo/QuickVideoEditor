@@ -183,10 +183,11 @@ mod imp {
                     .and_then(|path| path.into_os_string().into_string().ok())
                     .unwrap_or_else(|| {
                         format!(
-                            "{}.{}",
-                            // Translators: this is the name part of the default filename
-                            // presented in the save dialog.
-                            gettext("Trimmed video"),
+                            "{}{}.{}",
+                            input_path.file_stem().and_then(OsStr::to_str).unwrap_or(""),
+                            // Translators: this is appended to the output video file name.
+                            // So for example "my video.mp4" will become "my video (trimmed).mp4".
+                            gettext(" (trimmed)"),
                             extension
                         )
                     });
