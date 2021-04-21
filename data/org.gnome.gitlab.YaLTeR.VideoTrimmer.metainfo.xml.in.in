@@ -26,6 +26,16 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.5.1" date="2021-03-29">
+			<description>
+				<p>This release improves output video saving.</p>
+				<ul>
+					<li>The default name for the output video is now "input video name (trimmed)".</li>
+					<li>The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Video Trimmer the filesystem=host permission (for example, using Flatseal).</li>
+					<li>Updated translations.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.5.0" date="2021-03-29">
 			<description>
 				<p>Video Trimmer is now a GTK 4 application!</p>
