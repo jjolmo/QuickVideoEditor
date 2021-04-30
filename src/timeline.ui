@@ -15,8 +15,6 @@
     </child>
     <child>
       <object class="GtkBox" id="box_timeline_position">
-        <property name="width-request">2</property>
-        <property name="halign">start</property>
         <property name="can-target">0</property>
         <style>
           <class name="vt-timeline-position"/>

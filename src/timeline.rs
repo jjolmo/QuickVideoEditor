@@ -222,7 +222,7 @@ mod imp {
                 &gtk::Allocation {
                     x,
                     y: 0,
-                    width,
+                    width: 2,
                     height,
                 },
                 baseline,
