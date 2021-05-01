@@ -75,7 +75,7 @@ mod imp {
         }
 
         fn dispose(&self, obj: &Self::Type) {
-            while let Some(child) = obj.get_first_child() {
+            while let Some(child) = obj.first_child() {
                 child.unparent();
             }
         }
@@ -89,7 +89,7 @@ mod imp {
             match *state {
                 State::Closed => {
                     let source = glib::timeout_add_seconds_local_once(5, {
-                        let self_ = self.get_instance().downgrade();
+                        let self_ = self.instance().downgrade();
                         move || {
                             let self_ = self_.upgrade().unwrap();
                             let priv_ = Self::from_instance(&self_);
@@ -147,7 +147,7 @@ mod imp {
         fn on_child_revealed_changed(&self) {
             let mut state = self.state.borrow_mut();
 
-            if self.revealer.get_child_revealed() {
+            if self.revealer.is_child_revealed() {
                 match *state {
                     State::Opening(_, None) => {
                         let source = if let State::Opening(source, _) =
@@ -168,7 +168,7 @@ mod imp {
                         warn!("Unexpected notification state: {:?}", other);
 
                         let source = glib::timeout_add_seconds_local_once(5, {
-                            let self_ = self.get_instance().downgrade();
+                            let self_ = self.instance().downgrade();
                             move || {
                                 let self_ = self_.upgrade().unwrap();
                                 let priv_ = Self::from_instance(&self_);
@@ -187,7 +187,7 @@ mod imp {
                     State::Closing(ref mut new_file_name @ Some(_)) => {
                         let new_file_name = new_file_name.take().unwrap();
                         let source = glib::timeout_add_seconds_local_once(5, {
-                            let self_ = self.get_instance().downgrade();
+                            let self_ = self.instance().downgrade();
                             move || {
                                 let self_ = self_.upgrade().unwrap();
                                 let priv_ = Self::from_instance(&self_);

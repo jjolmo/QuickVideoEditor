@@ -44,7 +44,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [glib::ParamSpec::int64(
+                [glib::ParamSpec::new_int64(
                     "duration",
                     "duration",
                     "duration",
@@ -75,14 +75,9 @@ mod imp {
             SIGNALS.as_ref()
         }
 
-        fn get_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            pspec: &glib::ParamSpec,
-        ) -> glib::Value {
-            match pspec.get_name() {
-                "duration" => self.media_file.get().unwrap().get_duration().to_value(),
+        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            match pspec.name() {
+                "duration" => self.media_file.get().unwrap().duration().to_value(),
                 _ => unreachable!(),
             }
         }
@@ -109,7 +104,7 @@ mod imp {
                     let self_ = self_.upgrade().unwrap();
                     let priv_ = VtVideoPreview::from_instance(&self_);
                     let media_file = priv_.media_file.get().unwrap();
-                    if media_file.get_playing() {
+                    if media_file.is_playing() {
                         media_file.pause();
                     } else {
                         media_file.play();
@@ -125,14 +120,14 @@ mod imp {
                     let self_ = self_.upgrade().unwrap();
                     let priv_ = VtVideoPreview::from_instance(&self_);
 
-                    if media_file.get_playing() {
+                    if media_file.is_playing() {
                         priv_
                             .button_play_pause_image
-                            .set_property_icon_name(Some("media-playback-pause-symbolic"));
+                            .set_icon_name(Some("media-playback-pause-symbolic"));
                     } else {
                         priv_
                             .button_play_pause_image
-                            .set_property_icon_name(Some("media-playback-start-symbolic"));
+                            .set_icon_name(Some("media-playback-start-symbolic"));
                     }
                 }
             });
@@ -149,7 +144,7 @@ mod imp {
             media_file.connect_property_error_notify({
                 let self_ = self_.downgrade();
                 move |media_file| {
-                    let error = media_file.get_error().unwrap();
+                    let error = MediaStreamExt::error(media_file).unwrap();
 
                     warn!("Error in MediaFile: {}", error);
 
@@ -172,7 +167,7 @@ mod imp {
                     let self_ = self_.upgrade().unwrap();
                     let priv_ = VtVideoPreview::from_instance(&self_);
 
-                    let position = media_file.get_timestamp();
+                    let position = media_file.timestamp();
                     let mut seconds = position / 1_000_000;
                     let mut minutes = seconds / 60;
                     let hours = minutes / 60;
@@ -198,7 +193,7 @@ mod imp {
         }
 
         fn dispose(&self, obj: &Self::Type) {
-            while let Some(child) = obj.get_first_child() {
+            while let Some(child) = obj.first_child() {
                 child.unparent();
             }
         }

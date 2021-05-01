@@ -29,7 +29,7 @@ mod imp {
 
             self_.add_main_option(
                 "output",
-                glib::Char::new('o').unwrap(),
+                glib::Char::from(b'o'),
                 glib::OptionFlags::NONE,
                 glib::OptionArg::String, // Can't extract filenames from a VariantDict yet.
                 // Translators: --output commandline option description.
@@ -45,7 +45,7 @@ mod imp {
             let window = VtWindow::new(self_.upcast_ref(), self.output_file.take());
 
             if let Some(file) = self.input_file.take() {
-                if file.get_path().is_none() {
+                if file.path().is_none() {
                     let dialog = gtk::MessageDialogBuilder::new()
                         // Translators: fatal error message dialog title.
                         .text(&gettext("Fatal Error"))
@@ -75,7 +75,7 @@ mod imp {
                 "open: {:?}",
                 files
                     .iter()
-                    .map(|x| x.get_uri().into())
+                    .map(|x| x.uri().into())
                     .collect::<Vec<String>>()
             );
 
@@ -90,7 +90,7 @@ mod imp {
             let provider = gtk::CssProvider::new();
             provider.load_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/style.css");
             gtk::StyleContext::add_provider_for_display(
-                &gdk::Display::get_default().unwrap(),
+                &gdk::Display::default().unwrap(),
                 &provider,
                 gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
             );

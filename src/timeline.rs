@@ -84,7 +84,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [glib::ParamSpec::object(
+                [glib::ParamSpec::new_object(
                     "media-file",
                     "media-file",
                     "media-file",
@@ -117,9 +117,9 @@ mod imp {
             value: &glib::Value,
             pspec: &glib::ParamSpec,
         ) {
-            match pspec.get_name() {
+            match pspec.name() {
                 "media-file" => {
-                    let media_file: gtk::MediaFile = value.get().unwrap().unwrap();
+                    let media_file: gtk::MediaFile = value.get().unwrap();
 
                     media_file.connect_property_timestamp_notify({
                         let self_ = self_.downgrade();
@@ -203,7 +203,7 @@ mod imp {
         }
 
         fn dispose(&self, obj: &Self::Type) {
-            while let Some(child) = obj.get_first_child() {
+            while let Some(child) = obj.first_child() {
                 child.unparent();
             }
         }
@@ -216,7 +216,7 @@ mod imp {
                 return;
             }
 
-            let is_rtl = widget.get_direction() == gtk::TextDirection::Rtl;
+            let is_rtl = widget.direction() == gtk::TextDirection::Rtl;
 
             let position = self.position.get();
             let x = ((position as f64 / duration as f64).clamp(0., 1.) * width as f64) as i32;
@@ -255,10 +255,10 @@ mod imp {
         }
 
         pub fn refresh(&self) {
-            let self_ = self.get_instance();
+            let self_ = self.instance();
 
             let media_file = self.media_file.get().unwrap();
-            let duration = media_file.get_duration();
+            let duration = media_file.duration();
             self.duration.set(duration);
             if duration == 0 {
                 self.box_timeline_position.set_child_visible(false);
@@ -272,7 +272,7 @@ mod imp {
                 .set_child_visible(self.start_end.get().is_some());
 
             if !media_file.is_seeking() {
-                self.position.set(media_file.get_timestamp());
+                self.position.set(media_file.timestamp());
             }
 
             self_.queue_allocate();
@@ -283,13 +283,13 @@ mod imp {
             self.drag_type.set(DragType::Playback);
 
             if self.start_end.get().is_some() {
-                let self_ = self.get_instance();
+                let self_ = self.instance();
 
-                let allocation = self.box_timeline_selection.get_allocation();
+                let allocation = self.box_timeline_selection.allocation();
                 let start = allocation.x as f64;
                 let end = (allocation.x + allocation.width) as f64;
 
-                let is_rtl = self_.get_direction() == gtk::TextDirection::Rtl;
+                let is_rtl = self_.direction() == gtk::TextDirection::Rtl;
                 let (start, end) = if is_rtl { (end, start) } else { (start, end) };
 
                 if (x - end).abs() <= TOLERANCE {
@@ -305,20 +305,20 @@ mod imp {
         }
 
         fn on_drag_update(&self, offset_x: f64, _offset_y: f64) {
-            let self_ = self.get_instance();
+            let self_ = self.instance();
 
             let x = self.drag_start.get() + offset_x;
-            let width = self_.get_allocated_width() as f64;
+            let width = self_.allocated_width() as f64;
 
             // Sanitize (this can get weird values when resizing the window while dragging).
             let x = x.min(width).max(0.);
             let value = x / width;
 
-            let is_rtl = self_.get_direction() == gtk::TextDirection::Rtl;
+            let is_rtl = self_.direction() == gtk::TextDirection::Rtl;
             let value = if is_rtl { 1. - value } else { value };
 
             let media_file = self.media_file.get().unwrap();
-            let duration = media_file.get_duration();
+            let duration = media_file.duration();
             if duration != 0 {
                 let time = (duration as f64 * value) as i64;
                 media_file.seek(time);
@@ -371,14 +371,14 @@ mod imp {
                     _ => return,
                 };
 
-                self.get_instance()
+                self.instance()
                     .emit_by_name("set-start-end", &[&start, &end])
                     .unwrap();
             };
         }
 
         fn on_motion(&self, x: f64, _y: f64) {
-            let self_ = self.get_instance();
+            let self_ = self.instance();
 
             // Don't change the cursor while in drag.
             if self.gesture_drag.get().unwrap().is_active() {
@@ -386,7 +386,7 @@ mod imp {
             }
 
             let resizing_cursor = if self.start_end.get().is_some() {
-                let allocation = self.box_timeline_selection.get_allocation();
+                let allocation = self.box_timeline_selection.allocation();
                 let start = allocation.x as f64;
                 let end = (allocation.x + allocation.width) as f64;
 

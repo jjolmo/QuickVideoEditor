@@ -111,7 +111,7 @@ mod imp {
         fn on_got_duration(&self, duration: i64) {
             // If the user hasn't started typing in the timestamp entries, fill them with default
             // values.
-            if !self.entry_start.get_text().is_empty() || !self.entry_end.get_text().is_empty() {
+            if !self.entry_start.text().is_empty() || !self.entry_end.text().is_empty() {
                 return;
             }
 
@@ -130,16 +130,16 @@ mod imp {
 
             // Select the text so the behavior of typing doesn't change compared to if we hadn't set
             // the text.
-            if self.entry_start.get_focus_child().is_some() {
+            if self.entry_start.focus_child().is_some() {
                 self.entry_start.select_region(0, -1);
-            } else if self.entry_end.get_focus_child().is_some() {
+            } else if self.entry_end.focus_child().is_some() {
                 self.entry_end.select_region(0, -1);
             }
         }
 
         fn on_set_start_end(&self, start: Duration, end: Duration) {
             let text = time_to_entry_text(start);
-            if parse::timestamp(&self.entry_start.get_text())
+            if parse::timestamp(&self.entry_start.text())
                 .map(|x| x != parse::timestamp(&text).unwrap())
                 .unwrap_or(true)
             {
@@ -147,7 +147,7 @@ mod imp {
             }
 
             let text = time_to_entry_text(end);
-            if parse::timestamp(&self.entry_end.get_text())
+            if parse::timestamp(&self.entry_end.text())
                 .map(|x| x != parse::timestamp(&text).unwrap())
                 .unwrap_or(true)
             {
@@ -171,7 +171,7 @@ mod imp {
             debug!("trim: from {} to {}", start, end);
             debug!("input_path: {:?}", input_path);
 
-            let self_ = self.get_instance();
+            let self_ = self.instance();
 
             let future = async move {
                 let priv_ = VtWindow::from_instance(&self_);
@@ -180,7 +180,7 @@ mod imp {
                     .output_file
                     .borrow()
                     .as_ref()
-                    .and_then(|file| file.get_path())
+                    .and_then(|file| file.path())
                     .unwrap_or_else(|| {
                         let document_portal_components = [
                             Component::RootDir,
@@ -241,7 +241,7 @@ mod imp {
                     move |file_chooser, response| {
                         if let Some(tx) = tx.borrow_mut().take() {
                             if response == gtk::ResponseType::Accept {
-                                if let Some(path) = file_chooser.get_file().unwrap().get_path() {
+                                if let Some(path) = file_chooser.file().unwrap().path() {
                                     tx.send(Some(path)).unwrap();
                                 } else {
                                     let dialog = gtk::MessageDialogBuilder::new()
@@ -291,7 +291,7 @@ mod imp {
             start: glib::GString,
             end: glib::GString,
         ) {
-            let self_ = self.get_instance();
+            let self_ = self.instance();
 
             debug!("output path: {:?}", output_path);
 
@@ -346,8 +346,8 @@ mod imp {
                         let builder =
                             match subprocess_clone.communicate_utf8_async_future(None).await {
                                 Ok((_, stderr)) => {
-                                    if subprocess_clone.get_if_exited()
-                                        && subprocess_clone.get_exit_status() == 0
+                                    if subprocess_clone.has_exited()
+                                        && subprocess_clone.exit_status() == 0
                                     {
                                         let file_name = output_path
                                             .file_name()
@@ -427,7 +427,7 @@ mod imp {
         fn switch_to_main_page(&self) {
             if self
                 .stack_main
-                .get_visible_child_name()
+                .visible_child_name()
                 .as_ref()
                 .map(|x| x.as_str())
                 == Some("page_main")
@@ -435,7 +435,7 @@ mod imp {
                 return;
             }
 
-            let self_ = self.get_instance();
+            let self_ = self.instance();
 
             self.stack_main.set_visible_child_name("page_main");
             self.stack_header_bar.set_visible_child_name("page_main");
@@ -448,7 +448,7 @@ mod imp {
         }
 
         pub fn open(&self, file: gio::File) {
-            let self_ = self.get_instance();
+            let self_ = self.instance();
 
             self.video_preview.open(&file);
 
@@ -464,7 +464,7 @@ mod imp {
             });
 
             // Verified in callers.
-            *self.input_path.borrow_mut() = Some(file.get_path().unwrap());
+            *self.input_path.borrow_mut() = Some(file.path().unwrap());
 
             // Get the display name and content type.
             let future = async move {
@@ -481,12 +481,12 @@ mod imp {
 
                 match info {
                     Ok(info) => {
-                        let display_name = info.get_display_name();
+                        let display_name = info.display_name();
                         priv_.label_subtitle.set_text(display_name.as_str());
                         priv_.label_subtitle.set_visible(true);
 
                         if let Some(fast_content_type) =
-                            info.get_attribute_string("standard::fast-content-type")
+                            info.attribute_string("standard::fast-content-type")
                         {
                             debug!("fast-content-type: {}", fast_content_type);
                             *priv_.content_type.borrow_mut() = Some(fast_content_type);
@@ -507,7 +507,7 @@ mod imp {
                             .modal(true)
                             .build();
                         dialog.connect_response(move |_, _| {
-                            self_.get_application().unwrap().quit();
+                            self_.application().unwrap().quit();
                         });
                         dialog.show();
                     }
@@ -536,7 +536,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [glib::ParamSpec::object(
+                [glib::ParamSpec::new_object(
                     "output-file",
                     "output-file",
                     "output-file",
@@ -555,7 +555,7 @@ mod imp {
             value: &glib::Value,
             pspec: &glib::ParamSpec,
         ) {
-            match pspec.get_name() {
+            match pspec.name() {
                 "output-file" => {
                     *self.output_file.borrow_mut() = value.get().unwrap();
                 }
@@ -567,7 +567,7 @@ mod imp {
             self.parent_constructed(self_);
 
             if config::PROFILE == "Devel" {
-                self_.get_style_context().add_class("devel");
+                self_.style_context().add_class("devel");
             }
 
             self.video_preview
@@ -579,10 +579,9 @@ mod imp {
 
                         let duration: i64 = priv_
                             .video_preview
-                            .get_property("duration")
+                            .property("duration")
                             .unwrap()
                             .get()
-                            .unwrap()
                             .unwrap();
 
                         priv_
@@ -605,9 +604,10 @@ mod imp {
                 .connect_local("set-start-end", false, {
                     let self_ = self_.downgrade();
                     move |args| {
-                        let mut args = args.iter().skip(1).map(|x| {
-                            Duration::from_millis(x.get::<u32>().unwrap().unwrap().into())
-                        });
+                        let mut args = args
+                            .iter()
+                            .skip(1)
+                            .map(|x| Duration::from_millis(x.get::<u32>().unwrap().into()));
                         let start = args.next().unwrap();
                         let end = args.next().unwrap();
 
@@ -666,8 +666,8 @@ mod imp {
                                 return;
                             }
 
-                            let file = file_chooser.get_file().unwrap();
-                            if file.get_path().is_none() {
+                            let file = file_chooser.file().unwrap();
+                            if file.path().is_none() {
                                 let dialog = gtk::MessageDialogBuilder::new()
                                     // Translators: error dialog title.
                                     .text(&gettext("Error"))
@@ -724,8 +724,8 @@ mod imp {
                         return;
                     }
 
-                    let start = priv_.entry_start.get_text();
-                    let end = priv_.entry_end.get_text();
+                    let start = priv_.entry_start.text();
+                    let end = priv_.entry_end.text();
 
                     let extension = priv_.content_type
                         .borrow()
@@ -767,7 +767,7 @@ mod imp {
             drop_target.connect_drop({
                 let self_ = self_.downgrade();
                 move |_, data, _, _| {
-                    if let Some(file) = data.downcast_ref::<gio::File>().and_then(|x| x.get()) {
+                    if let Some(file) = data.get::<gio::File>().ok() {
                         let self_ = self_.upgrade().unwrap();
                         self_.open(file);
                         return true;
@@ -785,14 +785,14 @@ mod imp {
     impl ApplicationWindowImpl for VtWindow {}
 
     fn validate_entries(entry_start: &gtk::Entry, entry_end: &gtk::Entry) -> Option<(u32, u32)> {
-        let style_start = entry_start.get_style_context();
-        let style_end = entry_end.get_style_context();
+        let style_start = entry_start.style_context();
+        let style_end = entry_end.style_context();
         style_start.remove_class("error");
         style_end.remove_class("error");
 
-        let text_start = entry_start.get_text();
+        let text_start = entry_start.text();
         let timestamp_start = parse::timestamp(text_start.as_str());
-        let text_end = entry_end.get_text();
+        let text_end = entry_end.text();
         let timestamp_end = parse::timestamp(text_end.as_str());
 
         if timestamp_start.is_none() {
