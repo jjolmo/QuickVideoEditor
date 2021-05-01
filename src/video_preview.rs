@@ -144,7 +144,7 @@ mod imp {
             media_file.connect_property_error_notify({
                 let self_ = self_.downgrade();
                 move |media_file| {
-                    let error = MediaStreamExt::error(media_file).unwrap();
+                    let error = media_file.error().unwrap();
 
                     warn!("Error in MediaFile: {}", error);
 
