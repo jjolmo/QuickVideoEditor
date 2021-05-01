@@ -11,6 +11,10 @@
         <property name="transition-type">crossfade</property>
         <child>
           <object class="GtkHeaderBar">
+            <!-- GTK puts this on the stack above, but it has to be on the actual headerbar for the "devel" class to work. -->
+            <style>
+              <class name="titlebar"/>
+            </style>
             <child>
               <object class="GtkButton" id="button_open">
                 <property name="label" translatable="yes" comments="Video open button label.">Open</property>
@@ -26,6 +30,10 @@
             <property name="name">page_main</property>
             <property name="child">
               <object class="GtkHeaderBar">
+                <!-- GTK puts this on the stack above, but it has to be on the actual headerbar for the "devel" class to work. -->
+                <style>
+                  <class name="titlebar"/>
+                </style>
                 <property name="title-widget">
                   <object class="GtkBox" id="box">
                   <property name="orientation">vertical</property>
