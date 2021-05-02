@@ -144,10 +144,12 @@ mod imp {
                 }
             });
 
-            media_file.connect_property_duration_notify({
+            media_file.connect_property_prepared_notify({
                 let self_ = self_.downgrade();
                 move |_| {
                     let self_ = self_.upgrade().unwrap();
+
+                    // GTK API is such that on "prepared" all media info is known and won't change.
                     self_.notify("duration");
                 }
             });
