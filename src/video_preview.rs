@@ -9,7 +9,7 @@ mod imp {
     use once_cell::unsync::OnceCell;
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(file = "video_preview.ui")]
+    #[template(resource = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/video_preview.ui")]
     pub struct VtVideoPreview {
         #[template_child]
         picture_video_preview: TemplateChild<gtk::Picture>,

@@ -71,7 +71,7 @@ mod imp {
     ];
 
     #[derive(Debug, Default, CompositeTemplate)]
-    #[template(file = "window.ui")]
+    #[template(resource = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui")]
     pub struct VtWindow {
         #[template_child]
         video_preview: TemplateChild<VtVideoPreview>,

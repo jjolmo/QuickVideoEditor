@@ -33,7 +33,7 @@ mod imp {
     }
 
     #[derive(Debug, CompositeTemplate)]
-    #[template(file = "timeline.ui")]
+    #[template(resource = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/timeline.ui")]
     pub struct VtTimeline {
         #[template_child]
         box_timeline_position: TemplateChild<gtk::Box>,

@@ -24,7 +24,7 @@ mod imp {
     }
 
     #[derive(Default, CompositeTemplate)]
-    #[template(file = "notification.ui")]
+    #[template(resource = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/notification.ui")]
     pub struct VtNotification {
         #[template_child]
         revealer: TemplateChild<gtk::Revealer>,
