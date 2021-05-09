@@ -525,6 +525,23 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+
+            klass.install_action("win.about", None, |window, _, _| {
+                gtk::AboutDialogBuilder::new()
+                    .transient_for(window)
+                    .modal(true)
+                    // Translators: title of the About dialog.
+                    .title(&gettext("About Video Trimmer"))
+                    .logo_icon_name(config::APP_ID)
+                    .version(config::VERSION)
+                    .license_type(gtk::License::Gpl30)
+                    .authors(vec!["Ivan Molodetskikh".to_owned()])
+                    .website("https://gitlab.gnome.org/YaLTeR/video-trimmer")
+                    // Translators: shown in the About dialog, put your name here.
+                    .translator_credits(&gettext("translator-credits"))
+                    .build()
+                    .show();
+            });
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {

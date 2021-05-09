@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
+  <menu id="primary_menu">
+    <section>
+      <item>
+        <attribute name="label" translatable="yes" comments="Primary menu entry that opens the About dialog.">_About Video Trimmer</attribute>
+        <attribute name="action">win.about</attribute>
+      </item>
+    </section>
+  </menu>
   <template class="VtWindow" parent="GtkApplicationWindow">
     <property name="title" translatable="yes">Video Trimmer</property>
     <!-- These parameters are chosen to make the default size of the video 640×360. -->
@@ -21,6 +29,12 @@
                 <style>
                   <class name="suggested-action"/>
                 </style>
+              </object>
+            </child>
+            <child type="end">
+              <object class="GtkMenuButton">
+                <property name="menu-model">primary_menu</property>
+                <property name="icon-name">open-menu-symbolic</property>
               </object>
             </child>
           </object>
@@ -73,6 +87,12 @@
                     <style>
                       <class name="suggested-action"/>
                     </style>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkMenuButton">
+                    <property name="menu-model">primary_menu</property>
+                    <property name="icon-name">open-menu-symbolic</property>
                   </object>
                 </child>
               </object>
