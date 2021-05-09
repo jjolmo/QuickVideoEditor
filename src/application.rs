@@ -105,6 +105,23 @@ mod imp {
             });
             self_.add_action(&action);
             self_.set_accels_for_action("app.quit", &["<primary>q"]);
+
+            let action = gio::SimpleAction::new("new-window", None);
+            action.connect_activate({
+                let app = self_.downgrade();
+                move |_, _| {
+                    let app = app.upgrade().unwrap();
+                    let window = VtWindow::new(app.upcast_ref(), None);
+
+                    // Put it in a new window group so modal dialogs don't block other windows.
+                    let group = gtk::WindowGroup::new();
+                    group.add_window(&window);
+
+                    window.show();
+                }
+            });
+            self_.add_action(&action);
+            self_.set_accels_for_action("app.new-window", &["<primary>n"]);
         }
 
         fn handle_local_options(&self, _self_: &Self::Type, options: &glib::VariantDict) -> i32 {

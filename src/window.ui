@@ -4,6 +4,11 @@
   <menu id="primary_menu">
     <section>
       <item>
+        <attribute name="label" translatable="yes" comments="Primary menu entry that opens a new window.">_New Window</attribute>
+        <attribute name="action">app.new-window</attribute>
+        <attribute name="accel">&lt;primary&gt;n</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes" comments="Primary menu entry that opens the About dialog.">_About Video Trimmer</attribute>
         <attribute name="action">win.about</attribute>
       </item>

@@ -32,6 +32,7 @@
 				<ul>
 					<li>The default name for the output video is now "input video name (trimmed)".</li>
 					<li>The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Video Trimmer the filesystem=host permission (for example, using Flatseal).</li>
+					<li>It's now possible to open a new Video Trimmer window from the new primary menu.</li>
 					<li>Updated translations.</li>
 				</ul>
 			</description>
