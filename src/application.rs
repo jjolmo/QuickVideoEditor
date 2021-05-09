@@ -104,7 +104,7 @@ mod imp {
                 }
             });
             self_.add_action(&action);
-            self_.set_accels_for_action("app.quit", &["<Ctrl>q"]);
+            self_.set_accels_for_action("app.quit", &["<primary>q"]);
         }
 
         fn handle_local_options(&self, _self_: &Self::Type, options: &glib::VariantDict) -> i32 {
