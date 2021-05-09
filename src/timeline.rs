@@ -210,19 +210,17 @@ mod imp {
     }
 
     impl WidgetImpl for VtTimeline {
-        fn size_allocate(&self, widget: &Self::Type, width: i32, height: i32, baseline: i32) {
+        fn size_allocate(&self, _widget: &Self::Type, width: i32, height: i32, baseline: i32) {
             let duration = self.duration.get();
             if duration == 0 {
                 return;
             }
 
-            let is_rtl = widget.direction() == gtk::TextDirection::Rtl;
-
             let position = self.position.get();
             let x = ((position as f64 / duration as f64).clamp(0., 1.) * width as f64) as i32;
             self.box_timeline_position.size_allocate(
                 &gtk::Allocation {
-                    x: if is_rtl { width - x - 2 } else { x },
+                    x,
                     y: 0,
                     width: 2,
                     height,
@@ -237,7 +235,7 @@ mod imp {
 
                 self.box_timeline_selection.size_allocate(
                     &gtk::Allocation {
-                        x: if is_rtl { width - x_end } else { x },
+                        x,
                         y: 0,
                         width: x_end - x,
                         height,
@@ -283,14 +281,9 @@ mod imp {
             self.drag_type.set(DragType::Playback);
 
             if self.start_end.get().is_some() {
-                let self_ = self.instance();
-
                 let allocation = self.box_timeline_selection.allocation();
                 let start = allocation.x as f64;
                 let end = (allocation.x + allocation.width) as f64;
-
-                let is_rtl = self_.direction() == gtk::TextDirection::Rtl;
-                let (start, end) = if is_rtl { (end, start) } else { (start, end) };
 
                 if (x - end).abs() <= TOLERANCE {
                     self.drag_type.set(DragType::End);
@@ -313,9 +306,6 @@ mod imp {
             // Sanitize (this can get weird values when resizing the window while dragging).
             let x = x.min(width).max(0.);
             let value = x / width;
-
-            let is_rtl = self_.direction() == gtk::TextDirection::Rtl;
-            let value = if is_rtl { 1. - value } else { value };
 
             let media_file = self.media_file.get().unwrap();
             let duration = media_file.duration();
