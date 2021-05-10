@@ -87,6 +87,8 @@ mod imp {
         fn startup(&self, self_: &Self::Type) {
             self.parent_startup(self_);
 
+            adw::init();
+
             let provider = gtk::CssProvider::new();
             provider.load_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/style.css");
             gtk::StyleContext::add_provider_for_display(

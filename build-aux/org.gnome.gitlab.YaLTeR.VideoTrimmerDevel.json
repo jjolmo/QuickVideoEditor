@@ -71,6 +71,21 @@
             ]
         },
         {
+            "name" : "libadwaita",
+            "buildsystem" : "meson",
+            "config-opts" : [
+                "-Dexamples=false",
+                "-Dtests=false"
+            ],
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/libadwaita.git",
+                    "commit" : "bfac98df61105d6453140b248ea4c46c3c152036"
+                }
+            ]
+        },
+        {
             "name" : "video-trimmer",
             "buildsystem" : "meson",
             "config-opts" : [

@@ -13,6 +13,7 @@ futures-channel = "0.3.14"
 log = "0.4.14"
 gtk = { git = "https://github.com/gtk-rs/gtk4-rs.git", package = "gtk4" }
 glib = { git = "https://github.com/gtk-rs/gtk-rs.git", features = ["log", "log_macros"] }
+adw = { git = "https://gitlab.gnome.org/World/Rust/libadwaita-rs.git", package = "libadwaita" }
 
 [dependencies.gettext-rs]
 version = "0.7.0"
