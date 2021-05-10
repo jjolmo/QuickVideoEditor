@@ -194,47 +194,55 @@ If you&apos;re running Video Trimmer under Flatpak, note that opening files by d
                       </object>
                     </child>
                     <child>
-                      <object class="GtkBox">
+                      <object class="GtkBox" id="box_start_end">
                         <property name="halign">center</property>
                         <property name="margin-start">18</property>
                         <property name="margin-end">18</property>
                         <property name="margin-top">18</property>
                         <property name="margin-bottom">18</property>
+                        <property name="spacing">24</property>
                         <child>
-                          <object class="GtkLabel">
-                            <property name="margin-end">12</property>
-                            <property name="label" translatable="yes" comments="Label for the entry for the start timestamp.">Start</property>
+                          <object class="GtkBox">
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="margin-end">12</property>
+                                <property name="label" translatable="yes" comments="Label for the entry for the start timestamp.">Start</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="entry_start">
+                                <attributes>
+                                  <attribute name="font-features" value="tnum=1"/>
+                                </attributes>
+                                <property name="max-width-chars">7</property>
+                                <property name="placeholder-text">0:00</property>
+                                <style>
+                                  <class name="error"/>
+                                </style>
+                              </object>
+                            </child>
                           </object>
                         </child>
                         <child>
-                          <object class="GtkEntry" id="entry_start">
-                            <attributes>
-                              <attribute name="font-features" value="tnum=1"/>
-                            </attributes>
-                            <property name="margin-end">24</property>
-                            <property name="max-width-chars">7</property>
-                            <property name="placeholder-text">0:00</property>
-                            <style>
-                              <class name="error"/>
-                            </style>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="margin-end">12</property>
-                            <property name="label" translatable="yes" comments="Label for the entry for the end timestamp.">End</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkEntry" id="entry_end">
-                            <attributes>
-                              <attribute name="font-features" value="tnum=1"/>
-                            </attributes>
-                            <property name="max-width-chars">7</property>
-                            <property name="placeholder-text">0:00</property>
-                            <style>
-                              <class name="error"/>
-                            </style>
+                          <object class="GtkBox">
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="margin-end">12</property>
+                                <property name="label" translatable="yes" comments="Label for the entry for the end timestamp.">End</property>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkEntry" id="entry_end">
+                                <attributes>
+                                  <attribute name="font-features" value="tnum=1"/>
+                                </attributes>
+                                <property name="max-width-chars">7</property>
+                                <property name="placeholder-text">0:00</property>
+                                <style>
+                                  <class name="error"/>
+                                </style>
+                              </object>
+                            </child>
                           </object>
                         </child>
                       </object>

@@ -95,6 +95,8 @@ mod imp {
         label_subtitle: TemplateChild<gtk::Label>,
         #[template_child]
         done_notification: TemplateChild<VtNotification>,
+        #[template_child]
+        box_start_end: TemplateChild<gtk::Box>,
 
         content_type: RefCell<Option<glib::GString>>,
         input_path: RefCell<Option<PathBuf>>,
@@ -586,6 +588,9 @@ mod imp {
             if config::PROFILE == "Devel" {
                 self_.style_context().add_class("devel");
             }
+
+            // Start entry is always on the left, just like the timeline.
+            self.box_start_end.set_direction(gtk::TextDirection::Ltr);
 
             self.video_preview
                 .connect_local("notify::duration", false, {
