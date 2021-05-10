@@ -92,7 +92,7 @@ mod imp {
         #[template_child]
         stack_header_bar: TemplateChild<gtk::Stack>,
         #[template_child]
-        label_subtitle: TemplateChild<gtk::Label>,
+        title: TemplateChild<adw::WindowTitle>,
         #[template_child]
         done_notification: TemplateChild<VtNotification>,
         #[template_child]
@@ -484,8 +484,7 @@ mod imp {
                 match info {
                     Ok(info) => {
                         let display_name = info.display_name();
-                        priv_.label_subtitle.set_text(display_name.as_str());
-                        priv_.label_subtitle.set_visible(true);
+                        priv_.title.set_subtitle(Some(display_name.as_str()));
 
                         if let Some(fast_content_type) =
                             info.attribute_string("standard::fast-content-type")

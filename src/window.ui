@@ -54,36 +54,9 @@
                   <class name="titlebar"/>
                 </style>
                 <property name="title-widget">
-                  <object class="GtkBox" id="box">
-                  <property name="orientation">vertical</property>
-                  <property name="halign">center</property>
-                  <property name="valign">center</property>
-                  <child>
-                    <object class="GtkLabel">
-                      <property name="ellipsize">end</property>
-                      <property name="halign">center</property>
-                      <property name="wrap">False</property>
-                      <property name="single-line-mode">True</property>
-                      <property name="width-chars">5</property>
-                      <property name="label" bind-source="VtWindow" bind-property="title" bind-flags="sync-create"/>
-                      <style>
-                        <class name="title"/>
-                      </style>
-                    </object>
-                  </child>
-                  <child>
-                    <object class="GtkLabel" id="label_subtitle">
-                      <property name="ellipsize">end</property>
-                      <property name="halign">center</property>
-                      <property name="wrap">False</property>
-                      <property name="single-line-mode">True</property>
-                      <property name="visible">False</property>
-                      <style>
-                        <class name="subtitle"/>
-                      </style>
-                    </object>
-                  </child>
-                </object>
+                  <object class="AdwWindowTitle" id="title">
+                    <property name="title" bind-source="VtWindow" bind-property="title" bind-flags="sync-create"/>
+                  </object>
                 </property>
                 <child>
                   <object class="GtkButton" id="button_trim">
