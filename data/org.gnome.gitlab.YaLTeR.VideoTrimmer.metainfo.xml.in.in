@@ -34,6 +34,7 @@
 					<li>The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Video Trimmer the filesystem=host permission (for example, using Flatseal).</li>
 					<li>It's now possible to open a new Video Trimmer window from the new primary menu.</li>
 					<li>The timestamp text fields are now arranged in a better way in RTL languages.</li>
+					<li>Video Trimmer now uses libadwaita, which means a slightly updated visual style (rounded window corners!).</li>
 					<li>Updated translations.</li>
 				</ul>
 			</description>
