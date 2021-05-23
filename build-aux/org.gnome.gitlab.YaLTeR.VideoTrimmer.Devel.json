@@ -1,5 +1,5 @@
 {
-    "app-id" : "org.gnome.gitlab.YaLTeR.VideoTrimmerDevel",
+    "app-id" : "org.gnome.gitlab.YaLTeR.VideoTrimmer.Devel",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "40",
     "sdk" : "org.gnome.Sdk",
@@ -22,6 +22,8 @@
     ],
     "desktop-file-name-suffix" : " (Devel)",
     "finish-args" : [
+        "--env=RUST_BACKTRACE=1",
+        "--env=G_MESSAGES_DEBUG=VideoTrimmer",
         "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
@@ -71,17 +73,24 @@
             ]
         },
         {
-            "name" : "libadwaita",
+            "name" : "libsass",
             "buildsystem" : "meson",
-            "config-opts" : [
-                "-Dexamples=false",
-                "-Dtests=false"
-            ],
             "sources" : [
                 {
                     "type" : "git",
-                    "url" : "https://gitlab.gnome.org/GNOME/libadwaita.git",
-                    "commit" : "bfac98df61105d6453140b248ea4c46c3c152036"
+                    "url" : "https://github.com/lazka/libsass.git",
+                    "branch" : "meson"
+                }
+            ]
+        },
+        {
+            "name" : "sassc",
+            "buildsystem" : "meson",
+            "sources" : [
+                {
+                    "type" : "git",
+                    "url" : "https://github.com/lazka/sassc.git",
+                    "branch" : "meson"
                 }
             ]
         },
@@ -98,18 +107,29 @@
                 {
                     "type" : "git",
                     "url" : "https://gitlab.gnome.org/GNOME/gtk.git",
-                    "tag" : "4.2.1",
-                    "commit" : "ba44668478b7184bec02609f292691b85a2c6cdd"
-                },
+                    "commit" : "d883b0a38390f9e2edabc3d275ca1220233d55a8"
+                }
+            ]
+        },
+        {
+            "name" : "libadwaita",
+            "buildsystem" : "meson",
+            "config-opts" : [
+                "-Dexamples=false",
+                "-Dtests=false"
+            ],
+            "sources" : [
                 {
-                    "type" : "patch",
-                    "path" : "gtk-fix-mediafile.patch"
+                    "type" : "git",
+                    "url" : "https://gitlab.gnome.org/GNOME/libadwaita.git",
+                    "commit" : "bfac98df61105d6453140b248ea4c46c3c152036"
                 }
             ]
         },
         {
             "name" : "video-trimmer",
             "buildsystem" : "meson",
+            "builddir" : true,
             "config-opts" : [
                 "-Dprofile=development"
             ],

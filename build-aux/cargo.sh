@@ -8,7 +8,7 @@ export OUTPUT="$3"
 export APP_ID_SUFFIX="$4"
 export APP_BIN="$5"
 
-if [[ $APP_ID_SUFFIX = "Devel" ]]
+if [ "$APP_ID_SUFFIX" = ".Devel" ]
 then
     echo "DEBUG MODE"
     cargo build --manifest-path \

@@ -12,7 +12,7 @@ i18n = import('i18n')
 
 if get_option('profile') == 'development'
   profile = 'Devel'
-  app_id_suffix = 'Devel'
+  app_id_suffix = '.Devel'
   name_suffix = ' (Devel)'
   vcs_tag = run_command('git', 'rev-parse', '--short', 'HEAD').stdout().strip()
   if vcs_tag == ''
