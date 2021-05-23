@@ -5,8 +5,7 @@
 src/config.rs
 *.ui~
 *#*.ui#
-/build-dir/
-/build-dir-devel/
+/builddir/
 /po/video-trimmer.pot
 /repository/
 /*.flatpak
