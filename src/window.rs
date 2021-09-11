@@ -840,7 +840,7 @@ mod imp {
             drop_target.connect_drop({
                 let self_ = self_.downgrade();
                 move |_, data, _, _| {
-                    if let Some(file) = data.get::<gio::File>().ok() {
+                    if let Ok(file) = data.get::<gio::File>() {
                         let self_ = self_.upgrade().unwrap();
                         self_.open(file);
                         return true;
