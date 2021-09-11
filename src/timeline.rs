@@ -153,7 +153,7 @@ mod imp {
                         }
                     });
 
-                    self.media_file.set(media_file).unwrap()
+                    self.media_file.set(media_file).unwrap();
                 }
                 _ => unreachable!(),
             }
