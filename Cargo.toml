@@ -14,6 +14,7 @@ log = "0.4.14"
 gtk = { package = "gtk4", version = "0.2.0" }
 glib = { version = "0.14.5", features = ["log", "log_macros"] }
 adw = { package = "libadwaita", version = "0.1.0-alpha-3" }
+json = "0.12.4"
 
 [dependencies.gettext-rs]
 version = "0.7.0"

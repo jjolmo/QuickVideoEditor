@@ -56,7 +56,6 @@
                 "--disable-encoders",
                 "--disable-devices",
                 "--disable-ffplay",
-                "--disable-ffprobe",
                 "--enable-gpl"
             ],
             "cleanup" : [

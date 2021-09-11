@@ -3,7 +3,7 @@ use gtk::{gio, glib};
 
 mod imp {
     use std::{
-        cell::RefCell,
+        cell::{Cell, RefCell},
         ffi::OsStr,
         path::{Component, Path, PathBuf},
         time::Duration,
@@ -101,6 +101,7 @@ mod imp {
         content_type: RefCell<Option<glib::GString>>,
         input_path: RefCell<Option<PathBuf>>,
         output_file: RefCell<Option<gio::File>>,
+        do_not_default_to_mp4: Cell<bool>,
     }
 
     impl VtWindow {
@@ -515,6 +516,52 @@ mod imp {
                 }
             };
             glib::MainContext::default().spawn_local(future);
+
+            // Run ffprobe to get information we need.
+            let input_path = self.input_path.borrow();
+            let args: Vec<&OsStr> = vec![
+                "ffprobe".as_ref(),
+                "-print_format".as_ref(),
+                "json".as_ref(),
+                "-select_streams".as_ref(),
+                "a".as_ref(),
+                "-show_streams".as_ref(),
+                input_path.as_ref().unwrap().as_ref(),
+            ];
+            debug!("invoking: {:?}", args);
+
+            let subprocess = gio::Subprocess::newv(
+                &args,
+                gio::SubprocessFlags::STDOUT_PIPE | gio::SubprocessFlags::STDERR_PIPE,
+            )
+            .unwrap();
+            let self_ = self.instance();
+            let future = async move {
+                let (stdout, stderr) = subprocess
+                    .communicate_utf8_async_future(None)
+                    .await
+                    .unwrap();
+                if subprocess.has_exited() && subprocess.exit_status() == 0 {
+                    let priv_ = Self::from_instance(&self_);
+                    let output = json::parse(&stdout.unwrap()).unwrap();
+                    let mut audio_formats = output["streams"]
+                        .members()
+                        .filter_map(|stream| stream["codec_name"].as_str())
+                        .inspect(|name| debug!("audio codec: {}", name));
+
+                    // Some Sony cameras produce .mp4 videos with PCM audio. This is invalid
+                    // according to the MP4 standard, so FFmpeg refuses to mux them back. To work
+                    // around this limitation, we change the default output file extension when a
+                    // PCM audio track is detected.
+                    if audio_formats.any(|name| name.starts_with("pcm_")) {
+                        debug!("avoiding default .mp4 extension: PCM audio detected");
+                        priv_.do_not_default_to_mp4.set(true);
+                    }
+                } else {
+                    debug!("error: {}", stderr.as_deref().unwrap_or(""));
+                }
+            };
+            glib::MainContext::default().spawn_local(future);
         }
     }
 
@@ -761,8 +808,13 @@ mod imp {
                             }
                         })
                         .and_then(|exts| exts.get(0))
-                        .unwrap_or(&"mp4")
-                        .to_string();
+                        .unwrap_or(&"mp4");
+
+                    let extension = if *extension == "mp4" && priv_.do_not_default_to_mp4.get() {
+                        "mkv"
+                    } else {
+                        extension
+                    }.to_string();
 
                     let input_path = priv_.input_path.borrow();
                     if input_path.is_none() {
