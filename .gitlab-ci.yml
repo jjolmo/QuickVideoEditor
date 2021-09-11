@@ -6,10 +6,10 @@ flatpak:
   image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:40'
   variables:
     BUNDLE: "video-trimmer-nightly.flatpak"
-    MANIFEST_PATH: "build-aux/org.gnome.gitlab.YaLTeR.VideoTrimmerDevel.json"
+    MANIFEST_PATH: "build-aux/org.gnome.gitlab.YaLTeR.VideoTrimmer.Devel.json"
     FLATPAK_MODULE: "video-trimmer"
     MESON_ARGS: "-Dprofile=development"
-    APP_ID: "org.gnome.gitlab.YaLTeR.VideoTrimmerDevel"
+    APP_ID: "org.gnome.gitlab.YaLTeR.VideoTrimmer.Devel"
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
   extends: '.flatpak'
 
