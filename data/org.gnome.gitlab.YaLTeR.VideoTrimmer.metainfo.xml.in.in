@@ -26,6 +26,26 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.6.1" date="2021-09-11">
+			<description>
+				<p>This release contains a few improvements and adds a number of translations.</p>
+				<ul>
+					<li>Added a checkbox to remove the audio track to the output file selection dialog.</li>
+					<li>The video is now automatically paused when the trim button is pressed.</li>
+					<li>The .mp4 output file extension is no longer default when it cannot be used (this affected videos from some Sony cameras).</li>
+					<li>Added a message when the opened file has no video track.</li>
+					<li>Updated libadwaita, which means slightly newer version of the Adwaita theme.</li>
+					<li>Fixed a crash after closing a window with a visible notification.</li>
+					<li>Added German translation (thanks Johannes Hayeß).</li>
+					<li>Added Basque translation (thanks Sergio).</li>
+					<li>Added Hungarian translation (thanks ovari).</li>
+					<li>Added Italian translation (thanks Óscar Fernández Díaz).</li>
+					<li>Added Brazilian Portuguese translation (thanks Gustavo Costa).</li>
+          			<li>Specified input device and screen size recommendations to improve display in the new GNOME Software.</li>
+					<li>Updated translations.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.6.0" date="2021-05-13">
 			<description>
 				<p>This release contains a few small improvements.</p>
