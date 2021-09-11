@@ -55,7 +55,7 @@ mod imp {
         fn constructed(&self, self_: &Self::Type) {
             self.parent_constructed(self_);
 
-            self.revealer.connect_property_child_revealed_notify({
+            self.revealer.connect_child_revealed_notify({
                 let self_ = self_.downgrade();
                 move |_| {
                     let self_ = self_.upgrade().unwrap();

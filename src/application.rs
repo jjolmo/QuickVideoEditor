@@ -131,7 +131,7 @@ mod imp {
                 options
                     .lookup_value("output", None)
                     .and_then(|x| x.get::<String>())
-                    .map(gio::File::new_for_path),
+                    .map(gio::File::for_path),
             );
 
             -1

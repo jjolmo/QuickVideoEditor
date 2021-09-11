@@ -121,7 +121,7 @@ mod imp {
                 "media-file" => {
                     let media_file: gtk::MediaFile = value.get().unwrap();
 
-                    media_file.connect_property_timestamp_notify({
+                    media_file.connect_timestamp_notify({
                         let self_ = self_.downgrade();
                         move |_| {
                             let self_ = self_.upgrade().unwrap();
@@ -130,7 +130,7 @@ mod imp {
                         }
                     });
 
-                    media_file.connect_property_duration_notify({
+                    media_file.connect_duration_notify({
                         let self_ = self_.downgrade();
                         move |_| {
                             let self_ = self_.upgrade().unwrap();
@@ -139,7 +139,7 @@ mod imp {
                         }
                     });
 
-                    media_file.connect_property_seeking_notify({
+                    media_file.connect_seeking_notify({
                         let self_ = self_.downgrade();
                         move |media_file| {
                             // This callback is for updating position once seeking has completed.

@@ -227,7 +227,7 @@ mod imp {
                 if let Some(parent) = output_path.parent() {
                     if parent.to_str().map(|x| !x.is_empty()).unwrap_or(false) {
                         debug!("setting current folder to {:?}", parent);
-                        let _ = file_chooser.set_current_folder(&gio::File::new_for_path(parent));
+                        let _ = file_chooser.set_current_folder(&gio::File::for_path(parent));
                     }
                 }
                 if let Some(name) = output_path.file_name().and_then(OsStr::to_str) {
@@ -484,7 +484,7 @@ mod imp {
                 match info {
                     Ok(info) => {
                         let display_name = info.display_name();
-                        priv_.title.set_subtitle(Some(display_name.as_str()));
+                        priv_.title.set_subtitle(display_name.as_str());
 
                         if let Some(fast_content_type) =
                             info.attribute_string("standard::fast-content-type")
@@ -717,7 +717,7 @@ mod imp {
             });
 
             // Start and end timestamp validation and visualization.
-            self.entry_start.connect_property_text_notify({
+            self.entry_start.connect_text_notify({
                 let self_ = self_.downgrade();
                 move |_| {
                     let self_ = self_.upgrade().unwrap();
@@ -725,7 +725,7 @@ mod imp {
                     priv_.on_entry_changed();
                 }
             });
-            self.entry_end.connect_property_text_notify({
+            self.entry_end.connect_text_notify({
                 let self_ = self_.downgrade();
                 move |_| {
                     let self_ = self_.upgrade().unwrap();

@@ -114,7 +114,7 @@ mod imp {
 
             // Media file callbacks.
             let media_file = gtk::MediaFile::new();
-            media_file.connect_property_playing_notify({
+            media_file.connect_playing_notify({
                 let self_ = self_.downgrade();
                 move |media_file| {
                     let self_ = self_.upgrade().unwrap();
@@ -132,7 +132,7 @@ mod imp {
                 }
             });
 
-            media_file.connect_property_error_notify({
+            media_file.connect_error_notify({
                 let self_ = self_.downgrade();
                 move |media_file| {
                     let error = media_file.error().unwrap();
@@ -144,7 +144,7 @@ mod imp {
                 }
             });
 
-            media_file.connect_property_prepared_notify({
+            media_file.connect_prepared_notify({
                 let self_ = self_.downgrade();
                 move |_| {
                     let self_ = self_.upgrade().unwrap();
@@ -154,7 +154,7 @@ mod imp {
                 }
             });
 
-            media_file.connect_property_timestamp_notify({
+            media_file.connect_timestamp_notify({
                 let self_ = self_.downgrade();
                 move |media_file| {
                     let self_ = self_.upgrade().unwrap();
