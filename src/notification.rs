@@ -89,9 +89,8 @@ mod imp {
             match *state {
                 State::Closed => {
                     let source = glib::timeout_add_seconds_local_once(5, {
-                        let self_ = self.instance().downgrade();
+                        let self_ = self.instance();
                         move || {
-                            let self_ = self_.upgrade().unwrap();
                             let priv_ = Self::from_instance(&self_);
                             priv_.close(None);
                         }
@@ -168,9 +167,8 @@ mod imp {
                         warn!("Unexpected notification state: {:?}", other);
 
                         let source = glib::timeout_add_seconds_local_once(5, {
-                            let self_ = self.instance().downgrade();
+                            let self_ = self.instance();
                             move || {
-                                let self_ = self_.upgrade().unwrap();
                                 let priv_ = Self::from_instance(&self_);
                                 priv_.close(None);
                             }
@@ -187,9 +185,8 @@ mod imp {
                     State::Closing(ref mut new_file_name @ Some(_)) => {
                         let new_file_name = new_file_name.take().unwrap();
                         let source = glib::timeout_add_seconds_local_once(5, {
-                            let self_ = self.instance().downgrade();
+                            let self_ = self.instance();
                             move || {
-                                let self_ = self_.upgrade().unwrap();
                                 let priv_ = Self::from_instance(&self_);
                                 priv_.close(None);
                             }
