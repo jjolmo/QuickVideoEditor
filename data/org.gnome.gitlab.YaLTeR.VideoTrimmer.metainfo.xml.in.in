@@ -109,6 +109,14 @@
 			</description>
 		</release>
 	</releases>
+	<recommends>
+		<control>pointing</control>
+		<control>keyboard</control>
+		<control>touch</control>
+	</recommends>
+	<requires>
+		<display_length compare="ge">360</display_length>
+	</requires>
 	<kudos>
 		<!--
 			GNOME Software kudos:
