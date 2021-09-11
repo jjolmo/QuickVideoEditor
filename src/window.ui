@@ -107,6 +107,7 @@
                     </child>
                     <child>
                       <object class="GtkLabel">
+                        <property name="wrap">1</property>
                         <property name="label" translatable="yes" comments="Label on the initial state.">Press the Open button to open a video file.</property>
                       </object>
                     </child>
