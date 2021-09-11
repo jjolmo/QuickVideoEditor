@@ -220,6 +220,10 @@ mod imp {
         pub fn destroy(&self) {
             self.media_file.get().unwrap().clear();
         }
+
+        pub fn pause(&self) {
+            self.media_file.get().unwrap().pause();
+        }
     }
 }
 
@@ -239,5 +243,9 @@ impl VtVideoPreview {
 
     pub fn destroy(&self) {
         imp::VtVideoPreview::from_instance(self).destroy();
+    }
+
+    pub fn pause(&self) {
+        imp::VtVideoPreview::from_instance(self).pause();
     }
 }

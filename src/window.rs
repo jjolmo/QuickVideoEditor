@@ -174,6 +174,8 @@ mod imp {
             debug!("trim: from {} to {}", start, end);
             debug!("input_path: {:?}", input_path);
 
+            self.video_preview.pause();
+
             let self_ = self.instance();
 
             let future = async move {
@@ -460,7 +462,10 @@ mod imp {
             glib::timeout_add_local_once(Duration::from_millis(300), {
                 let self_ = self_.downgrade();
                 move || {
-                    let self_ = self_.upgrade().unwrap();
+                    let self_ = match self_.upgrade() {
+                        Some(self_) => self_,
+                        None => return,
+                    };
                     let priv_ = VtWindow::from_instance(&self_);
                     priv_.switch_to_main_page();
                 }
