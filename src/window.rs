@@ -4,14 +4,15 @@ use gtk::{gio, glib};
 mod imp {
     use std::{
         cell::{Cell, RefCell},
-        ffi::OsStr,
+        ffi::{CString, OsStr},
         path::{Component, Path, PathBuf},
+        ptr,
         time::Duration,
     };
 
     use futures_util::future::{abortable, FutureExt};
     use gettextrs::*;
-    use glib::{clone, debug, warn};
+    use glib::{clone, debug, translate::ToGlibPtr, warn};
     use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     use crate::{
@@ -238,6 +239,22 @@ mod imp {
                     file_chooser.set_current_name(name);
                 }
 
+                // Translators: checkbox in output file selection dialog that strips audio from the
+                // video file.
+                let remove_audio = CString::new(gettext("Remove audio")).unwrap();
+                unsafe {
+                    gtk::ffi::gtk_file_chooser_add_choice(
+                        file_chooser
+                            .upcast_ref::<gtk::FileChooser>()
+                            .to_glib_none()
+                            .0,
+                        b"no-audio\0".as_ptr().cast(),
+                        remove_audio.as_ptr(),
+                        ptr::null_mut(),
+                        ptr::null_mut(),
+                    );
+                }
+
                 let (tx, rx) = futures_channel::oneshot::channel();
 
                 let tx = RefCell::new(Some(tx));
@@ -247,7 +264,8 @@ mod imp {
                         if let Some(tx) = tx.borrow_mut().take() {
                             if response == gtk::ResponseType::Accept {
                                 if let Some(path) = file_chooser.file().unwrap().path() {
-                                    tx.send(Some(path)).unwrap();
+                                    let no_audio = file_chooser.choice("no-audio").map(|choice| choice == "true").unwrap_or(false);
+                                    tx.send(Some((path, no_audio))).unwrap();
                                 } else {
                                     let dialog = gtk::MessageDialogBuilder::new()
                                         // Translators: error dialog title.
@@ -277,13 +295,13 @@ mod imp {
 
                 file_chooser.show();
 
-                let output_path = if let Some(output_path) = rx.await.unwrap() {
-                    output_path
+                let (output_path, no_audio) = if let Some(value) = rx.await.unwrap() {
+                    value
                 } else {
                     return;
                 };
 
-                priv_.do_trim(&input_path, output_path, start, end);
+                priv_.do_trim(&input_path, output_path, no_audio, start, end);
             };
 
             glib::MainContext::default().spawn_local(future);
@@ -293,6 +311,7 @@ mod imp {
             &self,
             input_path: &Path,
             output_path: PathBuf,
+            no_audio: bool,
             start: glib::GString,
             end: glib::GString,
         ) {
@@ -324,6 +343,9 @@ mod imp {
                 "-y".as_ref(),
             ]
             .to_vec();
+            if no_audio {
+                args.push("-an".as_ref());
+            }
             if output_path.extension().map(|x| x == "mp4").unwrap_or(false) {
                 args.push("-movflags".as_ref());
                 args.push("+faststart".as_ref());
