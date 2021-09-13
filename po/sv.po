@@ -207,8 +207,7 @@ msgstr "Adderade översättare (tack Åke Engelbrektson)"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:88
 msgid "Added Spanish translation (thanks Óscar Fernández Díaz)."
-msgstr "Adderade Spansk översättning\n"
-""
+msgstr "Adderade Spansk översättning"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:89
 msgid "Made the commandline argument description translatable."
@@ -256,8 +255,7 @@ msgstr ""
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:58
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:69
 msgid "Updated translations."
-msgstr "Uppdaterade översättningar\n"
-""
+msgstr "Uppdaterade översättningar"
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
