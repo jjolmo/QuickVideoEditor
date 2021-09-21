@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Project
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:gnome="http://api.gnome.org/doap-extensions#"
+    xmlns="http://usefulinc.com/ns/doap#">
+  <name xml:lang="en">Video Trimmer</name>
+  <shortdesc xml:lang="en">Trim videos quickly</shortdesc>
+  <description xml:lang="en">Video Trimmer cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality.</description>
+  <bug-database rdf:resource="https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues" />
+  <programming-language>Rust</programming-language>
+  <maintainer>
+    <foaf:Person>
+      <foaf:name>Ivan Molodetskikh</foaf:name>
+      <foaf:mbox rdf:resource="mailto:yalterz@gmail.com" />
+      <gnome:userid>imolodetskikh</gnome:userid>
+      <foaf:account>
+        <foaf:OnlineAccount>
+          <foaf:accountServiceHomepage rdf:resource="https://gitlab.gnome.org" />
+          <foaf:accountName>YaLTeR</foaf:accountName>
+        </foaf:OnlineAccount>
+      </foaf:account>
+    </foaf:Person>
+  </maintainer>
+</Project>
