@@ -255,6 +255,24 @@ mod imp {
                     );
                 }
 
+                // Translators: checkbox in output file selection dialog.
+                let accurate_trimming = CString::new(gettext(
+                    "Accurate trimming, but slower and may lose quality",
+                ))
+                .unwrap();
+                unsafe {
+                    gtk::ffi::gtk_file_chooser_add_choice(
+                        file_chooser
+                            .upcast_ref::<gtk::FileChooser>()
+                            .to_glib_none()
+                            .0,
+                        b"reencode\0".as_ptr().cast(),
+                        accurate_trimming.as_ptr(),
+                        ptr::null_mut(),
+                        ptr::null_mut(),
+                    );
+                }
+
                 let (tx, rx) = futures_channel::oneshot::channel();
 
                 let tx = RefCell::new(Some(tx));
@@ -265,7 +283,8 @@ mod imp {
                             if response == gtk::ResponseType::Accept {
                                 if let Some(path) = file_chooser.file().unwrap().path() {
                                     let no_audio = file_chooser.choice("no-audio").map(|choice| choice == "true").unwrap_or(false);
-                                    tx.send(Some((path, no_audio))).unwrap();
+                                    let reencode = file_chooser.choice("reencode").map(|choice| choice == "true").unwrap_or(false);
+                                    tx.send(Some((path, no_audio, reencode))).unwrap();
                                 } else {
                                     let dialog = gtk::MessageDialogBuilder::new()
                                         // Translators: error dialog title.
@@ -295,13 +314,13 @@ mod imp {
 
                 file_chooser.show();
 
-                let (output_path, no_audio) = if let Some(value) = rx.await.unwrap() {
+                let (output_path, no_audio, reencode) = if let Some(value) = rx.await.unwrap() {
                     value
                 } else {
                     return;
                 };
 
-                priv_.do_trim(&input_path, output_path, no_audio, start, end);
+                priv_.do_trim(&input_path, output_path, no_audio, reencode, start, end);
             };
 
             glib::MainContext::default().spawn_local(future);
@@ -312,6 +331,7 @@ mod imp {
             input_path: &Path,
             output_path: PathBuf,
             no_audio: bool,
+            reencode: bool,
             start: glib::GString,
             end: glib::GString,
         ) {
@@ -338,11 +358,13 @@ mod imp {
                 // It fails to even simply copy them over, so I'm assuming this is an FFmpeg bug and
                 // disabling data stream copying altogether as a workaround.
                 "-dn".as_ref(),
-                "-c".as_ref(),
-                "copy".as_ref(),
                 "-y".as_ref(),
             ]
             .to_vec();
+            if !reencode {
+                args.push("-c".as_ref());
+                args.push("copy".as_ref());
+            }
             if no_audio {
                 args.push("-an".as_ref());
             }
