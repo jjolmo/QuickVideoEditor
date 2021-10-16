@@ -80,8 +80,8 @@
             ],
             "sources" : [
                 {
-                    "type" : "git",
-                    "url" : "https://gitlab.gnome.org/YaLTeR/video-trimmer.git"
+                    "type" : "dir",
+                    "path" : ".."
                 }
             ]
         }
