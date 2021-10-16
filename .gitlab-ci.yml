@@ -1,9 +1,9 @@
 include:
   - project: 'gnome/citemplates'
-    file: 'flatpak/flatpak-ci-initiative-sdk-extensions.yml'
+    file: 'flatpak/flatpak_ci_initiative.yml'
 
 flatpak:
-  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:40'
+  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master'
   variables:
     BUNDLE: "video-trimmer-nightly.flatpak"
     MANIFEST_PATH: "build-aux/org.gnome.gitlab.YaLTeR.VideoTrimmer.Devel.json"
