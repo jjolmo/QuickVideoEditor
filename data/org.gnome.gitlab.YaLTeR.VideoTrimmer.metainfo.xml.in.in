@@ -26,6 +26,15 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.6.2" date="2021-10-17">
+			<description>
+				<p>This release adds an accurate trimming with re-encoding option.</p>
+				<ul>
+					<li>Added a checkbox for accurate trimming with re-encoding to the output file selection dialog.</li>
+					<li>Updated translations.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.6.1" date="2021-09-11">
 			<description>
 				<p>This release contains a few improvements and adds a number of translations.</p>
