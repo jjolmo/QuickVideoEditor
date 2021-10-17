@@ -365,6 +365,17 @@ mod imp {
                 args.push("-c".as_ref());
                 args.push("copy".as_ref());
             }
+            if reencode
+                && output_path
+                    .extension()
+                    .map(|x| x == "mp4" || x == "mkv")
+                    .unwrap_or(false)
+            {
+                // The default mp4 and mkv encoder selected by org.freedesktop.Platform.ffmpeg-full
+                // is mpeg4 which has terrible quality and file size. Use libvpx-vp9 instead.
+                args.push("-c:v".as_ref());
+                args.push("libvpx-vp9".as_ref());
+            }
             if no_audio {
                 args.push("-an".as_ref());
             }
