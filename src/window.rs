@@ -255,8 +255,8 @@ mod imp {
                     );
                 }
 
-                // Translators: checkbox in output file selection dialog.
                 let accurate_trimming = CString::new(gettext(
+                    // Translators: checkbox in output file selection dialog.
                     "Accurate trimming, but slower and may lose quality",
                 ))
                 .unwrap();
