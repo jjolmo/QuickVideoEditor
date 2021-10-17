@@ -4,6 +4,7 @@ use gtk::{gio, glib, prelude::*};
 
 mod application;
 use application::VtApplication;
+#[rustfmt::skip]
 mod config;
 use config::G_LOG_DOMAIN;
 mod notification;
