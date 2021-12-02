@@ -2,14 +2,11 @@
 <interface>
   <requires lib="gtk" version="4.0"/>
   <template class="VtTimeline" parent="GtkWidget">
-    <style>
-      <class name="vt-timeline-bg"/>
-    </style>
     <child>
       <object class="GtkBox" id="box_timeline_selection">
         <property name="can-target">0</property>
         <style>
-          <class name="vt-timeline-selection"/>
+          <class name="selection"/>
         </style>
       </object>
     </child>
@@ -17,7 +14,7 @@
       <object class="GtkBox" id="box_timeline_position">
         <property name="can-target">0</property>
         <style>
-          <class name="vt-timeline-position"/>
+          <class name="position"/>
         </style>
       </object>
     </child>
