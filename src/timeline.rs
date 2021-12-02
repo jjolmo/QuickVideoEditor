@@ -218,12 +218,21 @@ mod imp {
 
             let position = self.position.get();
             let x = ((position as f64 / duration as f64).clamp(0., 1.) * width as f64) as i32;
+            let position_width = self
+                .box_timeline_position
+                .measure(gtk::Orientation::Horizontal, -1)
+                .0;
+            let position_height = self
+                .box_timeline_position
+                .measure(gtk::Orientation::Vertical, position_width)
+                .0
+                .max(height);
             self.box_timeline_position.size_allocate(
                 &gtk::Allocation {
-                    x,
+                    x: x - position_width / 2,
                     y: 0,
-                    width: 2,
-                    height,
+                    width: position_width,
+                    height: position_height,
                 },
                 baseline,
             );
