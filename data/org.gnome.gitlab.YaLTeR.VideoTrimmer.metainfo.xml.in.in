@@ -31,6 +31,9 @@
 				<p>This release adds an accurate trimming with re-encoding option.</p>
 				<ul>
 					<li>Added a checkbox for accurate trimming with re-encoding to the output file selection dialog.</li>
+					<li>Added Japanese translation (thanks Sibuya Kaz).</li>
+					<li>Added Polish translation (thanks Avery).</li>
+					<li>Added Portuguese translation (thanks Bio DevM).</li>
 					<li>Updated translations.</li>
 				</ul>
 			</description>
