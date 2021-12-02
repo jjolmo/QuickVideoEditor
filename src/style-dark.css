@@ -1,0 +1,7 @@
+vt-timeline > .selection {
+	background-color: @blue_3;
+}
+
+vt-timeline > .position {
+	background-color: @light_1;
+}
