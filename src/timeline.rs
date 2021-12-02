@@ -242,12 +242,23 @@ mod imp {
                 let x = ((start as f64 / duration).clamp(0., 1.) * width as f64) as i32;
                 let x_end = ((end as f64 / duration).clamp(0., 1.) * width as f64) as i32;
 
+                let selection_width = self
+                    .box_timeline_selection
+                    .measure(gtk::Orientation::Horizontal, -1)
+                    .0
+                    .max(x_end - x);
+                let selection_height = self
+                    .box_timeline_selection
+                    .measure(gtk::Orientation::Vertical, selection_width)
+                    .0
+                    .max(height);
+
                 self.box_timeline_selection.size_allocate(
                     &gtk::Allocation {
                         x,
                         y: 0,
-                        width: x_end - x,
-                        height,
+                        width: selection_width,
+                        height: selection_height,
                     },
                     baseline,
                 );
