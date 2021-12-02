@@ -189,6 +189,7 @@ If you&apos;re running Video Trimmer under Flatpak, note that opening files by d
                                   <attribute name="font-features" value="tnum=1"/>
                                 </attributes>
                                 <property name="max-width-chars">7</property>
+                                <property name="width-chars">5</property>
                                 <property name="placeholder-text">0:00</property>
                                 <style>
                                   <class name="error"/>
@@ -211,6 +212,7 @@ If you&apos;re running Video Trimmer under Flatpak, note that opening files by d
                                   <attribute name="font-features" value="tnum=1"/>
                                 </attributes>
                                 <property name="max-width-chars">7</property>
+                                <property name="width-chars">5</property>
                                 <property name="placeholder-text">0:00</property>
                                 <style>
                                   <class name="error"/>
