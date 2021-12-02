@@ -5,9 +5,10 @@ use crate::config;
 mod imp {
     use super::*;
     use crate::{config::G_LOG_DOMAIN, window::VtWindow};
+    use adw::subclass::prelude::*;
     use gettextrs::*;
     use glib::{debug, prelude::*};
-    use gtk::{gdk, prelude::*, subclass::prelude::*};
+    use gtk::{prelude::*, subclass::prelude::*};
     use std::cell::Cell;
 
     #[derive(Default)]
@@ -20,7 +21,7 @@ mod imp {
     impl ObjectSubclass for VtApplication {
         const NAME: &'static str = "VtApplication";
         type Type = super::VtApplication;
-        type ParentType = gtk::Application;
+        type ParentType = adw::Application;
     }
 
     impl ObjectImpl for VtApplication {
@@ -87,16 +88,6 @@ mod imp {
         fn startup(&self, self_: &Self::Type) {
             self.parent_startup(self_);
 
-            adw::init();
-
-            let provider = gtk::CssProvider::new();
-            provider.load_from_resource("/org/gnome/gitlab/YaLTeR/VideoTrimmer/style.css");
-            gtk::StyleContext::add_provider_for_display(
-                &gdk::Display::default().unwrap(),
-                &provider,
-                gtk::STYLE_PROVIDER_PRIORITY_APPLICATION,
-            );
-
             let action = gio::SimpleAction::new("quit", None);
             action.connect_activate({
                 let app = self_.downgrade();
@@ -139,11 +130,12 @@ mod imp {
     }
 
     impl GtkApplicationImpl for VtApplication {}
+    impl AdwApplicationImpl for VtApplication {}
 }
 
 glib::wrapper! {
     pub struct VtApplication(ObjectSubclass<imp::VtApplication>)
-        @extends gtk::Application, gio::Application,
+        @extends adw::Application, gtk::Application, gio::Application,
         @implements gio::ActionGroup, gio::ActionMap;
 }
 
@@ -151,6 +143,14 @@ impl VtApplication {
     #[allow(clippy::new_without_default)]
     pub fn new() -> Self {
         let flags = gio::ApplicationFlags::NON_UNIQUE | gio::ApplicationFlags::HANDLES_OPEN;
-        glib::Object::new(&[("application-id", &config::APP_ID), ("flags", &flags)]).unwrap()
+        glib::Object::new(&[
+            ("application-id", &config::APP_ID),
+            ("flags", &flags),
+            (
+                "resource-base-path",
+                &"/org/gnome/gitlab/YaLTeR/VideoTrimmer",
+            ),
+        ])
+        .unwrap()
     }
 }
