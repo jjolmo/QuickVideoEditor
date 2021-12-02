@@ -31,7 +31,7 @@ run_command(
   check: true
 )
 
-sources = files(
+sources += files(
   'application.rs',
   'config.rs',
   'main.rs',

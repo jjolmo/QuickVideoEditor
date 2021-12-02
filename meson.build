@@ -30,6 +30,11 @@ endif
 base_id = 'org.gnome.gitlab.YaLTeR.VideoTrimmer'
 app_id = base_id + app_id_suffix
 
+sources = files(
+  'Cargo.lock',
+  'Cargo.toml',
+)
+
 subdir('data')
 subdir('src')
 subdir('po')
