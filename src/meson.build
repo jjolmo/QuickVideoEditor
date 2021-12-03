@@ -1,11 +1,23 @@
 pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
 gnome = import('gnome')
 
+blueprints = custom_target('blueprints',
+  input: files(
+    'window.blp',
+    'notification.blp',
+    'video_preview.blp',
+    'timeline.blp',
+  ),
+  output: '.',
+  command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
+)
+
 gnome.compile_resources('video-trimmer',
   'video_trimmer.gresource.xml',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
+  dependencies: blueprints,
 )
 
 conf = configuration_data()

@@ -1,0 +1,54 @@
+using Gtk 4.0;
+
+template VtVideoPreview : Widget {
+  layout-manager: BinLayout {};
+
+  Box {
+    orientation: vertical;
+
+    Stack stack_video_preview {
+      vexpand: true;
+
+      Picture picture_video_preview {}
+
+      Label label_no_video {
+        margin-start: 18;
+        margin-end: 18;
+        margin-top: 18;
+        margin-bottom: 18;
+
+        /* Translators: Label that is shown if we couldn't load the video track for the opened file (but possibly loaded audio). */
+        label: _("Could not load the video track.\n\nMaybe the file only has an audio track, or maybe the necessary video codec is missing.");
+        wrap: true;
+      }
+    }
+
+    Box {
+      margin-start: 18;
+      margin-end: 18;
+      margin-top: 12;
+      margin-bottom: 12;
+
+      Button button_play_pause {
+        receives-default: true;
+        margin-end: 8;
+
+        Image button_play_pause_image {
+          icon-name: "media-playback-pause-symbolic";
+        }
+      }
+
+      Label label_current_time {
+        margin-end: 8;
+        label: "0:00";
+        width-chars: 5;
+
+        styles ["numeric"]
+      }
+
+      .VtTimeline timeline {
+        hexpand: "1";
+      }
+    }
+  }
+}
