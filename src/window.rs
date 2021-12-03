@@ -223,7 +223,7 @@ mod imp {
                         path
                     });
 
-                let file_chooser = gtk::FileChooserNativeBuilder::new()
+                let file_chooser = gtk::FileChooserNative::builder()
                     .transient_for(&self_)
                     .action(gtk::FileChooserAction::Save)
                     .modal(true)
@@ -286,7 +286,7 @@ mod imp {
                                     let reencode = file_chooser.choice("reencode").map(|choice| choice == "true").unwrap_or(false);
                                     tx.send(Some((path, no_audio, reencode))).unwrap();
                                 } else {
-                                    let dialog = gtk::MessageDialogBuilder::new()
+                                    let dialog = gtk::MessageDialog::builder()
                                         // Translators: error dialog title.
                                         .text(&gettext("Error"))
                                         .secondary_text(&gettext(
@@ -391,7 +391,7 @@ mod imp {
                 gio::SubprocessFlags::STDOUT_PIPE | gio::SubprocessFlags::STDERR_PIPE,
             ) {
                 Ok(subprocess) => {
-                    let trimming_dialog = gtk::MessageDialogBuilder::new()
+                    let trimming_dialog = gtk::MessageDialog::builder()
                         // Translators: message dialog text.
                         .text(&gettext("Trimming…"))
                         .message_type(gtk::MessageType::Info)
@@ -419,7 +419,7 @@ mod imp {
                                         trimming_dialog_clone.close();
                                         return;
                                     } else {
-                                        gtk::MessageDialogBuilder::new()
+                                        gtk::MessageDialog::builder()
                                             // Translators: error dialog text.
                                             .text(&gettext("Error trimming video"))
                                             .secondary_text(stderr.as_deref().unwrap_or(""))
@@ -427,7 +427,7 @@ mod imp {
                                     }
                                 }
                                 Err(err) => {
-                                    gtk::MessageDialogBuilder::new()
+                                    gtk::MessageDialog::builder()
                                         // Translators: error dialog text.
                                         .text(&gettext(
                                             "Could not communicate with the ffmpeg subprocess",
@@ -469,7 +469,7 @@ mod imp {
                     glib::MainContext::default().spawn_local(future);
                 }
                 Err(err) => {
-                    let dialog = gtk::MessageDialogBuilder::new()
+                    let dialog = gtk::MessageDialog::builder()
                         // Translators: error dialog text.
                         .text(&gettext("Could not create the ffmpeg subprocess"))
                         .secondary_text(&format!("{}", err))
@@ -558,7 +558,7 @@ mod imp {
                     Err(err) => {
                         self_.show();
 
-                        let dialog = gtk::MessageDialogBuilder::new()
+                        let dialog = gtk::MessageDialog::builder()
                             // Translators: error dialog text when the input file information could
                             // not be retrieved (e.g. there's no such file on disk).
                             .text(&gettext("Could not get input video information"))
@@ -635,7 +635,7 @@ mod imp {
             Self::bind_template(klass);
 
             klass.install_action("win.about", None, |window, _, _| {
-                gtk::AboutDialogBuilder::new()
+                gtk::AboutDialog::builder()
                     .transient_for(window)
                     .modal(true)
                     // Translators: title of the About dialog.
@@ -661,7 +661,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [glib::ParamSpec::new_object(
+                [glib::ParamSpecObject::new(
                     "output-file",
                     "output-file",
                     "output-file",
@@ -705,12 +705,7 @@ mod imp {
                         let self_ = self_.upgrade().unwrap();
                         let priv_ = VtWindow::from_instance(&self_);
 
-                        let duration: i64 = priv_
-                            .video_preview
-                            .property("duration")
-                            .unwrap()
-                            .get()
-                            .unwrap();
+                        let duration: i64 = priv_.video_preview.property("duration");
 
                         priv_
                             .stack_video_preview
@@ -725,42 +720,37 @@ mod imp {
 
                         None
                     }
-                })
-                .unwrap();
+                });
 
-            self.video_preview
-                .connect_local("set-start-end", false, {
-                    let self_ = self_.downgrade();
-                    move |args| {
-                        let mut args = args
-                            .iter()
-                            .skip(1)
-                            .map(|x| Duration::from_millis(x.get::<u32>().unwrap().into()));
-                        let start = args.next().unwrap();
-                        let end = args.next().unwrap();
+            self.video_preview.connect_local("set-start-end", false, {
+                let self_ = self_.downgrade();
+                move |args| {
+                    let mut args = args
+                        .iter()
+                        .skip(1)
+                        .map(|x| Duration::from_millis(x.get::<u32>().unwrap().into()));
+                    let start = args.next().unwrap();
+                    let end = args.next().unwrap();
 
-                        let self_ = self_.upgrade().unwrap();
-                        let priv_ = VtWindow::from_instance(&self_);
-                        priv_.on_set_start_end(start, end);
+                    let self_ = self_.upgrade().unwrap();
+                    let priv_ = VtWindow::from_instance(&self_);
+                    priv_.on_set_start_end(start, end);
 
-                        None
-                    }
-                })
-                .unwrap();
+                    None
+                }
+            });
 
-            self.video_preview
-                .connect_local("error", false, {
-                    let self_ = self_.downgrade();
-                    move |_| {
-                        let self_ = self_.upgrade().unwrap();
-                        let priv_ = VtWindow::from_instance(&self_);
-                        priv_.on_video_preview_error();
-                        priv_.switch_to_main_page();
+            self.video_preview.connect_local("error", false, {
+                let self_ = self_.downgrade();
+                move |_| {
+                    let self_ = self_.upgrade().unwrap();
+                    let priv_ = VtWindow::from_instance(&self_);
+                    priv_.on_video_preview_error();
+                    priv_.switch_to_main_page();
 
-                        None
-                    }
-                })
-                .unwrap();
+                    None
+                }
+            });
 
             // The open button.
             self.button_open.connect_clicked({
@@ -774,7 +764,7 @@ mod imp {
                         filter.add_mime_type(mime_type);
                     }
 
-                    let file_chooser = gtk::FileChooserNativeBuilder::new()
+                    let file_chooser = gtk::FileChooserNative::builder()
                         .transient_for(&self_)
                         .action(gtk::FileChooserAction::Open)
                         // Translators: file chooser dialog title.
@@ -796,7 +786,7 @@ mod imp {
 
                             let file = file_chooser.file().unwrap();
                             if file.path().is_none() {
-                                let dialog = gtk::MessageDialogBuilder::new()
+                                let dialog = gtk::MessageDialog::builder()
                                     // Translators: error dialog title.
                                     .text(&gettext("Error"))
                                     .secondary_text(&gettext(

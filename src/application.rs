@@ -47,7 +47,7 @@ mod imp {
 
             if let Some(file) = self.input_file.take() {
                 if file.path().is_none() {
-                    let dialog = gtk::MessageDialogBuilder::new()
+                    let dialog = gtk::MessageDialog::builder()
                         // Translators: fatal error message dialog title.
                         .text(&gettext("Fatal Error"))
                         // Translators: error dialog text.

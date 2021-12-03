@@ -136,7 +136,7 @@ mod imp {
             if let State::Open(source) | State::Opening(source, _) =
                 mem::replace(&mut *state, State::Closing(new_file_name))
             {
-                glib::source_remove(source);
+                source.remove();
             }
             drop(state);
 

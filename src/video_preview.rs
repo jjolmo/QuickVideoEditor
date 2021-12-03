@@ -48,7 +48,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [glib::ParamSpec::new_int64(
+                [glib::ParamSpecInt64::new(
                     "duration",
                     "duration",
                     "duration",
@@ -89,17 +89,13 @@ mod imp {
         fn constructed(&self, self_: &Self::Type) {
             self.parent_constructed(self_);
 
-            self.timeline
-                .connect_local("set-start-end", false, {
-                    let self_ = self_.downgrade();
-                    move |args| {
-                        let self_ = self_.upgrade().unwrap();
-                        self_
-                            .emit_by_name_with_values("set-start-end", &args[1..])
-                            .unwrap()
-                    }
-                })
-                .unwrap();
+            self.timeline.connect_local("set-start-end", false, {
+                let self_ = self_.downgrade();
+                move |args| {
+                    let self_ = self_.upgrade().unwrap();
+                    self_.emit_by_name_with_values("set-start-end", &args[1..])
+                }
+            });
 
             // Connect the play-pause button.
             self.button_play_pause.connect_clicked({
@@ -144,7 +140,7 @@ mod imp {
                     warn!("Error in MediaFile: {}", error);
 
                     let self_ = self_.upgrade().unwrap();
-                    let _ = self_.emit_by_name("error", &[]);
+                    self_.emit_by_name::<()>("error", &[]);
                 }
             });
 
@@ -190,9 +186,7 @@ mod imp {
             });
 
             self.picture_video_preview.set_paintable(Some(&media_file));
-            self.timeline
-                .set_property("media-file", &media_file)
-                .unwrap();
+            self.timeline.set_property("media-file", &media_file);
 
             self.media_file.set(media_file).unwrap();
         }

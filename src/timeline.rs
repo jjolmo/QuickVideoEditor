@@ -86,7 +86,7 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [glib::ParamSpec::new_object(
+                [glib::ParamSpecObject::new(
                     "media-file",
                     "media-file",
                     "media-file",
@@ -230,12 +230,7 @@ mod imp {
                 .0
                 .max(height);
             self.box_timeline_position.size_allocate(
-                &gtk::Allocation {
-                    x: x - position_width / 2,
-                    y: 0,
-                    width: position_width,
-                    height: position_height,
-                },
+                &gtk::Allocation::new(x - position_width / 2, 0, position_width, position_height),
                 baseline,
             );
 
@@ -256,12 +251,7 @@ mod imp {
                     .max(height);
 
                 self.box_timeline_selection.size_allocate(
-                    &gtk::Allocation {
-                        x,
-                        y: 0,
-                        width: selection_width,
-                        height: selection_height,
-                    },
+                    &gtk::Allocation::new(x, 0, selection_width, selection_height),
                     baseline,
                 );
             }
@@ -304,8 +294,8 @@ mod imp {
 
             if self.start_end.get().is_some() {
                 let allocation = self.box_timeline_selection.allocation();
-                let start = allocation.x as f64;
-                let end = (allocation.x + allocation.width) as f64;
+                let start = allocation.x() as f64;
+                let end = (allocation.x() + allocation.width()) as f64;
 
                 if (x - end).abs() <= TOLERANCE {
                     self.drag_type.set(DragType::End);
@@ -384,8 +374,7 @@ mod imp {
                 };
 
                 self.instance()
-                    .emit_by_name("set-start-end", &[&start, &end])
-                    .unwrap();
+                    .emit_by_name::<()>("set-start-end", &[&start, &end]);
             };
         }
 
@@ -399,8 +388,8 @@ mod imp {
 
             let resizing_cursor = if self.start_end.get().is_some() {
                 let allocation = self.box_timeline_selection.allocation();
-                let start = allocation.x as f64;
-                let end = (allocation.x + allocation.width) as f64;
+                let start = allocation.x() as f64;
+                let end = (allocation.x() + allocation.width()) as f64;
 
                 (x - end).abs() <= TOLERANCE || (x - start).abs() <= TOLERANCE
             } else {
