@@ -12,6 +12,8 @@ mod imp {
     #[template(resource = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/video_preview.ui")]
     pub struct VtVideoPreview {
         #[template_child]
+        overlay: TemplateChild<adw::ToastOverlay>,
+        #[template_child]
         picture_video_preview: TemplateChild<gtk::Picture>,
         #[template_child]
         stack_video_preview: TemplateChild<gtk::Stack>,
@@ -218,6 +220,10 @@ mod imp {
         pub fn pause(&self) {
             self.media_file.get().unwrap().pause();
         }
+
+        pub fn overlay(&self) -> &adw::ToastOverlay {
+            &*self.overlay
+        }
     }
 }
 
@@ -241,5 +247,9 @@ impl VtVideoPreview {
 
     pub fn pause(&self) {
         imp::VtVideoPreview::from_instance(self).pause();
+    }
+
+    pub fn overlay(&self) -> &adw::ToastOverlay {
+        imp::VtVideoPreview::from_instance(self).overlay()
     }
 }

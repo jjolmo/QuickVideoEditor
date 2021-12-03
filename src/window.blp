@@ -75,127 +75,122 @@ template VtWindow : ApplicationWindow {
     }
   }
 
-  Overlay overlay_main {
-    child: Stack stack_main {
-      transition-type: under_up;
+  Stack stack_main {
+    transition-type: under_up;
 
-      Box box_empty_state {
-        Box {
-          hexpand: true;
-          valign: center;
-          margin-start: 32;
-          margin-end: 32;
-          margin-top: 32;
+    Box box_empty_state {
+      Box {
+        hexpand: true;
+        valign: center;
+        margin-start: 32;
+        margin-end: 32;
+        margin-top: 32;
+        margin-bottom: 32;
+        orientation: vertical;
+
+        Image {
           margin-bottom: 32;
-          orientation: vertical;
+          pixel-size: 128;
+          icon-name: "video-x-generic-symbolic";
 
-          Image {
-            margin-bottom: 32;
-            pixel-size: 128;
-            icon-name: "video-x-generic-symbolic";
+          styles ["dim-label"]
+        }
 
-            styles ["dim-label"]
-          }
+        Label {
+          wrap: true;
 
-          Label {
-            wrap: true;
-
-            /* Translators: Label on the initial state. */
-            label: _("Press the Open button to open a video file.");
-          }
+          /* Translators: Label on the initial state. */
+          label: _("Press the Open button to open a video file.");
         }
       }
+    }
 
-      StackPage {
-        name: "page_main";
+    StackPage {
+      name: "page_main";
 
-        child: Box {
-          orientation: vertical;
+      child: Box {
+        orientation: vertical;
 
-          Stack stack_video_preview {
-            vexpand: true;
-            transition-type: over_down_up;
-            visible-child: spinner_video_preview;
+        Stack stack_video_preview {
+          vexpand: true;
+          transition-type: over_down_up;
+          visible-child: spinner_video_preview;
 
-            .VtVideoPreview video_preview {}
+          .VtVideoPreview video_preview {}
 
-            Spinner spinner_video_preview {
-              halign: center;
-              height-request: 32;
-              width-request: 32;
-              spinning: true;
-            }
-
-            StackPage {
-              name: "page_error";
-
-              child: Box {
-                orientation: vertical;
-
-                Label {
-                  vexpand: true;
-                  margin-start: 18;
-                  margin-end: 18;
-                  margin-top: 18;
-                  margin-bottom: 18;
-
-                  /* Translators: Label that is shown upon video preview loading error. */
-                  label: _("The video preview has failed to load.\n\nPlease enter the start and end timestamps manually.\n\nIf you\'re running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work.");
-                  wrap: true;
-                }
-
-                styles ["background"]
-              };
-            }
-          }
-
-          Box box_start_end {
+          Spinner spinner_video_preview {
             halign: center;
-            margin-start: 18;
-            margin-end: 18;
-            margin-top: 18;
-            margin-bottom: 18;
-            spacing: 24;
+            height-request: 32;
+            width-request: 32;
+            spinning: true;
+          }
 
-            Box {
+          StackPage {
+            name: "page_error";
+
+            child: Box {
+              orientation: vertical;
+
               Label {
-                margin-end: 12;
+                vexpand: true;
+                margin-start: 18;
+                margin-end: 18;
+                margin-top: 18;
+                margin-bottom: 18;
 
-                /* Translators: Label for the entry for the start timestamp. */
-                label: _("Start");
+                /* Translators: Label that is shown upon video preview loading error. */
+                label: _("The video preview has failed to load.\n\nPlease enter the start and end timestamps manually.\n\nIf you\'re running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work.");
+                wrap: true;
               }
 
-              Entry entry_start {
-                max-width-chars: 7;
-                width-chars: 5;
-                placeholder-text: "0:00";
+              styles ["background"]
+            };
+          }
+        }
 
-                styles ["numeric", "error"]
-              }
+        Box box_start_end {
+          halign: center;
+          margin-start: 18;
+          margin-end: 18;
+          margin-top: 18;
+          margin-bottom: 18;
+          spacing: 24;
+
+          Box {
+            Label {
+              margin-end: 12;
+
+              /* Translators: Label for the entry for the start timestamp. */
+              label: _("Start");
             }
 
-            Box {
-              Label {
-                margin-end: 12;
+            Entry entry_start {
+              max-width-chars: 7;
+              width-chars: 5;
+              placeholder-text: "0:00";
 
-                /* Translators: Label for the entry for the end timestamp. */
-                label: _("End");
-              }
-
-              Entry entry_end {
-                max-width-chars: 7;
-                width-chars: 5;
-                placeholder-text: "0:00";
-
-                styles ["numeric", "error"]
-              }
+              styles ["numeric", "error"]
             }
           }
-        };
-      }
-    };
 
-    [overlay]
-    .VtNotification done_notification {}
+          Box {
+            Label {
+              margin-end: 12;
+
+              /* Translators: Label for the entry for the end timestamp. */
+              label: _("End");
+            }
+
+            Entry entry_end {
+              max-width-chars: 7;
+              width-chars: 5;
+              placeholder-text: "0:00";
+
+              styles ["numeric", "error"]
+            }
+          }
+        }
+      };
+    }
   }
 }

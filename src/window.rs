@@ -17,7 +17,6 @@ mod imp {
 
     use crate::{
         config::{self, G_LOG_DOMAIN},
-        notification::VtNotification,
         parse::{self, time_to_entry_text},
         video_preview::VtVideoPreview,
     };
@@ -94,8 +93,6 @@ mod imp {
         stack_header_bar: TemplateChild<gtk::Stack>,
         #[template_child]
         title: TemplateChild<adw::WindowTitle>,
-        #[template_child]
-        done_notification: TemplateChild<VtNotification>,
         #[template_child]
         box_start_end: TemplateChild<gtk::Box>,
 
@@ -415,7 +412,16 @@ mod imp {
                                             .unwrap_or_else(|| output_path.to_string_lossy());
 
                                         let priv_ = VtWindow::from_instance(&self_);
-                                        priv_.done_notification.show_notification(file_name.into());
+                                        priv_.video_preview.overlay().add_toast(&adw::Toast::new(
+                                            &format!(
+                                                "{} {}",
+                                                file_name,
+                                                // Translators: text on the in-app notification
+                                                // after trimming was done. The template is: <video
+                                                // filename> has been saved
+                                                gettext("has been saved")
+                                            ),
+                                        ));
                                         trimming_dialog_clone.close();
                                         return;
                                     } else {
