@@ -1,7 +1,7 @@
 project('video-trimmer',
         'rust',
           version: '0.6.1',
-    meson_version: '>= 0.50.0',
+    meson_version: '>= 0.58.0',
           license: 'GPL3+',
 )
 
@@ -43,6 +43,6 @@ meson.add_install_script('build-aux/meson/postinstall.py')
 
 meson.add_dist_script(
   'build-aux/dist-vendor.sh',
-  meson.build_root() / 'meson-dist' / meson.project_name() + '-' + meson.project_version(),
-  meson.source_root()
+  meson.project_build_root() / 'meson-dist' / meson.project_name() + '-' + meson.project_version(),
+  meson.project_source_root()
 )
