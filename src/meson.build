@@ -1,15 +1,22 @@
 pkgdatadir = join_paths(get_option('prefix'), get_option('datadir'), meson.project_name())
 gnome = import('gnome')
 
+blps = [
+  'window.blp',
+  'notification.blp',
+  'video_preview.blp',
+  'timeline.blp',
+]
+
+uis = []
+foreach blp : blps
+  uis += blp.replace('.blp', '.ui')
+endforeach
+
 blueprints = custom_target('blueprints',
-  input: files(
-    'window.blp',
-    'notification.blp',
-    'video_preview.blp',
-    'timeline.blp',
-  ),
-  output: '.',
-  command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTPUT@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
+  input: blps,
+  output: uis,
+  command: [find_program('blueprint-compiler'), 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
 )
 
 gnome.compile_resources('video-trimmer',
