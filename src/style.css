@@ -12,3 +12,7 @@ vt-timeline > .position {
 	background-color: @blue_5;
 	min-width: 2px;
 }
+
+picture {
+	background-color: black;
+}
