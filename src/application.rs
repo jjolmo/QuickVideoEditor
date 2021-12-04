@@ -5,7 +5,7 @@ use crate::config;
 mod imp {
     use super::*;
     use crate::{config::G_LOG_DOMAIN, window::VtWindow};
-    use adw::subclass::prelude::*;
+    use adw::{prelude::AdwApplicationExt, subclass::prelude::*};
     use gettextrs::*;
     use glib::{debug, prelude::*};
     use gtk::{prelude::*, subclass::prelude::*};
@@ -87,6 +87,10 @@ mod imp {
 
         fn startup(&self, self_: &Self::Type) {
             self.parent_startup(self_);
+
+            self_
+                .style_manager()
+                .set_color_scheme(adw::ColorScheme::PreferDark);
 
             let action = gio::SimpleAction::new("quit", None);
             action.connect_activate({
