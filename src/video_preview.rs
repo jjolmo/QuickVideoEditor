@@ -151,6 +151,10 @@ mod imp {
                 move |media_file| {
                     let self_ = self_.upgrade().unwrap();
 
+                    if media_file.error().is_some() {
+                        return;
+                    }
+
                     if !media_file.has_video() {
                         let priv_ = VtVideoPreview::from_instance(&self_);
 
@@ -213,10 +217,6 @@ mod imp {
             self.timeline.set_start_end(start_end);
         }
 
-        pub fn destroy(&self) {
-            self.media_file.get().unwrap().clear();
-        }
-
         pub fn pause(&self) {
             self.media_file.get().unwrap().pause();
         }
@@ -239,10 +239,6 @@ impl VtVideoPreview {
 
     pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
         imp::VtVideoPreview::from_instance(self).set_start_end(start_end);
-    }
-
-    pub fn destroy(&self) {
-        imp::VtVideoPreview::from_instance(self).destroy();
     }
 
     pub fn pause(&self) {

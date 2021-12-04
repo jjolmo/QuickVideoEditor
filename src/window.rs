@@ -156,12 +156,6 @@ mod imp {
             }
         }
 
-        fn on_video_preview_error(&self) {
-            self.video_preview.destroy();
-            self.stack_video_preview
-                .set_visible_child_name("page_error");
-        }
-
         fn trim(
             &self,
             input_path: PathBuf,
@@ -751,7 +745,9 @@ mod imp {
                 move |_| {
                     let self_ = self_.upgrade().unwrap();
                     let priv_ = VtWindow::from_instance(&self_);
-                    priv_.on_video_preview_error();
+                    priv_
+                        .stack_video_preview
+                        .set_visible_child_name("page_error");
                     priv_.switch_to_main_page();
 
                     None
@@ -884,13 +880,6 @@ mod imp {
 
                     priv_.trim(input_path, extension, start, end);
                 }));
-
-            // Clean up upon window closing.
-            self_.connect_destroy(move |self_| {
-                let self_ = self_.clone().downcast::<super::VtWindow>().unwrap();
-                let priv_ = VtWindow::from_instance(&self_);
-                priv_.video_preview.destroy();
-            });
 
             let drop_target = gtk::DropTarget::new(gio::File::static_type(), gdk::DragAction::COPY);
             drop_target.connect_drop({
