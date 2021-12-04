@@ -86,7 +86,7 @@ mod imp {
         #[template_child]
         button_open: TemplateChild<gtk::Button>,
         #[template_child]
-        box_empty_state: TemplateChild<gtk::Box>,
+        status_page_empty_state: TemplateChild<adw::StatusPage>,
         #[template_child]
         stack_main: TemplateChild<gtk::Stack>,
         #[template_child]
@@ -894,7 +894,7 @@ mod imp {
                     false
                 }
             });
-            self.box_empty_state.add_controller(&drop_target);
+            self.status_page_empty_state.add_controller(&drop_target);
         }
     }
 
