@@ -21,9 +21,6 @@ fn main() {
 
     info!("Video Trimmer version {}", config::VERSION);
 
-    // Needed until https://github.com/gtk-rs/gtk4-rs/issues/236 is resolved.
-    gtk::init().unwrap_or_else(|_| panic!("Failed to initialize GTK."));
-
     setlocale(LocaleCategory::LcAll, "");
     if let Err(err) = bindtextdomain("video-trimmer", config::LOCALEDIR) {
         warn!("Error in bindtextdomain(): {}", err);
