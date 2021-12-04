@@ -18,7 +18,7 @@ mod imp {
         #[template_child]
         stack_video_preview: TemplateChild<gtk::Stack>,
         #[template_child]
-        label_no_video: TemplateChild<gtk::Label>,
+        status_page_no_video: TemplateChild<adw::StatusPage>,
         #[template_child]
         button_play_pause: TemplateChild<gtk::Button>,
         #[template_child]
@@ -160,7 +160,7 @@ mod imp {
 
                         priv_
                             .stack_video_preview
-                            .set_visible_child(&*priv_.label_no_video);
+                            .set_visible_child(&*priv_.status_page_no_video);
                     }
 
                     // GTK API is such that on "prepared" all media info is known and won't change.

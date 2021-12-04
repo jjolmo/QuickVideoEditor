@@ -14,15 +14,14 @@ template VtVideoPreview : Widget {
         child: Picture picture_video_preview {};
       }
 
-      Label label_no_video {
-        margin-start: 18;
-        margin-end: 18;
-        margin-top: 18;
-        margin-bottom: 18;
+      Adw.StatusPage status_page_no_video {
+        icon-name: "broken-video-symbolic";
 
-        /* Translators: Label that is shown if we couldn't load the video track for the opened file (but possibly loaded audio). */
-        label: _("Could not load the video track.\n\nMaybe the file only has an audio track, or maybe the necessary video codec is missing.");
-        wrap: true;
+        /* Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio). */
+        title: _("Could Not Load Video Track");
+
+        /* Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio). */
+        description: _("Maybe the file only has an audio track, or maybe the necessary video codec is missing.");
       }
     }
 

@@ -7,5 +7,8 @@
     <file>timeline.ui</file>
     <file>video_preview.ui</file>
     <file>window.ui</file>
+    <file alias="icons/scalable/actions/broken-playback-symbolic.svg">../data/icons/broken-playback-symbolic.svg</file>
+    <file alias="icons/scalable/actions/broken-video-symbolic.svg">../data/icons/broken-video-symbolic.svg</file>
+    <file alias="icons/scalable/actions/video-trimmer-symbolic.svg">../data/icons/hicolor/symbolic/apps/org.gnome.gitlab.YaLTeR.VideoTrimmer-symbolic.svg</file>
   </gresource>
 </gresources>

@@ -79,7 +79,7 @@ template VtWindow : ApplicationWindow {
     transition-type: under_up;
 
     Adw.StatusPage status_page_empty_state {
-      icon-name: "video-x-generic-symbolic";
+      icon-name: "video-trimmer-symbolic";
 
       /* Translators: Label on the initial state. */
       description: _("Press the Open button to open a video file.");
@@ -108,22 +108,14 @@ template VtWindow : ApplicationWindow {
           StackPage {
             name: "page_error";
 
-            child: Box {
-              orientation: vertical;
+            child: Adw.StatusPage {
+              icon-name: "broken-playback-symbolic";
 
-              Label {
-                vexpand: true;
-                margin-start: 18;
-                margin-end: 18;
-                margin-top: 18;
-                margin-bottom: 18;
+              /* Translators: Title that is shown upon video preview loading error. */
+              title: _("Video Preview Failed to Load");
 
-                /* Translators: Label that is shown upon video preview loading error. */
-                label: _("The video preview has failed to load.\n\nPlease enter the start and end timestamps manually.\n\nIf you\'re running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work.");
-                wrap: true;
-              }
-
-              styles ["background"]
+              /* Translators: Description that is shown upon video preview loading error. */
+              description: _("Please enter the start and end timestamps manually.\n\nIf you\'re running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work.");
             };
           }
         }
