@@ -1,23 +1,13 @@
 msgid ""
 msgstr ""
+"Project-Id-Version: Video Trimmer\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-12-05 11:06+0300\n"
+"Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
-"Project-Id-Version: Video Trimmer\n"
-"Language: hu\n"
-
-#. Translators: fatal error message dialog title.
-#: src/application.rs:52
-msgid "Fatal Error"
-msgstr "Végzetes hiba"
-
-#. Main window title.
-#: src/main.rs:37 src/window.blp:22
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
-msgid "Video Trimmer"
-msgstr "Mozgókép vágó"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
@@ -30,28 +20,91 @@ msgstr "Kimeneti fájl elérési útja"
 msgid "PATH"
 msgstr "ELÉRÉSI ÚTVONAL"
 
+#. Translators: fatal error message dialog title.
+#: src/application.rs:52
+msgid "Fatal Error"
+msgstr "Végzetes hiba"
+
 #. Translators: error dialog text.
 #: src/application.rs:54
 msgid "Video Trimmer can only operate on local files."
 msgstr "A Mozgókép vágó csak helyi fájlokon működik."
 
-#. Translators: text on the in-app notification after trimming was done.
-#. The template is: <video filename> has been saved
-#: src/window.rs:418
-msgid "has been saved"
-msgstr "mentésre került"
+#: src/main.rs:37 src/window.blp:22
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
+msgid "Video Trimmer"
+msgstr "Mozgókép vágó"
+
+#. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:21
+msgid "Could Not Load Video Track"
+msgstr ""
+
+#. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:24
+#, fuzzy
+msgid ""
+"Maybe the file only has an audio track, or maybe the necessary video codec "
+"is missing."
+msgstr ""
+"Nem sikerült betölteni a mozgókép sávot.\n"
+"\n"
+"Lehet, hogy a fájlnak csak hangsávja van, vagy hiányzik a szükséges "
+"videokodek."
+
+#. Translators: this is appended to the output video file name.
+#. So for example "my video.mp4" will become "my video (trimmed).mp4".
+#: src/window.rs:212
+msgid " (trimmed)"
+msgstr " (vágva)"
+
+#. Translators: checkbox in output file selection dialog that strips audio from the
+#. video file.
+#: src/window.rs:237
+msgid "Remove audio"
+msgstr "Hang eltávolítása"
+
+#. Translators: checkbox in output file selection dialog.
+#: src/window.rs:253
+msgid "Accurate trimming, but slower and may lose quality"
+msgstr ""
+
+#. Translators: error dialog title.
+#: src/window.rs:284 src/window.rs:852
+msgid "Error"
+msgstr "Hiba"
+
+#. Translators: error dialog text.
+#: src/window.rs:287 src/window.rs:855
+msgid ""
+"Video Trimmer can only operate on local files. Please choose another file."
+msgstr ""
+"Mozgókép vágó csak helyi fájlokon tud működni. Kérjük, válasszon másik fájlt."
 
 #. Translators: message dialog text.
 #: src/window.rs:389
 msgid "Trimming…"
 msgstr "Vágás…"
 
+#. Translators: text on the toast after trimming was done.
+#. The template is: <video filename> has been saved
+#: src/window.rs:418
+msgid "has been saved"
+msgstr "mentésre került"
+
+#. Translators: text on the button of the toast after
+#. trimming was done to show the output file in the file
+#. manager.
+#: src/window.rs:432
+msgid "Show in Files"
+msgstr ""
+
 #. Translators: error dialog text.
 #: src/window.rs:450
 msgid "Error trimming video"
 msgstr "Hiba történt a mozgókép vágásakor"
 
-#. Translators: error dialog text.
 #: src/window.rs:459
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Nem sikerült kommunikálni az ffmpeg alfolyamatkal"
@@ -60,6 +113,22 @@ msgstr "Nem sikerült kommunikálni az ffmpeg alfolyamatkal"
 #: src/window.rs:500
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Nem sikerült az ffmpeg alfolyamat létrehozása"
+
+#. Translators: error dialog text when the input file information could
+#. not be retrieved (e.g. there's no such file on disk).
+#: src/window.rs:590
+msgid "Could not get input video information"
+msgstr "Nem sikerült beolvasni a mozgókép adatokat"
+
+#. Translators: title of the About dialog.
+#: src/window.rs:668
+msgid "About Video Trimmer"
+msgstr "A Mozgókép vágó névjegye"
+
+#. Translators: shown in the About dialog, put your name here.
+#: src/window.rs:675
+msgid "translator-credits"
+msgstr "Óvári"
 
 #. Translators: file chooser file filter name.
 #: src/window.rs:823
@@ -71,49 +140,61 @@ msgstr "Mozgóképfájlok"
 msgid "Open video"
 msgstr "Mozgóképfájl megnyitása"
 
-#. Translators: error dialog text when the input file information could
-#. not be retrieved (e.g. there's no such file on disk).
-#: src/window.rs:590
-msgid "Could not get input video information"
-msgstr "Nem sikerült beolvasni a mozgókép adatokat"
+#. Translators: Primary menu entry that opens a new window.
+#: src/window.blp:8
+msgid "_New Window"
+msgstr "Új a_blak"
 
-#. Label on the initial state.
-#: src/window.blp:85
-msgid "Press the Open button to open a video file."
-msgstr "A mozgókép fájl megnyitásához nyomja meg a Megnyitás gombot."
+#. Translators: Primary menu entry that opens the About dialog.
+#: src/window.blp:15
+msgid "_About Video Trimmer"
+msgstr "_A Mozgókép vágó névjegye"
 
-#. Label for the entry for the end timestamp.
-#: src/window.blp:153
-msgid "End"
-msgstr "Vége"
-
-#. Label for the entry for the start timestamp.
-#: src/window.blp:136
-msgid "Start"
-msgstr "Kezdés"
-
-#. Label that is shown upon video preview loading error.
-#: src/window.ui:153
-msgid "The video preview has failed to load.\n"
-"\n"
-"Please enter the start and end timestamps manually.\n"
-"\n"
-"If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
-msgstr "Nem sikerült betölteni a videó előnézetét.\n"
-"\n"
-"Kérjük, adja meg a kezdő és a befejező időbélyeget kézzel.\n"
-"\n"
-"Ha a Mozgókép vágót Flatpak alatt futtatja, vegye figyelembe, hogy a fájlok húzással történő megnyitása lehet, hogy nem működik."
-
-#. Video open button label.
+#. Translators: Video open button label.
 #: src/window.blp:38
 msgid "Open"
 msgstr "Megnyitás"
 
-#. Trim button.
+#. Translators: Trim button.
 #: src/window.blp:63
 msgid "Trim"
 msgstr "Vágás"
+
+#. Translators: Label on the initial state.
+#: src/window.blp:85
+msgid "Press the Open button to open a video file."
+msgstr "A mozgókép fájl megnyitásához nyomja meg a Megnyitás gombot."
+
+#. Translators: Title that is shown upon video preview loading error.
+#: src/window.blp:115
+msgid "Video Preview Failed to Load"
+msgstr ""
+
+#. Translators: Description that is shown upon video preview loading error.
+#: src/window.blp:118
+#, fuzzy
+msgid ""
+"Please enter the start and end timestamps manually.\n"
+"\n"
+"If you're running Video Trimmer under Flatpak, note that opening files by "
+"drag-and-drop may not work."
+msgstr ""
+"Nem sikerült betölteni a videó előnézetét.\n"
+"\n"
+"Kérjük, adja meg a kezdő és a befejező időbélyeget kézzel.\n"
+"\n"
+"Ha a Mozgókép vágót Flatpak alatt futtatja, vegye figyelembe, hogy a fájlok "
+"húzással történő megnyitása lehet, hogy nem működik."
+
+#. Translators: Label for the entry for the start timestamp.
+#: src/window.blp:136
+msgid "Start"
+msgstr "Kezdés"
+
+#. Translators: Label for the entry for the end timestamp.
+#: src/window.blp:153
+msgid "End"
+msgstr "Vége"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
@@ -130,126 +211,60 @@ msgid "Ivan Molodetskikh"
 msgstr "Molodetskikh Ivan"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
-msgid "Video Trimmer cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality."
-msgstr "A Mozgókép vágó kivágja a mozgókép töredékét, tekintettel a kezdő és a befejező időbélyegre. A mozgókép soha nem kódolódik újra, így a folyamat nagyon gyors, és nem csökkenti a videó minőségét."
+msgid ""
+"Video Trimmer cuts out a fragment of a video given the start and end "
+"timestamps. The video is never re-encoded, so the process is very fast and "
+"does not reduce the video quality."
+msgstr ""
+"A Mozgókép vágó kivágja a mozgókép töredékét, tekintettel a kezdő és a "
+"befejező időbélyegre. A mozgókép soha nem kódolódik újra, így a folyamat "
+"nagyon gyors, és nem csökkenti a videó minőségét."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
 msgid "Main Window"
 msgstr "Főablak"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:110
-msgid "This release replaces the Done dialog with an in-app notification and adds a command-line argument to specify the output file."
-msgstr "Ez a kiadás lecseréli a Befejezve párbeszédablakot egy alkalmazáson belüli értesítésre és hozzáad egy parancssori argumentumot a kimeneti fájl megadásához."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
+msgid ""
+"This release adds an accurate trimming with re-encoding option and refreshes "
+"the design a bit."
+msgstr ""
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:112
-msgid "Added an --output or -o argument to specify the output video path. It will be pre-filled in the save dialog."
-msgstr "Hozzáadott egy --output vagy -o argumentumot a kimeneti videó elérési útjának megadásához. A mentés párbeszédpanelen előre kitöltődik."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
+msgid ""
+"Added a checkbox for accurate trimming with re-encoding to the output file "
+"selection dialog."
+msgstr ""
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:113
-msgid "Added support for opening videos with DnD, although it doesn't work on Flatpak unless Video Trimmer is given filesystem access."
-msgstr "Hozzáadott támogatás a mozgóképek DnD -vel történő megnyitásához, bár a Flatpakon nem működik, hacsak a Mozgókép vágó nem kap hozzáférést a fájlrendszerhez."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
+msgid ""
+"Updated the design to better match the newer version of the Adwaita theme."
+msgstr ""
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:114
-msgid "Replaced the Done dialog with an in-app notification to better follow the GNOME HIG."
-msgstr "Lecserélte a Befejezve párbeszédablakot egy alkalmazáson belüli értesítésre, hogy jobban kövesse a GNOME HIG-et (User Interface Guidelines - Emberi kezelőfelület iránymutatásait)."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
+msgid ""
+"Added dark style and high contrast support and made dark style the default."
+msgstr ""
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:120
-msgid "This release fixes file filter not working on Flatpak and possibly a related file chooser crash."
-msgstr "Ez a kiadás javítja a fájlszűrőt, amely nem működik a Flatpak -on és valószínűsíti a kapcsolódó fájlválasztó összeomlását."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
+msgid ""
+"Added a \"Show in Files\" button to the trimming done notification. Note: "
+"due to a limitation this is currently disabled on some Flatpak installs, but "
+"you can make it work by giving Video Trimmer the filesystem=host permission "
+"(for example, using Flatseal)."
+msgstr ""
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:125
-msgid "This release fixes crashes related to video preview errors, adds a Ctrl+Q exit shortcut and a Dutch translation."
-msgstr "Ez a kiadás javítja a videó előnézeti hibákkal kapcsolatos összeomlásokat, hozzáad egy Ctrl+Q kilépési parancsikont és egy holland fordítást."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
+msgid "Added Japanese translation (thanks Sibuya Kaz)."
+msgstr ""
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:127
-msgid "Added a Ctrl+Q shortcut to quit Video Trimmer."
-msgstr "Ctrl+Q billentyűparancs hozzáadása a Mozgókép vágó kilépéséhez."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
+msgid "Added Polish translation (thanks Avery)."
+msgstr ""
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:128
-msgid "Added a Dutch translation."
-msgstr "Holland fordítás hozzáadva."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:129
-msgid "Made video preview display an error message when it fails to load."
-msgstr "A mozgókép előnézete hibaüzenetet jelenít meg, ha nem sikerül betölteni."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:130
-msgid "Fixed a crash when the GL runtime is not installed (e.g. when installing the Flathub package on clean Ubuntu 18.04 through Ubuntu Software)."
-msgstr "Javítottuk az összeomlást, amikor a GL futásidejét nem telepítettük (pl. Amikor a Flathub csomagot tiszta Ubuntu 18.04 -re telepítettük az Ubuntu szoftverkezelőn keresztül)."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:131
-msgid "Fixed a crash when required GStreamer plugins are not installed."
-msgstr "Javítva az összeomlás, ha szükséges GStreamer beépülő modulok nincsenek telepítve."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:132
-msgid "Fixed a crash on failing to change the playback position."
-msgstr "Javítottuk az összeomlást, amikor nem sikerült megváltoztatni a lejátszási tárgymutatót."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:138
-msgid "This release adds a video preview and a timeline where the target region can be adjusted using the mouse."
-msgstr "Ez a kiadás hozzáad egy videó előnézetet és egy idővonalat, ahol a célterületet egérrel lehet beállítani."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:143
-msgid "First release."
-msgstr "Első kiadás."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:99
-msgid "This release fixes an issue where not all streams from the input file were copied into the output file."
-msgstr "Ez a kiadás kijavít egy hibát, amely miatt nem minden bemeneti adatfolyamot másolt a kimeneti fájlba."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:101
-msgid "All input file streams are now copied to the output file rather than just a single of each type. Subtitles are now copied too rather than skipped."
-msgstr "Az összes bemeneti fájlfolyam most a kimeneti fájlba kerül átmásolásra, nem pedig minden egyes típushoz. A feliratokat most is másolják, nem pedig kihagyják."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:102
-msgid "Added Swedish translation (thanks Åke Engelbrektson)."
-msgstr "Svéd fordítás: Engelbrektson Åke."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:103
-msgid "Added Spanish translation (thanks Óscar Fernández Díaz)."
-msgstr "Spanyol fordítás: Fernández Díaz Óscar."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:104
-msgid "Made the commandline argument description translatable."
-msgstr "Lefordíthatóvá tette a parancssori argumentum leírását."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:90
-msgid "This release fixes an error when trimming GoPro recordings."
-msgstr "Ez a kiadás kijavít egy hibát a GoPro felvételek vágásakor."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:92
-msgid "Data streams are no longer copied to the output file as a workaround to prevent errors on GoPro recordings."
-msgstr "Az adatfolyamok többé nem kerülnek átmásolásra a kimeneti fájlba, hogy elkerüljék a hibákat a GoPro felvételeken."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:93
-msgid "Updated Spanish translation."
-msgstr "Updated Spanish translation."
-
-#. Translators: error dialog title.
-#: src/window.rs:284 src/window.rs:852
-msgid "Error"
-msgstr "Hiba"
-
-#. Translators: error dialog text.
-#: src/window.rs:287 src/window.rs:855
-msgid "Video Trimmer can only operate on local files. Please choose another file."
-msgstr "Mozgókép vágó csak helyi fájlokon tud működni. Kérjük, válasszon másik fájlt."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:79
-msgid "Video Trimmer is now a GTK 4 application!"
-msgstr "Mozgókép vágó most egy GTK 4 alkalmazás!"
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:81
-msgid "The GTK 4 port hopefully fixes video-driver-related crashes."
-msgstr "A GTK 4 port remélhetőleg kijavítja a mozgókép-illesztőprogrammal kapcsolatos összeomlásokat."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:82
-msgid "Improved window animations when opening videos."
-msgstr "Továbbfejlesztett ablak animációk a mozgóképek megnyitásakor."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:83
-msgid "Added Croatian translation (thanks milotype)."
-msgstr "Horvát fordítás: milotípia."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:39
+msgid "Added Portuguese translation (thanks Bio DevM)."
+msgstr ""
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:40
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:60
@@ -258,94 +273,40 @@ msgstr "Horvát fordítás: milotípia."
 msgid "Updated translations."
 msgstr "Frissített fordítások."
 
-#. Translators: this is appended to the output video file name.
-#. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:212
-msgid " (trimmed)"
-msgstr " (vágva)"
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:68
-msgid "The default name for the output video is now \"input video name (trimmed)\"."
-msgstr "A kimeneti mozgókép alapértelmezett neve most \"bemeneti mozgókép neve (vágott)\"."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:69
-msgid "The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Video Trimmer the filesystem=host permission (for example, using Flatseal)."
-msgstr "A kimeneti mozgókép alapértelmezett mappája most a bemeneti mozgókép mappája. Megjegyzés: Ahhoz, hogy ez a Flatpak alatt működjön, meg kell adnia a Mozgókép vágónak a „filesystem=host” jogosultságát (például a Flatseal használatával)."
-
-#. Translators: title of the About dialog.
-#: src/window.rs:668
-msgid "About Video Trimmer"
-msgstr "A Mozgókép vágó névjegye"
-
-#. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:675
-msgid "translator-credits"
-msgstr "Óvári"
-
-#. Primary menu entry that opens the About dialog.
-#: src/window.blp:15
-msgid "_About Video Trimmer"
-msgstr "_A Mozgókép vágó névjegye"
-
-#. Primary menu entry that opens a new window.
-#: src/window.blp:8
-msgid "_New Window"
-msgstr "Új a_blak"
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:70
-msgid "It's now possible to open a new Video Trimmer window from the new primary menu."
-msgstr "Mostantól lehetőség nyílik egy új Mozgókép vágó ablak megnyitására az új elsődleges menüből."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:66
-msgid "This release contains a few small improvements."
-msgstr "Ez a kiadás néhány apró fejlesztést tartalmaz."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:71
-msgid "The timestamp text fields are now arranged in a better way in RTL languages."
-msgstr "Az időbélyegző szövegmezői most jobb elrendezésben vannak jobbról balra (RTL) nyelveken."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:72
-msgid "Video Trimmer now uses libadwaita, which means a slightly updated visual style (rounded window corners!)."
-msgstr "Mozgókép vágó most a libadwaita programot használja, ami kissé frissített vizuális stílust jelent (lekerekített ablak sarkok!)."
-
-#. Label that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
-#: src/video_preview.ui:23
-msgid "Could not load the video track.\n"
-"\n"
-"Maybe the file only has an audio track, or maybe the necessary video codec is missing."
-msgstr "Nem sikerült betölteni a mozgókép sávot.\n"
-"\n"
-"Lehet, hogy a fájlnak csak hangsávja van, vagy hiányzik a szükséges videokodek."
-
-#. Translators: checkbox in output file selection dialog that strips audio from the
-#. video file.
-#: src/window.rs:237
-msgid "Remove audio"
-msgstr "Hang eltávolítása"
-
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:46
-msgid "This release contains a few improvements and adds a number of translations."
+msgid ""
+"This release contains a few improvements and adds a number of translations."
 msgstr "Ez a kiadás néhány fejlesztést és számos fordítást tartalmaz."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:48
-msgid "Added a checkbox to remove the audio track to the output file selection dialog."
-msgstr "Hozzáadott egy jelölőnégyzetet a hangsáv eltávolításához a kimeneti fájl kiválasztó párbeszédpanelen."
+msgid ""
+"Added a checkbox to remove the audio track to the output file selection "
+"dialog."
+msgstr ""
+"Hozzáadott egy jelölőnégyzetet a hangsáv eltávolításához a kimeneti fájl "
+"kiválasztó párbeszédpanelen."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:49
 msgid "The video is now automatically paused when the trim button is pressed."
 msgstr "A mozgókép most önműködően szünetel a Vágó gomb megnyomásakor."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:50
-msgid "The .mp4 output file extension is no longer default when it cannot be used (this affected videos from some Sony cameras)."
-msgstr "Az .mp4 kimeneti fájlkiterjesztés már nem alapértelmezett, ha nem használható (ez hatással volt néhány Sony eszköz videójára)."
+msgid ""
+"The .mp4 output file extension is no longer default when it cannot be used "
+"(this affected videos from some Sony cameras)."
+msgstr ""
+"Az .mp4 kimeneti fájlkiterjesztés már nem alapértelmezett, ha nem "
+"használható (ez hatással volt néhány Sony eszköz videójára)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:51
 msgid "Added a message when the opened file has no video track."
 msgstr "Üzenet hozzáadása, amikor a megnyitott fájlnak nincs mozgókép sávja."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:52
-msgid "Updated libadwaita, which means slightly newer version of the Adwaita theme."
-msgstr "libadwaita frissítve, ami az Adwaita téma valamivel újabb verzióját jelenti."
+msgid ""
+"Updated libadwaita, which means slightly newer version of the Adwaita theme."
+msgstr ""
+"libadwaita frissítve, ami az Adwaita téma valamivel újabb verzióját jelenti."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:53
 msgid "Fixed a crash after closing a window with a visible notification."
@@ -363,85 +324,223 @@ msgstr "Baszk fordítás: Sergio."
 msgid "Added Hungarian translation (thanks ovari)."
 msgstr "Magyar fordítás: Óvári."
 
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:57
+msgid "Added Italian translation (thanks Albano Battistella)."
+msgstr "Olasz fordítás: Battistella Albano."
+
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:58
 msgid "Added Brazilian Portuguese translation (thanks Gustavo Costa)."
 msgstr "Brazil portugál fordítás: Costa Gustavo."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:59
-msgid "Specified input device and screen size recommendations to improve display in the new GNOME Software."
-msgstr "Meghatározott beviteli eszköz- és képernyőméret -javaslatok az új GNOME szoftver megjelenítésének javítására."
-
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:57
-msgid "Added Italian translation (thanks Albano Battistella)."
-msgstr "Olasz fordítás: Battistella Albano."
-
-#. Translators: checkbox in output file selection dialog.
-#: src/window.rs:253
-msgid "Accurate trimming, but slower and may lose quality"
+msgid ""
+"Specified input device and screen size recommendations to improve display in "
+"the new GNOME Software."
 msgstr ""
+"Meghatározott beviteli eszköz- és képernyőméret -javaslatok az új GNOME "
+"szoftver megjelenítésének javítására."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
-msgid "This release adds an accurate trimming with re-encoding option."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:66
+msgid "This release contains a few small improvements."
+msgstr "Ez a kiadás néhány apró fejlesztést tartalmaz."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:68
+msgid ""
+"The default name for the output video is now \"input video name (trimmed)\"."
 msgstr ""
+"A kimeneti mozgókép alapértelmezett neve most \"bemeneti mozgókép neve "
+"(vágott)\"."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
-msgid "Added a checkbox for accurate trimming with re-encoding to the output file selection dialog."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:69
+msgid ""
+"The default folder for the output video is now the input video's folder. "
+"Note: to make this work under Flatpak, you'll need to give Video Trimmer the "
+"filesystem=host permission (for example, using Flatseal)."
 msgstr ""
+"A kimeneti mozgókép alapértelmezett mappája most a bemeneti mozgókép "
+"mappája. Megjegyzés: Ahhoz, hogy ez a Flatpak alatt működjön, meg kell adnia "
+"a Mozgókép vágónak a „filesystem=host” jogosultságát (például a Flatseal "
+"használatával)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
-msgid "Added Japanese translation (thanks Sibuya Kaz)."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:70
+msgid ""
+"It's now possible to open a new Video Trimmer window from the new primary "
+"menu."
 msgstr ""
+"Mostantól lehetőség nyílik egy új Mozgókép vágó ablak megnyitására az új "
+"elsődleges menüből."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
-msgid "Added Polish translation (thanks Avery)."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:71
+msgid ""
+"The timestamp text fields are now arranged in a better way in RTL languages."
 msgstr ""
+"Az időbélyegző szövegmezői most jobb elrendezésben vannak jobbról balra "
+"(RTL) nyelveken."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:39
-msgid "Added Portuguese translation (thanks Bio DevM)."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:72
+msgid ""
+"Video Trimmer now uses libadwaita, which means a slightly updated visual "
+"style (rounded window corners!)."
 msgstr ""
+"Mozgókép vágó most a libadwaita programot használja, ami kissé frissített "
+"vizuális stílust jelent (lekerekített ablak sarkok!)."
 
-#. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
-#: src/video_preview.blp:21
-msgid "Could Not Load Video Track"
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:79
+msgid "Video Trimmer is now a GTK 4 application!"
+msgstr "Mozgókép vágó most egy GTK 4 alkalmazás!"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:81
+msgid "The GTK 4 port hopefully fixes video-driver-related crashes."
 msgstr ""
+"A GTK 4 port remélhetőleg kijavítja a mozgókép-illesztőprogrammal "
+"kapcsolatos összeomlásokat."
 
-#. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
-#: src/video_preview.blp:24
-msgid "Maybe the file only has an audio track, or maybe the necessary video codec is missing."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:82
+msgid "Improved window animations when opening videos."
+msgstr "Továbbfejlesztett ablak animációk a mozgóképek megnyitásakor."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:83
+msgid "Added Croatian translation (thanks milotype)."
+msgstr "Horvát fordítás: milotípia."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:90
+msgid "This release fixes an error when trimming GoPro recordings."
+msgstr "Ez a kiadás kijavít egy hibát a GoPro felvételek vágásakor."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:92
+msgid ""
+"Data streams are no longer copied to the output file as a workaround to "
+"prevent errors on GoPro recordings."
 msgstr ""
+"Az adatfolyamok többé nem kerülnek átmásolásra a kimeneti fájlba, hogy "
+"elkerüljék a hibákat a GoPro felvételeken."
 
-#. Translators: text on the button of the toast after
-#. trimming was done to show the output file in the file
-#. manager.
-#: src/window.rs:432
-msgid "Show in Files"
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:93
+msgid "Updated Spanish translation."
+msgstr "Updated Spanish translation."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:99
+msgid ""
+"This release fixes an issue where not all streams from the input file were "
+"copied into the output file."
 msgstr ""
+"Ez a kiadás kijavít egy hibát, amely miatt nem minden bemeneti adatfolyamot "
+"másolt a kimeneti fájlba."
 
-#. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:115
-msgid "Video Preview Failed to Load"
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:101
+msgid ""
+"All input file streams are now copied to the output file rather than just a "
+"single of each type. Subtitles are now copied too rather than skipped."
 msgstr ""
+"Az összes bemeneti fájlfolyam most a kimeneti fájlba kerül átmásolásra, nem "
+"pedig minden egyes típushoz. A feliratokat most is másolják, nem pedig "
+"kihagyják."
 
-#. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:118
-msgid "Please enter the start and end timestamps manually.\n"
-"\n"
-"If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:102
+msgid "Added Swedish translation (thanks Åke Engelbrektson)."
+msgstr "Svéd fordítás: Engelbrektson Åke."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:103
+msgid "Added Spanish translation (thanks Óscar Fernández Díaz)."
+msgstr "Spanyol fordítás: Fernández Díaz Óscar."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:104
+msgid "Made the commandline argument description translatable."
+msgstr "Lefordíthatóvá tette a parancssori argumentum leírását."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:110
+msgid ""
+"This release replaces the Done dialog with an in-app notification and adds a "
+"command-line argument to specify the output file."
 msgstr ""
+"Ez a kiadás lecseréli a Befejezve párbeszédablakot egy alkalmazáson belüli "
+"értesítésre és hozzáad egy parancssori argumentumot a kimeneti fájl "
+"megadásához."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
-msgid "This release adds an accurate trimming with re-encoding option and refreshes the design a bit."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:112
+msgid ""
+"Added an --output or -o argument to specify the output video path. It will "
+"be pre-filled in the save dialog."
 msgstr ""
+"Hozzáadott egy --output vagy -o argumentumot a kimeneti videó elérési "
+"útjának megadásához. A mentés párbeszédpanelen előre kitöltődik."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
-msgid "Updated the design to better match the newer version of the Adwaita theme."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:113
+msgid ""
+"Added support for opening videos with DnD, although it doesn't work on "
+"Flatpak unless Video Trimmer is given filesystem access."
 msgstr ""
+"Hozzáadott támogatás a mozgóképek DnD -vel történő megnyitásához, bár a "
+"Flatpakon nem működik, hacsak a Mozgókép vágó nem kap hozzáférést a "
+"fájlrendszerhez."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
-msgid "Added dark style and high contrast support and made dark style the default."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:114
+msgid ""
+"Replaced the Done dialog with an in-app notification to better follow the "
+"GNOME HIG."
 msgstr ""
+"Lecserélte a Befejezve párbeszédablakot egy alkalmazáson belüli értesítésre, "
+"hogy jobban kövesse a GNOME HIG-et (User Interface Guidelines - Emberi "
+"kezelőfelület iránymutatásait)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
-msgid "Added a \"Show in Files\" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Video Trimmer the filesystem=host permission (for example, using Flatseal)."
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:120
+msgid ""
+"This release fixes file filter not working on Flatpak and possibly a related "
+"file chooser crash."
 msgstr ""
+"Ez a kiadás javítja a fájlszűrőt, amely nem működik a Flatpak -on és "
+"valószínűsíti a kapcsolódó fájlválasztó összeomlását."
 
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:125
+msgid ""
+"This release fixes crashes related to video preview errors, adds a Ctrl+Q "
+"exit shortcut and a Dutch translation."
+msgstr ""
+"Ez a kiadás javítja a videó előnézeti hibákkal kapcsolatos összeomlásokat, "
+"hozzáad egy Ctrl+Q kilépési parancsikont és egy holland fordítást."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:127
+msgid "Added a Ctrl+Q shortcut to quit Video Trimmer."
+msgstr "Ctrl+Q billentyűparancs hozzáadása a Mozgókép vágó kilépéséhez."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:128
+msgid "Added a Dutch translation."
+msgstr "Holland fordítás hozzáadva."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:129
+msgid "Made video preview display an error message when it fails to load."
+msgstr ""
+"A mozgókép előnézete hibaüzenetet jelenít meg, ha nem sikerül betölteni."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:130
+msgid ""
+"Fixed a crash when the GL runtime is not installed (e.g. when installing the "
+"Flathub package on clean Ubuntu 18.04 through Ubuntu Software)."
+msgstr ""
+"Javítottuk az összeomlást, amikor a GL futásidejét nem telepítettük (pl. "
+"Amikor a Flathub csomagot tiszta Ubuntu 18.04 -re telepítettük az Ubuntu "
+"szoftverkezelőn keresztül)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:131
+msgid "Fixed a crash when required GStreamer plugins are not installed."
+msgstr ""
+"Javítva az összeomlás, ha szükséges GStreamer beépülő modulok nincsenek "
+"telepítve."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:132
+msgid "Fixed a crash on failing to change the playback position."
+msgstr ""
+"Javítottuk az összeomlást, amikor nem sikerült megváltoztatni a lejátszási "
+"tárgymutatót."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:138
+msgid ""
+"This release adds a video preview and a timeline where the target region can "
+"be adjusted using the mouse."
+msgstr ""
+"Ez a kiadás hozzáad egy videó előnézetet és egy idővonalat, ahol a "
+"célterületet egérrel lehet beállítani."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:143
+msgid "First release."
+msgstr "Első kiadás."
