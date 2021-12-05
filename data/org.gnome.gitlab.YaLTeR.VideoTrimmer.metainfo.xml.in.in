@@ -26,11 +26,14 @@
 		</screenshot>
 	</screenshots>
 	<releases>
-		<release version="0.6.2" date="2021-10-17">
+		<release version="0.7.0" date="2021-10-17">
 			<description>
-				<p>This release adds an accurate trimming with re-encoding option.</p>
+				<p>This release adds an accurate trimming with re-encoding option and refreshes the design a bit.</p>
 				<ul>
 					<li>Added a checkbox for accurate trimming with re-encoding to the output file selection dialog.</li>
+					<li>Updated the design to better match the newer version of the Adwaita theme.</li>
+					<li>Added dark style and high contrast support and made dark style the default.</li>
+					<li>Added a "Show in Files" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Video Trimmer the filesystem=host permission (for example, using Flatseal).</li>
 					<li>Added Japanese translation (thanks Sibuya Kaz).</li>
 					<li>Added Polish translation (thanks Avery).</li>
 					<li>Added Portuguese translation (thanks Bio DevM).</li>
