@@ -10,4 +10,5 @@ src/config.rs
 /repository/
 /*.flatpak
 /_build/
+/_repo/
 /subprojects/blueprint-compiler
