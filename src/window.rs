@@ -4,7 +4,9 @@ use gtk::{gio, glib};
 mod imp {
     use std::{
         cell::{Cell, RefCell},
-        ffi::{CString, OsStr},
+        ffi::{CString, OsStr, OsString},
+        fs::File,
+        os::unix::prelude::OsStringExt,
         path::{Component, Path, PathBuf},
         ptr,
         time::Duration,
@@ -12,7 +14,7 @@ mod imp {
 
     use futures_util::future::{abortable, FutureExt};
     use gettextrs::*;
-    use glib::{clone, debug, translate::ToGlibPtr, warn};
+    use glib::{clone, debug, translate::ToGlibPtr, warn, FromVariant};
     use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     use crate::{
@@ -394,48 +396,72 @@ mod imp {
                     let trimming_dialog_clone = trimming_dialog.clone();
                     let subprocess_clone = subprocess.clone();
                     let future = async move {
-                        let builder =
-                            match subprocess_clone.communicate_utf8_async_future(None).await {
-                                Ok((_, stderr)) => {
-                                    if subprocess_clone.has_exited()
-                                        && subprocess_clone.exit_status() == 0
-                                    {
-                                        let file_name = output_path
-                                            .file_name()
-                                            .map(|file_name| file_name.to_string_lossy())
-                                            .unwrap_or_else(|| output_path.to_string_lossy());
+                        let builder = match subprocess_clone
+                            .communicate_utf8_async_future(None)
+                            .await
+                        {
+                            Ok((_, stderr)) => {
+                                if subprocess_clone.has_exited()
+                                    && subprocess_clone.exit_status() == 0
+                                {
+                                    let file_name = output_path
+                                        .file_name()
+                                        .map(|file_name| file_name.to_string_lossy())
+                                        .unwrap_or_else(|| output_path.to_string_lossy());
 
-                                        let priv_ = VtWindow::from_instance(&self_);
-                                        priv_.video_preview.overlay().add_toast(&adw::Toast::new(
-                                            &format!(
-                                                "{} {}",
-                                                file_name,
-                                                // Translators: text on the in-app notification
-                                                // after trimming was done. The template is: <video
-                                                // filename> has been saved
-                                                gettext("has been saved")
-                                            ),
+                                    let priv_ = VtWindow::from_instance(&self_);
+                                    let toast = adw::Toast::new(&format!(
+                                        "{} {}",
+                                        file_name,
+                                        // Translators: text on the toast after trimming was done.
+                                        // The template is: <video filename> has been saved
+                                        gettext("has been saved")
+                                    ));
+
+                                    // FIXME: remove this check-workaround once the
+                                    // xdg-desktop-portal bugfix is released.
+                                    // https://github.com/flatpak/xdg-desktop-portal/pull/672
+                                    if output_path
+                                        .canonicalize()
+                                        .map(|path| !path.starts_with("/run/flatpak/doc/"))
+                                        .unwrap_or(true)
+                                    {
+                                        // Translators: text on the button of the toast after
+                                        // trimming was done to show the output file in the file
+                                        // manager.
+                                        toast.set_button_label(Some(&gettext("Show in Files")));
+                                        toast.set_action_name(Some("toast.show-in-files"));
+                                        toast.set_action_target(Some(
+                                            &output_path.into_os_string().into_vec().to_variant(),
                                         ));
-                                        trimming_dialog_clone.close();
-                                        return;
                                     } else {
-                                        gtk::MessageDialog::builder()
-                                            // Translators: error dialog text.
-                                            .text(&gettext("Error trimming video"))
-                                            .secondary_text(stderr.as_deref().unwrap_or(""))
-                                            .message_type(gtk::MessageType::Error)
+                                        warn!(
+                                            "no \"Show in Files\" because the path \
+                                            is in /run/flatpak/doc/."
+                                        );
                                     }
-                                }
-                                Err(err) => {
+
+                                    priv_.video_preview.overlay().add_toast(&toast);
+                                    trimming_dialog_clone.close();
+                                    return;
+                                } else {
                                     gtk::MessageDialog::builder()
                                         // Translators: error dialog text.
-                                        .text(&gettext(
-                                            "Could not communicate with the ffmpeg subprocess",
-                                        ))
-                                        .secondary_text(&format!("{}", err))
+                                        .text(&gettext("Error trimming video"))
+                                        .secondary_text(stderr.as_deref().unwrap_or(""))
                                         .message_type(gtk::MessageType::Error)
                                 }
-                            };
+                            }
+                            Err(err) => {
+                                gtk::MessageDialog::builder()
+                                    // Translators: error dialog text.
+                                    .text(&gettext(
+                                        "Could not communicate with the ffmpeg subprocess",
+                                    ))
+                                    .secondary_text(&format!("{}", err))
+                                    .message_type(gtk::MessageType::Error)
+                            }
+                        };
 
                         // This will invoke the signal handler, but it shouldn't be a big deal
                         // since the process has already exited and the future has already
@@ -650,6 +676,39 @@ mod imp {
                     .build()
                     .show();
             });
+
+            klass.install_action(
+                "toast.show-in-files",
+                Some(Vec::<u8>::static_variant_type().as_str()),
+                |window, _, path| {
+                    let path = Vec::<u8>::from_variant(path.unwrap()).unwrap();
+                    let path = PathBuf::from(OsString::from_vec(path));
+                    let file = match File::open(path) {
+                        Ok(value) => value,
+                        Err(err) => {
+                            warn!("couldn't open the output file: {:?}", err);
+                            return;
+                        }
+                    };
+
+                    let native = if let Some(value) = window.native() {
+                        value
+                    } else {
+                        warn!("window.native() returned None");
+                        return;
+                    };
+
+                    let future = async move {
+                        let identifier = ashpd::WindowIdentifier::from_native(&native).await;
+                        if let Err(err) =
+                            ashpd::desktop::open_uri::open_directory(&identifier, &file).await
+                        {
+                            warn!("OpenDirectory returned an error: {:?}", err);
+                        }
+                    };
+                    glib::MainContext::default().spawn_local(future);
+                },
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
