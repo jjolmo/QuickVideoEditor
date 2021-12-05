@@ -1,8 +1,6 @@
 src/application.rs
 src/config.rs
 src/main.rs
-src/notification.rs
-src/notification.blp
 src/parse.rs
 src/timeline.rs
 src/timeline.blp
