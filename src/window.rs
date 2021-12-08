@@ -97,6 +97,8 @@ mod imp {
         title: TemplateChild<adw::WindowTitle>,
         #[template_child]
         box_start_end: TemplateChild<gtk::Box>,
+        #[template_child]
+        overlay_error_page: TemplateChild<adw::ToastOverlay>,
 
         content_type: RefCell<Option<glib::GString>>,
         input_path: RefCell<Option<PathBuf>>,
@@ -441,7 +443,14 @@ mod imp {
                                         );
                                     }
 
-                                    priv_.video_preview.overlay().add_toast(&toast);
+                                    if priv_.stack_video_preview.visible_child_name().as_deref()
+                                        == Some("page_error")
+                                    {
+                                        priv_.overlay_error_page.add_toast(&toast);
+                                    } else {
+                                        priv_.video_preview.overlay().add_toast(&toast);
+                                    }
+
                                     trimming_dialog_clone.close();
                                     return;
                                 } else {

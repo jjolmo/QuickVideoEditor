@@ -108,14 +108,16 @@ template VtWindow : ApplicationWindow {
           StackPage {
             name: "page_error";
 
-            child: Adw.StatusPage {
-              icon-name: "broken-playback-symbolic";
+            child: Adw.ToastOverlay overlay_error_page {
+              child: Adw.StatusPage {
+                icon-name: "broken-playback-symbolic";
 
-              /* Translators: Title that is shown upon video preview loading error. */
-              title: _("Video Preview Failed to Load");
+                /* Translators: Title that is shown upon video preview loading error. */
+                title: _("Video Preview Failed to Load");
 
-              /* Translators: Description that is shown upon video preview loading error. */
-              description: _("Please enter the start and end timestamps manually.\n\nIf you\'re running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work.");
+                /* Translators: Description that is shown upon video preview loading error. */
+                description: _("Please enter the start and end timestamps manually.\n\nIf you\'re running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work.");
+              };
             };
           }
         }
