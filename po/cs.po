@@ -1,0 +1,426 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Video Trimmer\n"
+"Language: cs\n"
+
+#. Translators: fatal error message dialog title.
+#: src/application.rs:52
+msgid "Fatal Error"
+msgstr "Kritická chyba"
+
+#. Main window title.
+#: src/main.rs:37 src/window.blp:22
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
+msgid "Video Trimmer"
+msgstr "Střihač videa"
+
+#. Can't extract filenames from a VariantDict yet.
+#. Translators: --output commandline option description.
+#: src/application.rs:37
+msgid "Output file path"
+msgstr "Výstupní soubor"
+
+#. Translators: --output commandline option arg description.
+#: src/application.rs:39
+msgid "PATH"
+msgstr "CESTA"
+
+#. Translators: error dialog text.
+#: src/application.rs:54
+msgid "Video Trimmer can only operate on local files."
+msgstr "Střihač videa funguje jen na l"
+
+#. Translators: text on the in-app notification after trimming was done.
+#. The template is: <video filename> has been saved
+#: src/window.rs:418
+msgid "has been saved"
+msgstr "byl uložen"
+
+#. Translators: message dialog text.
+#: src/window.rs:389
+msgid "Trimming…"
+msgstr "Střihám…"
+
+#. Translators: error dialog text.
+#: src/window.rs:450
+msgid "Error trimming video"
+msgstr "Chyba při střihu videa"
+
+#. Translators: error dialog text.
+#: src/window.rs:459
+msgid "Could not communicate with the ffmpeg subprocess"
+msgstr "Komunikace s ffmpeg podprocesem selhala"
+
+#. Translators: error dialog text.
+#: src/window.rs:500
+msgid "Could not create the ffmpeg subprocess"
+msgstr "Nepodařilo se vytvořit ffmpeg podproces"
+
+#. Translators: file chooser file filter name.
+#: src/window.rs:823
+msgid "Video files"
+msgstr "Soubory s videem"
+
+#. Translators: file chooser dialog title.
+#: src/window.rs:832
+msgid "Open video"
+msgstr "Otevřít soubor s videem"
+
+#. Translators: error dialog text when the input file information could
+#. not be retrieved (e.g. there's no such file on disk).
+#: src/window.rs:590
+msgid "Could not get input video information"
+msgstr "Vstupní soubor se nepodařilo načíst"
+
+#. Label on the initial state.
+#: src/window.blp:85
+msgid "Press the Open button to open a video file."
+msgstr "Stiskněte tlačítko Otevřít pro otevření video souboru."
+
+#. Label for the entry for the end timestamp.
+#: src/window.blp:153
+msgid "End"
+msgstr "Konec"
+
+#. Label for the entry for the start timestamp.
+#: src/window.blp:136
+msgid "Start"
+msgstr "Začátek"
+
+#. Video open button label.
+#: src/window.blp:38
+msgid "Open"
+msgstr "Otevřít"
+
+#. Trim button.
+#: src/window.blp:63
+msgid "Trim"
+msgstr "Střihni"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
+msgid "Trim videos quickly"
+msgstr "Bleskurychlý střih videa"
+
+#. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
+msgid "Cut;Movie;Film;Clip;"
+msgstr "Střih;Film;Snímek;Klip;"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
+msgid "Ivan Molodetskikh"
+msgstr "Ivan Moloděckich"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
+msgid "Video Trimmer cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality."
+msgstr "Střihač videa vystřihuje kus videa na základě začáteční a konečné časové značky. Video nikdy nyní re-enkódováno, takže je Střihač velice rychlý a nesnižuje kvalitu videa."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
+msgid "Main Window"
+msgstr "Hlavní Okno"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:110
+msgid "This release replaces the Done dialog with an in-app notification and adds a command-line argument to specify the output file."
+msgstr "Toto vydání nahrazuje dialog úspěšného dokončení notifikací uvnitř aplikace a přidává přepínač příkazového řádku pro specifikování výstupního souboru."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:112
+msgid "Added an --output or -o argument to specify the output video path. It will be pre-filled in the save dialog."
+msgstr "Přidán přepínač --output (-o) pro specifikování cesty a názvu výstupního souboru. Tato hodnota je pak předvyplněna v dialogu ukládání výstupního videa."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:113
+msgid "Added support for opening videos with DnD, although it doesn't work on Flatpak unless Video Trimmer is given filesystem access."
+msgstr "Přidána podpora pro otevírání videí přetahováním souboru myší, toto nefunguje ve Flatpaku pokud Střihač videa nemá přístup k souborovému systému (filesystem)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:114
+msgid "Replaced the Done dialog with an in-app notification to better follow the GNOME HIG."
+msgstr "Dialog úspěšného dokončení střihu nahrazen notifikací uvnitř aplikace, aby byl design více dle GNOME HIG."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:120
+msgid "This release fixes file filter not working on Flatpak and possibly a related file chooser crash."
+msgstr "Toto výdání opravuje nefunkční souborový filtr ve Flatpaku a související pád v dialogu pro výběr souboru."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:125
+msgid "This release fixes crashes related to video preview errors, adds a Ctrl+Q exit shortcut and a Dutch translation."
+msgstr "Toto vydání obsahuje opravu pádů souvisejících s náhledem videa, přidává klávesovou zkratku Ctrl+Q a překlad do nizozemštiny."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:127
+msgid "Added a Ctrl+Q shortcut to quit Video Trimmer."
+msgstr "Přidána klavesová zkratka Ctrl+Q pro ukončení programu."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:128
+msgid "Added a Dutch translation."
+msgstr "Přidán překlad do nizozemštiny."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:129
+msgid "Made video preview display an error message when it fails to load."
+msgstr "Náhled videa nyní vypíše chybu, pokud se jej nepodaří načíst."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:130
+msgid "Fixed a crash when the GL runtime is not installed (e.g. when installing the Flathub package on clean Ubuntu 18.04 through Ubuntu Software)."
+msgstr "Opraven pád programu, když není nainstalován GL runtime (např. když byl instalován Flathub balíček na čisté instalace Ubuntu 18.04 pomocí Ubuntu Software)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:131
+msgid "Fixed a crash when required GStreamer plugins are not installed."
+msgstr "Opraven pád, který se projevil, když nebyly nainstalovány všechny potřebné GStreamer pluginy."
+
+#. https://github.com/GNOME/pitivi/blob/d2376b0608721459736b352722d7a353804b2e27/po/cs.po#L1942
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:132
+msgid "Fixed a crash on failing to change the playback position."
+msgstr "Opraven pád při selhání pokusu o změnu pozice přehrávání."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:138
+msgid "This release adds a video preview and a timeline where the target region can be adjusted using the mouse."
+msgstr "Tato verze přináší náhled videa a časovou osu, na které může být upraven časový rozsah střihu pomocí myši."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:143
+msgid "First release."
+msgstr "První vydání."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:99
+msgid "This release fixes an issue where not all streams from the input file were copied into the output file."
+msgstr "Toto vydání opravuje chybu, kdy nebyly všechny streamy z původního souboru přidány do výstupního souboru."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:101
+msgid "All input file streams are now copied to the output file rather than just a single of each type. Subtitles are now copied too rather than skipped."
+msgstr "Všechny streamy vstupního souboru jsou nyní zkopírovány do vystřiženého výstupního souboru místo toho aby byl zkopírován jen jeden za každý typ streamu. Stream titulků již také není přeskočen a také se kopíruje."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:102
+msgid "Added Swedish translation (thanks Åke Engelbrektson)."
+msgstr "Přidán překlad do švédštiny (díky Åke Engelbrektson)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:103
+msgid "Added Spanish translation (thanks Óscar Fernández Díaz)."
+msgstr "Přidán překlad do španělštiny (díky Óscar Fernández Díaz)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:104
+msgid "Made the commandline argument description translatable."
+msgstr "Nápověda příkazové řádky je nyní překladatelná."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:90
+msgid "This release fixes an error when trimming GoPro recordings."
+msgstr "Toto vydání opravuje chybu při stříhání nahrávek z GoPro."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:92
+msgid "Data streams are no longer copied to the output file as a workaround to prevent errors on GoPro recordings."
+msgstr "Data streamy už nejsou kopírovány do výstupního souboru jako dočasná prevence chyb na nahrávkách z GoPro."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:93
+msgid "Updated Spanish translation."
+msgstr "Aktualizován španělský překlad."
+
+#. Translators: error dialog title.
+#: src/window.rs:284 src/window.rs:852
+msgid "Error"
+msgstr "Chyba"
+
+#. Translators: error dialog text.
+#: src/window.rs:287 src/window.rs:855
+msgid "Video Trimmer can only operate on local files. Please choose another file."
+msgstr "Střihač videa lze použít jen na lokální soubory. Prosím zvolte jiný soubor."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:79
+msgid "Video Trimmer is now a GTK 4 application!"
+msgstr "Střihač videa je nyní GTK 4 aplikace!"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:81
+msgid "The GTK 4 port hopefully fixes video-driver-related crashes."
+msgstr "Portování na GTK 4 doufejme opravuje pády související s GPU ovladači."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:82
+msgid "Improved window animations when opening videos."
+msgstr "Vylepšené animace při otevírání videa."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:83
+msgid "Added Croatian translation (thanks milotype)."
+msgstr "Přidán překlad do chorvatštiny (díky milotype)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:40
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:60
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:73
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:84
+msgid "Updated translations."
+msgstr "Aktualizované překlady."
+
+#. Translators: this is appended to the output video file name.
+#. So for example "my video.mp4" will become "my video (trimmed).mp4".
+#: src/window.rs:212
+msgid " (trimmed)"
+msgstr " (ústřižek)"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:68
+msgid "The default name for the output video is now \"input video name (trimmed)\"."
+msgstr "Výchozí název vystřiženého videa je nyní \"původní název videa (ústrižek)\"."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:69
+msgid "The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Video Trimmer the filesystem=host permission (for example, using Flatseal)."
+msgstr "Výchozí složka pro sestříhané video je nyní ve stejné složce, kde se nachází vstupní soubor. Poznámka: Aby toto fungovalo ve Flatpaku, je potřeba dát Střihači videa oprávnění filesystem=host (například pomocí aplikace Flatseal)."
+
+#. Translators: title of the About dialog.
+#: src/window.rs:668
+msgid "About Video Trimmer"
+msgstr "O Střihači videa"
+
+#. Translators: shown in the About dialog, put your name here.
+#: src/window.rs:675
+msgid "translator-credits"
+msgstr "Jakub Mach"
+
+#. Primary menu entry that opens the About dialog.
+#: src/window.blp:15
+msgid "_About Video Trimmer"
+msgstr "_O aplikaci Střihač videa"
+
+#. Primary menu entry that opens a new window.
+#: src/window.blp:8
+msgid "_New Window"
+msgstr "_Nové okno"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:70
+msgid "It's now possible to open a new Video Trimmer window from the new primary menu."
+msgstr "Nyní je možné otevřít nové okno Střihače videa pomocí nového hlavního menu."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:66
+msgid "This release contains a few small improvements."
+msgstr "Toto vydání obsahuje malá vylepšení."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:71
+msgid "The timestamp text fields are now arranged in a better way in RTL languages."
+msgstr "Popisky časových značek jsou nyní lépe uspořádány v jazycích se čtením zprava doleva."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:72
+msgid "Video Trimmer now uses libadwaita, which means a slightly updated visual style (rounded window corners!)."
+msgstr "Střihač videa nyní používá libadwaita, výsledkem je mírně aktualizovaný vizuální styl (zaoblené rohy!)."
+
+#. Translators: checkbox in output file selection dialog that strips audio from the
+#. video file.
+#: src/window.rs:237
+msgid "Remove audio"
+msgstr "Vymazat audio"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:46
+msgid "This release contains a few improvements and adds a number of translations."
+msgstr "Toto vydání obsahuje pár vylepšení a přidává několik překladů."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:48
+msgid "Added a checkbox to remove the audio track to the output file selection dialog."
+msgstr "Přidán přepínač pro vymazání audio stopy do dialogu uložení výstupního souboru."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:49
+msgid "The video is now automatically paused when the trim button is pressed."
+msgstr "Video náhled je nyní automaticky pozastaven při stisknutí tlačítka Střih."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:50
+msgid "The .mp4 output file extension is no longer default when it cannot be used (this affected videos from some Sony cameras)."
+msgstr "Koncovka \".mp4\" již není výchozí v případě, že ji nelze použít (tohle byl problém s videem z některých kamer Sony)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:51
+msgid "Added a message when the opened file has no video track."
+msgstr "Přidána hláška pokud soubor neobsahuje žádnou video stopu."
+
+#. https://github.com/GNOME/metacity/blob/4c8e55c29ce4853a420c3609a0e7e6ce2dca42a6/po/cs.po#L290
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:52
+msgid "Updated libadwaita, which means slightly newer version of the Adwaita theme."
+msgstr "Aktualizována knihovna libadwaita, což znamená novější verzi motivu Adwaita."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:53
+msgid "Fixed a crash after closing a window with a visible notification."
+msgstr "Opraven pád, který nastal při zavření okna, zatímco v něm byla notifikace."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:54
+msgid "Added German translation (thanks Johannes Hayeß)."
+msgstr "Přidán překlad do němčiny (díky Johannes Hayeß)"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:55
+msgid "Added Basque translation (thanks Sergio)."
+msgstr "Přidán překlad do baskičtiny (díky Sergio)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:56
+msgid "Added Hungarian translation (thanks ovari)."
+msgstr "Přidán překlad do maďarštiny (díky ovari)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:58
+msgid "Added Brazilian Portuguese translation (thanks Gustavo Costa)."
+msgstr "Přidán překlad do brazilské portugalštiny (díky Gustavo Costa)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:59
+msgid "Specified input device and screen size recommendations to improve display in the new GNOME Software."
+msgstr "Specifikována podpora klávesnice, myši a velikost obrazovky pro zlepšení zobrazení v novém GNOME Software."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:57
+msgid "Added Italian translation (thanks Albano Battistella)."
+msgstr "Přidán překlad do italštiny (díky Albano Battistella)."
+
+#. Translators: checkbox in output file selection dialog.
+#: src/window.rs:253
+msgid "Accurate trimming, but slower and may lose quality"
+msgstr "Přesnější střih, ale pomalejší a video může ztratit na kvalitě"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
+msgid "Added a checkbox for accurate trimming with re-encoding to the output file selection dialog."
+msgstr "Přidán přepínač pro přesnější střih pomocí re-enkodování do dialogu pro uložení výstupního souboru"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
+msgid "Added Japanese translation (thanks Sibuya Kaz)."
+msgstr "Přidán překlad do japonštiny (díky Sibuya Kaz)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
+msgid "Added Polish translation (thanks Avery)."
+msgstr "Přidán překlad do polštiny (díky Avery)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:39
+msgid "Added Portuguese translation (thanks Bio DevM)."
+msgstr "Přidán překlad do portugalštiny (díky Bio DevM)."
+
+#. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:21
+msgid "Could Not Load Video Track"
+msgstr "Nepodařilo se načíst stopu videa"
+
+#. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:24
+msgid "Maybe the file only has an audio track, or maybe the necessary video codec is missing."
+msgstr "Možná má soubor pouze audio stopu, nebo chybí potřebný video kodek."
+
+#. Translators: text on the button of the toast after
+#. trimming was done to show the output file in the file
+#. manager.
+#: src/window.rs:432
+msgid "Show in Files"
+msgstr "Otevřít ve správci souborů"
+
+#. Translators: Title that is shown upon video preview loading error.
+#: src/window.blp:115
+msgid "Video Preview Failed to Load"
+msgstr "Náhled videa se nepodařilo načíst"
+
+#. Translators: Description that is shown upon video preview loading error.
+#: src/window.blp:118
+msgid "Please enter the start and end timestamps manually.\n"
+"\n"
+"If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
+msgstr "Zadejte prosím počáteční a konečný čas ručně.\n"
+"\n"
+"Mějte na paměti, že pokud spouštíte Střihač videa ve Flatpaku, drag-and-drop nemusí fungovat."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
+msgid "This release adds an accurate trimming with re-encoding option and refreshes the design a bit."
+msgstr "Toto vydání přináší možnost přesnějšího střihu díky re-enkodování jako volitelnou možnost a trošku zlepšuje design."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
+msgid "Updated the design to better match the newer version of the Adwaita theme."
+msgstr "Upraven design, aby více odpovídal novější verzi Adwaita motivu."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
+msgid "Added dark style and high contrast support and made dark style the default."
+msgstr "Přidána podpora tmavého motivu a vysokého konstrastu. Tmavý motiv je nyní výchozí."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
+msgid "Added a \"Show in Files\" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Video Trimmer the filesystem=host permission (for example, using Flatseal)."
+msgstr "Přidáno tlačítko \"Otevřít ve správci souborů\" do notifikace při dokončení střihu.\n"
+"Poznámka: z důvodu omezení je toto momentálně vypnuté na některých Flatpak instalacích, ale můžete to zapnout pokud dáte Střihači videa oprávnění filesystem=host (například pomocí Flatseal)."
+
