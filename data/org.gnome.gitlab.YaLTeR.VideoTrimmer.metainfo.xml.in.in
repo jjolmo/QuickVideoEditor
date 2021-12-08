@@ -26,7 +26,7 @@
 		</screenshot>
 	</screenshots>
 	<releases>
-		<release version="0.7.0" date="2021-10-17">
+		<release version="0.7.0" date="2021-12-08">
 			<description>
 				<p>This release adds an accurate trimming with re-encoding option and refreshes the design a bit.</p>
 				<ul>
