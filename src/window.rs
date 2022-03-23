@@ -431,7 +431,7 @@ mod imp {
                                         toast.set_button_label(Some(&gettext("Show in Files")));
                                         toast.set_action_name(Some("toast.show-in-files"));
                                         toast.set_action_target(Some(
-                                            &output_path.into_os_string().into_vec().to_variant(),
+                                            &output_path.into_os_string().into_vec(),
                                         ));
                                     } else {
                                         warn!(
