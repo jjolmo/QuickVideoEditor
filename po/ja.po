@@ -146,15 +146,15 @@ msgstr ""
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:125
 msgid "This release fixes crashes related to video preview errors, adds a Ctrl+Q exit shortcut and a Dutch translation."
-msgstr ""
+msgstr "このリリースでは、ビデオプレビューエラーに関するクラッシュの修正、Ctrl+Qで終了するショートカット、そしてオランダ語翻訳が追加されました。"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:127
 msgid "Added a Ctrl+Q shortcut to quit Video Trimmer."
-msgstr ""
+msgstr "Ctrl+QでVideo Trimmerを終了するショートカットが追加されました。"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:128
 msgid "Added a Dutch translation."
-msgstr ""
+msgstr "オランダ語の翻訳が追加されました。"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:129
 msgid "Made video preview display an error message when it fails to load."
@@ -364,20 +364,20 @@ msgstr "出力ファイル選択ダイアログに、再エンコードによる
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Japanese translation (thanks Sibuya Kaz)."
-msgstr ""
+msgstr "日本語の翻訳が追加されました。"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
 msgid "Added Polish translation (thanks Avery)."
-msgstr ""
+msgstr "ポーランド語の翻訳が追加されました（Avery に感謝します）。"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:39
 msgid "Added Portuguese translation (thanks Bio DevM)."
-msgstr ""
+msgstr "ポルトガル語の翻訳が追加されました（Bio DevM に感謝します）。"
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:21
 msgid "Could Not Load Video Track"
-msgstr ""
+msgstr "ビデオトラックの読み込めませんでした"
 
 #. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:24
@@ -392,12 +392,12 @@ msgstr "ビデオトラックを読み込めませんでした。\n"
 #. manager.
 #: src/window.rs:432
 msgid "Show in Files"
-msgstr ""
+msgstr "ファイルで表示"
 
 #. Translators: Title that is shown upon video preview loading error.
 #: src/window.blp:115
 msgid "Video Preview Failed to Load"
-msgstr ""
+msgstr "ビデオプレビューの読み込みに失敗しました"
 
 #. Translators: Description that is shown upon video preview loading error.
 #: src/window.blp:118
@@ -405,9 +405,7 @@ msgstr ""
 msgid "Please enter the start and end timestamps manually.\n"
 "\n"
 "If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
-msgstr "ビデオプレビューをロードできませんでした。\n"
-"\n"
-"開始と終わりのタイムスタンプを手動で入力してください。\n"
+msgstr "開始と終わりのタイムスタンプを手動で入力してください。\n"
 "\n"
 "もし、Video TrimmerをFlatpakで実行している場合ではドラックアンドドロップが利用できない可能性があります。"
 
@@ -418,11 +416,11 @@ msgstr "このリリースでは、再エンコードオプションを使用し
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Updated the design to better match the newer version of the Adwaita theme."
-msgstr ""
+msgstr "Adwaitaの新しいバージョンに合わせて、デザインを少し改変しました"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Added dark style and high contrast support and made dark style the default."
-msgstr ""
+msgstr "ダークモードとハイコントラストをサポートし、デフォルトでダークモードを搭載するようになりました。"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added a \"Show in Files\" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Video Trimmer the filesystem=host permission (for example, using Flatseal)."

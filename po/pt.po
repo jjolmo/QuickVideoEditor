@@ -10,7 +10,7 @@ msgstr ""
 #. Translators: fatal error message dialog title.
 #: src/application.rs:52
 msgid "Fatal Error"
-msgstr "Erro Fatal"
+msgstr "Erro fatal"
 
 #. Main window title.
 #: src/main.rs:37 src/window.blp:22
@@ -33,7 +33,7 @@ msgstr "CAMINHO"
 #. Translators: error dialog text.
 #: src/application.rs:54
 msgid "Video Trimmer can only operate on local files."
-msgstr "O Aparador de Vídeo só pode operar em ficheiros locais."
+msgstr "O Aparador de Vídeo apenas pode operar em ficheiros locais."
 
 #. Translators: text on the in-app notification after trimming was done.
 #. The template is: <video filename> has been saved
@@ -220,7 +220,7 @@ msgstr "Erro"
 #. Translators: error dialog text.
 #: src/window.rs:287 src/window.rs:855
 msgid "Video Trimmer can only operate on local files. Please choose another file."
-msgstr "O Aparador de Vídeo só pode operar em ficheiros locais. Por favor, escolha outro ficheiro."
+msgstr "O Aparador de Vídeo só pode operar em ficheiros locais. Escolha outro ficheiro."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:79
 msgid "Video Trimmer is now a GTK 4 application!"
@@ -267,17 +267,17 @@ msgstr "Sobre o Aparador de Vídeo"
 #. Translators: shown in the About dialog, put your name here.
 #: src/window.rs:675
 msgid "translator-credits"
-msgstr ""
+msgstr "Hugo Carvalho"
 
 #. Primary menu entry that opens the About dialog.
 #: src/window.blp:15
 msgid "_About Video Trimmer"
-msgstr "_Sobre Aparador de Vídeo"
+msgstr "_Acerca do Aparador de Vídeo"
 
 #. Primary menu entry that opens a new window.
 #: src/window.blp:8
 msgid "_New Window"
-msgstr "_Nova Janela"
+msgstr "_Nova janela"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:70
 msgid "It's now possible to open a new Video Trimmer window from the new primary menu."
@@ -356,28 +356,28 @@ msgstr "Adicionada tradução italiana (obrigado Albano Battistella)."
 #. Translators: checkbox in output file selection dialog.
 #: src/window.rs:253
 msgid "Accurate trimming, but slower and may lose quality"
-msgstr ""
+msgstr "Aparação precisa, mas lenta e com possível perda de qualidade"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "Added a checkbox for accurate trimming with re-encoding to the output file selection dialog."
-msgstr ""
+msgstr "Adicionada uma caixa de verificação para aparação precisa com a recodificação do ficheiro de saída."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Japanese translation (thanks Sibuya Kaz)."
-msgstr ""
+msgstr "Adicionada tradução japonesa (obrigado Sibuya Kaz)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
 msgid "Added Polish translation (thanks Avery)."
-msgstr ""
+msgstr "Adicionada a tradução polaca (obrigado Avery)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:39
 msgid "Added Portuguese translation (thanks Bio DevM)."
-msgstr ""
+msgstr "Adicionada a tradução portuguesa (obrigado Bio DevM)."
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:21
 msgid "Could Not Load Video Track"
-msgstr ""
+msgstr "Não foi possível carregar a faixa de vídeo"
 
 #. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:24
@@ -392,12 +392,12 @@ msgstr "Falha ao carregar ficheiro de vídeo.\n"
 #. manager.
 #: src/window.rs:432
 msgid "Show in Files"
-msgstr ""
+msgstr "Mostrar em Ficheiros"
 
 #. Translators: Title that is shown upon video preview loading error.
 #: src/window.blp:115
 msgid "Video Preview Failed to Load"
-msgstr ""
+msgstr "Falha na pré-visualização do vídeo"
 
 #. Translators: Description that is shown upon video preview loading error.
 #: src/window.blp:118
@@ -413,17 +413,17 @@ msgstr "Falha no carregamento da pré-visualização.\n"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release adds an accurate trimming with re-encoding option and refreshes the design a bit."
-msgstr ""
+msgstr "Esta versão adiciona a opção de recorte preciso, a opção de recodificação e uma pequena atualização de design."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Updated the design to better match the newer version of the Adwaita theme."
-msgstr ""
+msgstr "Atualização do design para combinar melhor com o novo tema Adwaita."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Added dark style and high contrast support and made dark style the default."
-msgstr ""
+msgstr "Adicionado o modo escuro, alto contraste e o modo escuro por defeito."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added a \"Show in Files\" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Video Trimmer the filesystem=host permission (for example, using Flatseal)."
-msgstr ""
+msgstr "Adicionado um botão \"Mostrar em Ficheiros\" à notificação concluído de aparar. Nota: devido a uma limitação, esta opção está atualmente desativada em algumas instalações Flatpak, mas pode fazê-la funcionar dando ao Aparador de Vídeo a permissão de sistema de ficheiros/host (por exemplo, usando Flatseal)."
 
