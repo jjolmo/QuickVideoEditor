@@ -26,6 +26,20 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.7.1" date="2022-03-23">
+			<description>
+				<p>This release enables "Show in Files" for Flatpak and updates translations.</p>
+				<ul>
+					<li>The "Show in Files" button has been enabled for all Flatpak installs.</li>
+					<li>Added Czech translation (thanks Jakub Mach).</li>
+					<li>Added French translation.</li>
+					<li>Added Galician translation (thanks Fran Diéguez).</li>
+					<li>Added Turkish translation.</li>
+					<li>Added Ukrainian translation (thanks Andrij Mizyk).</li>
+					<li>Updated translations.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.7.0" date="2021-12-08">
 			<description>
 				<p>This release adds an accurate trimming with re-encoding option and refreshes the design a bit.</p>
