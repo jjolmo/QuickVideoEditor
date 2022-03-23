@@ -3,7 +3,8 @@ include:
     file: 'flatpak/flatpak_ci_initiative.yml'
 
 flatpak:
-  except: poeditor
+  except:
+    - poeditor
   image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master'
   variables:
     BUNDLE: "video-trimmer-nightly.flatpak"
@@ -18,7 +19,8 @@ flatpak:
 # Configure and run rustfmt
 # Exits and builds fails if on bad format
 rustfmt:
-  except: poeditor
+  except:
+    - poeditor
   image: "rust:slim"
   script:
     - rustup component add rustfmt
