@@ -226,7 +226,7 @@ mod imp {
                 if let Some(parent) = output_path.parent() {
                     if parent.to_str().map(|x| !x.is_empty()).unwrap_or(false) {
                         debug!("setting current folder to {:?}", parent);
-                        let _ = file_chooser.set_current_folder(&gio::File::for_path(parent));
+                        let _ = file_chooser.set_current_folder(Some(&gio::File::for_path(parent)));
                     }
                 }
                 if let Some(name) = output_path.file_name().and_then(OsStr::to_str) {
@@ -398,10 +398,7 @@ mod imp {
                     let trimming_dialog_clone = trimming_dialog.clone();
                     let subprocess_clone = subprocess.clone();
                     let future = async move {
-                        let builder = match subprocess_clone
-                            .communicate_utf8_async_future(None)
-                            .await
-                        {
+                        let builder = match subprocess_clone.communicate_utf8_future(None).await {
                             Ok((_, stderr)) => {
                                 if subprocess_clone.has_exited()
                                     && subprocess_clone.exit_status() == 0
@@ -570,7 +567,7 @@ mod imp {
 
                 // May take a long time on a network mount.
                 let info = file
-                    .query_info_async_future(
+                    .query_info_future(
                         "standard::display-name,standard::fast-content-type",
                         gio::FileQueryInfoFlags::NONE,
                         glib::PRIORITY_DEFAULT,
@@ -632,10 +629,7 @@ mod imp {
             .unwrap();
             let self_ = self.instance();
             let future = async move {
-                let (stdout, stderr) = subprocess
-                    .communicate_utf8_async_future(None)
-                    .await
-                    .unwrap();
+                let (stdout, stderr) = subprocess.communicate_utf8_future(None).await.unwrap();
                 if subprocess.has_exited() && subprocess.exit_status() == 0 {
                     let priv_ = Self::from_instance(&self_);
                     let output = json::parse(&stdout.unwrap()).unwrap();
