@@ -417,28 +417,14 @@ mod imp {
                                         gettext("has been saved")
                                     ));
 
-                                    // FIXME: remove this check-workaround once the
-                                    // xdg-desktop-portal bugfix is released.
-                                    // https://github.com/flatpak/xdg-desktop-portal/pull/672
-                                    if output_path
-                                        .canonicalize()
-                                        .map(|path| !path.starts_with("/run/flatpak/doc/"))
-                                        .unwrap_or(true)
-                                    {
-                                        // Translators: text on the button of the toast after
-                                        // trimming was done to show the output file in the file
-                                        // manager.
-                                        toast.set_button_label(Some(&gettext("Show in Files")));
-                                        toast.set_action_name(Some("toast.show-in-files"));
-                                        toast.set_action_target(Some(
-                                            &output_path.into_os_string().into_vec(),
-                                        ));
-                                    } else {
-                                        warn!(
-                                            "no \"Show in Files\" because the path \
-                                            is in /run/flatpak/doc/."
-                                        );
-                                    }
+                                    // Translators: text on the button of the toast after
+                                    // trimming was done to show the output file in the file
+                                    // manager.
+                                    toast.set_button_label(Some(&gettext("Show in Files")));
+                                    toast.set_action_name(Some("toast.show-in-files"));
+                                    toast.set_action_target(Some(
+                                        &output_path.into_os_string().into_vec(),
+                                    ));
 
                                     if priv_.stack_video_preview.visible_child_name().as_deref()
                                         == Some("page_error")
