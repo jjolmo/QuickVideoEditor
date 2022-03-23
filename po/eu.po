@@ -37,43 +37,43 @@ msgstr "Bideo-errekortadoreak tokiko artxiboekin baino ezin du jardun."
 
 #. Translators: text on the in-app notification after trimming was done.
 #. The template is: <video filename> has been saved
-#: src/window.rs:418
+#: src/window.rs:417
 msgid "has been saved"
 msgstr "gorde egin da"
 
 #. Translators: message dialog text.
-#: src/window.rs:389
+#: src/window.rs:391
 msgid "Trimming…"
 msgstr "Mozten..."
 
 #. Translators: error dialog text.
-#: src/window.rs:450
+#: src/window.rs:442
 msgid "Error trimming video"
 msgstr "Errorea bideoa moztean"
 
 #. Translators: error dialog text.
-#: src/window.rs:459
+#: src/window.rs:451
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Ezin izan zen komunikatu ffmpeg azpiprozesuarekin"
 
 #. Translators: error dialog text.
-#: src/window.rs:500
+#: src/window.rs:492
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Ezin izan da sortu ffmpeg azpiprozesua"
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:823
+#: src/window.rs:812
 msgid "Video files"
 msgstr "Bideo fitxategiak"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:832
+#: src/window.rs:821
 msgid "Open video"
 msgstr "Ireki bideoa"
 
 #. Translators: error dialog text when the input file information could
 #. not be retrieved (e.g. there's no such file on disk).
-#: src/window.rs:590
+#: src/window.rs:582
 msgid "Could not get input video information"
 msgstr "Ezin izan da lortu sarrerako bideo-informazioa"
 
@@ -83,12 +83,12 @@ msgid "Press the Open button to open a video file."
 msgstr "Sakatu Ireki botoia bideo-fitxategi bat irekitzeko."
 
 #. Label for the entry for the end timestamp.
-#: src/window.blp:153
+#: src/window.blp:155
 msgid "End"
 msgstr "Amaitu"
 
 #. Label for the entry for the start timestamp.
-#: src/window.blp:136
+#: src/window.blp:138
 msgid "Start"
 msgstr "Hasi"
 
@@ -124,148 +124,149 @@ msgstr "Bideo-laburtzaileak bideo baten zati bat mozten du, hasierako eta amaier
 msgid "Main Window"
 msgstr "Leiho nagusia"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:110
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:124
 msgid "This release replaces the Done dialog with an in-app notification and adds a command-line argument to specify the output file."
 msgstr "Bertsio honek “Egina” elkarrizketa-koadroaren ordez aplikazioaren barruko jakinarazpen bat jartzen du, eta komando-lerroaren argudio bat gehitzen du irteera-fitxategia zehazteko."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:112
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:126
 msgid "Added an --output or -o argument to specify the output video path. It will be pre-filled in the save dialog."
 msgstr "Argumentu bat gehitu da --output edo -- bideoaren irteera ibilbidea zehazteko. Aldez aurretik beteko da, gordetze-elkarrizketan."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:113
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:127
 msgid "Added support for opening videos with DnD, although it doesn't work on Flatpak unless Video Trimmer is given filesystem access."
 msgstr "Euskarri bat gehitu da DnD duten bideoak irekitzeko, baina ez du Flatpaken funtzionatzen, non eta ez den artxibo-sistemarako sarbidea ematen Bideo Biltzailerako."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:114
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:128
 msgid "Replaced the Done dialog with an in-app notification to better follow the GNOME HIG."
 msgstr "“Eginda” elkarrizketa-koadroaren ordez, aplikazioaren barruko jakinarazpen bat jarri da, GNOMEren HIG hobeto jarraitzeko."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:120
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:134
 msgid "This release fixes file filter not working on Flatpak and possibly a related file chooser crash."
 msgstr "Bertsio honek Flatpaken funtzionatzen ez duen fitxategi iragazkia zuzentzen du, eta, beharbada, fitxategi hautatzailearekin lotutako akats bat."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:125
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:139
 msgid "This release fixes crashes related to video preview errors, adds a Ctrl+Q exit shortcut and a Dutch translation."
 msgstr "Bertsio honek bideoaren aurrebista akatsekin lotutako akatsak zuzentzen ditu, Ctrl+Q irteera lasterbidea eta holanderako itzulpena gehitzen ditu."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:127
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:141
 msgid "Added a Ctrl+Q shortcut to quit Video Trimmer."
 msgstr "Bideo-ebakitzailetik irteteko Ctrl+Q lasterbidea gehitu da."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:128
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:142
 msgid "Added a Dutch translation."
 msgstr "Nederlanderazko itzulpena gehitu da."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:129
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:143
 msgid "Made video preview display an error message when it fails to load."
 msgstr "Aldez aurreko bideo-bistak errore-mezu bat erakutsi, kargatzen ez denean."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:130
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:144
 msgid "Fixed a crash when the GL runtime is not installed (e.g. when installing the Flathub package on clean Ubuntu 18.04 through Ubuntu Software)."
 msgstr "Akats bat zuzendu da GL gauzatzeko denbora instalatuta ez dagoenean (adibidez, Flathub paketea instalatzean Ubuntu 18.04 garbi batean Ubuntu Software bidez)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:131
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:145
 msgid "Fixed a crash when required GStreamer plugins are not installed."
 msgstr "Akats bat zuzendu da GStreamer-en beharrezkoak diren pluginak instalatu ez direnean."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:132
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:146
 msgid "Fixed a crash on failing to change the playback position."
 msgstr "Akats bat zuzendu du, ezin izan duelako ugalketa-posizioa aldatu."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:138
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:152
 msgid "This release adds a video preview and a timeline where the target region can be adjusted using the mouse."
 msgstr "Bertsio honek bideoaren aldez aurreko bista bat eta saguarekin helmugako eskualdea egokitu daitekeen denbora-lerro bat gehitzen ditu."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:143
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:157
 msgid "First release."
 msgstr "Lehenengo jaurtiketa."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:99
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:113
 msgid "This release fixes an issue where not all streams from the input file were copied into the output file."
 msgstr "Bertsio honek arazo bat zuzentzen du, sarrerako fitxategiko fluxu guztiak ez baitziren irteerako artxiboan kopiatzen."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:101
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:115
 msgid "All input file streams are now copied to the output file rather than just a single of each type. Subtitles are now copied too rather than skipped."
 msgstr "Sarrera-fitxategien fluxu guztiak irteera-fitxategian kopiatzen dira orain, mota bakoitzetik bakarra kopiatu beharrean. Orain azpitituluak ere kopiatzen dira, gainetik pasatu beharrean."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:102
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:116
 msgid "Added Swedish translation (thanks Åke Engelbrektson)."
 msgstr "Suedierazko itzulpena gehituta (eskerrik asko Åke Engelbrektson)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:103
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:117
 msgid "Added Spanish translation (thanks Óscar Fernández Díaz)."
 msgstr "Gaztelaniazko itzulpena gehituta (eskerrik asko Óscar Fernández Díaz)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:104
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:118
 msgid "Made the commandline argument description translatable."
 msgstr "Komandoen lerroko argudioen deskribapena itzulgarria egin da."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:90
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:104
 msgid "This release fixes an error when trimming GoPro recordings."
 msgstr "Bertsio honek akats bat zuzentzen du GoPro grabazioak moztean."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:92
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:106
 msgid "Data streams are no longer copied to the output file as a workaround to prevent errors on GoPro recordings."
 msgstr "Datu-fluxuak jada ez dira irteera-fitxategian kopiatzen, GoPro grabazioetan erroreak saihesteko irtenbide gisa."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:93
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:107
 msgid "Updated Spanish translation."
 msgstr "Gaztelaniara egindako itzulpen eguneratua."
 
 #. Translators: error dialog title.
-#: src/window.rs:284 src/window.rs:852
+#: src/window.rs:286 src/window.rs:841
 msgid "Error"
 msgstr "Errorea"
 
 #. Translators: error dialog text.
-#: src/window.rs:287 src/window.rs:855
+#: src/window.rs:289 src/window.rs:844
 msgid "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "Bideo-laburtzaileak tokiko artxiboekin bakarrik funtziona dezake. Mesedez, aukeratu beste artxibo bat."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:79
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:93
 msgid "Video Trimmer is now a GTK 4 application!"
 msgstr "Bideo Trimmer orain GTK 4 aplikazio bat da!"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:81
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:95
 msgid "The GTK 4 port hopefully fixes video-driver-related crashes."
 msgstr "Espero izatekoa da GTK 4 portuak bideo-kontrolagailuarekin lotutako akatsak konpontzea."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:82
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:96
 msgid "Improved window animations when opening videos."
 msgstr "Leihoetako animazioak hobetzea bideoak irekitzean."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:83
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:97
 msgid "Added Croatian translation (thanks milotype)."
 msgstr "Gehitu kroazierazko itzulpena (eskerrik asko milotype)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:40
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:60
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:73
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:84
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:39
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:54
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:74
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:87
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:98
 msgid "Updated translations."
 msgstr "Itzulpen eguneratuak."
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:212
+#: src/window.rs:214
 msgid " (trimmed)"
 msgstr " (moztuta)"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:68
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:82
 msgid "The default name for the output video is now \"input video name (trimmed)\"."
 msgstr "Irteerako bideoaren izen lehenetsia \"sarrerako bideoaren izena (moztuta)\" da orain."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:69
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:83
 msgid "The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Video Trimmer the filesystem=host permission (for example, using Flatseal)."
 msgstr "Irteerako bideorako karpeta lehenetsia sarrerako bideoaren karpeta da orain. Oharra: Flatpakekin funtziona dezan, Video Trimmerri filesystem = host baimena eman beharko dio (adibidez, Flatseal erabiliz)."
 
 #. Translators: title of the About dialog.
-#: src/window.rs:668
+#: src/window.rs:657
 msgid "About Video Trimmer"
 msgstr "Bideo Trimmeri buruz"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:675
+#: src/window.rs:664
 msgid "translator-credits"
 msgstr "Sergio Varela"
 
@@ -279,108 +280,108 @@ msgstr "_Bideo Trimmeri buruz"
 msgid "_New Window"
 msgstr "_Leiho berria"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:70
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:84
 msgid "It's now possible to open a new Video Trimmer window from the new primary menu."
 msgstr "Orain, menu nagusi berritik bideoak mozteko beste leiho bat ireki daiteke."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:66
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:80
 msgid "This release contains a few small improvements."
 msgstr "Bertsio honek hobekuntza txiki batzuk ditu."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:71
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:85
 msgid "The timestamp text fields are now arranged in a better way in RTL languages."
 msgstr "Denbora-marken testu-eremuak hobeto antolatuta daude orain RTL hizkuntzetan."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:72
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:86
 msgid "Video Trimmer now uses libadwaita, which means a slightly updated visual style (rounded window corners!)."
 msgstr "Bideo Trimmer orain libadwaita erabiltzen du, hau da, estilo bisual apur bat eguneratua (leiho-kantoi biribilak!)."
 
 #. Translators: checkbox in output file selection dialog that strips audio from the
 #. video file.
-#: src/window.rs:237
+#: src/window.rs:239
 msgid "Remove audio"
 msgstr "Audioa ezabatu"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:46
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:60
 msgid "This release contains a few improvements and adds a number of translations."
 msgstr "Bertsio honek hobekuntza batzuk eta itzulpen batzuk ditu."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:48
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:62
 msgid "Added a checkbox to remove the audio track to the output file selection dialog."
 msgstr "Irteerako fitxategiak hautatzeko elkarrizketan audio-pista kentzeko lauki bat gehitu da."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:49
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:63
 msgid "The video is now automatically paused when the trim button is pressed."
 msgstr "Orain, bideoa automatikoki geldituko da ebakitzeko botoia sakatzean."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:50
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:64
 msgid "The .mp4 output file extension is no longer default when it cannot be used (this affected videos from some Sony cameras)."
 msgstr ".mp4 irteerako fitxategiaren luzapena jada ez da lehenetsia, erabili ezin denean (horrek Sony kamera batzuen bideoei eragiten zien)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:51
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:65
 msgid "Added a message when the opened file has no video track."
 msgstr "Mezu bat gehitu da irekitako fitxategiak bideo-pistarik ez duenean."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:52
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:66
 msgid "Updated libadwaita, which means slightly newer version of the Adwaita theme."
 msgstr "Libadwaita eguneratua, hauek esan nahi du Adwaita gaia bertsio berriago bat izango duela."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:53
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:67
 msgid "Fixed a crash after closing a window with a visible notification."
 msgstr "Akats bat zuzendu da, leiho bat jakinarazpen ikusgarri batekin itxi ondoren."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:54
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:68
 msgid "Added German translation (thanks Johannes Hayeß)."
 msgstr "Alemanierazko itzulpena gehitu da (eskerrik asko Johannes Hayeß)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:55
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:69
 msgid "Added Basque translation (thanks Sergio)."
 msgstr "Euskarazko itzulpena gehitu da (eskerrik asko Sergio)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:56
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:70
 msgid "Added Hungarian translation (thanks ovari)."
 msgstr "Hungarierazko itzulpena gehitu (eskerrik asko ovari)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:58
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:72
 msgid "Added Brazilian Portuguese translation (thanks Gustavo Costa)."
 msgstr "Portuges brasildarrerako itzulpena gehitu da (eskerrik asko Gustavo Costa)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:59
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:73
 msgid "Specified input device and screen size recommendations to improve display in the new GNOME Software."
 msgstr "Sarrerako gailuari eta pantailaren tamainari buruzko gomendioak, GNOME software berrian hobeto bistaratzeko."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:57
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:71
 msgid "Added Italian translation (thanks Albano Battistella)."
 msgstr "Italierazko itzulpena gehitu da (eskerrik asko Albano Battistella)."
 
 #. Translators: checkbox in output file selection dialog.
-#: src/window.rs:253
+#: src/window.rs:255
 msgid "Accurate trimming, but slower and may lose quality"
 msgstr "Murrizketa zehatza, baina motelagoa, eta kalitatea gal dezake"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:47
 msgid "Added a checkbox for accurate trimming with re-encoding to the output file selection dialog."
 msgstr "Egiaztapen-lauki bat gehitu da behar den murrizketa egiteko, irteerako fitxategiak hautatzeko elkarrizketan birkodifikatuta."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:51
 msgid "Added Japanese translation (thanks Sibuya Kaz)."
 msgstr "Japonierazko itzulpena gehitu da (eskerrik asko Sibuya Kaz)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:52
 msgid "Added Polish translation (thanks Avery)."
 msgstr "Polakorako itzulpena gehitu da (eskerrik asko Avery)."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:39
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:53
 msgid "Added Portuguese translation (thanks Bio DevM)."
 msgstr "Portugeserako itzulpena gehitu da (eskerrik asko Bio DevM)."
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
-#: src/video_preview.blp:21
+#: src/video_preview.blp:20
 msgid "Could Not Load Video Track"
 msgstr "Ezin izan da bideo-pista kargatu"
 
 #. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
-#: src/video_preview.blp:24
+#: src/video_preview.blp:23
 #, fuzzy
 msgid "Maybe the file only has an audio track, or maybe the necessary video codec is missing."
 msgstr "Ezin izan da bideo-pista kargatu.\n"
@@ -390,17 +391,17 @@ msgstr "Ezin izan da bideo-pista kargatu.\n"
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:432
+#: src/window.rs:423
 msgid "Show in Files"
 msgstr "Erakutsi Fitxategietan"
 
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:115
+#: src/window.blp:116
 msgid "Video Preview Failed to Load"
 msgstr "Ezin da bideoaren aurretiko bista kargatu"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:118
+#: src/window.blp:119
 #, fuzzy
 msgid "Please enter the start and end timestamps manually.\n"
 "\n"
@@ -411,19 +412,47 @@ msgstr "Bideoaren aurretiko bista ezin izan da kargatu.\n"
 "\n"
 "Flatpak bidezko Trimmer bideoa exekutatzen ari bazara, kontuan izan fitxategiak arrastatuz eta askatuz irekitzeak ez duela funtzionatuko."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:45
 msgid "This release adds an accurate trimming with re-encoding option and refreshes the design a bit."
 msgstr "Bertsio honek erredukzio zehatz bat gehitzen du, birkodetzeko aukerarekin eta diseinua pixka bat freskatzen du."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:48
 msgid "Updated the design to better match the newer version of the Adwaita theme."
 msgstr "Diseinua eguneratu da Adwaita gaia bertsio berrira hobeto egokitzeko."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:49
 msgid "Added dark style and high contrast support and made dark style the default."
 msgstr "Estilo iluna eta kontraste altuarekiko bateragarritasuna gehitu dira, eta estilo ilun bihurtu da lehenetsita."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:50
 msgid "Added a \"Show in Files\" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Video Trimmer the filesystem=host permission (for example, using Flatseal)."
 msgstr "Egindako murrizketaren jakinarazpenari \"Erakutsi Fitxategietan\" botoia gehitu zaio. Oharra: muga baten ondorioz, hau, gaur egun, Flatpaken instalazio batzuetan desgaituta dago, baina Video Trimmerri filesystem=host baimena emanez funtziona dezake (adibidez, Flatseal erabiliz)."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
+msgid "This release enables \"Show in Files\" for Flatpak and updates translations."
+msgstr ""
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
+msgid "The \"Show in Files\" button has been enabled for all Flatpak installs."
+msgstr ""
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
+msgid "Added Czech translation (thanks Jakub Mach)."
+msgstr ""
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
+msgid "Added French translation."
+msgstr ""
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
+msgid "Added Galician translation (thanks Fran Diéguez)."
+msgstr ""
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
+msgid "Added Turkish translation."
+msgstr ""
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
+msgid "Added Ukrainian translation (thanks Andrij Mizyk)."
+msgstr ""
 
