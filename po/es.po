@@ -174,11 +174,11 @@ msgstr "Arreglado un fallo al no poder cambiar la posición de la reproducción.
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:138
 msgid "This release adds a video preview and a timeline where the target region can be adjusted using the mouse."
-msgstr "Este lanzamiento añade una vista previa de vídeo y una línea de tiempo en la que se puede ajustar la región de destino con el ratón."
+msgstr "Esta versión añade una vista previa de vídeo y una línea de tiempo en la que se puede ajustar la región de destino con el ratón."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:143
 msgid "First release."
-msgstr "Primer lanzamiento."
+msgstr "Primera versión."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:99
 msgid "This release fixes an issue where not all streams from the input file were copied into the output file."
@@ -257,7 +257,7 @@ msgstr "El nombre predeterminado del vídeo de salida es ahora \"nombre del víd
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:69
 msgid "The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Video Trimmer the filesystem=host permission (for example, using Flatseal)."
-msgstr "La carpeta predeterminada para el vídeo de salida es ahora la carpeta del vídeo de entrada. Nota: para que esto funcione bajo Flatpak, tendrá que dar a Video Trimmer el permiso filesystem=host (por ejemplo, usando Flatseal)."
+msgstr "La carpeta predeterminada para el vídeo de salida es ahora la carpeta del vídeo de entrada. Nota: para que esto funcione bajo Flatpak, tendrá que dar a Recortador de vídeo el permiso filesystem=host (por ejemplo, usando Flatseal)."
 
 #. Translators: title of the About dialog.
 #: src/window.rs:668
@@ -419,5 +419,5 @@ msgstr "Añadido el estilo oscuro, ahora el estilo predeterminado, y el soporte 
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added a \"Show in Files\" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Video Trimmer the filesystem=host permission (for example, using Flatseal)."
-msgstr "Añadido un botón \"Mostrar en Archivos\" a la notificación de recorte realizado. Nota: debido a una limitación, esto está actualmente desactivado en algunas instalaciones de Flatpak, pero se puede hacer que funcione dando a Recortedor de Video el permiso filesystem=host (por ejemplo, usando Flatseal)."
+msgstr "Añadido un botón \"Mostrar en Archivos\" a la notificación de recorte realizado. Nota: debido a una limitación, esto está actualmente desactivado en algunas instalaciones de Flatpak, pero se puede hacer que funcione dando a Recortador de video el permiso filesystem=host (por ejemplo, usando Flatseal)."
 

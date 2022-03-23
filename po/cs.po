@@ -33,7 +33,7 @@ msgstr "CESTA"
 #. Translators: error dialog text.
 #: src/application.rs:54
 msgid "Video Trimmer can only operate on local files."
-msgstr "Střihač videa funguje jen na l"
+msgstr "Střihač videa funguje jen s lokálními soubory."
 
 #. Translators: text on the in-app notification after trimming was done.
 #. The template is: <video filename> has been saved
@@ -44,7 +44,7 @@ msgstr "byl uložen"
 #. Translators: message dialog text.
 #: src/window.rs:389
 msgid "Trimming…"
-msgstr "Střihám…"
+msgstr "Probíhá střih…"
 
 #. Translators: error dialog text.
 #: src/window.rs:450
@@ -187,7 +187,7 @@ msgstr "Toto vydání opravuje chybu, kdy nebyly všechny streamy z původního 
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:101
 msgid "All input file streams are now copied to the output file rather than just a single of each type. Subtitles are now copied too rather than skipped."
-msgstr "Všechny streamy vstupního souboru jsou nyní zkopírovány do vystřiženého výstupního souboru místo toho aby byl zkopírován jen jeden za každý typ streamu. Stream titulků již také není přeskočen a také se kopíruje."
+msgstr "Všechny streamy vstupního souboru jsou nyní zkopírovány do vystřiženého výstupního souboru místo toho aby byl zkopírován jen jeden každého typu. Stream titulků již také není přeskočen a také se kopíruje."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:102
 msgid "Added Swedish translation (thanks Åke Engelbrektson)."
@@ -316,7 +316,7 @@ msgstr "Video náhled je nyní automaticky pozastaven při stisknutí tlačítka
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:50
 msgid "The .mp4 output file extension is no longer default when it cannot be used (this affected videos from some Sony cameras)."
-msgstr "Koncovka \".mp4\" již není výchozí v případě, že ji nelze použít (tohle byl problém s videem z některých kamer Sony)."
+msgstr "Koncovka \".mp4\" již není výchozí v případě, že ji nelze použít (to byl problém s videem z některých kamer Sony)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:51
 msgid "Added a message when the opened file has no video track."

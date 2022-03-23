@@ -381,11 +381,8 @@ msgstr "Konnte die Videospur nicht laden"
 
 #. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:24
-#, fuzzy
 msgid "Maybe the file only has an audio track, or maybe the necessary video codec is missing."
-msgstr "Die Videospur konnte nicht geladen werden.\n"
-"\n"
-"Vielleicht hat die Datei nur eine Audiospur oder es fehlt der erforderliche Videocodec."
+msgstr "Vielleicht hat die Datei nur eine Audiospur oder es fehlt der erforderliche Videocodec."
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
@@ -401,13 +398,10 @@ msgstr "Videovorschau konnte nicht geladen werden"
 
 #. Translators: Description that is shown upon video preview loading error.
 #: src/window.blp:118
-#, fuzzy
 msgid "Please enter the start and end timestamps manually.\n"
 "\n"
 "If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
-msgstr "Die Video-Preview konnte nicht geladen werden.\n"
-"\n"
-"Bitte gib Start- und Ende-Zietstempel manuell an.\n"
+msgstr "Bitte gib Start- und Ende-Zeitstempel manuell an.\n"
 "\n"
 "Falls Video Trimmer via Flatpak läuft, dann kann es sein, dass Drag & Drop nicht funktioniert."
 
