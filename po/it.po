@@ -384,11 +384,8 @@ msgstr "Impossibile caricare la traccia video"
 
 #. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:23
-#, fuzzy
 msgid "Maybe the file only has an audio track, or maybe the necessary video codec is missing."
-msgstr "Impossibile caricare la traccia video.\n"
-"\n"
-"Forse il file ha solo una traccia audio o forse manca il codec video necessario."
+msgstr "Forse il file ha solo una traccia audio, o forse manca il codec video necessario."
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
@@ -404,20 +401,16 @@ msgstr "Impossibile caricare l'anteprima del video"
 
 #. Translators: Description that is shown upon video preview loading error.
 #: src/window.blp:119
-#, fuzzy
 msgid "Please enter the start and end timestamps manually.\n"
 "\n"
 "If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
-msgstr "Impossibile caricare l'anteprima del video.\n"
+msgstr "Inserisci manualmente i timestamp di inizio e fine.\n"
 "\n"
-"Inserisci manualmente i timestamp di inizio e fine.\n"
-"\n"
-"Se stai eseguendo Video Trimmer in Flatpak, tieni presente che l'apertura dei file tramite trascinamento potrebbe non funzionare."
+"Se stai eseguendo Video Trimmer in Flatpak, tieni presente che l'apertura di file tramite trascinamento della selezione potrebbe non funzionare."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:45
-#, fuzzy
 msgid "This release adds an accurate trimming with re-encoding option and refreshes the design a bit."
-msgstr "Questa versione aggiunge un taglio accurato con l'opzione di ricodifica."
+msgstr "Questa versione aggiunge un taglio accurato con l'opzione di ricodifica e aggiorna un po' il design."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:48
 msgid "Updated the design to better match the newer version of the Adwaita theme."
@@ -433,29 +426,29 @@ msgstr "Aggiunto un pulsante \"Mostra nei file\" alla notifica di completamento 
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release enables \"Show in Files\" for Flatpak and updates translations."
-msgstr ""
+msgstr "Questa versione abilita \"Mostra in File\" per Flatpak e aggiorna le traduzioni."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "The \"Show in Files\" button has been enabled for all Flatpak installs."
-msgstr ""
+msgstr "Il pulsante \"Mostra in File\" è stato abilitato per tutte le installazioni di Flatpak."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Added Czech translation (thanks Jakub Mach)."
-msgstr ""
+msgstr "Aggiunta la traduzione ceca (grazie Jakub Mach)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Added French translation."
-msgstr ""
+msgstr "Aggiunta traduzione francese."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Galician translation (thanks Fran Diéguez)."
-msgstr ""
+msgstr "Aggiunta la traduzione galiziana (grazie Fran Diéguez)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Turkish translation."
-msgstr ""
+msgstr "Aggiunta la traduzione in turco."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
 msgid "Added Ukrainian translation (thanks Andrij Mizyk)."
-msgstr ""
+msgstr "Aggiunta la traduzione ucraina (grazie Andrij Mizyk)."
 

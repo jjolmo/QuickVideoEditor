@@ -432,29 +432,29 @@ msgstr "[NIEUW] Knop ‘Tonen in bestandsbeheerder’ op de melding die wordt ge
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release enables \"Show in Files\" for Flatpak and updates translations."
-msgstr ""
+msgstr "In deze versie is de knop ‘Tonen in bestandsbeheerder’ toegevoegd aan de Flatpak-uitvoering en zijn er diverse vertalingen bijgewerkt."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "The \"Show in Files\" button has been enabled for all Flatpak installs."
-msgstr ""
+msgstr "De knop ‘Tonen in bestandsbeheerder’ is toegevoegd aan de Flatpak-uitvoering."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Added Czech translation (thanks Jakub Mach)."
-msgstr ""
+msgstr "[NIEUW] Tsjechische vertaling, met dank aan Jakub Mach."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Added French translation."
-msgstr ""
+msgstr "[NIEUW] Franse vertaling."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Galician translation (thanks Fran Diéguez)."
-msgstr ""
+msgstr "[NIEUW] Galisische vertaling, met dank aan Fran Diéguez."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Turkish translation."
-msgstr ""
+msgstr "[NIEUW] Turkse vertaling."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
 msgid "Added Ukrainian translation (thanks Andrij Mizyk)."
-msgstr ""
+msgstr "[NIEUW] Oekraïense vertaling, met dank aan Andrij Mizyk."
 
