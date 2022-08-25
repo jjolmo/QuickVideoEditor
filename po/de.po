@@ -424,29 +424,29 @@ msgstr "Fügt einen \"Zeige in Dateien\"-Button zur Fertigstellungsnachricht hin
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release enables \"Show in Files\" for Flatpak and updates translations."
-msgstr ""
+msgstr "Diese Version aktiviert \"In Dateien anzeigen\" für Flatpak und aktualisiert die Übersetzungen."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "The \"Show in Files\" button has been enabled for all Flatpak installs."
-msgstr ""
+msgstr "Die Schaltfläche \"In Dateien anzeigen\" wurde für alle Flatpak-Installationen aktiviert."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Added Czech translation (thanks Jakub Mach)."
-msgstr ""
+msgstr "Tschechische Übersetzung hinzugefügt (Dank an Jakub Mach)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Added French translation."
-msgstr ""
+msgstr "Französische Übersetzung hinzugefügt."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Galician translation (thanks Fran Diéguez)."
-msgstr ""
+msgstr "Galicische Übersetzung hinzugefügt (Dank an Fran Diéguez). "
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Turkish translation."
-msgstr ""
+msgstr "Türkische Übersetzung hinzugefügt."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
 msgid "Added Ukrainian translation (thanks Andrij Mizyk)."
-msgstr ""
+msgstr "Ukrainische Übersetzung hinzugefügt (Dank an Andrij Mizyk)."
 

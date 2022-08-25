@@ -268,7 +268,7 @@ msgstr "À propos de Video Trimmer"
 #. Translators: shown in the About dialog, put your name here.
 #: src/window.rs:664
 msgid "translator-credits"
-msgstr ""
+msgstr "Irénée Thirion"
 
 #. Primary menu entry that opens the About dialog.
 #: src/window.blp:15
@@ -424,29 +424,29 @@ msgstr "Ajoute un bouton \"Montrer dans Fichiers\" à la notification de fin de 
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release enables \"Show in Files\" for Flatpak and updates translations."
-msgstr ""
+msgstr "Cette version active \"Montrer dans Fichiers\" pour Flatpak et met à jour des traductions"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "The \"Show in Files\" button has been enabled for all Flatpak installs."
-msgstr ""
+msgstr "Le bouton \"Montrer dans Fichiers\" a été activé pour les installations Flatpak"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Added Czech translation (thanks Jakub Mach)."
-msgstr ""
+msgstr "Ajout d'une traduction tchèque (remerciements à Jakub Mach)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Added French translation."
-msgstr ""
+msgstr "Ajout d'une traduction française."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Galician translation (thanks Fran Diéguez)."
-msgstr ""
+msgstr "Ajout d'un traduction galicienne (remerciements à Fran Diéguez)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Turkish translation."
-msgstr ""
+msgstr "Ajout d'une traduction turque."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
 msgid "Added Ukrainian translation (thanks Andrij Mizyk)."
-msgstr ""
+msgstr "Ajout d'une traduction ukrainienne (remerciements à Andrij Mizyk)."
 
