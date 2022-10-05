@@ -6,14 +6,14 @@ license = "GPL-3.0-or-later"
 
 [dependencies]
 adw = { version = "0.1.1", package = "libadwaita" }
-ashpd = { version = "0.3.0", features = ["feature_gtk4"] }
-futures-channel = "0.3.21"
-futures-util = "0.3.21"
+ashpd = { version = "0.3.2", features = ["feature_gtk4"] }
+futures-channel = "0.3.24"
+futures-util = "0.3.24"
 gettext-rs = { version = "0.7.0", features = ["gettext-system"] }
-glib = { version = "0.15.10", features = ["log", "log_macros"] }
-gtk = { version = "0.4.7", package = "gtk4" }
+glib = { version = "0.15.12", features = ["log", "log_macros"] }
+gtk = { version = "0.4.8", package = "gtk4" }
 json = "0.12.4"
-log = "0.4.16"
+log = "0.4.17"
 mime_guess = "2.0.4"
 nom = "7.1.1"
-once_cell = "1.10.0"
+once_cell = "1.15.0"
