@@ -8,7 +8,7 @@ mod imp {
     use adw::{prelude::AdwApplicationExt, subclass::prelude::*};
     use gettextrs::*;
     use glib::{debug, prelude::*};
-    use gtk::{prelude::*, subclass::prelude::*};
+    use gtk::prelude::*;
     use std::cell::Cell;
 
     #[derive(Default)]
