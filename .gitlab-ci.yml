@@ -5,29 +5,21 @@ include:
 flatpak:
   except:
     - poeditor
-  image: 'registry.gitlab.gnome.org/gnome/gnome-runtime-images/rust_bundle:master'
+  extends: '.flatpak'
   variables:
     BUNDLE: "video-trimmer-nightly.flatpak"
     MANIFEST_PATH: "build-aux/org.gnome.gitlab.YaLTeR.VideoTrimmer.Devel.json"
     FLATPAK_MODULE: "video-trimmer"
-    MESON_ARGS: "-Dprofile=development"
     APP_ID: "org.gnome.gitlab.YaLTeR.VideoTrimmer.Devel"
     RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-  extends: '.flatpak'
 
-
-# Configure and run rustfmt
-# Exits and builds fails if on bad format
 rustfmt:
   except:
     - poeditor
   image: "rust:slim"
   script:
     - rustup component add rustfmt
-    # Create blank versions of our configured files
-    # so rustfmt does not yell about non-existent files or completely empty files
     - echo -e "" >> src/config.rs
-    - echo -e "" >> src/static_resources.rs
     - rustc -Vv && cargo -Vv
     - cargo fmt --version
     - cargo fmt --all -- --color=always --check
