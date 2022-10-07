@@ -14,7 +14,7 @@ mod imp {
 
     use futures_util::future::{abortable, FutureExt};
     use gettextrs::*;
-    use glib::{clone, debug, translate::ToGlibPtr, warn, FromVariant};
+    use glib::{clone, debug, error, translate::ToGlibPtr, warn, FromVariant};
     use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     use crate::{
@@ -597,22 +597,11 @@ mod imp {
                     }
                     // Fails when the file does not exist.
                     Err(err) => {
-                        self_.show();
+                        error!("error getting file information: {err:?}");
 
-                        let dialog = gtk::MessageDialog::builder()
-                            // Translators: error dialog text when the input file information could
-                            // not be retrieved (e.g. there's no such file on disk).
-                            .text(&gettext("Could not get input video information"))
-                            .secondary_text(&format!("{}", err))
-                            .message_type(gtk::MessageType::Error)
-                            .buttons(gtk::ButtonsType::Ok)
-                            .transient_for(&self_)
-                            .modal(true)
-                            .build();
-                        dialog.connect_response(move |_, _| {
-                            self_.application().unwrap().quit();
-                        });
-                        dialog.show();
+                        if let Some(basename) = file.basename() {
+                            priv_.title.set_subtitle(&basename.to_string_lossy());
+                        }
                     }
                 }
             };
