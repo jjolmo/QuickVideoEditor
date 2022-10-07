@@ -528,6 +528,27 @@ mod imp {
         pub fn open(&self, file: gio::File) {
             let self_ = self.instance();
 
+            if file.path().is_none() {
+                self_.show();
+                let dialog = gtk::MessageDialog::builder()
+                    // Translators: error dialog title.
+                    .text(&gettext("Error"))
+                    .secondary_text(&gettext(
+                        // Translators: error dialog text.
+                        "Video Trimmer can only operate on local files. Please choose another file.",
+                    ))
+                    .message_type(gtk::MessageType::Error)
+                    .buttons(gtk::ButtonsType::Ok)
+                    .transient_for(&self_)
+                    .modal(true)
+                    .build();
+                dialog.connect_response(|dialog, _| {
+                    dialog.close();
+                });
+                dialog.show();
+                return;
+            }
+
             self.video_preview.open(&file);
 
             // Unconditionally switch to main page after 300 ms

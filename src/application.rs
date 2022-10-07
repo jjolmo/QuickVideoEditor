@@ -46,25 +46,6 @@ mod imp {
             let window = VtWindow::new(self_.upcast_ref(), self.output_file.take());
 
             if let Some(file) = self.input_file.take() {
-                if file.path().is_none() {
-                    let dialog = gtk::MessageDialog::builder()
-                        // Translators: fatal error message dialog title.
-                        .text(&gettext("Fatal Error"))
-                        // Translators: error dialog text.
-                        .secondary_text(&gettext("Video Trimmer can only operate on local files."))
-                        .message_type(gtk::MessageType::Error)
-                        .buttons(gtk::ButtonsType::Ok)
-                        .build();
-                    dialog.connect_response({
-                        let app = self_.clone();
-                        move |_, _| {
-                            app.quit();
-                        }
-                    });
-                    dialog.show();
-                    return;
-                }
-
                 window.open(file);
             } else {
                 window.show();
