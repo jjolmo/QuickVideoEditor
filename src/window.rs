@@ -276,7 +276,7 @@ mod imp {
                     move |file_chooser, response| {
                         if let Some(tx) = tx.borrow_mut().take() {
                             if response == gtk::ResponseType::Accept {
-                                if let Some(path) = file_chooser.file().unwrap().path() {
+                                if let Some(path) = file_chooser.file().and_then(|file| file.path()) {
                                     let no_audio = file_chooser.choice("no-audio").map(|choice| choice == "true").unwrap_or(false);
                                     let reencode = file_chooser.choice("reencode").map(|choice| choice == "true").unwrap_or(false);
                                     tx.send(Some((path, no_audio, reencode))).unwrap();
@@ -832,8 +832,11 @@ mod imp {
                                 return;
                             }
 
-                            let file = file_chooser.file().unwrap();
-                            if file.path().is_none() {
+                            // This is normally safe to unwrap(), however, due to a bug, it returns
+                            // None for remote files.
+                            // https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/issues/45
+                            let file = file_chooser.file();
+                            if file.is_none() || file.clone().unwrap().path().is_none() {
                                 let dialog = gtk::MessageDialog::builder()
                                     // Translators: error dialog title.
                                     .text(&gettext("Error"))
@@ -853,7 +856,7 @@ mod imp {
                                 return;
                             }
 
-                            self_.open(file);
+                            self_.open(file.unwrap());
                         }
                     });
 
