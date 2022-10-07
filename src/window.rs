@@ -528,6 +528,8 @@ mod imp {
         pub fn open(&self, file: gio::File) {
             let self_ = self.instance();
 
+            debug!("VtWindow::open(\"{}\")", file.uri());
+
             if file.path().is_none() {
                 self_.show();
                 let dialog = gtk::MessageDialog::builder()
