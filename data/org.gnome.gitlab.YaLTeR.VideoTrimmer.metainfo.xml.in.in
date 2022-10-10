@@ -26,6 +26,18 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.8.0" date="2022-10-10">
+			<description>
+				<p>This release fixes app closing on inaccessible files and updates it to the GNOME 43 platform.</p>
+				<ul>
+					<li>Fixed app closing when trying to open inaccessible files.</li>
+					<li>Fixed crash when trying to open files from network locations.</li>
+					<li>Updated to the GNOME 43 platform, which brings the ability to drag-and-drop from Files on Flatpak and a refreshed About dialog.</li>
+					<li>Added Tamil translation (thanks K.B.Dharun Krishna).</li>
+					<li>Updated translations.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.7.1" date="2022-03-23">
 			<description>
 				<p>This release enables "Show in Files" for Flatpak and updates translations.</p>
