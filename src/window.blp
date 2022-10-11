@@ -55,7 +55,7 @@ template VtWindow : ApplicationWindow {
         styles ["titlebar"]
 
         title-widget: Adw.WindowTitle title {
-          title: bind VtWindow.title sync-create;
+          title: bind VtWindow.title;
         };
 
         Button button_trim {
