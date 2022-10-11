@@ -662,6 +662,26 @@ mod imp {
             Self::bind_template(klass);
 
             klass.install_action("win.about", None, |window, _, _| {
+                // Concat translated strings to reuse the metainfo translations.
+                let list_points = [
+                    gettext("Fixed app closing when trying to open inaccessible files."),
+                    gettext("Fixed crash when trying to open files from network locations."),
+                    gettext(
+                        "Updated to the GNOME 43 platform, which brings the ability \
+to drag-and-drop from Files on Flatpak and a refreshed About dialog.",
+                    ),
+                    gettext("Added Tamil translation (thanks K.B.Dharun Krishna)."),
+                    gettext("Updated translations."),
+                ];
+                let release_notes = String::from("<p>")
+                    + &gettext(
+                        "This release fixes app closing on inaccessible files \
+and updates it to the GNOME 43 platform.",
+                    )
+                    + "</p><ul><li>"
+                    + &list_points.join("</li><li>")
+                    + "</li></ul>";
+
                 adw::AboutWindow::builder()
                     .transient_for(window)
                     .application_name(&gettext("Video Trimmer"))
@@ -672,6 +692,7 @@ mod imp {
                     .issue_url("https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues/new")
                     // Translators: shown in the About dialog, put your name here.
                     .translator_credits(&gettext("translator-credits"))
+                    .release_notes(&release_notes)
                     .build()
                     .present();
             });
