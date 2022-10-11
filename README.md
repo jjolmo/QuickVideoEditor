@@ -28,16 +28,6 @@ The video preview goes through GTK 4 which usually relies on GStreamer, and ther
 
 The optional re-encoding also uses `ffmpeg` and thus needs the respective decoders and encoders to work. For `.mp4` output extension Video Trimmer sets the encoder to `libvpx-vp9` for better Flatpak support, for other output extensions it leaves the decision `ffmpeg`.
 
-## Flatpak enhancements
-
-Giving Flatpak Video Trimmer the `filesystem=home` permission (for example, using [Flatseal](https://flathub.org/apps/details/com.github.tchx84.Flatseal)) makes a few things work better.
-
-1. Drag-and-drop from the file manager into Video Trimmer will work.
-1. The save dialog will start in the directory of the input video.
-1. A "Show in Files" button will appear on the trimming completed toast.
-
-These are all current limitations of various portal-related system components and eventually they should start working out of the box, without the filesystem permission.
-
 ## Contributing translations
 
 You can help translate Video Trimmer on POEditor: https://poeditor.com/join/project?hash=5bXw9CXAAh. Any help is appreciated!
