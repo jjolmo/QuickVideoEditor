@@ -12,7 +12,7 @@ msgstr ""
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
-msgstr "Video Trimmer"
+msgstr "Découpeur de Vidéos"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
@@ -52,12 +52,12 @@ msgid "Could not create the ffmpeg subprocess"
 msgstr "Impossible de créer le sous-processus ffmpeg"
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:843
+#: src/window.rs:849
 msgid "Video files"
 msgstr "Fichiers vidéo"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:852
+#: src/window.rs:858
 msgid "Open video"
 msgstr "Ouvrir une vidéo"
 
@@ -102,7 +102,7 @@ msgstr "Ivan Molodetskikh"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
 msgid "Video Trimmer cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality."
-msgstr "Video Trimmer découpe un fragment d'une vidéo en fonction des horodatages de début et de fin. La vidéo n'est jamais ré-encodée, le processus est donc très rapide et ne réduit pas la qualité de la vidéo."
+msgstr "Découpeur de Vidéos découpe un fragment d'une vidéo en fonction des horodatages de début et de fin. La vidéo n'est jamais ré-encodée, le processus est donc très rapide et ne réduit pas la qualité de la vidéo."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
 msgid "Main Window"
@@ -118,7 +118,7 @@ msgstr "Ajout d'un argument --output ou -o pour spécifier le chemin de la vidé
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:139
 msgid "Added support for opening videos with DnD, although it doesn't work on Flatpak unless Video Trimmer is given filesystem access."
-msgstr "Ajout d'un support pour ouvrir des vidéos avec DnD, bien que cela ne fonctionne pas sur Flatpak à moins que Video Trimmer n'ait un accès au système de fichiers."
+msgstr "Ajout d'un support pour ouvrir des vidéos avec DnD, bien que cela ne fonctionne pas sur Flatpak à moins que Découpeur de Vidéos n'ait un accès au système de fichiers."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:140
 msgid "Replaced the Done dialog with an in-app notification to better follow the GNOME HIG."
@@ -134,7 +134,7 @@ msgstr "Cette version corrige des crashs liés à des erreurs d'aperçu vidéo, 
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:153
 msgid "Added a Ctrl+Q shortcut to quit Video Trimmer."
-msgstr "Ajoute un raccourci Ctr+Q pour quitter Video Trimmer."
+msgstr "Ajoute un raccourci Ctr+Q pour quitter Découpeur de Vidéos."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:154
 msgid "Added a Dutch translation."
@@ -197,18 +197,18 @@ msgid "Updated Spanish translation."
 msgstr "Traduction espagnole mise à jour"
 
 #. Translators: error dialog title.
-#: src/window.rs:286 src/window.rs:537 src/window.rs:875
+#: src/window.rs:286 src/window.rs:537 src/window.rs:881
 msgid "Error"
 msgstr "Erreur"
 
 #. Translators: error dialog text.
-#: src/window.rs:289 src/window.rs:540 src/window.rs:878
+#: src/window.rs:289 src/window.rs:540 src/window.rs:884
 msgid "Video Trimmer can only operate on local files. Please choose another file."
-msgstr "Video Trimmer peut seulement découper des fichiers locaux. Merci de choisir un autre fichier"
+msgstr "Video Trimmer peut seulement découper des fichiers locaux. Merci de choisir un autre fichier."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:105
 msgid "Video Trimmer is now a GTK 4 application!"
-msgstr "Video Trimmer est maintenant une application GTK 4 !"
+msgstr "Découpeur de Vidéos est maintenant une application GTK 4 !"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:107
 msgid "The GTK 4 port hopefully fixes video-driver-related crashes."
@@ -244,7 +244,7 @@ msgstr "Le nom par défaut de la sortie vidéo est désormais \"nom de la vidéo
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:95
 msgid "The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Video Trimmer the filesystem=host permission (for example, using Flatseal)."
-msgstr "Le dossier par défaut pour la vidéo de sortie est maintenant le dossier de la vidéo d'entrée. Note : pour que cela fonctionne sous Flatpak, vous devrez donner à Video Trimmer la permission filesystem=host (par exemple, en utilisant Flatseal)."
+msgstr "Le dossier par défaut pour la vidéo de sortie est maintenant le dossier de la vidéo d'entrée. Note : pour que cela fonctionne sous Flatpak, vous devrez donner à Découpeur de Vidéos la permission filesystem=host (par exemple, en utilisant Flatseal)."
 
 #. Translators: shown in the About dialog, put your name here.
 #: src/window.rs:694
@@ -254,7 +254,7 @@ msgstr "Irénée Thirion"
 #. Primary menu entry that opens the About dialog.
 #: src/window.blp:15
 msgid "_About Video Trimmer"
-msgstr "_À propos de Video Trimmer"
+msgstr "_À propos de Découpeur de Vidéos"
 
 #. Primary menu entry that opens a new window.
 #: src/window.blp:8
@@ -263,7 +263,7 @@ msgstr "_Nouvelle fenêtre"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:96
 msgid "It's now possible to open a new Video Trimmer window from the new primary menu."
-msgstr "Il est maintenant possible d'ouvrir une nouvelle fenêtre Video Trimmer depuis le menu principal."
+msgstr "Il est maintenant possible d'ouvrir une nouvelle fenêtre Découpeur de Vidéos depuis le menu principal."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:92
 msgid "This release contains a few small improvements."
@@ -275,7 +275,7 @@ msgstr "Les champs de texte de l'horodatage sont désormais mieux disposés dans
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:98
 msgid "Video Trimmer now uses libadwaita, which means a slightly updated visual style (rounded window corners!)."
-msgstr "Video Trimmer utilise maintenant libadwaita, ce qui signifie un style visuel légèrement mis à jour (coins de fenêtre arrondis !)."
+msgstr "Découpeur de Vidéos utilise maintenant libadwaita, ce qui signifie un style visuel légèrement mis à jour (coins de fenêtre arrondis !)."
 
 #. Translators: checkbox in output file selection dialog that strips audio from the
 #. video file.
@@ -385,7 +385,7 @@ msgid "Please enter the start and end timestamps manually.\n"
 "If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
 msgstr "Merci d'entrer les horodatages de début et de fin manuellement.\n"
 "\n"
-"Si vous utilisez Video Trimmer sous Flatpak, notez que l'ouverture de fichier par glisser-déposer peut ne pas fonctionner."
+"Si vous utilisez Découpeur de Vidéos sous Flatpak, notez que l'ouverture de fichier par glisser-déposer peut ne pas fonctionner."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:57
 msgid "This release adds an accurate trimming with re-encoding option and refreshes the design a bit."
@@ -401,7 +401,7 @@ msgstr "Ajoute le support d'un mode sombre (choisi par défaut) et d'un mode con
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:62
 msgid "Added a \"Show in Files\" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Video Trimmer the filesystem=host permission (for example, using Flatseal)."
-msgstr "Ajoute un bouton \"Montrer dans Fichiers\" à la notification de fin de découpage. Note : à cause d'une limitation ceci est actuellement désactivé sur certaines installations Flatpak, mais vous pouvez le faire fonctionner en donnant à Video Trimmer la permission filesystem=host (par exemple en utilisant Flatseal)."
+msgstr "Ajoute un bouton \"Montrer dans Fichiers\" à la notification de fin de découpage. Note : à cause d'une limitation ceci est actuellement désactivé sur certaines installations Flatpak, mais vous pouvez le faire fonctionner en donnant à Découpeur de Vidéos la permission filesystem=host (par exemple en utilisant Flatseal)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:43
 msgid "This release enables \"Show in Files\" for Flatpak and updates translations."
@@ -434,25 +434,30 @@ msgstr "Ajout d'une traduction ukrainienne (remerciements à Andrij Mizyk)."
 #: src/window.rs:667
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "Fixed app closing when trying to open inaccessible files."
-msgstr ""
+msgstr "Correction de la fermeture de l’application lors d’une tentative pour ouvrir des fichiers inaccessibles."
 
 #: src/window.rs:668
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Fixed crash when trying to open files from network locations."
-msgstr ""
+msgstr "Correction d’un plantage lors de l’ouverture de fichiers depuis des emplacements réseau."
 
 #: src/window.rs:670
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Updated to the GNOME 43 platform, which brings the ability to drag-and-drop from Files on Flatpak and a refreshed About dialog."
-msgstr ""
+msgstr "Mise à jour vers la plateforme GNOME 43, qui apporte la possibilité de glisser-déposer des fichiers depuis Fichiers pour Flatpak et une nouvelle fenêtre À propos."
 
 #: src/window.rs:673
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Tamil translation (thanks K.B.Dharun Krishna)."
-msgstr ""
+msgstr "Ajout d’une traduction en tamoul (grâce à K.B.Dharun Krishna)."
 
 #: src/window.rs:678
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release fixes app closing on inaccessible files and updates it to the GNOME 43 platform."
+msgstr "Cette version corrige la fermeture de l’application en cas de fichiers inaccessibles et la met à jour vers la plateforme GNOME 43."
+
+#. Translators: link title in the About dialog.
+#: src/window.rs:700
+msgid "Contribute Translations"
 msgstr ""
 

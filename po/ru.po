@@ -52,12 +52,12 @@ msgid "Could not create the ffmpeg subprocess"
 msgstr "Не удалось создать подпроцесс ffmpeg"
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:843
+#: src/window.rs:849
 msgid "Video files"
 msgstr "Видео-файлы"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:852
+#: src/window.rs:858
 msgid "Open video"
 msgstr "Открыть видео"
 
@@ -197,12 +197,12 @@ msgid "Updated Spanish translation."
 msgstr "Обновлён перевод на испанский язык."
 
 #. Translators: error dialog title.
-#: src/window.rs:286 src/window.rs:537 src/window.rs:875
+#: src/window.rs:286 src/window.rs:537 src/window.rs:881
 msgid "Error"
 msgstr "Ошибка"
 
 #. Translators: error dialog text.
-#: src/window.rs:289 src/window.rs:540 src/window.rs:878
+#: src/window.rs:289 src/window.rs:540 src/window.rs:884
 msgid "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "Программа обрезки видео может работать только на файлах с этого компьютера. Пожалуйста, выберите другой файл."
 
@@ -455,4 +455,9 @@ msgstr "Добавлен перевод на тамильский (спасиб�
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release fixes app closing on inaccessible files and updates it to the GNOME 43 platform."
 msgstr "В этой версии исправлено завершение приложения при открытии недоступных файлов, а платформа обновлена до версии GNOME 43."
+
+#. Translators: link title in the About dialog.
+#: src/window.rs:700
+msgid "Contribute Translations"
+msgstr "Помочь с переводом"
 

@@ -52,12 +52,12 @@ msgid "Could not create the ffmpeg subprocess"
 msgstr "Не можливо створити підпроцес ffmpeg"
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:843
+#: src/window.rs:849
 msgid "Video files"
 msgstr "Файли відеозаписів"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:852
+#: src/window.rs:858
 msgid "Open video"
 msgstr "Відкрити відеозапис"
 
@@ -197,12 +197,12 @@ msgid "Updated Spanish translation."
 msgstr "Оновлено іспанський переклад."
 
 #. Translators: error dialog title.
-#: src/window.rs:286 src/window.rs:537 src/window.rs:875
+#: src/window.rs:286 src/window.rs:537 src/window.rs:881
 msgid "Error"
 msgstr "Помилка"
 
 #. Translators: error dialog text.
-#: src/window.rs:289 src/window.rs:540 src/window.rs:878
+#: src/window.rs:289 src/window.rs:540 src/window.rs:884
 msgid "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "Video Trimmer може оперувати лише локальними файлами. Оберіть інший файл."
 
@@ -434,25 +434,30 @@ msgstr "Додано український переклад (завдяки And
 #: src/window.rs:667
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "Fixed app closing when trying to open inaccessible files."
-msgstr ""
+msgstr "Виправлено закривання програми під час відкривання недоступних файлів."
 
 #: src/window.rs:668
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Fixed crash when trying to open files from network locations."
-msgstr ""
+msgstr "Виправлено збій під час спроби відкрити файли з мережевого розташування."
 
 #: src/window.rs:670
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Updated to the GNOME 43 platform, which brings the ability to drag-and-drop from Files on Flatpak and a refreshed About dialog."
-msgstr ""
+msgstr "Оновлено до платформи GNOME 43, в якій зʼявилася можливість"
 
 #: src/window.rs:673
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Tamil translation (thanks K.B.Dharun Krishna)."
-msgstr ""
+msgstr "Додано переклад тамільською мовою (завдяки K.B.Dharun Krishna)."
 
 #: src/window.rs:678
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release fixes app closing on inaccessible files and updates it to the GNOME 43 platform."
+msgstr ""
+
+#. Translators: link title in the About dialog.
+#: src/window.rs:700
+msgid "Contribute Translations"
 msgstr ""
 
