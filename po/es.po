@@ -459,5 +459,5 @@ msgstr "Esta versión corrige el cierre de la aplicación en archivos inaccesibl
 #. Translators: link title in the About dialog.
 #: src/window.rs:700
 msgid "Contribute Translations"
-msgstr ""
+msgstr "Contribuir a las traducciones"
 
