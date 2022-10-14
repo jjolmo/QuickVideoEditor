@@ -875,7 +875,8 @@ and updates it to the GNOME 43 platform.",
                                     .text(&gettext("Error"))
                                     .secondary_text(&gettext(
                                         // Translators: error dialog text.
-                                        "Video Trimmer can only operate on local files. Please choose another file.",
+                                        "Video Trimmer can only operate on local files. \
+Please choose another file.",
                                     ))
                                     .message_type(gtk::MessageType::Error)
                                     .buttons(gtk::ButtonsType::Ok)
