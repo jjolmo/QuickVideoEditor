@@ -682,7 +682,7 @@ and updates it to the GNOME 43 platform.",
                     + &list_points.join("</li><li>")
                     + "</li></ul>";
 
-                adw::AboutWindow::builder()
+                let about_window = adw::AboutWindow::builder()
                     .transient_for(window)
                     .application_name(&gettext("Video Trimmer"))
                     .application_icon(config::APP_ID)
@@ -693,8 +693,14 @@ and updates it to the GNOME 43 platform.",
                     // Translators: shown in the About dialog, put your name here.
                     .translator_credits(&gettext("translator-credits"))
                     .release_notes(&release_notes)
-                    .build()
-                    .present();
+                    .build();
+
+                about_window.add_link(
+                    // Translators: link title in the About dialog.
+                    &gettext("Contribute Translations"),
+                    "https://poeditor.com/join/project?hash=5bXw9CXAAh",
+                );
+                about_window.present();
             });
 
             klass.install_action(
