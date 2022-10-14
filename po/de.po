@@ -52,12 +52,12 @@ msgid "Could not create the ffmpeg subprocess"
 msgstr "Konnte nicht den ffmpeg Subprozess erstellen"
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:843
+#: src/window.rs:849
 msgid "Video files"
 msgstr "Videodateien"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:852
+#: src/window.rs:858
 msgid "Open video"
 msgstr "Video öffnen"
 
@@ -197,12 +197,12 @@ msgid "Updated Spanish translation."
 msgstr "Spanische Übersetzung wurde aktualisert."
 
 #. Translators: error dialog title.
-#: src/window.rs:286 src/window.rs:537 src/window.rs:875
+#: src/window.rs:286 src/window.rs:537 src/window.rs:881
 msgid "Error"
 msgstr "Fehler"
 
 #. Translators: error dialog text.
-#: src/window.rs:289 src/window.rs:540 src/window.rs:878
+#: src/window.rs:289 src/window.rs:540 src/window.rs:884
 msgid "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "Video Trimmer kann nur mit lokalen Dateien umgehen. Bitte wähle eine andere Datei."
 
@@ -449,10 +449,15 @@ msgstr ""
 #: src/window.rs:673
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Tamil translation (thanks K.B.Dharun Krishna)."
-msgstr ""
+msgstr "Übersetzung in Tamil hinzugefügt (Dank an K.B.Dharun Krishna)."
 
 #: src/window.rs:678
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release fixes app closing on inaccessible files and updates it to the GNOME 43 platform."
+msgstr ""
+
+#. Translators: link title in the About dialog.
+#: src/window.rs:700
+msgid "Contribute Translations"
 msgstr ""
 
