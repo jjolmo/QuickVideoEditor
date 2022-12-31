@@ -2,6 +2,7 @@ src/application.rs
 src/config.rs
 src/main.rs
 src/parse.rs
+src/shortcuts.blp
 src/timeline.rs
 src/timeline.blp
 src/video_preview.rs
