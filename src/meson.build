@@ -5,6 +5,7 @@ blps = [
   'window.blp',
   'video_preview.blp',
   'timeline.blp',
+  'shortcuts.blp',
 ]
 
 uis = []
