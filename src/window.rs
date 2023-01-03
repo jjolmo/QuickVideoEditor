@@ -970,7 +970,7 @@ Please choose another file.",
                                 mime_guess::get_mime_extensions_str(content_type)
                             }
                         })
-                        .and_then(|exts| exts.get(0))
+                        .and_then(|exts| exts.first())
                         .unwrap_or(&"mp4");
 
                     let extension = if *extension == "mp4" && priv_.do_not_default_to_mp4.get() {

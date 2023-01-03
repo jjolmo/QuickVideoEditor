@@ -222,7 +222,7 @@ mod imp {
         }
 
         pub fn overlay(&self) -> &adw::ToastOverlay {
-            &*self.overlay
+            &self.overlay
         }
     }
 }

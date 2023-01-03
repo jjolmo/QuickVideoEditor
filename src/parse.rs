@@ -10,7 +10,7 @@ use nom::{
 };
 
 fn is_digit(input: char) -> bool {
-    input.is_digit(10)
+    input.is_ascii_digit()
 }
 
 fn digits_m_n(m: usize, n: usize, input: &str) -> IResult<&str, u32> {

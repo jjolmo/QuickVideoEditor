@@ -316,7 +316,7 @@ mod imp {
             let width = self_.allocated_width() as f64;
 
             // Sanitize (this can get weird values when resizing the window while dragging).
-            let x = x.min(width).max(0.);
+            let x = x.clamp(0., width);
             let value = x / width;
 
             let media_file = self.media_file.get().unwrap();
