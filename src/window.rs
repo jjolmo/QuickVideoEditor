@@ -8,7 +8,7 @@ mod imp {
         fs::File,
         os::unix::prelude::OsStringExt,
         path::{Component, Path, PathBuf},
-        ptr,
+        ptr, str,
         time::Duration,
     };
 
@@ -398,7 +398,7 @@ mod imp {
                     let trimming_dialog_clone = trimming_dialog.clone();
                     let subprocess_clone = subprocess.clone();
                     let future = async move {
-                        let builder = match subprocess_clone.communicate_utf8_future(None).await {
+                        let builder = match subprocess_clone.communicate_future(None).await {
                             Ok((_, stderr)) => {
                                 if subprocess_clone.has_exited()
                                     && subprocess_clone.exit_status() == 0
@@ -437,10 +437,12 @@ mod imp {
                                     trimming_dialog_clone.close();
                                     return;
                                 } else {
+                                    let stderr = stderr
+                                        .expect("should be Some() because we passed STDERR_PIPE");
                                     gtk::MessageDialog::builder()
                                         // Translators: error dialog text.
                                         .text(&gettext("Error trimming video"))
-                                        .secondary_text(stderr.as_deref().unwrap_or(""))
+                                        .secondary_text(&String::from_utf8_lossy(&stderr))
                                         .message_type(gtk::MessageType::Error)
                                 }
                             }
@@ -627,25 +629,45 @@ mod imp {
             .unwrap();
             let self_ = self.instance();
             let future = async move {
-                let (stdout, stderr) = subprocess.communicate_utf8_future(None).await.unwrap();
-                if subprocess.has_exited() && subprocess.exit_status() == 0 {
-                    let priv_ = Self::from_instance(&self_);
-                    let output = json::parse(&stdout.unwrap()).unwrap();
-                    let mut audio_formats = output["streams"]
-                        .members()
-                        .filter_map(|stream| stream["codec_name"].as_str())
-                        .inspect(|name| debug!("audio codec: {}", name));
+                match subprocess.communicate_future(None).await {
+                    Ok((stdout, stderr)) => {
+                        if subprocess.has_exited() && subprocess.exit_status() == 0 {
+                            let stdout =
+                                stdout.expect("should be Some() because we passed STDOUT_PIPE");
+                            match str::from_utf8(&stdout) {
+                                Ok(stdout) => {
+                                    let priv_ = Self::from_instance(&self_);
+                                    let output = json::parse(stdout)
+                                        .expect("ffprobe should return valid JSON");
+                                    let mut audio_formats = output["streams"]
+                                        .members()
+                                        .filter_map(|stream| stream["codec_name"].as_str())
+                                        .inspect(|name| debug!("audio codec: {}", name));
 
-                    // Some Sony cameras produce .mp4 videos with PCM audio. This is invalid
-                    // according to the MP4 standard, so FFmpeg refuses to mux them back. To work
-                    // around this limitation, we change the default output file extension when a
-                    // PCM audio track is detected.
-                    if audio_formats.any(|name| name.starts_with("pcm_")) {
-                        debug!("avoiding default .mp4 extension: PCM audio detected");
-                        priv_.do_not_default_to_mp4.set(true);
+                                    // Some Sony cameras produce .mp4 videos with PCM audio. This is invalid
+                                    // according to the MP4 standard, so FFmpeg refuses to mux them back. To work
+                                    // around this limitation, we change the default output file extension when a
+                                    // PCM audio track is detected.
+                                    if audio_formats.any(|name| name.starts_with("pcm_")) {
+                                        debug!(
+                                            "avoiding default .mp4 extension: PCM audio detected"
+                                        );
+                                        priv_.do_not_default_to_mp4.set(true);
+                                    }
+                                }
+                                Err(err) => {
+                                    warn!("ffprobe returned invalid UTF-8: {err:?}");
+                                }
+                            }
+                        } else {
+                            let stderr =
+                                stderr.expect("should be Some() because we passed STDERR_PIPE");
+                            warn!("ffprobe error: {}", String::from_utf8_lossy(&stderr));
+                        }
                     }
-                } else {
-                    debug!("error: {}", stderr.as_deref().unwrap_or(""));
+                    Err(err) => {
+                        warn!("error communicating with ffprobe: {err:?}");
+                    }
                 }
             };
             glib::MainContext::default().spawn_local(future);
