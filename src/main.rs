@@ -1,3 +1,5 @@
+use std::env;
+
 use gettextrs::*;
 use glib::{info, warn, GlibLogger, GlibLoggerDomain, GlibLoggerFormat};
 use gtk::{gio, glib, prelude::*};
@@ -38,8 +40,18 @@ fn main() {
         config::NAME_SUFFIX
     ));
 
-    let res = gio::Resource::load(config::PKGDATADIR.to_owned() + "/video-trimmer.gresource")
-        .expect("Could not load resources");
+    let res = match env::var("MESON_DEVENV") {
+        Err(_) => gio::Resource::load(config::PKGDATADIR.to_owned() + "/video-trimmer.gresource")
+            .expect("could not load the gresource file"),
+        Ok(_) => {
+            let mut resource_path = env::current_exe().expect("unable to get executable path");
+            resource_path.pop();
+            resource_path.push("video-trimmer.gresource");
+            gio::Resource::load(&resource_path)
+                .expect("unable to load video-trimmer.gresource from build dir")
+        }
+    };
+
     gio::resources_register(&res);
 
     let app = VtApplication::new();

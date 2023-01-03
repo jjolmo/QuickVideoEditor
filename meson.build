@@ -9,6 +9,7 @@ dependency('gtk4', version: '>= 4.0.0')
 dependency('libadwaita-1', version: '>= 1.2.0')
 
 i18n = import('i18n')
+gnome = import('gnome')
 
 if get_option('profile') == 'development'
   profile = 'Devel'
@@ -39,7 +40,6 @@ subdir('data')
 subdir('src')
 subdir('po')
 
-gnome = import('gnome')
 gnome.post_install(
   glib_compile_schemas: true,
   gtk_update_icon_cache: true,

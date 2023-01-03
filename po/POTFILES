@@ -11,5 +11,5 @@ src/window.rs
 src/window.blp
 
 data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in
-data/org.gnome.gitlab.YaLTeR.VideoTrimmer.gschema.xml.in
+data/org.gnome.gitlab.YaLTeR.VideoTrimmer.gschema.xml
 data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in

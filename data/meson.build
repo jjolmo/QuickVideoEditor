@@ -42,15 +42,10 @@ if appstream_util.found()
   )
 endif
 
-gschema_file = configure_file(
-  input: base_id + '.gschema.xml.in',
-  output: app_id + '.gschema.xml',
-  configuration: data_conf
-)
-
-install_data(gschema_file,
+install_data('org.gnome.gitlab.YaLTeR.VideoTrimmer.gschema.xml',
   install_dir: get_option('datadir') / 'glib-2.0' / 'schemas'
 )
+gnome.compile_schemas()
 
 compile_schemas = find_program('glib-compile-schemas', required: false)
 if compile_schemas.found()
