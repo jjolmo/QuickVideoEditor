@@ -4,7 +4,8 @@ use gtk::glib;
 mod imp {
     use super::*;
     use crate::parse::{self, time_to_entry_text};
-    use gtk::{gdk, glib::subclass, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use glib::{subclass::Signal, Properties};
+    use gtk::{gdk, prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
     use std::{cell::Cell, time::Duration};
 
@@ -32,7 +33,8 @@ mod imp {
         }
     }
 
-    #[derive(Debug, CompositeTemplate)]
+    #[derive(Debug, CompositeTemplate, Properties)]
+    #[properties(wrapper_type = super::VtTimeline)]
     #[template(resource = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/timeline.ui")]
     pub struct VtTimeline {
         #[template_child]
@@ -40,6 +42,7 @@ mod imp {
         #[template_child]
         box_timeline_selection: TemplateChild<gtk::Box>,
 
+        #[property(set = Self::set_media_file)]
         media_file: OnceCell<gtk::MediaFile>,
         position: Cell<i64>,
         duration: Cell<i64>,
@@ -84,71 +87,26 @@ mod imp {
 
     impl ObjectImpl for VtTimeline {
         fn properties() -> &'static [glib::ParamSpec] {
-            use once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [
-                    glib::ParamSpecObject::builder::<gtk::MediaFile>("media-file")
-                        .write_only()
-                        .build(),
-                ]
-            });
-
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
 
-        fn signals() -> &'static [subclass::Signal] {
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
+        }
+
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec);
+        }
+
+        fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<[subclass::Signal; 1]> = Lazy::new(|| {
-                [subclass::Signal::builder("set-start-end")
+            static SIGNALS: Lazy<[Signal; 1]> = Lazy::new(|| {
+                [Signal::builder("set-start-end")
                     .param_types([glib::Type::U32, glib::Type::U32])
                     .build()]
             });
 
             SIGNALS.as_ref()
-        }
-
-        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            let obj = self.obj();
-            match pspec.name() {
-                "media-file" => {
-                    let media_file: gtk::MediaFile = value.get().unwrap();
-
-                    media_file.connect_timestamp_notify({
-                        let obj = obj.downgrade();
-                        move |_| {
-                            let obj = obj.upgrade().unwrap();
-                            let imp = obj.imp();
-                            imp.refresh();
-                        }
-                    });
-
-                    media_file.connect_duration_notify({
-                        let obj = obj.downgrade();
-                        move |_| {
-                            let obj = obj.upgrade().unwrap();
-                            let imp = obj.imp();
-                            imp.refresh();
-                        }
-                    });
-
-                    media_file.connect_seeking_notify({
-                        let obj = obj.downgrade();
-                        move |media_file| {
-                            // This callback is for updating position once seeking has completed.
-                            if media_file.is_seeking() {
-                                return;
-                            }
-
-                            let obj = obj.upgrade().unwrap();
-                            let imp = obj.imp();
-                            imp.refresh();
-                        }
-                    });
-
-                    self.media_file.set(media_file).unwrap();
-                }
-                _ => unreachable!(),
-            }
         }
 
         fn constructed(&self) {
@@ -251,6 +209,44 @@ mod imp {
     }
 
     impl VtTimeline {
+        fn set_media_file(&self, media_file: gtk::MediaFile) {
+            let obj = self.obj();
+
+            media_file.connect_timestamp_notify({
+                let obj = obj.downgrade();
+                move |_| {
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
+                    imp.refresh();
+                }
+            });
+
+            media_file.connect_duration_notify({
+                let obj = obj.downgrade();
+                move |_| {
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
+                    imp.refresh();
+                }
+            });
+
+            media_file.connect_seeking_notify({
+                let obj = obj.downgrade();
+                move |media_file| {
+                    // This callback is for updating position once seeking has completed.
+                    if media_file.is_seeking() {
+                        return;
+                    }
+
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
+                    imp.refresh();
+                }
+            });
+
+            self.media_file.set(media_file).unwrap();
+        }
+
         pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
             self.start_end.set(start_end);
             self.refresh();

@@ -4,11 +4,13 @@ use gtk::{gio, glib};
 mod imp {
     use super::*;
     use crate::{config::G_LOG_DOMAIN, timeline::VtTimeline};
-    use glib::{subclass, warn};
+    use glib::{subclass::Signal, warn, Properties};
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
     use once_cell::unsync::OnceCell;
+    use std::marker::PhantomData;
 
-    #[derive(Debug, Default, CompositeTemplate)]
+    #[derive(Debug, Default, CompositeTemplate, Properties)]
+    #[properties(wrapper_type = super::VtVideoPreview)]
     #[template(resource = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/video_preview.ui")]
     pub struct VtVideoPreview {
         #[template_child]
@@ -27,6 +29,9 @@ mod imp {
         label_current_time: TemplateChild<gtk::Label>,
         #[template_child]
         timeline: TemplateChild<VtTimeline>,
+
+        #[property(get = Self::duration)]
+        duration: PhantomData<i64>,
 
         media_file: OnceCell<gtk::MediaFile>,
     }
@@ -48,36 +53,29 @@ mod imp {
 
     impl ObjectImpl for VtVideoPreview {
         fn properties() -> &'static [glib::ParamSpec] {
-            use once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [glib::ParamSpecInt64::builder("duration")
-                    .minimum(0)
-                    .read_only()
-                    .build()]
-            });
-
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
 
-        fn signals() -> &'static [subclass::Signal] {
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
+        }
+
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec);
+        }
+
+        fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<[subclass::Signal; 2]> = Lazy::new(|| {
+            static SIGNALS: Lazy<[Signal; 2]> = Lazy::new(|| {
                 [
-                    subclass::Signal::builder("set-start-end")
+                    Signal::builder("set-start-end")
                         .param_types([glib::Type::U32, glib::Type::U32])
                         .build(),
-                    subclass::Signal::builder("error").build(),
+                    Signal::builder("error").build(),
                 ]
             });
 
             SIGNALS.as_ref()
-        }
-
-        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
-            match pspec.name() {
-                "duration" => self.media_file.get().unwrap().duration().to_value(),
-                _ => unreachable!(),
-            }
         }
 
         fn constructed(&self) {
@@ -198,6 +196,10 @@ mod imp {
     impl WidgetImpl for VtVideoPreview {}
 
     impl VtVideoPreview {
+        fn duration(&self) -> i64 {
+            self.media_file.get().unwrap().duration()
+        }
+
         pub fn open(&self, file: &gio::File) {
             let media_file = self.media_file.get().unwrap();
             media_file.set_file(Some(file));

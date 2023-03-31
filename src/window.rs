@@ -15,7 +15,7 @@ mod imp {
 
     use futures_util::future::{abortable, FutureExt};
     use gettextrs::*;
-    use glib::{clone, debug, error, translate::ToGlibPtr, warn, FromVariant};
+    use glib::{clone, debug, error, translate::ToGlibPtr, warn, FromVariant, Properties};
     use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     use crate::{
@@ -73,7 +73,8 @@ mod imp {
         "video/x-totem-stream",
     ];
 
-    #[derive(Debug, Default, CompositeTemplate)]
+    #[derive(Debug, Default, CompositeTemplate, Properties)]
+    #[properties(wrapper_type = super::VtWindow)]
     #[template(resource = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui")]
     pub struct VtWindow {
         #[template_child]
@@ -103,6 +104,7 @@ mod imp {
 
         content_type: RefCell<Option<glib::GString>>,
         input_path: RefCell<Option<PathBuf>>,
+        #[property(set, construct_only)]
         output_file: RefCell<Option<gio::File>>,
         do_not_default_to_mp4: Cell<bool>,
     }
@@ -769,24 +771,15 @@ and updates it to the GNOME 43 platform.",
 
     impl ObjectImpl for VtWindow {
         fn properties() -> &'static [glib::ParamSpec] {
-            use once_cell::sync::Lazy;
-            static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [glib::ParamSpecObject::builder::<gio::File>("output-file")
-                    .write_only()
-                    .construct_only()
-                    .build()]
-            });
-
-            PROPERTIES.as_ref()
+            Self::derived_properties()
         }
 
-        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
-            match pspec.name() {
-                "output-file" => {
-                    *self.output_file.borrow_mut() = value.get().unwrap();
-                }
-                _ => unreachable!(),
-            }
+        fn property(&self, id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+            self.derived_property(id, pspec)
+        }
+
+        fn set_property(&self, id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            self.derived_set_property(id, value, pspec);
         }
 
         fn constructed(&self) {
