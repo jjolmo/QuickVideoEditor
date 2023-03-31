@@ -5,15 +5,15 @@ edition = "2018"
 license = "GPL-3.0-or-later"
 
 [dependencies]
-adw = { version = "0.2.0-alpha.3", package = "libadwaita", features = ["v1_2"] }
-ashpd = { version = "0.3.2", features = ["feature_gtk4"] }
-futures-channel = "0.3.24"
-futures-util = "0.3.24"
+adw = { version = "0.3.1", package = "libadwaita", features = ["v1_2"] }
+ashpd = { version = "0.4.0", features = ["gtk4"] }
+futures-channel = "0.3.28"
+futures-util = "0.3.28"
 gettext-rs = { version = "0.7.0", features = ["gettext-system"] }
-glib = { version = "0.15.12", features = ["log", "log_macros"] }
-gtk = { version = "0.4.8", package = "gtk4" }
+glib = { version = "0.17.5", features = ["log", "log_macros"] }
+gtk = { version = "0.6.4", package = "gtk4" }
 json = "0.12.4"
 log = "0.4.17"
 mime_guess = "2.0.4"
-nom = "7.1.1"
-once_cell = "1.15.0"
+nom = "7.1.3"
+once_cell = "1.17.1"

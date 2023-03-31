@@ -14,7 +14,7 @@ mod timeline;
 mod video_preview;
 mod window;
 
-fn main() {
+fn main() -> glib::ExitCode {
     static GLIB_LOGGER: GlibLogger =
         GlibLogger::new(GlibLoggerFormat::LineAndFile, GlibLoggerDomain::CrateTarget);
 
@@ -55,6 +55,5 @@ fn main() {
     gio::resources_register(&res);
 
     let app = VtApplication::new();
-    let ret = app.run();
-    std::process::exit(ret);
+    app.run()
 }

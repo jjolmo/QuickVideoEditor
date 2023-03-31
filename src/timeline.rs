@@ -86,13 +86,11 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [glib::ParamSpecObject::new(
-                    "media-file",
-                    "media-file",
-                    "media-file",
-                    gtk::MediaFile::static_type(),
-                    glib::ParamFlags::WRITABLE,
-                )]
+                [
+                    glib::ParamSpecObject::builder::<gtk::MediaFile>("media-file")
+                        .write_only()
+                        .build(),
+                ]
             });
 
             PROPERTIES.as_ref()
@@ -101,57 +99,49 @@ mod imp {
         fn signals() -> &'static [subclass::Signal] {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<[subclass::Signal; 1]> = Lazy::new(|| {
-                [subclass::Signal::builder(
-                    "set-start-end",
-                    &[glib::Type::U32.into(), glib::Type::U32.into()],
-                    glib::Type::UNIT.into(),
-                )
-                .build()]
+                [subclass::Signal::builder("set-start-end")
+                    .param_types([glib::Type::U32, glib::Type::U32])
+                    .build()]
             });
 
             SIGNALS.as_ref()
         }
 
-        fn set_property(
-            &self,
-            self_: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
+            let obj = self.obj();
             match pspec.name() {
                 "media-file" => {
                     let media_file: gtk::MediaFile = value.get().unwrap();
 
                     media_file.connect_timestamp_notify({
-                        let self_ = self_.downgrade();
+                        let obj = obj.downgrade();
                         move |_| {
-                            let self_ = self_.upgrade().unwrap();
-                            let priv_ = VtTimeline::from_instance(&self_);
-                            priv_.refresh();
+                            let obj = obj.upgrade().unwrap();
+                            let imp = obj.imp();
+                            imp.refresh();
                         }
                     });
 
                     media_file.connect_duration_notify({
-                        let self_ = self_.downgrade();
+                        let obj = obj.downgrade();
                         move |_| {
-                            let self_ = self_.upgrade().unwrap();
-                            let priv_ = VtTimeline::from_instance(&self_);
-                            priv_.refresh();
+                            let obj = obj.upgrade().unwrap();
+                            let imp = obj.imp();
+                            imp.refresh();
                         }
                     });
 
                     media_file.connect_seeking_notify({
-                        let self_ = self_.downgrade();
+                        let obj = obj.downgrade();
                         move |media_file| {
                             // This callback is for updating position once seeking has completed.
                             if media_file.is_seeking() {
                                 return;
                             }
 
-                            let self_ = self_.upgrade().unwrap();
-                            let priv_ = VtTimeline::from_instance(&self_);
-                            priv_.refresh();
+                            let obj = obj.upgrade().unwrap();
+                            let imp = obj.imp();
+                            imp.refresh();
                         }
                     });
 
@@ -161,8 +151,9 @@ mod imp {
             }
         }
 
-        fn constructed(&self, obj: &Self::Type) {
-            self.parent_constructed(obj);
+        fn constructed(&self) {
+            let obj = self.obj();
+            self.parent_constructed();
 
             // Invisible until we get duration.
             self.box_timeline_position.set_child_visible(false);
@@ -177,19 +168,19 @@ mod imp {
                 let obj = obj.downgrade();
                 move |_, x, y| {
                     let obj = obj.upgrade().unwrap();
-                    let priv_ = Self::from_instance(&obj);
-                    priv_.on_drag_start(x, y);
+                    let imp = obj.imp();
+                    imp.on_drag_start(x, y);
                 }
             });
             gesture_drag.connect_drag_update({
                 let obj = obj.downgrade();
                 move |_, offset_x, offset_y| {
                     let obj = obj.upgrade().unwrap();
-                    let priv_ = Self::from_instance(&obj);
-                    priv_.on_drag_update(offset_x, offset_y);
+                    let imp = obj.imp();
+                    imp.on_drag_update(offset_x, offset_y);
                 }
             });
-            obj.add_controller(&gesture_drag);
+            obj.add_controller(gesture_drag.clone());
             self.gesture_drag.set(gesture_drag).unwrap();
 
             let event_controller_motion = gtk::EventControllerMotion::new();
@@ -197,14 +188,15 @@ mod imp {
                 let obj = obj.downgrade();
                 move |_, x, y| {
                     let obj = obj.upgrade().unwrap();
-                    let priv_ = Self::from_instance(&obj);
-                    priv_.on_motion(x, y);
+                    let imp = obj.imp();
+                    imp.on_motion(x, y);
                 }
             });
-            obj.add_controller(&event_controller_motion);
+            obj.add_controller(event_controller_motion);
         }
 
-        fn dispose(&self, obj: &Self::Type) {
+        fn dispose(&self) {
+            let obj = self.obj();
             while let Some(child) = obj.first_child() {
                 child.unparent();
             }
@@ -212,7 +204,7 @@ mod imp {
     }
 
     impl WidgetImpl for VtTimeline {
-        fn size_allocate(&self, _widget: &Self::Type, width: i32, height: i32, baseline: i32) {
+        fn size_allocate(&self, width: i32, height: i32, baseline: i32) {
             let duration = self.duration.get();
             if duration == 0 {
                 return;
@@ -265,7 +257,7 @@ mod imp {
         }
 
         pub fn refresh(&self) {
-            let self_ = self.instance();
+            let obj = self.obj();
 
             let media_file = self.media_file.get().unwrap();
             let duration = media_file.duration();
@@ -273,7 +265,7 @@ mod imp {
             if duration == 0 {
                 self.box_timeline_position.set_child_visible(false);
                 self.box_timeline_selection.set_child_visible(false);
-                self_.queue_allocate();
+                obj.queue_allocate();
                 return;
             }
 
@@ -285,7 +277,7 @@ mod imp {
                 self.position.set(media_file.timestamp());
             }
 
-            self_.queue_allocate();
+            obj.queue_allocate();
         }
 
         fn on_drag_start(&self, x: f64, _y: f64) {
@@ -310,10 +302,10 @@ mod imp {
         }
 
         fn on_drag_update(&self, offset_x: f64, _offset_y: f64) {
-            let self_ = self.instance();
+            let obj = self.obj();
 
             let x = self.drag_start.get() + offset_x;
-            let width = self_.allocated_width() as f64;
+            let width = obj.allocated_width() as f64;
 
             // Sanitize (this can get weird values when resizing the window while dragging).
             let x = x.clamp(0., width);
@@ -327,7 +319,7 @@ mod imp {
 
                 // Update the position for responsive seeking.
                 self.position.set(time);
-                self_.queue_allocate();
+                obj.queue_allocate();
 
                 let start_end = self.start_end.get();
                 if start_end.is_none() {
@@ -373,13 +365,13 @@ mod imp {
                     _ => return,
                 };
 
-                self.instance()
+                self.obj()
                     .emit_by_name::<()>("set-start-end", &[&start, &end]);
             };
         }
 
         fn on_motion(&self, x: f64, _y: f64) {
-            let self_ = self.instance();
+            let obj = self.obj();
 
             // Don't change the cursor while in drag.
             if self.gesture_drag.get().unwrap().is_active() {
@@ -404,7 +396,7 @@ mod imp {
 
             if self.cursor_type.get() != cursor_type {
                 let cursor = gdk::Cursor::from_name(cursor_type.gtk_cursor_name(), None).unwrap();
-                self_.set_cursor(Some(&cursor));
+                obj.set_cursor(Some(&cursor));
                 self.cursor_type.set(cursor_type);
             }
         }
@@ -418,6 +410,6 @@ glib::wrapper! {
 
 impl VtTimeline {
     pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
-        imp::VtTimeline::from_instance(self).set_start_end(start_end);
+        self.imp().set_start_end(start_end);
     }
 }

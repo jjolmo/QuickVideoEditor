@@ -50,15 +50,10 @@ mod imp {
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [glib::ParamSpecInt64::new(
-                    "duration",
-                    "duration",
-                    "duration",
-                    0,
-                    std::i64::MAX,
-                    0,
-                    glib::ParamFlags::READABLE,
-                )]
+                [glib::ParamSpecInt64::builder("duration")
+                    .minimum(0)
+                    .read_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
@@ -68,44 +63,42 @@ mod imp {
             use once_cell::sync::Lazy;
             static SIGNALS: Lazy<[subclass::Signal; 2]> = Lazy::new(|| {
                 [
-                    subclass::Signal::builder(
-                        "set-start-end",
-                        &[glib::Type::U32.into(), glib::Type::U32.into()],
-                        glib::Type::UNIT.into(),
-                    )
-                    .build(),
-                    subclass::Signal::builder("error", &[], glib::Type::UNIT.into()).build(),
+                    subclass::Signal::builder("set-start-end")
+                        .param_types([glib::Type::U32, glib::Type::U32])
+                        .build(),
+                    subclass::Signal::builder("error").build(),
                 ]
             });
 
             SIGNALS.as_ref()
         }
 
-        fn property(&self, _obj: &Self::Type, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
+        fn property(&self, _id: usize, pspec: &glib::ParamSpec) -> glib::Value {
             match pspec.name() {
                 "duration" => self.media_file.get().unwrap().duration().to_value(),
                 _ => unreachable!(),
             }
         }
 
-        fn constructed(&self, self_: &Self::Type) {
-            self.parent_constructed(self_);
+        fn constructed(&self) {
+            let obj = self.obj();
+            self.parent_constructed();
 
             self.timeline.connect_local("set-start-end", false, {
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |args| {
-                    let self_ = self_.upgrade().unwrap();
-                    self_.emit_by_name_with_values("set-start-end", &args[1..])
+                    let obj = obj.upgrade().unwrap();
+                    obj.emit_by_name_with_values("set-start-end", &args[1..])
                 }
             });
 
             // Connect the play-pause button.
             self.button_play_pause.connect_clicked({
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |_| {
-                    let self_ = self_.upgrade().unwrap();
-                    let priv_ = VtVideoPreview::from_instance(&self_);
-                    let media_file = priv_.media_file.get().unwrap();
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
+                    let media_file = imp.media_file.get().unwrap();
                     if media_file.is_playing() {
                         media_file.pause();
                     } else {
@@ -117,62 +110,59 @@ mod imp {
             // Media file callbacks.
             let media_file = gtk::MediaFile::new();
             media_file.connect_playing_notify({
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |media_file| {
-                    let self_ = self_.upgrade().unwrap();
-                    let priv_ = VtVideoPreview::from_instance(&self_);
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
 
                     if media_file.is_playing() {
-                        priv_
-                            .button_play_pause_image
+                        imp.button_play_pause_image
                             .set_icon_name(Some("media-playback-pause-symbolic"));
                     } else {
-                        priv_
-                            .button_play_pause_image
+                        imp.button_play_pause_image
                             .set_icon_name(Some("media-playback-start-symbolic"));
                     }
                 }
             });
 
             media_file.connect_error_notify({
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |media_file| {
                     let error = media_file.error().unwrap();
 
                     warn!("Error in MediaFile: {}", error);
 
-                    let self_ = self_.upgrade().unwrap();
-                    self_.emit_by_name::<()>("error", &[]);
+                    let obj = obj.upgrade().unwrap();
+                    obj.emit_by_name::<()>("error", &[]);
                 }
             });
 
             media_file.connect_prepared_notify({
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |media_file| {
-                    let self_ = self_.upgrade().unwrap();
+                    let obj = obj.upgrade().unwrap();
 
                     if media_file.error().is_some() {
                         return;
                     }
 
                     if !media_file.has_video() {
-                        let priv_ = VtVideoPreview::from_instance(&self_);
+                        let imp = obj.imp();
 
-                        priv_
-                            .stack_video_preview
-                            .set_visible_child(&*priv_.status_page_no_video);
+                        imp.stack_video_preview
+                            .set_visible_child(&*imp.status_page_no_video);
                     }
 
                     // GTK API is such that on "prepared" all media info is known and won't change.
-                    self_.notify("duration");
+                    obj.notify("duration");
                 }
             });
 
             media_file.connect_timestamp_notify({
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |media_file| {
-                    let self_ = self_.upgrade().unwrap();
-                    let priv_ = VtVideoPreview::from_instance(&self_);
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
 
                     let position = media_file.timestamp();
                     let mut seconds = position / 1_000_000;
@@ -187,7 +177,7 @@ mod imp {
                         format!("{}:{:02}:{:02}", hours, minutes, seconds)
                     };
 
-                    priv_.label_current_time.set_text(&time);
+                    imp.label_current_time.set_text(&time);
                 }
             });
 
@@ -197,7 +187,8 @@ mod imp {
             self.media_file.set(media_file).unwrap();
         }
 
-        fn dispose(&self, obj: &Self::Type) {
+        fn dispose(&self) {
+            let obj = self.obj();
             while let Some(child) = obj.first_child() {
                 child.unparent();
             }
@@ -234,18 +225,18 @@ glib::wrapper! {
 
 impl VtVideoPreview {
     pub fn open(&self, file: &gio::File) {
-        imp::VtVideoPreview::from_instance(self).open(file);
+        self.imp().open(file);
     }
 
     pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
-        imp::VtVideoPreview::from_instance(self).set_start_end(start_end);
+        self.imp().set_start_end(start_end);
     }
 
     pub fn pause(&self) {
-        imp::VtVideoPreview::from_instance(self).pause();
+        self.imp().pause();
     }
 
     pub fn overlay(&self) -> &adw::ToastOverlay {
-        imp::VtVideoPreview::from_instance(self).overlay()
+        self.imp().overlay()
     }
 }

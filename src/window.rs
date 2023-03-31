@@ -2,6 +2,7 @@ use glib::subclass::prelude::*;
 use gtk::{gio, glib};
 
 mod imp {
+    use ashpd::desktop::open_uri::OpenDirectoryRequest;
     use std::{
         cell::{Cell, RefCell},
         ffi::{CString, OsStr, OsString},
@@ -172,12 +173,12 @@ mod imp {
 
             self.video_preview.pause();
 
-            let self_ = self.instance();
+            let obj = self.obj().clone();
 
             let future = async move {
-                let priv_ = VtWindow::from_instance(&self_);
+                let imp = obj.imp();
 
-                let output_path = priv_
+                let output_path = imp
                     .output_file
                     .borrow()
                     .as_ref()
@@ -219,7 +220,7 @@ mod imp {
                     });
 
                 let file_chooser = gtk::FileChooserNative::builder()
-                    .transient_for(&self_)
+                    .transient_for(&obj)
                     .action(gtk::FileChooserAction::Save)
                     .modal(true)
                     .build();
@@ -272,7 +273,7 @@ mod imp {
 
                 let tx = RefCell::new(Some(tx));
                 file_chooser.connect_response({
-                    let self_ = self_.downgrade();
+                    let obj = obj.downgrade();
                     move |file_chooser, response| {
                         if let Some(tx) = tx.borrow_mut().take() {
                             if response == gtk::ResponseType::Accept {
@@ -283,14 +284,14 @@ mod imp {
                                 } else {
                                     let dialog = gtk::MessageDialog::builder()
                                         // Translators: error dialog title.
-                                        .text(&gettext("Error"))
-                                        .secondary_text(&gettext(
+                                        .text(gettext("Error"))
+                                        .secondary_text(gettext(
                                             // Translators: error dialog text.
                                             "Video Trimmer can only operate on local files. Please choose another file.",
                                         ))
                                         .message_type(gtk::MessageType::Error)
                                         .buttons(gtk::ButtonsType::Ok)
-                                        .transient_for(&self_.upgrade().unwrap())
+                                        .transient_for(&obj.upgrade().unwrap())
                                         .modal(true)
                                         .build();
                                     dialog.connect_response(|dialog, _| {
@@ -315,7 +316,7 @@ mod imp {
                     return;
                 };
 
-                priv_.do_trim(&input_path, output_path, no_audio, reencode, start, end);
+                imp.do_trim(&input_path, output_path, no_audio, reencode, start, end);
             };
 
             glib::MainContext::default().spawn_local(future);
@@ -330,7 +331,7 @@ mod imp {
             start: glib::GString,
             end: glib::GString,
         ) {
-            let self_ = self.instance();
+            let obj = self.obj().clone();
 
             debug!("output path: {:?}", output_path);
 
@@ -388,10 +389,10 @@ mod imp {
                 Ok(subprocess) => {
                     let trimming_dialog = gtk::MessageDialog::builder()
                         // Translators: message dialog text.
-                        .text(&gettext("Trimming…"))
+                        .text(gettext("Trimming…"))
                         .message_type(gtk::MessageType::Info)
                         .buttons(gtk::ButtonsType::Cancel)
-                        .transient_for(&self_)
+                        .transient_for(&obj)
                         .modal(true)
                         .build();
 
@@ -408,7 +409,7 @@ mod imp {
                                         .map(|file_name| file_name.to_string_lossy())
                                         .unwrap_or_else(|| output_path.to_string_lossy());
 
-                                    let priv_ = VtWindow::from_instance(&self_);
+                                    let imp = obj.imp();
                                     let toast = adw::Toast::new(&format!(
                                         "{} {}",
                                         file_name,
@@ -426,12 +427,12 @@ mod imp {
                                         &output_path.into_os_string().into_vec(),
                                     ));
 
-                                    if priv_.stack_video_preview.visible_child_name().as_deref()
+                                    if imp.stack_video_preview.visible_child_name().as_deref()
                                         == Some("page_error")
                                     {
-                                        priv_.overlay_error_page.add_toast(&toast);
+                                        imp.overlay_error_page.add_toast(toast);
                                     } else {
-                                        priv_.video_preview.overlay().add_toast(&toast);
+                                        imp.video_preview.overlay().add_toast(toast);
                                     }
 
                                     trimming_dialog_clone.close();
@@ -441,18 +442,18 @@ mod imp {
                                         .expect("should be Some() because we passed STDERR_PIPE");
                                     gtk::MessageDialog::builder()
                                         // Translators: error dialog text.
-                                        .text(&gettext("Error trimming video"))
-                                        .secondary_text(&String::from_utf8_lossy(&stderr))
+                                        .text(gettext("Error trimming video"))
+                                        .secondary_text(String::from_utf8_lossy(&stderr))
                                         .message_type(gtk::MessageType::Error)
                                 }
                             }
                             Err(err) => {
                                 gtk::MessageDialog::builder()
                                     // Translators: error dialog text.
-                                    .text(&gettext(
+                                    .text(gettext(
                                         "Could not communicate with the ffmpeg subprocess",
                                     ))
-                                    .secondary_text(&format!("{}", err))
+                                    .secondary_text(format!("{}", err))
                                     .message_type(gtk::MessageType::Error)
                             }
                         };
@@ -464,7 +465,7 @@ mod imp {
 
                         let dialog = builder
                             .buttons(gtk::ButtonsType::Ok)
-                            .transient_for(&self_)
+                            .transient_for(&obj)
                             .modal(true)
                             .build();
                         dialog.connect_response(move |dialog, _| dialog.close());
@@ -491,11 +492,11 @@ mod imp {
                 Err(err) => {
                     let dialog = gtk::MessageDialog::builder()
                         // Translators: error dialog text.
-                        .text(&gettext("Could not create the ffmpeg subprocess"))
-                        .secondary_text(&format!("{}", err))
+                        .text(gettext("Could not create the ffmpeg subprocess"))
+                        .secondary_text(format!("{}", err))
                         .message_type(gtk::MessageType::Error)
                         .buttons(gtk::ButtonsType::Ok)
-                        .transient_for(&self_)
+                        .transient_for(&obj)
                         .modal(true)
                         .build();
                     dialog.connect_response(move |dialog, _| dialog.close());
@@ -515,35 +516,35 @@ mod imp {
                 return;
             }
 
-            let self_ = self.instance();
+            let obj = self.obj();
 
             self.stack_main.set_visible_child_name("page_main");
             self.stack_header_bar.set_visible_child_name("page_main");
-            self_.set_default_widget(Some(&*self.button_trim));
+            obj.set_default_widget(Some(&*self.button_trim));
 
             // Focus the entry when coming from the empty state.
             self.entry_start.grab_focus();
 
-            self_.show();
+            obj.show();
         }
 
         pub fn open(&self, file: gio::File) {
-            let self_ = self.instance();
+            let obj = self.obj().clone();
 
             debug!("VtWindow::open(\"{}\")", file.uri());
 
             if file.path().is_none() {
-                self_.show();
+                obj.show();
                 let dialog = gtk::MessageDialog::builder()
                     // Translators: error dialog title.
-                    .text(&gettext("Error"))
-                    .secondary_text(&gettext(
+                    .text(gettext("Error"))
+                    .secondary_text(gettext(
                         // Translators: error dialog text.
                         "Video Trimmer can only operate on local files. Please choose another file.",
                     ))
                     .message_type(gtk::MessageType::Error)
                     .buttons(gtk::ButtonsType::Ok)
-                    .transient_for(&self_)
+                    .transient_for(&obj)
                     .modal(true)
                     .build();
                 dialog.connect_response(|dialog, _| {
@@ -558,14 +559,14 @@ mod imp {
             // Unconditionally switch to main page after 300 ms
             // (if the video takes too long to load).
             glib::timeout_add_local_once(Duration::from_millis(300), {
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move || {
-                    let self_ = match self_.upgrade() {
-                        Some(self_) => self_,
+                    let obj = match obj.upgrade() {
+                        Some(obj) => obj,
                         None => return,
                     };
-                    let priv_ = VtWindow::from_instance(&self_);
-                    priv_.switch_to_main_page();
+                    let imp = obj.imp();
+                    imp.switch_to_main_page();
                 }
             });
 
@@ -574,7 +575,7 @@ mod imp {
 
             // Get the display name and content type.
             let future = async move {
-                let priv_ = VtWindow::from_instance(&self_);
+                let imp = obj.imp();
 
                 // May take a long time on a network mount.
                 let info = file
@@ -588,13 +589,13 @@ mod imp {
                 match info {
                     Ok(info) => {
                         let display_name = info.display_name();
-                        priv_.title.set_subtitle(display_name.as_str());
+                        imp.title.set_subtitle(display_name.as_str());
 
                         if let Some(fast_content_type) =
                             info.attribute_string("standard::fast-content-type")
                         {
                             debug!("fast-content-type: {}", fast_content_type);
-                            *priv_.content_type.borrow_mut() = Some(fast_content_type);
+                            *imp.content_type.borrow_mut() = Some(fast_content_type);
                         }
                     }
                     // Fails when the file does not exist.
@@ -602,7 +603,7 @@ mod imp {
                         error!("error getting file information: {err:?}");
 
                         if let Some(basename) = file.basename() {
-                            priv_.title.set_subtitle(&basename.to_string_lossy());
+                            imp.title.set_subtitle(&basename.to_string_lossy());
                         }
                     }
                 }
@@ -627,7 +628,7 @@ mod imp {
                 gio::SubprocessFlags::STDOUT_PIPE | gio::SubprocessFlags::STDERR_PIPE,
             )
             .unwrap();
-            let self_ = self.instance();
+            let obj = self.obj().clone();
             let future = async move {
                 match subprocess.communicate_future(None).await {
                     Ok((stdout, stderr)) => {
@@ -636,7 +637,7 @@ mod imp {
                                 stdout.expect("should be Some() because we passed STDOUT_PIPE");
                             match str::from_utf8(&stdout) {
                                 Ok(stdout) => {
-                                    let priv_ = Self::from_instance(&self_);
+                                    let imp = obj.imp();
                                     let output = json::parse(stdout)
                                         .expect("ffprobe should return valid JSON");
                                     let mut audio_formats = output["streams"]
@@ -652,7 +653,7 @@ mod imp {
                                         debug!(
                                             "avoiding default .mp4 extension: PCM audio detected"
                                         );
-                                        priv_.do_not_default_to_mp4.set(true);
+                                        imp.do_not_default_to_mp4.set(true);
                                     }
                                 }
                                 Err(err) => {
@@ -706,15 +707,15 @@ and updates it to the GNOME 43 platform.",
 
                 let about_window = adw::AboutWindow::builder()
                     .transient_for(window)
-                    .application_name(&gettext("Video Trimmer"))
+                    .application_name(gettext("Video Trimmer"))
                     .application_icon(config::APP_ID)
                     .version(config::VERSION)
                     .license_type(gtk::License::Gpl30)
                     .developers(vec!["Ivan Molodetskikh".to_owned()])
                     .issue_url("https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues/new")
                     // Translators: shown in the About dialog, put your name here.
-                    .translator_credits(&gettext("translator-credits"))
-                    .release_notes(&release_notes)
+                    .translator_credits(gettext("translator-credits"))
+                    .release_notes(release_notes)
                     .build();
 
                 about_window.add_link(
@@ -748,8 +749,10 @@ and updates it to the GNOME 43 platform.",
 
                     let future = async move {
                         let identifier = ashpd::WindowIdentifier::from_native(&native).await;
-                        if let Err(err) =
-                            ashpd::desktop::open_uri::open_directory(&identifier, &file).await
+                        if let Err(err) = OpenDirectoryRequest::default()
+                            .identifier(identifier)
+                            .send(&file)
+                            .await
                         {
                             warn!("OpenDirectory returned an error: {:?}", err);
                         }
@@ -768,25 +771,16 @@ and updates it to the GNOME 43 platform.",
         fn properties() -> &'static [glib::ParamSpec] {
             use once_cell::sync::Lazy;
             static PROPERTIES: Lazy<[glib::ParamSpec; 1]> = Lazy::new(|| {
-                [glib::ParamSpecObject::new(
-                    "output-file",
-                    "output-file",
-                    "output-file",
-                    gio::File::static_type(),
-                    glib::ParamFlags::WRITABLE | glib::ParamFlags::CONSTRUCT_ONLY,
-                )]
+                [glib::ParamSpecObject::builder::<gio::File>("output-file")
+                    .write_only()
+                    .construct_only()
+                    .build()]
             });
 
             PROPERTIES.as_ref()
         }
 
-        fn set_property(
-            &self,
-            _obj: &Self::Type,
-            _id: usize,
-            value: &glib::Value,
-            pspec: &glib::ParamSpec,
-        ) {
+        fn set_property(&self, _id: usize, value: &glib::Value, pspec: &glib::ParamSpec) {
             match pspec.name() {
                 "output-file" => {
                     *self.output_file.borrow_mut() = value.get().unwrap();
@@ -795,11 +789,12 @@ and updates it to the GNOME 43 platform.",
             }
         }
 
-        fn constructed(&self, self_: &Self::Type) {
-            self.parent_constructed(self_);
+        fn constructed(&self) {
+            let obj = self.obj();
+            self.parent_constructed();
 
             if config::PROFILE == "Devel" {
-                self_.style_context().add_class("devel");
+                obj.style_context().add_class("devel");
             }
 
             // Start entry is always on the left, just like the timeline.
@@ -807,30 +802,29 @@ and updates it to the GNOME 43 platform.",
 
             self.video_preview
                 .connect_local("notify::duration", false, {
-                    let self_ = self_.downgrade();
+                    let obj = obj.downgrade();
                     move |_| {
-                        let self_ = self_.upgrade().unwrap();
-                        let priv_ = VtWindow::from_instance(&self_);
+                        let obj = obj.upgrade().unwrap();
+                        let imp = obj.imp();
 
-                        let duration: i64 = priv_.video_preview.property("duration");
+                        let duration: i64 = imp.video_preview.property("duration");
 
-                        priv_
-                            .stack_video_preview
-                            .set_visible_child(&*priv_.video_preview);
-                        priv_.switch_to_main_page();
+                        imp.stack_video_preview
+                            .set_visible_child(&*imp.video_preview);
+                        imp.switch_to_main_page();
 
                         if duration == 0 {
                             return None;
                         }
 
-                        priv_.on_got_duration(duration);
+                        imp.on_got_duration(duration);
 
                         None
                     }
                 });
 
             self.video_preview.connect_local("set-start-end", false, {
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |args| {
                     let mut args = args
                         .iter()
@@ -839,23 +833,21 @@ and updates it to the GNOME 43 platform.",
                     let start = args.next().unwrap();
                     let end = args.next().unwrap();
 
-                    let self_ = self_.upgrade().unwrap();
-                    let priv_ = VtWindow::from_instance(&self_);
-                    priv_.on_set_start_end(start, end);
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
+                    imp.on_set_start_end(start, end);
 
                     None
                 }
             });
 
             self.video_preview.connect_local("error", false, {
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |_| {
-                    let self_ = self_.upgrade().unwrap();
-                    let priv_ = VtWindow::from_instance(&self_);
-                    priv_
-                        .stack_video_preview
-                        .set_visible_child_name("page_error");
-                    priv_.switch_to_main_page();
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
+                    imp.stack_video_preview.set_visible_child_name("page_error");
+                    imp.switch_to_main_page();
 
                     None
                 }
@@ -863,9 +855,9 @@ and updates it to the GNOME 43 platform.",
 
             // The open button.
             self.button_open.connect_clicked({
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |_| {
-                    let self_ = self_.upgrade().unwrap();
+                    let obj = obj.upgrade().unwrap();
                     let filter = gtk::FileFilter::new();
                     // Translators: file chooser file filter name.
                     filter.set_name(Some(&gettext("Video files")));
@@ -874,11 +866,10 @@ and updates it to the GNOME 43 platform.",
                     }
 
                     let file_chooser = gtk::FileChooserNative::builder()
-                        .transient_for(&self_)
+                        .transient_for(&obj)
                         .action(gtk::FileChooserAction::Open)
                         // Translators: file chooser dialog title.
-                        .title(&gettext("Open video"))
-                        .transient_for(&self_)
+                        .title(gettext("Open video"))
                         .modal(true)
                         .build();
 
@@ -900,15 +891,15 @@ and updates it to the GNOME 43 platform.",
                             if file.is_none() || file.clone().unwrap().path().is_none() {
                                 let dialog = gtk::MessageDialog::builder()
                                     // Translators: error dialog title.
-                                    .text(&gettext("Error"))
-                                    .secondary_text(&gettext(
+                                    .text(gettext("Error"))
+                                    .secondary_text(gettext(
                                         // Translators: error dialog text.
                                         "Video Trimmer can only operate on local files. \
 Please choose another file.",
                                     ))
                                     .message_type(gtk::MessageType::Error)
                                     .buttons(gtk::ButtonsType::Ok)
-                                    .transient_for(&self_)
+                                    .transient_for(&obj)
                                     .modal(true)
                                     .build();
                                 dialog.connect_response(|dialog, _| {
@@ -918,7 +909,7 @@ Please choose another file.",
                                 return;
                             }
 
-                            self_.open(file.unwrap());
+                            obj.open(file.unwrap());
                         }
                     });
 
@@ -928,37 +919,37 @@ Please choose another file.",
 
             // Start and end timestamp validation and visualization.
             self.entry_start.connect_text_notify({
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |_| {
-                    let self_ = self_.upgrade().unwrap();
-                    let priv_ = VtWindow::from_instance(&self_);
-                    priv_.on_entry_changed();
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
+                    imp.on_entry_changed();
                 }
             });
             self.entry_end.connect_text_notify({
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |_| {
-                    let self_ = self_.upgrade().unwrap();
-                    let priv_ = VtWindow::from_instance(&self_);
-                    priv_.on_entry_changed();
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
+                    imp.on_entry_changed();
                 }
             });
 
             // The trim button.
             self.button_trim
-                .connect_clicked(clone!(@weak self_ => move |_| {
-                    let priv_ = VtWindow::from_instance(&self_);
+                .connect_clicked(clone!(@weak obj => move |_| {
+                    let imp = obj.imp();
 
-                    if validate_entries(&priv_.entry_start, &priv_.entry_end).is_none() {
+                    if validate_entries(&imp.entry_start, &imp.entry_end).is_none() {
                         // This should not happen normally because the button should be disabled.
                         warn!("Trim pressed with invalid timestamps");
                         return;
                     }
 
-                    let start = priv_.entry_start.text();
-                    let end = priv_.entry_end.text();
+                    let start = imp.entry_start.text();
+                    let end = imp.entry_end.text();
 
-                    let extension = priv_.content_type
+                    let extension = imp.content_type
                         .borrow()
                         .as_ref()
                         .map(glib::GString::as_str)
@@ -973,13 +964,13 @@ Please choose another file.",
                         .and_then(|exts| exts.first())
                         .unwrap_or(&"mp4");
 
-                    let extension = if *extension == "mp4" && priv_.do_not_default_to_mp4.get() {
+                    let extension = if *extension == "mp4" && imp.do_not_default_to_mp4.get() {
                         "mkv"
                     } else {
                         extension
                     }.to_string();
 
-                    let input_path = priv_.input_path.borrow();
+                    let input_path = imp.input_path.borrow();
                     if input_path.is_none() {
                         // This should not happen normally because if the button is visible then we should
                         // have the input path already.
@@ -989,23 +980,23 @@ Please choose another file.",
 
                     let input_path = input_path.clone().unwrap();
 
-                    priv_.trim(input_path, extension, start, end);
+                    imp.trim(input_path, extension, start, end);
                 }));
 
             let drop_target = gtk::DropTarget::new(gio::File::static_type(), gdk::DragAction::COPY);
             drop_target.connect_drop({
-                let self_ = self_.downgrade();
+                let obj = obj.downgrade();
                 move |_, data, _, _| {
                     if let Ok(file) = data.get::<gio::File>() {
-                        let self_ = self_.upgrade().unwrap();
-                        self_.open(file);
+                        let obj = obj.upgrade().unwrap();
+                        obj.open(file);
                         return true;
                     }
 
                     false
                 }
             });
-            self.status_page_empty_state.add_controller(&drop_target);
+            self.status_page_empty_state.add_controller(drop_target);
         }
     }
 
@@ -1050,10 +1041,13 @@ glib::wrapper! {
 
 impl VtWindow {
     pub fn new(app: &gtk::Application, output_file: Option<gio::File>) -> Self {
-        glib::Object::new(&[("application", app), ("output-file", &output_file)]).unwrap()
+        glib::Object::builder()
+            .property("application", app)
+            .property("output-file", &output_file)
+            .build()
     }
 
     pub fn open(&self, file: gio::File) {
-        imp::VtWindow::from_instance(self).open(file);
+        self.imp().open(file);
     }
 }
