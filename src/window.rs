@@ -772,7 +772,7 @@ and updates it to the GNOME 43 platform.",
                     .application_icon(config::APP_ID)
                     .version(config::VERSION)
                     .license_type(gtk::License::Gpl30)
-                    .developers(vec!["Ivan Molodetskikh".to_owned()])
+                    .developer_name(gettext("Ivan Molodetskikh"))
                     .issue_url("https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues/new")
                     // Translators: shown in the About dialog, put your name here.
                     .translator_credits(gettext("translator-credits"))
