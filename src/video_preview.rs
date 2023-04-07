@@ -32,6 +32,8 @@ mod imp {
 
         #[property(get = Self::duration)]
         duration: PhantomData<i64>,
+        #[property(get = Self::is_playing, set = Self::set_is_playing, explicit_notify)]
+        is_playing: PhantomData<bool>,
 
         media_file: OnceCell<gtk::MediaFile>,
     }
@@ -120,6 +122,8 @@ mod imp {
                         imp.button_play_pause_image
                             .set_icon_name(Some("media-playback-start-symbolic"));
                     }
+
+                    obj.notify_is_playing();
                 }
             });
 
@@ -198,6 +202,16 @@ mod imp {
     impl VtVideoPreview {
         fn duration(&self) -> i64 {
             self.media_file.get().unwrap().duration()
+        }
+
+        fn is_playing(&self) -> bool {
+            let Some(media_file) = self.media_file.get() else { return false };
+            media_file.is_playing()
+        }
+
+        fn set_is_playing(&self, value: bool) {
+            let Some(media_file) = self.media_file.get() else { return };
+            media_file.set_playing(value);
         }
 
         pub fn open(&self, file: &gio::File) {
