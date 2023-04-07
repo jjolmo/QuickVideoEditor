@@ -5,17 +5,17 @@ mod imp {
     use ashpd::desktop::open_uri::OpenDirectoryRequest;
     use std::{
         cell::{Cell, RefCell},
-        ffi::{CString, OsStr, OsString},
+        ffi::{OsStr, OsString},
         fs::File,
         os::unix::prelude::OsStringExt,
         path::{Component, Path, PathBuf},
-        ptr, str,
+        str,
         time::Duration,
     };
 
     use futures_util::future::{abortable, FutureExt};
     use gettextrs::*;
-    use glib::{clone, debug, error, translate::ToGlibPtr, warn, FromVariant, Properties};
+    use glib::{clone, debug, error, warn, FromVariant, Properties};
     use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
 
     use crate::{
@@ -239,37 +239,14 @@ mod imp {
 
                 // Translators: checkbox in output file selection dialog that strips audio from the
                 // video file.
-                let remove_audio = CString::new(gettext("Remove audio")).unwrap();
-                unsafe {
-                    gtk::ffi::gtk_file_chooser_add_choice(
-                        file_chooser
-                            .upcast_ref::<gtk::FileChooser>()
-                            .to_glib_none()
-                            .0,
-                        b"no-audio\0".as_ptr().cast(),
-                        remove_audio.as_ptr(),
-                        ptr::null_mut(),
-                        ptr::null_mut(),
-                    );
-                }
+                file_chooser.add_choice("no-audio", gettext("Remove audio"), &[]);
 
-                let accurate_trimming = CString::new(gettext(
+                file_chooser.add_choice(
+                    "reencode",
                     // Translators: checkbox in output file selection dialog.
-                    "Accurate trimming, but slower and may lose quality",
-                ))
-                .unwrap();
-                unsafe {
-                    gtk::ffi::gtk_file_chooser_add_choice(
-                        file_chooser
-                            .upcast_ref::<gtk::FileChooser>()
-                            .to_glib_none()
-                            .0,
-                        b"reencode\0".as_ptr().cast(),
-                        accurate_trimming.as_ptr(),
-                        ptr::null_mut(),
-                        ptr::null_mut(),
-                    );
-                }
+                    gettext("Accurate trimming, but slower and may lose quality"),
+                    &[],
+                );
 
                 let (tx, rx) = futures_channel::oneshot::channel();
 
