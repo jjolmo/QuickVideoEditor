@@ -182,6 +182,51 @@ mod imp {
             }
         }
 
+        fn verify_and_trim(&self) {
+            if validate_entries(&self.entry_start, &self.entry_end).is_none() {
+                debug!("the timestamps are invalid");
+                return;
+            }
+
+            let start = self.entry_start.text();
+            let end = self.entry_end.text();
+
+            let extension = self
+                .content_type
+                .borrow()
+                .as_ref()
+                .map(glib::GString::as_str)
+                .and_then(|content_type| {
+                    if content_type == "video/x-matroska" {
+                        // mime_guess returns "mk3d" for matroska which is weird.
+                        Some(&["mkv"][..])
+                    } else {
+                        mime_guess::get_mime_extensions_str(content_type)
+                    }
+                })
+                .and_then(|exts| exts.first())
+                .unwrap_or(&"mp4");
+
+            let extension = if *extension == "mp4" && self.do_not_default_to_mp4.get() {
+                "mkv"
+            } else {
+                extension
+            }
+            .to_string();
+
+            let input_path = self.input_path.borrow();
+            if input_path.is_none() {
+                // This should not happen normally because if the button is visible then we should
+                // have the input path already.
+                debug!("the input path is unset");
+                return;
+            }
+
+            let input_path = input_path.clone().unwrap();
+
+            self.trim(input_path, extension, start, end);
+        }
+
         fn trim(
             &self,
             input_path: PathBuf,
@@ -940,49 +985,7 @@ Please choose another file.",
             // The trim button.
             self.button_trim
                 .connect_clicked(clone!(@weak obj => move |_| {
-                    let imp = obj.imp();
-
-                    if validate_entries(&imp.entry_start, &imp.entry_end).is_none() {
-                        // This should not happen normally because the button should be disabled.
-                        warn!("Trim pressed with invalid timestamps");
-                        return;
-                    }
-
-                    let start = imp.entry_start.text();
-                    let end = imp.entry_end.text();
-
-                    let extension = imp.content_type
-                        .borrow()
-                        .as_ref()
-                        .map(glib::GString::as_str)
-                        .and_then(|content_type| {
-                            if content_type == "video/x-matroska" {
-                                // mime_guess returns "mk3d" for matroska which is weird.
-                                Some(&["mkv"][..])
-                            } else {
-                                mime_guess::get_mime_extensions_str(content_type)
-                            }
-                        })
-                        .and_then(|exts| exts.first())
-                        .unwrap_or(&"mp4");
-
-                    let extension = if *extension == "mp4" && imp.do_not_default_to_mp4.get() {
-                        "mkv"
-                    } else {
-                        extension
-                    }.to_string();
-
-                    let input_path = imp.input_path.borrow();
-                    if input_path.is_none() {
-                        // This should not happen normally because if the button is visible then we should
-                        // have the input path already.
-                        warn!("Trim pressed without input path");
-                        return;
-                    }
-
-                    let input_path = input_path.clone().unwrap();
-
-                    imp.trim(input_path, extension, start, end);
+                    obj.imp().verify_and_trim();
                 }));
 
             let drop_target = gtk::DropTarget::new(gio::File::static_type(), gdk::DragAction::COPY);
