@@ -17,7 +17,14 @@ mod imp {
     use futures_util::future::{abortable, FutureExt};
     use gettextrs::*;
     use glib::{clone, debug, error, warn, FromVariant, Properties};
-    use gtk::{gdk, gio, glib, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{
+        gdk,
+        gdk::{Key, ModifierType},
+        gio, glib,
+        prelude::*,
+        subclass::prelude::*,
+        CompositeTemplate,
+    };
 
     use crate::{
         config::{self, G_LOG_DOMAIN},
@@ -674,6 +681,16 @@ mod imp {
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
+
+            klass.install_property_action("win.play-pause", "is-playing");
+            klass.add_binding_action(Key::p, ModifierType::empty(), "win.play-pause", None);
+            klass.add_binding_action(Key::k, ModifierType::empty(), "win.play-pause", None);
+            klass.add_binding_action(
+                Key::space,
+                ModifierType::CONTROL_MASK,
+                "win.play-pause",
+                None,
+            );
 
             klass.install_action("win.about", None, |window, _, _| {
                 // Concat translated strings to reuse the metainfo translations.
