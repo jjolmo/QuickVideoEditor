@@ -740,6 +740,11 @@ mod imp {
             klass.install_action("win.close", None, |window, _, _| window.close());
             klass.add_binding_action(Key::w, ModifierType::CONTROL_MASK, "win.close", None);
 
+            klass.install_action("win.trim", None, |window, _, _| {
+                window.imp().verify_and_trim()
+            });
+            klass.add_binding_action(Key::s, ModifierType::CONTROL_MASK, "win.trim", None);
+
             klass.install_action("win.about", None, |window, _, _| {
                 // Concat translated strings to reuse the metainfo translations.
                 let list_points = [
