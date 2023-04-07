@@ -692,6 +692,9 @@ mod imp {
                 None,
             );
 
+            klass.install_action("win.close", None, |window, _, _| window.close());
+            klass.add_binding_action(Key::w, ModifierType::CONTROL_MASK, "win.close", None);
+
             klass.install_action("win.about", None, |window, _, _| {
                 // Concat translated strings to reuse the metainfo translations.
                 let list_points = [
