@@ -26,6 +26,19 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.8.1" date="2022-10-14">
+			<description>
+				<p>This release adds keyboard shortcuts and fixes a rare crash with some files.</p>
+				<ul>
+					<li>Added several keyboard shortcuts along with the shortcuts window listing them.</li>
+					<li>Fixed app crashing when opening files which involve invalid UTF-8.</li>
+					<li>Updated to the GNOME 44 platform.</li>
+					<li>Added Arabic translation (thanks tech-man).</li>
+					<li>Added Occitan translation (thanks Quentin PAGÈS).</li>
+					<li>Updated translations.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.8.0" date="2022-10-14">
 			<description>
 				<p>This release fixes app closing on inaccessible files and updates it to the GNOME 43 platform.</p>

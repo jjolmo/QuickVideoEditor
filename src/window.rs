@@ -748,20 +748,15 @@ mod imp {
             klass.install_action("win.about", None, |window, _, _| {
                 // Concat translated strings to reuse the metainfo translations.
                 let list_points = [
-                    gettext("Fixed app closing when trying to open inaccessible files."),
-                    gettext("Fixed crash when trying to open files from network locations."),
-                    gettext(
-                        "Updated to the GNOME 43 platform, which brings the ability \
-to drag-and-drop from Files on Flatpak and a refreshed About dialog.",
-                    ),
-                    gettext("Added Tamil translation (thanks K.B.Dharun Krishna)."),
+                    gettext("Added several keyboard shortcuts along with the shortcuts window listing them."),
+                    gettext("Fixed app crashing when opening files which involve invalid UTF-8."),
+                    gettext("Updated to the GNOME 44 platform."),
+                    gettext("Added Arabic translation (thanks tech-man)."),
+                    gettext("Added Occitan translation (thanks Quentin PAGÈS)."),
                     gettext("Updated translations."),
                 ];
                 let release_notes = String::from("<p>")
-                    + &gettext(
-                        "This release fixes app closing on inaccessible files \
-and updates it to the GNOME 43 platform.",
-                    )
+                    + &gettext("This release adds keyboard shortcuts and fixes a rare crash with some files.")
                     + "</p><ul><li>"
                     + &list_points.join("</li><li>")
                     + "</li></ul>";
