@@ -7,6 +7,7 @@ mod imp {
         cell::{Cell, RefCell},
         ffi::{OsStr, OsString},
         fs::File,
+        marker::PhantomData,
         os::unix::prelude::OsStringExt,
         path::{Component, Path, PathBuf},
         str,
@@ -102,6 +103,9 @@ mod imp {
         #[template_child]
         overlay_error_page: TemplateChild<adw::ToastOverlay>,
 
+        #[property(get = Self::is_playing, set = Self::set_is_playing, explicit_notify)]
+        is_playing: PhantomData<bool>,
+
         content_type: RefCell<Option<glib::GString>>,
         input_path: RefCell<Option<PathBuf>>,
         #[property(set, construct_only)]
@@ -110,6 +114,14 @@ mod imp {
     }
 
     impl VtWindow {
+        fn is_playing(&self) -> bool {
+            self.video_preview.is_playing()
+        }
+
+        fn set_is_playing(&self, value: bool) {
+            self.video_preview.set_is_playing(value)
+        }
+
         fn on_entry_changed(&self) {
             let start_end = validate_entries(&self.entry_start, &self.entry_end);
             self.video_preview.set_start_end(start_end);
