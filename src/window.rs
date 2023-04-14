@@ -700,6 +700,10 @@ mod imp {
                                     }
                                 }
                                 Err(err) => {
+                                    // ffmpeg's JSON output fixes up invalid UTF-8 for us with
+                                    // replacement characters, so this should be unreachable.
+                                    // However, leave it as a warning because it's not a big deal if
+                                    // it somehow fails, and not worth crashing the process.
                                     warn!("ffprobe returned invalid UTF-8: {err:?}");
                                 }
                             }
