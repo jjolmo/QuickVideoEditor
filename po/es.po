@@ -461,70 +461,70 @@ msgstr "Contribuir a las traducciones"
 #: src/shortcuts.blp:9
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "General"
 
 #: src/shortcuts.blp:12
 msgctxt "shortcut window"
 msgid "New window"
-msgstr ""
+msgstr "Ventana nueva"
 
 #: src/shortcuts.blp:17
 msgctxt "shortcut window"
 msgid "Play / Pause"
-msgstr ""
+msgstr "Reproducir / Pausar"
 
 #: src/shortcuts.blp:22
 msgctxt "shortcut window"
 msgid "Trim"
-msgstr ""
+msgstr "Recortar"
 
 #: src/shortcuts.blp:27
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
-msgstr ""
+msgstr "Atajos del teclado"
 
 #: src/shortcuts.blp:32
 msgctxt "shortcut window"
 msgid "Close window"
-msgstr ""
+msgstr "Cerrar ventana"
 
 #: src/shortcuts.blp:37
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
+msgstr "Salir"
 
 #: src/window.rs:751
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "Added several keyboard shortcuts along with the shortcuts window listing them."
-msgstr ""
+msgstr "Se han añadido varios atajos del teclado junto con la ventana de atajos que los enumera."
 
 #: src/window.rs:752
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Fixed app crashing when opening files which involve invalid UTF-8."
-msgstr ""
+msgstr "Se ha corregido el fallo de la aplicación al abrir archivos con UTF-8 no válido."
 
 #: src/window.rs:753
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Updated to the GNOME 44 platform."
-msgstr ""
+msgstr "Actualizada a la plataforma GNOME 44."
 
 #: src/window.rs:754
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Arabic translation (thanks tech-man)."
-msgstr ""
+msgstr "Añadida traducción al árabe (gracias tech-man)."
 
 #: src/window.rs:755
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Occitan translation (thanks Quentin PAGÈS)."
-msgstr ""
+msgstr "Añadida traducción al occitano (gracias Quentin PAGÈS)."
 
 #: src/window.rs:759
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release adds keyboard shortcuts and fixes a rare crash with some files."
-msgstr ""
+msgstr "Esta versión añade atajos del teclado y corrige un fallo poco frecuente con algunos archivos."
 
 #. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
 #: src/window.blp:14
 msgid "_Keyboard Shortcuts"
-msgstr ""
+msgstr "Atajos del _teclado"
 

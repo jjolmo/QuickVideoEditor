@@ -462,70 +462,88 @@ msgstr "Közreműködés a fordításban"
 #: src/shortcuts.blp:9
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Általános"
 
 #: src/shortcuts.blp:12
 msgctxt "shortcut window"
 msgid "New window"
-msgstr ""
+msgstr "Új ablak"
 
+#. Should the en source string have the spaces before and after `/` removed?
+#. 
+#. Should the en source string be:
+#. Play/Pause
+#. 
+#. What do you think?
+#. 
+#. Thank you
+#. 
+#. https://www.microsoft.com/en-us/language/Search?&searchTerm=Play%20%2F%20Pause&langID=382&Source=true&productid=undefined
 #: src/shortcuts.blp:17
 msgctxt "shortcut window"
 msgid "Play / Pause"
-msgstr ""
+msgstr "Lejátszás/szünet"
 
 #: src/shortcuts.blp:22
 msgctxt "shortcut window"
 msgid "Trim"
-msgstr ""
+msgstr "Vágás"
 
 #: src/shortcuts.blp:27
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
-msgstr ""
+msgstr "Billentyűparancsok"
 
 #: src/shortcuts.blp:32
 msgctxt "shortcut window"
 msgid "Close window"
-msgstr ""
+msgstr "Ablak bezárása"
 
 #: src/shortcuts.blp:37
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
+msgstr "Kilépés"
 
 #: src/window.rs:751
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "Added several keyboard shortcuts along with the shortcuts window listing them."
-msgstr ""
+msgstr "Számos billentyűparancsot adtunk hozzá, valamint az azokat felsoroló billentyűparancsokat tartalmazó ablakot."
 
+#. Should `encoding` be added to the en source string? It might make it easier to translate too.
+#. 
+#. Should the en source string be:
+#. Fixed app crashing when opening files which involve invalid UTF-8 encoding.
+#. 
+#. What do you think?
+#. 
+#. Thank you
 #: src/window.rs:752
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Fixed app crashing when opening files which involve invalid UTF-8."
-msgstr ""
+msgstr "Az érvénytelen UTF-8 kódolást tartalmazó fájlok megnyitásakor történő alkalmazás-összeomlás javítva lett."
 
 #: src/window.rs:753
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Updated to the GNOME 44 platform."
-msgstr ""
+msgstr "Frissítve a GNOME 44 platformra."
 
 #: src/window.rs:754
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Arabic translation (thanks tech-man)."
-msgstr ""
+msgstr "Arab fordítás hozzáadva (köszönet: tech-mannek)."
 
 #: src/window.rs:755
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Occitan translation (thanks Quentin PAGÈS)."
-msgstr ""
+msgstr "Okcitán fordítás hozzáadva (köszönet: PAGÈS Quentin)."
 
 #: src/window.rs:759
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release adds keyboard shortcuts and fixes a rare crash with some files."
-msgstr ""
+msgstr "Ez a kiadás billentyűparancsokat ad hozzá, és kijavítja az egyes fájloknál előforduló ritka összeomlást."
 
 #. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
 #: src/window.blp:14
 msgid "_Keyboard Shortcuts"
-msgstr ""
+msgstr "_Billentyűparancsok"
 

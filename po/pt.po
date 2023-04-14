@@ -34,7 +34,7 @@ msgstr "foi guardado"
 #. Translators: message dialog text.
 #: src/window.rs:435
 msgid "Trimming…"
-msgstr "a aparar..."
+msgstr "Aparando…"
 
 #. Translators: error dialog text.
 #: src/window.rs:488
@@ -107,7 +107,7 @@ msgstr "O Aparador de Vídeo corta o vídeo num fragmento através de um tempo d
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
 msgid "Main Window"
-msgstr "Janela Principal"
+msgstr "Janela principal"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:149
 msgid "This release replaces the Done dialog with an in-app notification and adds a command-line argument to specify the output file."
@@ -139,7 +139,7 @@ msgstr "Adicionado o atalho CTRL+Q para sair do Aparador de Vídeo."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:167
 msgid "Added a Dutch translation."
-msgstr "Adicionada a tradução neerlandesa."
+msgstr "Tradução neerlandesa adicionada."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:168
 msgid "Made video preview display an error message when it fails to load."
@@ -163,7 +163,7 @@ msgstr "Esta versão adiciona uma pré-visualização de vídeo e uma linha temp
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:182
 msgid "First release."
-msgstr "Primeiro lançamento."
+msgstr "Primeira versão."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:138
 msgid "This release fixes an issue where not all streams from the input file were copied into the output file."
@@ -175,11 +175,11 @@ msgstr "Todos os fluxos de ficheiros de entrada são agora copiados para os fich
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:141
 msgid "Added Swedish translation (thanks Åke Engelbrektson)."
-msgstr "Adicionada a tradução sueca (obrigado Åke Engelbrektson)."
+msgstr "Tradução sueca adicionada (obrigado Åke Engelbrektson)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:142
 msgid "Added Spanish translation (thanks Óscar Fernández Díaz)."
-msgstr "Adicionada a tradução espanhola (obrigado Óscar Fernández Díaz)."
+msgstr "Tradução espanhola adicionada (obrigado Óscar Fernández Díaz)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:143
 msgid "Made the commandline argument description translatable."
@@ -221,7 +221,7 @@ msgstr "Melhorada a animação na abertura de vídeos."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:122
 msgid "Added Croatian translation (thanks milotype)."
-msgstr "Adicionada a tradução croata(obrigado milotype)."
+msgstr "Tradução croata adicionada (obrigado milotype)."
 
 #: src/window.rs:756
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
@@ -315,19 +315,19 @@ msgstr "Corrigida a falha depois de fechar uma janela com notificação visível
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:93
 msgid "Added German translation (thanks Johannes Hayeß)."
-msgstr "Adicionada a tradução alemã (obrigado Johannes Hayeß)."
+msgstr "Tradução alemã adicionada (obrigado Johannes Hayeß)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:94
 msgid "Added Basque translation (thanks Sergio)."
-msgstr "Adicionada a tradução basca (obrigado Sergio)."
+msgstr "Tradução basca adicionada (obrigado Sergio)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:95
 msgid "Added Hungarian translation (thanks ovari)."
-msgstr "Adicionada a tradução húngara (obrigado ovari)."
+msgstr "Tradução húngara adicionada (obrigado ovari)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:97
 msgid "Added Brazilian Portuguese translation (thanks Gustavo Costa)."
-msgstr "Adicionada a tradução português do Brasil (obrigado Gustavo Costa)."
+msgstr "Tradução português do brasil adicionada (obrigado Gustavo Costa)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:98
 msgid "Specified input device and screen size recommendations to improve display in the new GNOME Software."
@@ -335,7 +335,7 @@ msgstr "Recomendações específicas do dispositivo de entrada e do tamanho do e
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:96
 msgid "Added Italian translation (thanks Albano Battistella)."
-msgstr "Adicionada a tradução italiana (obrigado Albano Battistella)."
+msgstr "Tradução italiana adicionada (obrigado Albano Battistella)."
 
 #. Translators: checkbox in output file selection dialog.
 #: src/window.rs:311
@@ -356,7 +356,7 @@ msgstr "Adicionada a tradução polaca (obrigado Avery)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:78
 msgid "Added Portuguese translation (thanks Bio DevM)."
-msgstr "Adicionada a tradução portuguesa (obrigado Bio DevM)."
+msgstr "Tradução portuguesa adicionada (obrigado Bio DevM Hugo Carvalho)."
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:20
@@ -365,11 +365,8 @@ msgstr "Não foi possível carregar a faixa de vídeo"
 
 #. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:23
-#, fuzzy
 msgid "Maybe the file only has an audio track, or maybe the necessary video codec is missing."
-msgstr "Falha ao carregar ficheiro de vídeo.\n"
-"\n"
-"Talvez o ficheiro seja apenas de áudio ou o descodificador de vídeo necessário esteja em falta."
+msgstr "Talvez o ficheiro seja apenas de áudio ou o descodificador de vídeo necessário esteja em falta."
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
@@ -385,15 +382,12 @@ msgstr "Falha na pré-visualização do vídeo"
 
 #. Translators: Description that is shown upon video preview loading error.
 #: src/window.blp:128
-#, fuzzy
 msgid "Please enter the start and end timestamps manually.\n"
 "\n"
 "If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
-msgstr "Falha no carregamento da pré-visualização.\n"
+msgstr "Introduza manualmente os tempos de começo e fim.\n"
 "\n"
-"Introduza manualmente os tempos de começo e fim.\n"
-"\n"
-"Está a correr o Aparador de Vídeo sob o formato Flatpack, note que abrir ficheiros por arrasto poderá não funcionar."
+"Se está a executar o Aparador de Vídeo sob o formato Flatpak, note que a abertura de ficheiros por arrasto poderá não funcionar."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:70
 msgid "This release adds an accurate trimming with re-encoding option and refreshes the design a bit."
@@ -421,23 +415,23 @@ msgstr "O botão \"Mostrar no Ficheiros\" foi ativado para todas as instalaçõe
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:59
 msgid "Added Czech translation (thanks Jakub Mach)."
-msgstr "Adicionada a tradução checa (obrigado Jakub Mach)."
+msgstr "Tradução checa adicionada (obrigado Jakub Mach)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:60
 msgid "Added French translation."
-msgstr "Adicionada a tradução francesa."
+msgstr "Tradução francesa adicionada."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:61
 msgid "Added Galician translation (thanks Fran Diéguez)."
-msgstr "Adicionada a tradução galega (obrigado Fran Diéguez)."
+msgstr "Tradução galega adicionada (obrigado Fran Diéguez)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:62
 msgid "Added Turkish translation."
-msgstr "Adicionada a tradução turca."
+msgstr "Tradução turca adicionada."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:63
 msgid "Added Ukrainian translation (thanks Andrij Mizyk)."
-msgstr "Adicionada a tradução ucraniana (obrigado Andrij Mizyk)."
+msgstr "Tradução ucraniana adicionada (obrigado Andrij Mizyk)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:46
 msgid "Fixed app closing when trying to open inaccessible files."
@@ -445,15 +439,15 @@ msgstr "Corrigido o fecho da aplicação ao tentar abrir ficheiros inacessíveis
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:47
 msgid "Fixed crash when trying to open files from network locations."
-msgstr "Corrigido o erro ao abrir ficheiros localizados na rede."
+msgstr "Corrigida a falha ao abrir ficheiros localizados na rede."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:48
 msgid "Updated to the GNOME 43 platform, which brings the ability to drag-and-drop from Files on Flatpak and a refreshed About dialog."
-msgstr "Atualizado para o Gnome 43, que permite a possibilidade de arrastar ficheiros e um refresh à janela de Sobre."
+msgstr "Atualizado para a plataforma GNOME 43, o que traz a capacidade de arrastar e largar a partir do Ficheiros no Flatpak e uma janela Acerca atualizada."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:49
 msgid "Added Tamil translation (thanks K.B.Dharun Krishna)."
-msgstr "Adicionada a tradução tamil (obrigado K.B.Dharun Krishna)."
+msgstr "Tradução tamil adicionada (obrigado K.B.Dharun Krishna)."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:44
 msgid "This release fixes app closing on inaccessible files and updates it to the GNOME 43 platform."
@@ -467,70 +461,70 @@ msgstr "Contribuições com as traduções"
 #: src/shortcuts.blp:9
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Geral"
 
 #: src/shortcuts.blp:12
 msgctxt "shortcut window"
 msgid "New window"
-msgstr ""
+msgstr "Nova janela"
 
 #: src/shortcuts.blp:17
 msgctxt "shortcut window"
 msgid "Play / Pause"
-msgstr ""
+msgstr "Reproduzir / Pausa"
 
 #: src/shortcuts.blp:22
 msgctxt "shortcut window"
 msgid "Trim"
-msgstr ""
+msgstr "Aparar"
 
 #: src/shortcuts.blp:27
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
-msgstr ""
+msgstr "Teclas de atalho"
 
 #: src/shortcuts.blp:32
 msgctxt "shortcut window"
 msgid "Close window"
-msgstr ""
+msgstr "Fechar janela"
 
 #: src/shortcuts.blp:37
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
+msgstr "Sair"
 
 #: src/window.rs:751
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "Added several keyboard shortcuts along with the shortcuts window listing them."
-msgstr ""
+msgstr "Adicionados várias teclas de atalho juntamente com a janela de atalhos que os lista."
 
 #: src/window.rs:752
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Fixed app crashing when opening files which involve invalid UTF-8."
-msgstr ""
+msgstr "Corrigida a falha da aplicação ao abrir ficheiros que envolvem caracteres UTF-8 inválidos."
 
 #: src/window.rs:753
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Updated to the GNOME 44 platform."
-msgstr ""
+msgstr "Atualizado para a plataforma do GNOME 44."
 
 #: src/window.rs:754
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Arabic translation (thanks tech-man)."
-msgstr ""
+msgstr "Tradução árabe adicionada (obrigado tech-man)."
 
 #: src/window.rs:755
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Occitan translation (thanks Quentin PAGÈS)."
-msgstr ""
+msgstr "Tradução occitana adicionada (obrigado Quentin PAGÈS)."
 
 #: src/window.rs:759
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release adds keyboard shortcuts and fixes a rare crash with some files."
-msgstr ""
+msgstr "Esta versão adiciona teclas de atalho e corrige uma rara falha com alguns ficheiros."
 
 #. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
 #: src/window.blp:14
 msgid "_Keyboard Shortcuts"
-msgstr ""
+msgstr "_Teclas de atalho"
 

@@ -466,70 +466,70 @@ msgstr "Bidra med översättningar"
 #: src/shortcuts.blp:9
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Allmänt"
 
 #: src/shortcuts.blp:12
 msgctxt "shortcut window"
 msgid "New window"
-msgstr ""
+msgstr "Nytt fönster"
 
 #: src/shortcuts.blp:17
 msgctxt "shortcut window"
 msgid "Play / Pause"
-msgstr ""
+msgstr "Spela/Pausa"
 
 #: src/shortcuts.blp:22
 msgctxt "shortcut window"
 msgid "Trim"
-msgstr ""
+msgstr "Trimma"
 
 #: src/shortcuts.blp:27
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
-msgstr ""
+msgstr "Tangentbordsgenvägar"
 
 #: src/shortcuts.blp:32
 msgctxt "shortcut window"
 msgid "Close window"
-msgstr ""
+msgstr "Stäng fönster"
 
 #: src/shortcuts.blp:37
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
+msgstr "Avsluta"
 
 #: src/window.rs:751
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "Added several keyboard shortcuts along with the shortcuts window listing them."
-msgstr ""
+msgstr "Lade till flera tangentbordsgenvägar tillsammans med genvägsfönstret som visar dem."
 
 #: src/window.rs:752
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Fixed app crashing when opening files which involve invalid UTF-8."
-msgstr ""
+msgstr "Fixade så att programmet inte kraschar när du öppnar filer som involverar ogiltig UTF-8."
 
 #: src/window.rs:753
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Updated to the GNOME 44 platform."
-msgstr ""
+msgstr "Uppdaterad till GNOME 44-plattformen."
 
 #: src/window.rs:754
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Arabic translation (thanks tech-man)."
-msgstr ""
+msgstr "Tillagd Arabisk översättning (tack tech-man)."
 
 #: src/window.rs:755
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Occitan translation (thanks Quentin PAGÈS)."
-msgstr ""
+msgstr "Tillagd Occitanska översättning (tack Quentin Pagès)."
 
 #: src/window.rs:759
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release adds keyboard shortcuts and fixes a rare crash with some files."
-msgstr ""
+msgstr "Denna utgåva lägger till kortkommandon och fixar en sällsynt krasch med vissa filer."
 
 #. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
 #: src/window.blp:14
 msgid "_Keyboard Shortcuts"
-msgstr ""
+msgstr "_Tangentbordsgenvägar"
 
