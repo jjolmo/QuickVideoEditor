@@ -43,6 +43,7 @@ template VtWindow : ApplicationWindow {
       Button button_open {
         /* Translators: Video open button label. */
         label: _("Open");
+        tooltip-text: _("Select a File");
 
         styles ["suggested-action"]
       }
@@ -52,6 +53,7 @@ template VtWindow : ApplicationWindow {
         menu-model: primary_menu;
         primary: true;
         icon-name: "open-menu-symbolic";
+        tooltip-text: _("Main Menu");
       }
     }
 
@@ -70,6 +72,7 @@ template VtWindow : ApplicationWindow {
           /* Translators: Trim button. */
           label: _("Trim");
           sensitive: false;
+          tooltip-text: _("Trim Video");
 
           styles ["suggested-action"]
         }
@@ -79,6 +82,7 @@ template VtWindow : ApplicationWindow {
           menu-model: primary_menu;
           primary: true;
           icon-name: "open-menu-symbolic";
+          tooltip-text: _("Main Menu");
         }
       };
     }
