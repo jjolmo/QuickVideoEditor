@@ -9,7 +9,7 @@
     "add-extensions" : {
         "org.freedesktop.Platform.ffmpeg-full" : {
             "directory" : "lib/ffmpeg",
-            "version" : "22.08",
+            "version" : "23.08beta",
             "add-ld-path" : "."
         }
     },
