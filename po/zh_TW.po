@@ -1,0 +1,545 @@
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: Video Trimmer\n"
+"Language: zh-Hant\n"
+
+#. Main window title.
+#: src/main.rs:39 src/window.rs:770 src/window.blp:27
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
+msgid "Video Trimmer"
+msgstr "Video Trimmer"
+
+#. Can't extract filenames from a VariantDict yet.
+#. Translators: --output commandline option description.
+#: src/application.rs:37
+msgid "Output file path"
+msgstr "輸出檔案路徑"
+
+#. Translators: --output commandline option arg description.
+#: src/application.rs:39
+msgid "PATH"
+msgstr "路徑"
+
+#. Translators: text on the in-app notification after trimming was done.
+#. The template is: <video filename> has been saved
+#: src/window.rs:461
+msgid "has been saved"
+msgstr "已儲存"
+
+#. Translators: message dialog text.
+#: src/window.rs:435
+msgid "Trimming…"
+msgstr "正在修剪…"
+
+#. Translators: error dialog text.
+#: src/window.rs:488
+msgid "Error trimming video"
+msgstr "修剪影片時出錯"
+
+#. Translators: error dialog text.
+#: src/window.rs:497
+msgid "Could not communicate with the ffmpeg subprocess"
+msgstr "無法與 ffmpeg 子程序聯繫"
+
+#. Translators: error dialog text.
+#: src/window.rs:538
+msgid "Could not create the ffmpeg subprocess"
+msgstr "無法建立 ffmpeg 子程序"
+
+#. Translators: file chooser file filter name.
+#: src/window.rs:914
+msgid "Video files"
+msgstr "影片檔案"
+
+#. Translators: file chooser dialog title.
+#: src/window.rs:923
+msgid "Open video"
+msgstr "開啟影片"
+
+#. Label on the initial state.
+#: src/window.blp:102
+msgid "Press the Open button to open a video file."
+msgstr "點擊開啟按鈕來開啟檔案。"
+
+#. Label for the entry for the end timestamp.
+#: src/window.blp:172
+msgid "End"
+msgstr "結尾"
+
+#. Label for the entry for the start timestamp.
+#: src/window.blp:155
+msgid "Start"
+msgstr "開頭"
+
+#. Video open button label.
+#: src/window.blp:45
+msgid "Open"
+msgstr "開啟"
+
+#. Trim button.
+#: src/window.blp:75
+msgid "Trim"
+msgstr "修剪"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
+msgid "Trim videos quickly"
+msgstr "快速修剪影片"
+
+#. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
+msgid "Cut;Movie;Film;Clip;"
+msgstr "Cut;Movie;Film;Clip;修剪;影片;"
+
+#: src/window.rs:774
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
+msgid "Ivan Molodetskikh"
+msgstr "Ivan Molodetskikh"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
+msgid "Video Trimmer cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality."
+msgstr "Video Trimmer 會剪掉影片開頭和結尾額外的部分。提供開頭和結尾的時間戳之後，Video Trimmer 就會將不在範圍內的部分剪掉。影片不會被重新編碼，所以整個流程非常快也不會降低影片品質。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
+msgid "Main Window"
+msgstr "主視窗"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:149
+msgid "This release replaces the Done dialog with an in-app notification and adds a command-line argument to specify the output file."
+msgstr "這個版本將完成時對話框替換成一個應用程式內的通知，並新增了一個用來指定輸出檔案的命令列引數。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:151
+msgid "Added an --output or -o argument to specify the output video path. It will be pre-filled in the save dialog."
+msgstr "新增一個引數，--output 或 -o，用來指定輸出影片路徑。儲存對話框會自動填入這個引數。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:152
+msgid "Added support for opening videos with DnD, although it doesn't work on Flatpak unless Video Trimmer is given filesystem access."
+msgstr "新增透過拖放來開啟影片的支援，不過在 Flatpak 上需要提供檔案系統存取權給 Video Trimmer 之後才能正常運作。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:153
+msgid "Replaced the Done dialog with an in-app notification to better follow the GNOME HIG."
+msgstr "將完成時對話框替換成一個應用程式內的通知，更加符合 GNOME 的 HIG。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:159
+msgid "This release fixes file filter not working on Flatpak and possibly a related file chooser crash."
+msgstr "這個版本修正了在 Flatpak 上檔案篩選器無法正常運作的問題，並且或許修正了一個相關的檔案選擇器的崩潰。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:164
+msgid "This release fixes crashes related to video preview errors, adds a Ctrl+Q exit shortcut and a Dutch translation."
+msgstr "這個版本修正了影片預覽相關的崩潰，新增了 Ctrl+Q 離開應用程式的快捷鍵，並新增了荷蘭語的翻譯。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:166
+msgid "Added a Ctrl+Q shortcut to quit Video Trimmer."
+msgstr "新增 Ctrl+Q 快捷鍵來離開 Video Trimmer。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:167
+msgid "Added a Dutch translation."
+msgstr "新增了荷蘭語翻譯。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:168
+msgid "Made video preview display an error message when it fails to load."
+msgstr "讓影片預覽載入失敗時顯示一個錯誤訊息。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:169
+msgid "Fixed a crash when the GL runtime is not installed (e.g. when installing the Flathub package on clean Ubuntu 18.04 through Ubuntu Software)."
+msgstr "修正 GL 執行環境未安裝時會發生的崩潰（這個狀況會在例如新安裝的 Ubuntu 18.04 上透過 Ubuntu 軟體中心從 Flathub 安裝時發生）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:170
+msgid "Fixed a crash when required GStreamer plugins are not installed."
+msgstr "修正必要的 GStreamer 外掛未安裝時會發生的崩潰。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:171
+msgid "Fixed a crash on failing to change the playback position."
+msgstr "修正播放位置變更失敗時會發生的崩潰。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:177
+msgid "This release adds a video preview and a timeline where the target region can be adjusted using the mouse."
+msgstr "這個版本新增了影片預覽，以及一個可以用滑鼠調整目標範圍的時間軸。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:182
+msgid "First release."
+msgstr "初始版本。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:138
+msgid "This release fixes an issue where not all streams from the input file were copied into the output file."
+msgstr "這個版本修正了輸入檔案的串流有時不是全部都會被複製到輸出檔案的錯誤。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:140
+msgid "All input file streams are now copied to the output file rather than just a single of each type. Subtitles are now copied too rather than skipped."
+msgstr "輸入檔案的所有串流現在都會複製到輸出檔案，而不是每個類型各只有一個。字幕現在也會被複製，而不會被忽略。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:141
+msgid "Added Swedish translation (thanks Åke Engelbrektson)."
+msgstr "新增了瑞典語翻譯（感謝 Åke Engelbrektson）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:142
+msgid "Added Spanish translation (thanks Óscar Fernández Díaz)."
+msgstr "新增了西班牙語翻譯（感謝 Óscar Fernández Díaz）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:143
+msgid "Made the commandline argument description translatable."
+msgstr "讓命令列引數的說明可被翻譯。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:129
+msgid "This release fixes an error when trimming GoPro recordings."
+msgstr "這個版本修正了修剪 GoPro 錄影時的一個錯誤。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:131
+msgid "Data streams are no longer copied to the output file as a workaround to prevent errors on GoPro recordings."
+msgstr "資料串流不再會被複製到輸出檔案，做為避免 GoPro 錄影出錯的替代辦法。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:132
+msgid "Updated Spanish translation."
+msgstr "更新西班牙語翻譯。"
+
+#. Translators: error dialog title.
+#: src/window.rs:330 src/window.rs:583 src/window.rs:945
+msgid "Error"
+msgstr "錯誤"
+
+#. Translators: error dialog text.
+#: src/window.rs:333 src/window.rs:586 src/window.rs:948
+msgid "Video Trimmer can only operate on local files. Please choose another file."
+msgstr "Video Trimmer 只能處理本機檔案。請選擇另一個檔案。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:118
+msgid "Video Trimmer is now a GTK 4 application!"
+msgstr "Video Trimmer 現在是 GTK 4 應用程式了！"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:120
+msgid "The GTK 4 port hopefully fixes video-driver-related crashes."
+msgstr "GTK 4 移植應該有修正圖形驅動程式相關的崩潰。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:121
+msgid "Improved window animations when opening videos."
+msgstr "改善開啟影片時的視窗動畫。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:122
+msgid "Added Croatian translation (thanks milotype)."
+msgstr "新增了克羅埃西亞語翻譯（感謝 milotype）。"
+
+#: src/window.rs:760
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:50
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:64
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:79
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:99
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:112
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:123
+msgid "Updated translations."
+msgstr "更新了翻譯。"
+
+#. Translators: this is appended to the output video file name.
+#. So for example "my video.mp4" will become "my video (trimmed).mp4".
+#: src/window.rs:281
+msgid " (trimmed)"
+msgstr "（已修剪）"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:107
+msgid "The default name for the output video is now \"input video name (trimmed)\"."
+msgstr "輸出影片的預設名稱已改為「輸入影片名稱（已修剪）」。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:108
+msgid "The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Video Trimmer the filesystem=host permission (for example, using Flatseal)."
+msgstr "輸出影片的預設資料夾已改為與輸入影片相同。 請注意：在透過 Flatpak 執行時，您需要給予 Video Trimmer \"filesystem=host\" 的 權限（或許透過 Flatseal），這個功能才能正常運作。"
+
+#. Translators: shown in the About dialog, put your name here.
+#: src/window.rs:777
+msgid "translator-credits"
+msgstr "Kisaragi Hiu"
+
+#. Primary menu entry that opens the About dialog.
+#: src/window.blp:20
+msgid "_About Video Trimmer"
+msgstr "關於 Video Trimmer(_A)"
+
+#. Primary menu entry that opens a new window.
+#: src/window.blp:8
+msgid "_New Window"
+msgstr "新視窗(_N)"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:109
+msgid "It's now possible to open a new Video Trimmer window from the new primary menu."
+msgstr "現在可以從主目錄裡開啟新的 Video Trimmer 視窗了。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:105
+msgid "This release contains a few small improvements."
+msgstr "這個版本包含了一些小改善。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:110
+msgid "The timestamp text fields are now arranged in a better way in RTL languages."
+msgstr "讓時間戳文字欄位在使用從右到左的語言時排版得更好一點。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:111
+msgid "Video Trimmer now uses libadwaita, which means a slightly updated visual style (rounded window corners!)."
+msgstr "Video Trimmer 現在使用 libadwaita，這帶來一個稍微更新的視覺風格，例如圓滑的視窗角落。"
+
+#. Translators: checkbox in output file selection dialog that strips audio from the
+#. video file.
+#: src/window.rs:306
+msgid "Remove audio"
+msgstr "移除音訊"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:85
+msgid "This release contains a few improvements and adds a number of translations."
+msgstr "這個版本包含一些改善，並新增了幾個翻譯。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:87
+msgid "Added a checkbox to remove the audio track to the output file selection dialog."
+msgstr "新增移除音訊軌道用的勾選方塊到輸出檔案選取對話框裡。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:88
+msgid "The video is now automatically paused when the trim button is pressed."
+msgstr "點擊修剪按鈕時會自動暫停播放影片。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:89
+msgid "The .mp4 output file extension is no longer default when it cannot be used (this affected videos from some Sony cameras)."
+msgstr "無法使用 .mp4 時不再將它用為預設的輸出檔案副檔名（這個問題影響了某些 Sony 相機錄的影片）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:90
+msgid "Added a message when the opened file has no video track."
+msgstr "新增了開啟的檔案沒有影片軌時的訊息。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:91
+msgid "Updated libadwaita, which means slightly newer version of the Adwaita theme."
+msgstr "更新了 libadwaita，這帶來了稍微更新的 Adwaita 主題。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:92
+msgid "Fixed a crash after closing a window with a visible notification."
+msgstr "修正了還有通知時關閉視窗會發生的崩潰。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:93
+msgid "Added German translation (thanks Johannes Hayeß)."
+msgstr "新增了德文翻譯（感謝 Johannes Hayeß）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:94
+msgid "Added Basque translation (thanks Sergio)."
+msgstr "新增了巴斯克語翻譯（感謝 Sergio）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:95
+msgid "Added Hungarian translation (thanks ovari)."
+msgstr "新增了匈牙利語翻譯（感謝 ovari）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:97
+msgid "Added Brazilian Portuguese translation (thanks Gustavo Costa)."
+msgstr "新增了巴西葡萄牙語翻譯（感謝 Gustavo Costa）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:98
+msgid "Specified input device and screen size recommendations to improve display in the new GNOME Software."
+msgstr "指定了建議的輸入裝置與螢幕大小來改善在新的《GNOME 軟體》中的顯示。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:96
+msgid "Added Italian translation (thanks Albano Battistella)."
+msgstr "新增了義大利語翻譯（感謝 Albano Battistella）。"
+
+#. Translators: checkbox in output file selection dialog.
+#: src/window.rs:311
+msgid "Accurate trimming, but slower and may lose quality"
+msgstr "精確修剪，較慢且可能造成品質降低"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:72
+msgid "Added a checkbox for accurate trimming with re-encoding to the output file selection dialog."
+msgstr "新增透過重新編碼來進行精確修剪的勾選方塊到輸出檔案選取對話框裡。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:76
+msgid "Added Japanese translation (thanks Sibuya Kaz)."
+msgstr "新增了日文翻譯（感謝 Sibuya Kaz）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:77
+msgid "Added Polish translation (thanks Avery)."
+msgstr "新增了波蘭語翻譯（感謝 Avery）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:78
+msgid "Added Portuguese translation (thanks Bio DevM)."
+msgstr "新增了葡萄牙語翻譯（感謝 Bio DevM）。"
+
+#. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:20
+msgid "Could Not Load Video Track"
+msgstr "無法載入影片軌"
+
+#. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:23
+msgid "Maybe the file only has an audio track, or maybe the necessary video codec is missing."
+msgstr "檔案可能只有音訊軌道，也可能是必要的影片編碼器未安裝。"
+
+#. Translators: text on the button of the toast after
+#. trimming was done to show the output file in the file
+#. manager.
+#: src/window.rs:467
+msgid "Show in Files"
+msgstr "在「檔案」中顯示"
+
+#. Translators: Title that is shown upon video preview loading error.
+#: src/window.blp:133
+msgid "Video Preview Failed to Load"
+msgstr "影片預覽載入失敗"
+
+#. Translators: Description that is shown upon video preview loading error.
+#: src/window.blp:136
+msgid "Please enter the start and end timestamps manually.\n"
+"\n"
+"If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
+msgstr "請手動輸入開頭與結尾的時間戳。\n"
+"\n"
+"如果您是透過 Flatpak 執行 Video Trimmer，請注意可能會無法透過拖放來開啟檔案。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:70
+msgid "This release adds an accurate trimming with re-encoding option and refreshes the design a bit."
+msgstr "這個版本新增了透過重新編碼來進行精確修剪的選項，並且稍微更新了設計。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:73
+msgid "Updated the design to better match the newer version of the Adwaita theme."
+msgstr "更新設計來更加符合 Adwaita 主題的新版本。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:74
+msgid "Added dark style and high contrast support and made dark style the default."
+msgstr "新增暗色風格，支援高對比模式，並將暗色風格設為預設。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:75
+msgid "Added a \"Show in Files\" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Video Trimmer the filesystem=host permission (for example, using Flatseal)."
+msgstr "在修剪完成的通知裡新增了「在「檔案」中顯示」的按鈕。請注意：由於一些限制，這個功能目前在某些 Flatpak 安裝上是停用的，但您可以自行（或許利用 Flatseal）提供 filesystem=host 權限給 Video Trimmer 來讓它能夠使用。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:56
+msgid "This release enables \"Show in Files\" for Flatpak and updates translations."
+msgstr "這個版本為 Flatpak 啟用了「在「檔案」中顯示」的按鈕，並更新了翻譯。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:58
+msgid "The \"Show in Files\" button has been enabled for all Flatpak installs."
+msgstr "為所有 Flatpak 安裝啟用「在「檔案」中顯示」按鈕。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:59
+msgid "Added Czech translation (thanks Jakub Mach)."
+msgstr "新增了捷克語翻譯（感謝 Jakub Mach）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:60
+msgid "Added French translation."
+msgstr "新增了法語翻譯。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:61
+msgid "Added Galician translation (thanks Fran Diéguez)."
+msgstr "新增了加利西亞語翻譯（感謝 Fran Diéguez）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:62
+msgid "Added Turkish translation."
+msgstr "新增了土耳其語翻譯。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:63
+msgid "Added Ukrainian translation (thanks Andrij Mizyk)."
+msgstr "新增了烏克蘭語翻譯（感謝 Andrij Mizyk）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:46
+msgid "Fixed app closing when trying to open inaccessible files."
+msgstr "修正了嘗試使用無法存取的檔案時應用程式會關閉的問題。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:47
+msgid "Fixed crash when trying to open files from network locations."
+msgstr "修正了嘗試從網路位置開啟檔案時會發生的崩潰。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:48
+msgid "Updated to the GNOME 43 platform, which brings the ability to drag-and-drop from Files on Flatpak and a refreshed About dialog."
+msgstr "更新到 GNOME 43 平台，它提供了透過 Flatpak 執行時從「檔案」拖放檔案的支援以及新的「關於」對話框。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:49
+msgid "Added Tamil translation (thanks K.B.Dharun Krishna)."
+msgstr "新增了坦米爾語翻譯（感謝 K.B.Dharun Krishna）。"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:44
+msgid "This release fixes app closing on inaccessible files and updates it to the GNOME 43 platform."
+msgstr "這個版本修正了嘗試使用無法存取的檔案時應用程式會關閉的問題，並且更新到了 GNOME 43 平台。"
+
+#. Translators: link title in the About dialog.
+#: src/window.rs:783
+msgid "Contribute Translations"
+msgstr "貢獻翻譯"
+
+#: src/shortcuts.blp:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr "一般"
+
+#: src/shortcuts.blp:12
+msgctxt "shortcut window"
+msgid "New window"
+msgstr "新視窗"
+
+#: src/shortcuts.blp:17
+msgctxt "shortcut window"
+msgid "Play / Pause"
+msgstr "播放 / 暫停"
+
+#: src/shortcuts.blp:22
+msgctxt "shortcut window"
+msgid "Trim"
+msgstr "修剪"
+
+#: src/shortcuts.blp:27
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "鍵盤快捷鍵"
+
+#: src/shortcuts.blp:32
+msgctxt "shortcut window"
+msgid "Close window"
+msgstr "關閉視窗"
+
+#: src/shortcuts.blp:37
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "離開"
+
+#: src/window.rs:755
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
+msgid "Added several keyboard shortcuts along with the shortcuts window listing them."
+msgstr "新增數個鍵盤快捷鍵，以及列舉快捷鍵的視窗。"
+
+#: src/window.rs:756
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
+msgid "Fixed app crashing when opening files which involve invalid UTF-8."
+msgstr "修正應用程式在開啟含有無效 UTF-8 的檔案時會發生的崩潰。"
+
+#: src/window.rs:757
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
+msgid "Updated to the GNOME 44 platform."
+msgstr "更新到 GNOME 44 平台。"
+
+#: src/window.rs:758
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
+msgid "Added Arabic translation (thanks tech-man)."
+msgstr "新增了阿拉伯語翻譯（感謝 tech-man）。"
+
+#: src/window.rs:759
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
+msgid "Added Occitan translation (thanks Quentin PAGÈS)."
+msgstr "新增了奧克語翻譯（感謝 Quentin PAGÈS）。"
+
+#: src/window.rs:763
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
+msgid "This release adds keyboard shortcuts and fixes a rare crash with some files."
+msgstr "這個版本新增了鍵盤快捷鍵，並修正了一個某些檔案上會發生的罕見崩潰。"
+
+#. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
+#: src/window.blp:14
+msgid "_Keyboard Shortcuts"
+msgstr "鍵盤快捷鍵(_K)"
+
+#. Translators: Video open button tooltip.
+#: src/window.blp:47
+msgid "Select a File"
+msgstr ""
+
+#. Translators: Main menu button tooltip.
+#: src/window.blp:58 src/window.blp:89
+msgid "Main Menu"
+msgstr ""
+
+#. Translators: Trim button tooltip.
+#: src/window.blp:78
+msgid "Trim Video"
+msgstr ""
+
