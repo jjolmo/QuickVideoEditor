@@ -8,7 +8,7 @@ msgstr ""
 "Language: uk\n"
 
 #. Main window title.
-#: src/main.rs:39 src/window.rs:766 src/window.blp:27
+#: src/main.rs:39 src/window.rs:770 src/window.blp:27
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
@@ -52,27 +52,27 @@ msgid "Could not create the ffmpeg subprocess"
 msgstr "Не можливо створити підпроцес ffmpeg"
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:910
+#: src/window.rs:914
 msgid "Video files"
 msgstr "Файли відеозаписів"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:919
+#: src/window.rs:923
 msgid "Open video"
 msgstr "Відкрити відеозапис"
 
 #. Label on the initial state.
-#: src/window.blp:94
+#: src/window.blp:102
 msgid "Press the Open button to open a video file."
 msgstr "Натисніть кнопку Відкрити, щоб відкрити файл відеозапису."
 
 #. Label for the entry for the end timestamp.
-#: src/window.blp:164
+#: src/window.blp:172
 msgid "End"
 msgstr "Кінець"
 
 #. Label for the entry for the start timestamp.
-#: src/window.blp:147
+#: src/window.blp:155
 msgid "Start"
 msgstr "Початок"
 
@@ -82,7 +82,7 @@ msgid "Open"
 msgstr "Відкрити"
 
 #. Trim button.
-#: src/window.blp:71
+#: src/window.blp:75
 msgid "Trim"
 msgstr "Обрізати"
 
@@ -96,7 +96,7 @@ msgstr "Обрізати відеозаписи швидко"
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Вирізати;Фільм;Кліп;Нарізка;"
 
-#: src/window.rs:770
+#: src/window.rs:774
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
 msgid "Ivan Molodetskikh"
 msgstr "Ivan Molodetskikh"
@@ -151,7 +151,7 @@ msgstr "Виправлено збій, коли середовище викон�
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:170
 msgid "Fixed a crash when required GStreamer plugins are not installed."
-msgstr "Виправлено збій коли не встановлена необхідна втулка GStreamer."
+msgstr "Виправлено збій коли не встановлено необхідні плагіни GStreamer."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:171
 msgid "Fixed a crash on failing to change the playback position."
@@ -198,12 +198,12 @@ msgid "Updated Spanish translation."
 msgstr "Оновлено іспанський переклад."
 
 #. Translators: error dialog title.
-#: src/window.rs:330 src/window.rs:583 src/window.rs:941
+#: src/window.rs:330 src/window.rs:583 src/window.rs:945
 msgid "Error"
 msgstr "Помилка"
 
 #. Translators: error dialog text.
-#: src/window.rs:333 src/window.rs:586 src/window.rs:944
+#: src/window.rs:333 src/window.rs:586 src/window.rs:948
 msgid "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "Video Trimmer може оперувати лише локальними файлами. Оберіть інший файл."
 
@@ -213,7 +213,7 @@ msgstr "Video Trimmer тепер застосунок на GTK 4!"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:120
 msgid "The GTK 4 port hopefully fixes video-driver-related crashes."
-msgstr "Портування на GTK 4, на щастя, виправляє збої повʼязані з відео-драйверами."
+msgstr "Портування на GTK 4, сподіваюся, виправляє збої повʼязані з відео-драйверами."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:121
 msgid "Improved window animations when opening videos."
@@ -223,7 +223,7 @@ msgstr "Покращено анімацію вікна під час відкр�
 msgid "Added Croatian translation (thanks milotype)."
 msgstr "Додано кроатіянський переклад (завдяки milotype)."
 
-#: src/window.rs:756
+#: src/window.rs:760
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:50
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:64
@@ -249,7 +249,7 @@ msgid "The default folder for the output video is now the input video's folder. 
 msgstr "Типовою текою для вихідного відеозапису тепер є тека вхідного відеозапису. Примітка: щоб це працювало під Flatpak, Вам потрібно надати Video Trimmer дозвіл filesystem=host (наприклад, за допомогою Flatseal)."
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:773
+#: src/window.rs:777
 msgid "translator-credits"
 msgstr "Andrij Mizyk"
 
@@ -376,12 +376,12 @@ msgid "Show in Files"
 msgstr "Показувати у Файлах"
 
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:125
+#: src/window.blp:133
 msgid "Video Preview Failed to Load"
 msgstr "Попередній перегляд відеозапису не вдалося завантажити"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:128
+#: src/window.blp:136
 msgid "Please enter the start and end timestamps manually.\n"
 "\n"
 "If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
@@ -451,80 +451,96 @@ msgstr "Додано переклад тамільською мовою (зав�
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:44
 msgid "This release fixes app closing on inaccessible files and updates it to the GNOME 43 platform."
-msgstr ""
+msgstr "У цьому релізі виправлено збій програми при взаємодії з недоступними файлами, а також додаток оновлено до платформи GNOME 43."
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:779
+#: src/window.rs:783
 msgid "Contribute Translations"
-msgstr ""
+msgstr "Допомогти з перекладом"
 
 #: src/shortcuts.blp:9
 msgctxt "shortcut window"
 msgid "General"
-msgstr ""
+msgstr "Загальні"
 
 #: src/shortcuts.blp:12
 msgctxt "shortcut window"
 msgid "New window"
-msgstr ""
+msgstr "Нове вікно"
 
 #: src/shortcuts.blp:17
 msgctxt "shortcut window"
 msgid "Play / Pause"
-msgstr ""
+msgstr "Відтворити / Призупинити"
 
 #: src/shortcuts.blp:22
 msgctxt "shortcut window"
 msgid "Trim"
-msgstr ""
+msgstr "Обрізати"
 
+#. Для україномовних перекладачів: у більшості перекладів програм на ГТК (особливо, для програм для гнома), для шорткатів, використовується "Клавіатурні скорочення", тому вважаю доцільним і тут перекласти так само, замість, наприклад, "Гарячі клавіші" або ще якось
 #: src/shortcuts.blp:27
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
-msgstr ""
+msgstr "Клавіатурні скорочення"
 
 #: src/shortcuts.blp:32
 msgctxt "shortcut window"
 msgid "Close window"
-msgstr ""
+msgstr "Закрити вікно"
 
 #: src/shortcuts.blp:37
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr ""
-
-#: src/window.rs:751
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
-msgid "Added several keyboard shortcuts along with the shortcuts window listing them."
-msgstr ""
-
-#: src/window.rs:752
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
-msgid "Fixed app crashing when opening files which involve invalid UTF-8."
-msgstr ""
-
-#: src/window.rs:753
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
-msgid "Updated to the GNOME 44 platform."
-msgstr ""
-
-#: src/window.rs:754
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
-msgid "Added Arabic translation (thanks tech-man)."
-msgstr ""
+msgstr "Вийти"
 
 #: src/window.rs:755
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
-msgid "Added Occitan translation (thanks Quentin PAGÈS)."
-msgstr ""
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
+msgid "Added several keyboard shortcuts along with the shortcuts window listing them."
+msgstr "Додано декілька клавіатурних скорочень разом з вікном зі списком який показує їх."
+
+#: src/window.rs:756
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
+msgid "Fixed app crashing when opening files which involve invalid UTF-8."
+msgstr "Виправлено збій додатку, при відкритті файлів із неправильним кодування UTF-8."
+
+#: src/window.rs:757
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
+msgid "Updated to the GNOME 44 platform."
+msgstr "Додаток оновлено до платформи GNOME 44."
+
+#: src/window.rs:758
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
+msgid "Added Arabic translation (thanks tech-man)."
+msgstr "Додано арабський переклад (дякуємо, tech-man)."
 
 #: src/window.rs:759
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
+msgid "Added Occitan translation (thanks Quentin PAGÈS)."
+msgstr "Додано окситанський переклад (дякуємо, Quentin PAGÈS)."
+
+#: src/window.rs:763
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release adds keyboard shortcuts and fixes a rare crash with some files."
-msgstr ""
+msgstr "Цей реліз додає клавіатурні скорочення і виправляє рідкісні збої з деякими файлами."
 
 #. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
 #: src/window.blp:14
 msgid "_Keyboard Shortcuts"
+msgstr "_Клавіатурні скорочення"
+
+#. Translators: Video open button tooltip.
+#: src/window.blp:47
+msgid "Select a File"
+msgstr ""
+
+#. Translators: Main menu button tooltip.
+#: src/window.blp:58 src/window.blp:89
+msgid "Main Menu"
+msgstr ""
+
+#. Translators: Trim button tooltip.
+#: src/window.blp:78
+msgid "Trim Video"
 msgstr ""
 
