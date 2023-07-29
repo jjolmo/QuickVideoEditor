@@ -8,7 +8,7 @@ msgstr ""
 "Language: nl\n"
 
 #. Main window title.
-#: src/main.rs:39 src/window.rs:766 src/window.blp:27
+#: src/main.rs:39 src/window.rs:770 src/window.blp:27
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
@@ -52,28 +52,28 @@ msgid "Could not create the ffmpeg subprocess"
 msgstr "Er kan geen ffmpeg-subproces worden aangemaakt"
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:910
+#: src/window.rs:914
 #, fuzzy
 msgid "Video files"
 msgstr "Videotrimmer"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:919
+#: src/window.rs:923
 msgid "Open video"
 msgstr "Video openen"
 
 #. Label on the initial state.
-#: src/window.blp:94
+#: src/window.blp:102
 msgid "Press the Open button to open a video file."
 msgstr "Klik op ‘Openen’ om een videobestand te openen."
 
 #. Label for the entry for the end timestamp.
-#: src/window.blp:164
+#: src/window.blp:172
 msgid "End"
 msgstr "Einde"
 
 #. Label for the entry for the start timestamp.
-#: src/window.blp:147
+#: src/window.blp:155
 msgid "Start"
 msgstr "Begin"
 
@@ -83,7 +83,7 @@ msgid "Open"
 msgstr "Openen"
 
 #. Trim button.
-#: src/window.blp:71
+#: src/window.blp:75
 msgid "Trim"
 msgstr "Trimmen"
 
@@ -97,7 +97,7 @@ msgstr "Trim snel je video's"
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Knippen;Film;Video;Clip;"
 
-#: src/window.rs:770
+#: src/window.rs:774
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
 msgid "Ivan Molodetskikh"
 msgstr "Ivan Molodetskikh"
@@ -199,12 +199,12 @@ msgid "Updated Spanish translation."
 msgstr "Spaanse vertaling bijgewerkt."
 
 #. Translators: error dialog title.
-#: src/window.rs:330 src/window.rs:583 src/window.rs:941
+#: src/window.rs:330 src/window.rs:583 src/window.rs:945
 msgid "Error"
 msgstr "Foutmelding"
 
 #. Translators: error dialog text.
-#: src/window.rs:333 src/window.rs:586 src/window.rs:944
+#: src/window.rs:333 src/window.rs:586 src/window.rs:948
 msgid "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "Videotrimmer kan alleen werken met lokale bestanden. Kies een ander bestand."
 
@@ -224,7 +224,7 @@ msgstr "Verbeterde vensteranimaties bij het openen van meerdere video's."
 msgid "Added Croatian translation (thanks milotype)."
 msgstr "Kroatische vertaling (met dank aan @milotype)."
 
-#: src/window.rs:756
+#: src/window.rs:760
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:50
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:64
@@ -250,7 +250,7 @@ msgid "The default folder for the output video is now the input video's folder. 
 msgstr "De standaardlocatie van het uitvoerbestand is voortaan die van het invoerbestand. Let op: in de flatpakversie is hiervoer de bevoegdheid ‘filesystem=host’ nodig. Deze kan worden verleend met de toepassing Flatseal."
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:773
+#: src/window.rs:777
 msgid "translator-credits"
 msgstr "Heimen Stoffels <vistausss@fastmail.com>"
 
@@ -380,12 +380,12 @@ msgid "Show in Files"
 msgstr "Tonen in bestandsbeheerder"
 
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:125
+#: src/window.blp:133
 msgid "Video Preview Failed to Load"
 msgstr "De videovoorvertoning kan niet worden geladen"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:128
+#: src/window.blp:136
 #, fuzzy
 msgid "Please enter the start and end timestamps manually.\n"
 "\n"
@@ -462,7 +462,7 @@ msgid "This release fixes app closing on inaccessible files and updates it to th
 msgstr "In deze versie is het GNOME-platform bijgewerkt naar versie 43 en sluit de toepassing niet meer af na het openen van ontoegankelijke bestanden."
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:779
+#: src/window.rs:783
 msgid "Contribute Translations"
 msgstr "Helpen met vertalen"
 
@@ -501,32 +501,32 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Afsluiten"
 
-#: src/window.rs:751
+#: src/window.rs:755
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "Added several keyboard shortcuts along with the shortcuts window listing them."
 msgstr "Nieuw: diverse sneltoetsen en een sneltoetsvenster met overzicht."
 
-#: src/window.rs:752
+#: src/window.rs:756
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Fixed app crashing when opening files which involve invalid UTF-8."
 msgstr "Opgelost: de toepassing crashte tijdens het openen van bestanden met ongeldige utf-8."
 
-#: src/window.rs:753
+#: src/window.rs:757
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Updated to the GNOME 44 platform."
 msgstr "Bijgewerkt: GNOME-platform naar versie 44."
 
-#: src/window.rs:754
+#: src/window.rs:758
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Arabic translation (thanks tech-man)."
 msgstr "Nieuw: Arabische vertaling (met dank aan @tech-man!)."
 
-#: src/window.rs:755
+#: src/window.rs:759
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Occitan translation (thanks Quentin PAGÈS)."
 msgstr "Nieuw: Occitaanse vertaling (met dank aan @Quentin PAGÈS!)"
 
-#: src/window.rs:759
+#: src/window.rs:763
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release adds keyboard shortcuts and fixes a rare crash with some files."
 msgstr "Deze uitgave bevat sneltoetsen en een oplossing voor een zeldzame crash."
@@ -535,4 +535,19 @@ msgstr "Deze uitgave bevat sneltoetsen en een oplossing voor een zeldzame crash.
 #: src/window.blp:14
 msgid "_Keyboard Shortcuts"
 msgstr "_Sneltoetsen tonen"
+
+#. Translators: Video open button tooltip.
+#: src/window.blp:47
+msgid "Select a File"
+msgstr ""
+
+#. Translators: Main menu button tooltip.
+#: src/window.blp:58 src/window.blp:89
+msgid "Main Menu"
+msgstr ""
+
+#. Translators: Trim button tooltip.
+#: src/window.blp:78
+msgid "Trim Video"
+msgstr ""
 

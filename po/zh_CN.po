@@ -8,7 +8,7 @@ msgstr ""
 "Language: zh-Hans\n"
 
 #. Main window title.
-#: src/main.rs:39 src/window.rs:766 src/window.blp:27
+#: src/main.rs:39 src/window.rs:770 src/window.blp:27
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
@@ -52,27 +52,27 @@ msgid "Could not create the ffmpeg subprocess"
 msgstr "无法创建 ffmpeg 子进程"
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:910
+#: src/window.rs:914
 msgid "Video files"
 msgstr "视频文件"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:919
+#: src/window.rs:923
 msgid "Open video"
 msgstr "打开视频"
 
 #. Label on the initial state.
-#: src/window.blp:94
+#: src/window.blp:102
 msgid "Press the Open button to open a video file."
 msgstr "点击打开按钮打开视频文件"
 
 #. Label for the entry for the end timestamp.
-#: src/window.blp:164
+#: src/window.blp:172
 msgid "End"
 msgstr "结束"
 
 #. Label for the entry for the start timestamp.
-#: src/window.blp:147
+#: src/window.blp:155
 msgid "Start"
 msgstr "开始"
 
@@ -82,7 +82,7 @@ msgid "Open"
 msgstr "打开"
 
 #. Trim button.
-#: src/window.blp:71
+#: src/window.blp:75
 msgid "Trim"
 msgstr "剪切"
 
@@ -96,7 +96,7 @@ msgstr "快速剪切视频"
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Cut;Movie;Film;Clip;"
 
-#: src/window.rs:770
+#: src/window.rs:774
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
 msgid "Ivan Molodetskikh"
 msgstr "Ivan Molodetskikh"
@@ -199,12 +199,12 @@ msgid "Updated Spanish translation."
 msgstr "更新了西班牙语翻译。"
 
 #. Translators: error dialog title.
-#: src/window.rs:330 src/window.rs:583 src/window.rs:941
+#: src/window.rs:330 src/window.rs:583 src/window.rs:945
 msgid "Error"
 msgstr "错误"
 
 #. Translators: error dialog text.
-#: src/window.rs:333 src/window.rs:586 src/window.rs:944
+#: src/window.rs:333 src/window.rs:586 src/window.rs:948
 msgid "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "Video Trimmer 只能对本地文件进行操作。请选择其他文件。"
 
@@ -224,7 +224,7 @@ msgstr "改进了打开视频时的窗口动画。"
 msgid "Added Croatian translation (thanks milotype)."
 msgstr "添加了克罗地亚语翻译（感谢 milotype）。"
 
-#: src/window.rs:756
+#: src/window.rs:760
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:38
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:50
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:64
@@ -251,7 +251,7 @@ msgid "The default folder for the output video is now the input video's folder. 
 msgstr "输出视频的默认文件夹现在是打开视频的文件夹了。注意：为了让这个功能在 Flatpak 下工作，你需要给 Video Trimmer 分配 filesystem=host 的权限（例如，使用Flatseal）。"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:773
+#: src/window.rs:777
 #, fuzzy
 msgid "translator-credits"
 msgstr "translator-credits"
@@ -381,12 +381,12 @@ msgid "Show in Files"
 msgstr "在文件中显示"
 
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:125
+#: src/window.blp:133
 msgid "Video Preview Failed to Load"
 msgstr "视频预览加载失败"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:128
+#: src/window.blp:136
 msgid "Please enter the start and end timestamps manually.\n"
 "\n"
 "If you're running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work."
@@ -458,7 +458,7 @@ msgid "This release fixes app closing on inaccessible files and updates it to th
 msgstr "此版本修复了程序打开无法访问文件时的退出问题，并更新到 GNOME 43 平台。"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:779
+#: src/window.rs:783
 msgid "Contribute Translations"
 msgstr ""
 
@@ -497,32 +497,32 @@ msgctxt "shortcut window"
 msgid "Quit"
 msgstr ""
 
-#: src/window.rs:751
+#: src/window.rs:755
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:33
 msgid "Added several keyboard shortcuts along with the shortcuts window listing them."
 msgstr ""
 
-#: src/window.rs:752
+#: src/window.rs:756
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:34
 msgid "Fixed app crashing when opening files which involve invalid UTF-8."
 msgstr ""
 
-#: src/window.rs:753
+#: src/window.rs:757
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:35
 msgid "Updated to the GNOME 44 platform."
 msgstr ""
 
-#: src/window.rs:754
+#: src/window.rs:758
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:36
 msgid "Added Arabic translation (thanks tech-man)."
 msgstr ""
 
-#: src/window.rs:755
+#: src/window.rs:759
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:37
 msgid "Added Occitan translation (thanks Quentin PAGÈS)."
 msgstr ""
 
-#: src/window.rs:759
+#: src/window.rs:763
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:31
 msgid "This release adds keyboard shortcuts and fixes a rare crash with some files."
 msgstr ""
@@ -530,5 +530,20 @@ msgstr ""
 #. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
 #: src/window.blp:14
 msgid "_Keyboard Shortcuts"
+msgstr ""
+
+#. Translators: Video open button tooltip.
+#: src/window.blp:47
+msgid "Select a File"
+msgstr ""
+
+#. Translators: Main menu button tooltip.
+#: src/window.blp:58 src/window.blp:89
+msgid "Main Menu"
+msgstr ""
+
+#. Translators: Trim button tooltip.
+#: src/window.blp:78
+msgid "Trim Video"
 msgstr ""
 
