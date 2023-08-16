@@ -30,7 +30,7 @@ The optional re-encoding also uses `ffmpeg` and thus needs the respective decode
 
 ## Contributing translations
 
-You can help translate Video Trimmer on POEditor: https://poeditor.com/join/project?hash=5bXw9CXAAh. Any help is appreciated!
+You can help translate Video Trimmer: https://l10n.gnome.org/module/video-trimmer/. Any help is appreciated!
 
 ## Building
 

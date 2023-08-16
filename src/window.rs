@@ -781,7 +781,7 @@ mod imp {
                 about_window.add_link(
                     // Translators: link title in the About dialog.
                     &gettext("Contribute Translations"),
-                    "https://poeditor.com/join/project?hash=5bXw9CXAAh",
+                    "https://l10n.gnome.org/module/video-trimmer/",
                 );
                 about_window.present();
             });
