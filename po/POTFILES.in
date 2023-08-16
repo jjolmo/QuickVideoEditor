@@ -1,5 +1,4 @@
 src/application.rs
-src/config.rs
 src/main.rs
 src/parse.rs
 src/shortcuts.blp
