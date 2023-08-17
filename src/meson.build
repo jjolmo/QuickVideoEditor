@@ -57,6 +57,7 @@ sources += files(
   'parse.rs',
   'timeline.rs',
   'video_preview.rs',
+  'util.rs',
   'window.rs',
 )
 

@@ -205,12 +205,16 @@ mod imp {
         }
 
         fn is_playing(&self) -> bool {
-            let Some(media_file) = self.media_file.get() else { return false };
+            let Some(media_file) = self.media_file.get() else {
+                return false;
+            };
             media_file.is_playing()
         }
 
         fn set_is_playing(&self, value: bool) {
-            let Some(media_file) = self.media_file.get() else { return };
+            let Some(media_file) = self.media_file.get() else {
+                return;
+            };
             media_file.set_playing(value);
         }
 

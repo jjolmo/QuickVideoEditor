@@ -29,6 +29,7 @@ mod imp {
     use crate::{
         config::{self, G_LOG_DOMAIN},
         parse::{self, time_to_entry_text},
+        util::gettext_f,
         video_preview::VtVideoPreview,
     };
 
@@ -453,12 +454,11 @@ mod imp {
                                         .unwrap_or_else(|| output_path.to_string_lossy());
 
                                     let imp = obj.imp();
-                                    let toast = adw::Toast::new(&format!(
-                                        "{} {}",
-                                        file_name,
+                                    let toast = adw::Toast::new(&gettext_f(
                                         // Translators: text on the toast after trimming was done.
-                                        // The template is: <video filename> has been saved
-                                        gettext("has been saved")
+                                        // The placeholder is the video filename.
+                                        "{} has been saved",
+                                        &[&file_name],
                                     ));
 
                                     // Translators: text on the button of the toast after

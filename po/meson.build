@@ -1,1 +1,5 @@
-i18n.gettext('video-trimmer', preset: 'glib')
+i18n.gettext(
+  'video-trimmer',
+  args: ['--keyword=gettext_f'],
+  preset: 'glib',
+)

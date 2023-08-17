@@ -11,6 +11,7 @@ mod config;
 use config::G_LOG_DOMAIN;
 mod parse;
 mod timeline;
+mod util;
 mod video_preview;
 mod window;
 
