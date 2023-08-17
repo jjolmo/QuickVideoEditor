@@ -1,0 +1,307 @@
+# Indonesian translation for video-trimmer.
+# Copyright (C) 2023 video-trimmer's COPYRIGHT HOLDER
+# This file is distributed under the same license as the video-trimmer package.
+# Andika Triwidada <atriwidada@gnome.org>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: video-trimmer master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
+"issues\n"
+"POT-Creation-Date: 2023-08-17 04:52+0000\n"
+"PO-Revision-Date: 2023-08-17 16:46+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
+"Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
+"Language: id\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.3.2\n"
+
+#. Can't extract filenames from a VariantDict yet.
+#. Translators: --output commandline option description.
+#: src/application.rs:37
+msgid "Output file path"
+msgstr "Path berkas keluaran"
+
+#. Translators: --output commandline option arg description.
+#: src/application.rs:39
+msgid "PATH"
+msgstr "PATH"
+
+#: src/main.rs:40 src/window.rs:770 src/window.blp:27
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
+msgid "Video Trimmer"
+msgstr "Pemangkas Video"
+
+#: src/shortcuts.blp:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Umum"
+
+#: src/shortcuts.blp:12
+msgctxt "shortcut window"
+msgid "New window"
+msgstr "Jendela baru"
+
+#: src/shortcuts.blp:17
+msgctxt "shortcut window"
+msgid "Play / Pause"
+msgstr "Putar / Jeda"
+
+#: src/shortcuts.blp:22
+msgctxt "shortcut window"
+msgid "Trim"
+msgstr "Pangkas"
+
+#: src/shortcuts.blp:27
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Pintasan papan tik"
+
+#: src/shortcuts.blp:32
+msgctxt "shortcut window"
+msgid "Close window"
+msgstr "Tutup jendela"
+
+#: src/shortcuts.blp:37
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Keluar"
+
+#. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:20
+msgid "Could Not Load Video Track"
+msgstr "Tidak Bisa Memuat Trek Video"
+
+#. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:23
+msgid ""
+"Maybe the file only has an audio track, or maybe the necessary video codec "
+"is missing."
+msgstr ""
+"Mungkin berkas hanya punya trek audio, atau mungkin kodek video yang "
+"diperlukan kurang."
+
+#. Translators: this is appended to the output video file name.
+#. So for example "my video.mp4" will become "my video (trimmed).mp4".
+#: src/window.rs:282
+msgid " (trimmed)"
+msgstr " (dipangkas)"
+
+#. Translators: checkbox in output file selection dialog that strips audio from the
+#. video file.
+#: src/window.rs:307
+msgid "Remove audio"
+msgstr "Hapus audio"
+
+#. Translators: checkbox in output file selection dialog.
+#: src/window.rs:312
+msgid "Accurate trimming, but slower and may lose quality"
+msgstr ""
+"Pemangkasan akurat, tetapi lebih lambat dan mungkin kehilangan kualitas"
+
+#. Translators: error dialog title.
+#: src/window.rs:331 src/window.rs:583 src/window.rs:945
+msgid "Error"
+msgstr "Galat"
+
+#. Translators: error dialog text.
+#: src/window.rs:334 src/window.rs:586 src/window.rs:948
+msgid ""
+"Video Trimmer can only operate on local files. Please choose another file."
+msgstr ""
+"Pemangkas Video hanya dapat beroperasi pada berkas lokal. Harap pilih "
+"berkas lain."
+
+#. Translators: message dialog text.
+#: src/window.rs:436
+msgid "Trimming…"
+msgstr "Memangkas…"
+
+#. Translators: text on the toast after trimming was done.
+#. The placeholder is the video filename.
+#: src/window.rs:460
+msgid "{} has been saved"
+msgstr "{} telah disimpan"
+
+#. Translators: text on the button of the toast after
+#. trimming was done to show the output file in the file
+#. manager.
+#: src/window.rs:467
+msgid "Show in Files"
+msgstr "Tampilkan dalam Berkas"
+
+#. Translators: error dialog text.
+#: src/window.rs:488
+msgid "Error trimming video"
+msgstr "Galat saat memangkas video"
+
+#: src/window.rs:497
+msgid "Could not communicate with the ffmpeg subprocess"
+msgstr "Tidak bisa berkomunikasi dengan sub proses ffmpeg"
+
+#. Translators: error dialog text.
+#: src/window.rs:538
+msgid "Could not create the ffmpeg subprocess"
+msgstr "Tidak bisa membuat sub proses ffmpeg"
+
+#: src/window.rs:755
+msgid ""
+"Added several keyboard shortcuts along with the shortcuts window listing "
+"them."
+msgstr ""
+"Menambahkan beberapa pintasan papan tik dengan jendela pintasan menampilkan "
+"daftar mereka."
+
+#: src/window.rs:756
+msgid "Fixed app crashing when opening files which involve invalid UTF-8."
+msgstr ""
+"Memperbaiki crash app ketika membuka berkas yang melibatkan UTF-8 yang "
+"tidak valid."
+
+#: src/window.rs:757
+msgid "Updated to the GNOME 44 platform."
+msgstr "Diperbarui ke platform GNOME 44."
+
+#: src/window.rs:758
+msgid "Added Arabic translation (thanks tech-man)."
+msgstr "Menambahkan terjemahan Arab (terima kasih tech-man)."
+
+#: src/window.rs:759
+msgid "Added Occitan translation (thanks Quentin PAGÈS)."
+msgstr "Menambahkan terjemahan Occita (terima kasih Quentin PAGÈS)."
+
+#: src/window.rs:760
+msgid "Updated translations."
+msgstr "Memperbarui terjemahan."
+
+#: src/window.rs:763
+msgid ""
+"This release adds keyboard shortcuts and fixes a rare crash with some files."
+msgstr ""
+"Rilis ini menambahkan pintasan papan tik dan memperbaiki crash yang jarang "
+"dengan beberapa berkas."
+
+#: src/window.rs:774
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
+msgid "Ivan Molodetskikh"
+msgstr "Ivan Molodetskikh"
+
+#. Translators: shown in the About dialog, put your name here.
+#: src/window.rs:777
+msgid "translator-credits"
+msgstr "Andika Triwidada <andika@gmail.com>, 2023"
+
+#. Translators: link title in the About dialog.
+#: src/window.rs:783
+msgid "Contribute Translations"
+msgstr "Kontribusikan Terjemahan"
+
+#. Translators: file chooser file filter name.
+#: src/window.rs:914
+msgid "Video files"
+msgstr "Berkas video"
+
+#. Translators: file chooser dialog title.
+#: src/window.rs:923
+msgid "Open video"
+msgstr "Buka video"
+
+#. Translators: Primary menu entry that opens a new window.
+#: src/window.blp:8
+msgid "_New Window"
+msgstr "Je_ndela Baru"
+
+#. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
+#: src/window.blp:14
+msgid "_Keyboard Shortcuts"
+msgstr "Pintasan Papan Ti_k"
+
+#. Translators: Primary menu entry that opens the About dialog.
+#: src/window.blp:20
+msgid "_About Video Trimmer"
+msgstr "Tent_ang Pemangkas Video"
+
+#. Translators: Video open button label.
+#: src/window.blp:45
+msgid "Open"
+msgstr "Buka"
+
+#. Translators: Video open button tooltip.
+#: src/window.blp:47
+msgid "Select a File"
+msgstr "Pilih Berkas"
+
+#. Translators: Main menu button tooltip.
+#: src/window.blp:58 src/window.blp:89
+msgid "Main Menu"
+msgstr "Menu Utama"
+
+#. Translators: Trim button.
+#: src/window.blp:75
+msgid "Trim"
+msgstr "Pangkas"
+
+#. Translators: Trim button tooltip.
+#: src/window.blp:78
+msgid "Trim Video"
+msgstr "Pangkas Video"
+
+#. Translators: Label on the initial state.
+#: src/window.blp:102
+msgid "Press the Open button to open a video file."
+msgstr "Tekan tombol Buka untuk membuka sebuah berkas video."
+
+#. Translators: Title that is shown upon video preview loading error.
+#: src/window.blp:133
+msgid "Video Preview Failed to Load"
+msgstr "Pratinjau Video Gagal Memuat"
+
+#. Translators: Description that is shown upon video preview loading error.
+#: src/window.blp:136
+msgid ""
+"Please enter the start and end timestamps manually.\n"
+"\n"
+"If you're running Video Trimmer under Flatpak, note that opening files by "
+"drag-and-drop may not work."
+msgstr ""
+"Harap masukkan waktu awal dan akhir secara manual.\n"
+"\n"
+"Bila Anda menjalankan Pemangkas Video di bawah Flatpak, perhatikan bahwa "
+"membuka berkas dengan seret dan jatuhkan mungkin tidak bekerja."
+
+#. Translators: Label for the entry for the start timestamp.
+#: src/window.blp:155
+msgid "Start"
+msgstr "Awal"
+
+#. Translators: Label for the entry for the end timestamp.
+#: src/window.blp:172
+msgid "End"
+msgstr "Akhir"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
+msgid "Trim videos quickly"
+msgstr "Pangkas video secara cepat"
+
+#. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
+msgid "Cut;Movie;Film;Clip;"
+msgstr "Potong;Film;Klip;"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
+msgid ""
+"Video Trimmer cuts out a fragment of a video given the start and end "
+"timestamps. The video is never re-encoded, so the process is very fast and "
+"does not reduce the video quality."
+msgstr ""
+"Pemangkas Video memotong suatu fragmen dari sebuah video dengan diberikan "
+"waktu awal dan akhir. Video tidak pernah di-enkode ulang, sehingga "
+"prosesnya sangat cepat dan tidak mengurangi kualitas video."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
+msgid "Main Window"
+msgstr "Jendela Utama"
