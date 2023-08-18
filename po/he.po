@@ -1,16 +1,22 @@
+#
+# Yosef Or Boczko <yoseforb@gmail.com>, 2023.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Video Trimmer\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues\n"
-"POT-Creation-Date: 2023-08-16 10:20+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
+"issues\n"
+"POT-Creation-Date: 2023-08-17 04:52+0000\n"
+"PO-Revision-Date: 2023-08-18 10:05+0300\n"
+"Last-Translator: Yosef Or Boczko <yoseforb@gmail.com>\n"
+"Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Gtranslator 42.0\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : n==2 ? 1 : n>10 && n%10==0 ? "
+"2 : 3)\n"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
@@ -23,7 +29,7 @@ msgstr "נתיב קובץ פלט"
 msgid "PATH"
 msgstr "נתיב"
 
-#: src/main.rs:39 src/window.rs:770 src/window.blp:27
+#: src/main.rs:40 src/window.rs:770 src/window.blp:27
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
@@ -72,48 +78,48 @@ msgstr "לא ניתן לטעון את רצועת הווידאו"
 #. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:23
 msgid ""
-"Maybe the file only has an audio track, or maybe the necessary video codec is "
-"missing."
+"Maybe the file only has an audio track, or maybe the necessary video codec "
+"is missing."
 msgstr "אולי לקובץ יש רק רצועת שמע או שאולי מפענח הווידאו הנחוץ חסר."
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:281
+#: src/window.rs:282
 msgid " (trimmed)"
 msgstr " (נחתך)"
 
 #. Translators: checkbox in output file selection dialog that strips audio from the
 #. video file.
-#: src/window.rs:306
+#: src/window.rs:307
 msgid "Remove audio"
 msgstr "הסרת שמע"
 
 #. Translators: checkbox in output file selection dialog.
-#: src/window.rs:311
+#: src/window.rs:312
 msgid "Accurate trimming, but slower and may lose quality"
 msgstr "חיתוך מדויק אך אטי יותר ועשוי לפגוע באיכות"
 
 #. Translators: error dialog title.
-#: src/window.rs:330 src/window.rs:583 src/window.rs:945
+#: src/window.rs:331 src/window.rs:583 src/window.rs:945
 msgid "Error"
 msgstr "שגיאה"
 
 #. Translators: error dialog text.
-#: src/window.rs:333 src/window.rs:586 src/window.rs:948
+#: src/window.rs:334 src/window.rs:586 src/window.rs:948
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "חותך הסרטונים יכול לפעול על קבצים מקומיים בלבד. נא לבחור בקובץ אחר."
 
 #. Translators: message dialog text.
-#: src/window.rs:435
+#: src/window.rs:436
 msgid "Trimming…"
 msgstr "נחתך…"
 
 #. Translators: text on the toast after trimming was done.
-#. The template is: <video filename> has been saved
-#: src/window.rs:461
-msgid "has been saved"
-msgstr "נשמר"
+#. The placeholder is the video filename.
+#: src/window.rs:460
+msgid "{} has been saved"
+msgstr "‏{} נשמר"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
@@ -138,7 +144,8 @@ msgstr "לא ניתן ליצור את תת־התהליך ffmpeg"
 
 #: src/window.rs:755
 msgid ""
-"Added several keyboard shortcuts along with the shortcuts window listing them."
+"Added several keyboard shortcuts along with the shortcuts window listing "
+"them."
 msgstr "נוספו מגוון קיצורי מקלדת לצד חלון הקיצורים שמציג אותם."
 
 #: src/window.rs:756
@@ -288,15 +295,15 @@ msgid "Main Window"
 msgstr "חלון ראשי"
 
 #~ msgid ""
-#~ "This release replaces the Done dialog with an in-app notification and adds "
-#~ "a command-line argument to specify the output file."
+#~ "This release replaces the Done dialog with an in-app notification and "
+#~ "adds a command-line argument to specify the output file."
 #~ msgstr ""
-#~ "מהדורה זו מחליפה את חלונית הסיום בהתראה פנים יישומית ומוסיפה ארגומנט לשורת "
-#~ "הפקודה כדי לציין את קובץ הפלט."
+#~ "מהדורה זו מחליפה את חלונית הסיום בהתראה פנים יישומית ומוסיפה ארגומנט "
+#~ "לשורת הפקודה כדי לציין את קובץ הפלט."
 
 #~ msgid ""
-#~ "Added an --output or -o argument to specify the output video path. It will "
-#~ "be pre-filled in the save dialog."
+#~ "Added an --output or -o argument to specify the output video path. It "
+#~ "will be pre-filled in the save dialog."
 #~ msgstr ""
 #~ "נוסף ארגומנט ‎--output או ‎-o כדי לציין את נתיב סרטון הפלט. הוא יתמלא מראש "
 #~ "בחלונית השמירה."
@@ -326,8 +333,8 @@ msgstr "חלון ראשי"
 #~ "This release fixes crashes related to video preview errors, adds a Ctrl+Q "
 #~ "exit shortcut and a Dutch translation."
 #~ msgstr ""
-#~ "מהדורה זו מתקנת קריסות שקשורות לשגיאות בתצוגה מקדימה של סרטונים, מוסיפה את "
-#~ "הקיצור Ctrl+Q ליציאה ותרגום להולנדית."
+#~ "מהדורה זו מתקנת קריסות שקשורות לשגיאות בתצוגה מקדימה של סרטונים, מוסיפה "
+#~ "את הקיצור Ctrl+Q ליציאה ותרגום להולנדית."
 
 #~ msgid "Added a Ctrl+Q shortcut to quit Video Trimmer."
 #~ msgstr "נוסף קיצור הדרך Ctrl+Q ליציאה מחותך הסרטונים."
@@ -342,8 +349,8 @@ msgstr "חלון ראשי"
 #~ "Fixed a crash when the GL runtime is not installed (e.g. when installing "
 #~ "the Flathub package on clean Ubuntu 18.04 through Ubuntu Software)."
 #~ msgstr ""
-#~ "תוקנה קריסה כאשר סביבת הריצה GL לא מותקנת (כלומר, כאשר מתקינים את חבילת "
-#~ "ה־Flathub להתקנה נקייה של אובונטו 18.04 דרך מרכז התוכנה של אובונטו)."
+#~ "תוקנה קריסה כאשר סביבת הריצה GL לא מותקנת (כלומר, כאשר מתקינים את חבילת ה־"
+#~ "Flathub להתקנה נקייה של אובונטו 18.04 דרך מרכז התוכנה של אובונטו)."
 
 #~ msgid "Fixed a crash when required GStreamer plugins are not installed."
 #~ msgstr "תוקנה קריסה כאשר תוספי GStreamer נחוצים אינם מותקנים."
@@ -362,8 +369,8 @@ msgstr "חלון ראשי"
 #~ msgstr "מהדורה ראשונית."
 
 #~ msgid ""
-#~ "This release fixes an issue where not all streams from the input file were "
-#~ "copied into the output file."
+#~ "This release fixes an issue where not all streams from the input file "
+#~ "were copied into the output file."
 #~ msgstr ""
 #~ "מהדורה זו מתקנת תקלה שגרמה לכך שלא כל התזרימים מקובץ הקלט הועתקו לקובץ "
 #~ "הפלט."
@@ -391,7 +398,8 @@ msgstr "חלון ראשי"
 #~ "Data streams are no longer copied to the output file as a workaround to "
 #~ "prevent errors on GoPro recordings."
 #~ msgstr ""
-#~ "תזרימי הנתונים לא מועתקים עוד לקובץ הפלט כמעקף למניעת שגיאות בהקלטות GoPro."
+#~ "תזרימי הנתונים לא מועתקים עוד לקובץ הפלט כמעקף למניעת שגיאות בהקלטות "
+#~ "GoPro."
 
 #~ msgid "Updated Spanish translation."
 #~ msgstr "התרגום לספרדית עודכן."
@@ -443,7 +451,8 @@ msgstr "חלון ראשי"
 #~ "(פינות החלונות מעוגלות!)."
 
 #~ msgid ""
-#~ "This release contains a few improvements and adds a number of translations."
+#~ "This release contains a few improvements and adds a number of "
+#~ "translations."
 #~ msgstr "מהדורה זו מכילה מספר שיפורים ומוסיפה מספר תרגומים."
 
 #~ msgid ""
@@ -456,8 +465,8 @@ msgstr "חלון ראשי"
 #~ msgstr "הסרטון מושהה לחלוטין בלחיצה על כפתור החיתוך."
 
 #~ msgid ""
-#~ "The .mp4 output file extension is no longer default when it cannot be used "
-#~ "(this affected videos from some Sony cameras)."
+#~ "The .mp4 output file extension is no longer default when it cannot be "
+#~ "used (this affected videos from some Sony cameras)."
 #~ msgstr ""
 #~ "סיומת הקבצים ‎.mp4 אינה עוד ברירת המחדל כשלא ניתן להשתמש בה (משפיע על "
 #~ "סרטונים מחלק מהמצלמות של Sony)."
@@ -498,8 +507,8 @@ msgstr "חלון ראשי"
 #~ msgstr "נוסף תרגום לאיטלקית (תודה אלבנו בטיסטלה)."
 
 #~ msgid ""
-#~ "Added a checkbox for accurate trimming with re-encoding to the output file "
-#~ "selection dialog."
+#~ "Added a checkbox for accurate trimming with re-encoding to the output "
+#~ "file selection dialog."
 #~ msgstr "נוספה תיבת סימון לחיתוך מדויק עם הצפנה מחדש לחלונית בחירת הקבצים."
 
 #~ msgid "Added Japanese translation (thanks Sibuya Kaz)."
@@ -515,7 +524,8 @@ msgstr "חלון ראשי"
 #~ "This release adds an accurate trimming with re-encoding option and "
 #~ "refreshes the design a bit."
 #~ msgstr ""
-#~ "מהדורה זו מוסיפה חיתוך מדויק עם אפשרות להצפנה מחדש ומרעננת את העיצוב במקצת."
+#~ "מהדורה זו מוסיפה חיתוך מדויק עם אפשרות להצפנה מחדש ומרעננת את העיצוב "
+#~ "במקצת."
 
 #~ msgid ""
 #~ "Updated the design to better match the newer version of the Adwaita theme."
@@ -524,7 +534,8 @@ msgstr "חלון ראשי"
 #~ "Adwaita."
 
 #~ msgid ""
-#~ "Added dark style and high contrast support and made dark style the default."
+#~ "Added dark style and high contrast support and made dark style the "
+#~ "default."
 #~ msgstr ""
 #~ "נוספה תמיכה בסגנון כהה ובניגודיות גבוהה ומצב הסגנון הכהה הוגדר כברירת "
 #~ "המחדל."
@@ -580,8 +591,8 @@ msgstr "חלון ראשי"
 #~ msgstr "נוסף תרגום לטמילית (תודות לק.ב.דהרון קרשינה)."
 
 #~ msgid ""
-#~ "This release fixes app closing on inaccessible files and updates it to the "
-#~ "GNOME 43 platform."
+#~ "This release fixes app closing on inaccessible files and updates it to "
+#~ "the GNOME 43 platform."
 #~ msgstr ""
 #~ "מהדורה זו מתקנת את סגירת היישום עקב קבצים בלתי נגישים ומעדכנת את היישום "
 #~ "לפלטפורמה 43 של GNOME."
