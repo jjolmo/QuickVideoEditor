@@ -1,16 +1,24 @@
+# Turkish translation for Video Trimmer.
+# Copyright (C) 2023 Video Trimmer's COPYRIGHT HOLDER
+# This file is distributed under the same license as the Video Trimmer package.
+#
+# Sabri Ünal <libreajans@gmail.com>, 2023.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2023.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2023-08-16 10:20+0000\n"
+"POT-Creation-Date: 2023-08-17 14:20+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
-"Language-Team: \n"
+"Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.2.2\n"
 
 #. Can't extract filenames from a VariantDict yet.
@@ -24,7 +32,7 @@ msgstr "Çıktı dosyası yolu"
 msgid "PATH"
 msgstr "YOL"
 
-#: src/main.rs:39 src/window.rs:770 src/window.blp:27
+#: src/main.rs:40 src/window.rs:770 src/window.blp:27
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
@@ -81,43 +89,43 @@ msgstr ""
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:281
+#: src/window.rs:282
 msgid " (trimmed)"
 msgstr " (kırpıldı)"
 
 #. Translators: checkbox in output file selection dialog that strips audio from the
 #. video file.
-#: src/window.rs:306
+#: src/window.rs:307
 msgid "Remove audio"
 msgstr "Sesi sil"
 
 #. Translators: checkbox in output file selection dialog.
-#: src/window.rs:311
+#: src/window.rs:312
 msgid "Accurate trimming, but slower and may lose quality"
 msgstr "Doğru kırpma, daha yavaştır ve kalite kaybı olabilir"
 
 #. Translators: error dialog title.
-#: src/window.rs:330 src/window.rs:583 src/window.rs:945
+#: src/window.rs:331 src/window.rs:583 src/window.rs:945
 msgid "Error"
 msgstr "Hata"
 
 #. Translators: error dialog text.
-#: src/window.rs:333 src/window.rs:586 src/window.rs:948
+#: src/window.rs:334 src/window.rs:586 src/window.rs:948
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr ""
 "Video Kırpıcı sadece yerel dosyalarla çalışabilir. Lütfen başka dosya seçin."
 
 #. Translators: message dialog text.
-#: src/window.rs:435
+#: src/window.rs:436
 msgid "Trimming…"
 msgstr "Kırpılıyor…"
 
 #. Translators: text on the toast after trimming was done.
-#. The template is: <video filename> has been saved
-#: src/window.rs:461
-msgid "has been saved"
-msgstr "kaydedildi"
+#. The placeholder is the video filename.
+#: src/window.rs:460
+msgid "{} has been saved"
+msgstr "{} kaydedildi"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
@@ -298,325 +306,3 @@ msgstr ""
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
 msgid "Main Window"
 msgstr "Ana Pencere"
-
-#~ msgid ""
-#~ "This release replaces the Done dialog with an in-app notification and "
-#~ "adds a command-line argument to specify the output file."
-#~ msgstr ""
-#~ "Bu sürüm, Bitti iletişim kutusunu uygulama içi bildirimle değiştirir ve "
-#~ "çıktı dosyasını belirtmek için bir komut satırı bağımsız değişkeni ekler."
-
-#~ msgid ""
-#~ "Added an --output or -o argument to specify the output video path. It "
-#~ "will be pre-filled in the save dialog."
-#~ msgstr ""
-#~ "Videonun kaydedileceği yeri belirten --output ve -o argümanları eklendi. "
-#~ "Kaydetme ekranında kendiliğinden doldurulacak."
-
-#~ msgid ""
-#~ "Added support for opening videos with DnD, although it doesn't work on "
-#~ "Flatpak unless Video Trimmer is given filesystem access."
-#~ msgstr ""
-#~ "Video Kırpıcı'ya dosya sistemi erişimi verilmediği sürece Flatpak "
-#~ "üzerinde çalışmasa da, videoları DnD ile açma desteği eklendi."
-
-#~ msgid ""
-#~ "Replaced the Done dialog with an in-app notification to better follow the "
-#~ "GNOME HIG."
-#~ msgstr ""
-#~ "GNOME arayüz klavuzunu daha iyi takip etmek için Bitti iletişim kutusu "
-#~ "uygulama içi bildirimle değiştirdi."
-
-#~ msgid ""
-#~ "This release fixes file filter not working on Flatpak and possibly a "
-#~ "related file chooser crash."
-#~ msgstr ""
-#~ "Bu sürüm, Flatpak'ta çalışmayan dosya filtresini ve muhtemelen ilgili bir "
-#~ "dosya seçici çökmesini düzeltir."
-
-#~ msgid ""
-#~ "This release fixes crashes related to video preview errors, adds a Ctrl+Q "
-#~ "exit shortcut and a Dutch translation."
-#~ msgstr ""
-#~ "Bu sürüm, video önizleme hatalarıyla ilgili çökmeleri düzeltir, Ctrl+Q "
-#~ "çıkış kısayolu ekler ve Felemenkçe çeviri ekler."
-
-#~ msgid "Added a Ctrl+Q shortcut to quit Video Trimmer."
-#~ msgstr "Video Kırpıcı'dan çıkmak için Ctrl+Q kısayolu eklendi."
-
-#~ msgid "Added a Dutch translation."
-#~ msgstr "Flemenkçe çeviri eklendi."
-
-#~ msgid "Made video preview display an error message when it fails to load."
-#~ msgstr "Yapılan video önizlemesi yüklenemediğinde hata mesajı görüntüler."
-
-#~ msgid ""
-#~ "Fixed a crash when the GL runtime is not installed (e.g. when installing "
-#~ "the Flathub package on clean Ubuntu 18.04 through Ubuntu Software)."
-#~ msgstr ""
-#~ "GL çalışma zamanı yüklenmediğinde (örneğin, Ubuntu Yazılım merkezi "
-#~ "aracılığıyla temiz Ubuntu 18.04'e Flathub paketi yüklerken) oluşan bir "
-#~ "çökme düzeltildi."
-
-#~ msgid "Fixed a crash when required GStreamer plugins are not installed."
-#~ msgstr ""
-#~ "Gerekli GStreamer eklentileri yüklü değilken ortaya çıkan çökme "
-#~ "düzeltildi."
-
-#~ msgid "Fixed a crash on failing to change the playback position."
-#~ msgstr "Oynatma konumunun değiştirilememesiyle ilgili bir çökme düzeltildi."
-
-#~ msgid ""
-#~ "This release adds a video preview and a timeline where the target region "
-#~ "can be adjusted using the mouse."
-#~ msgstr ""
-#~ "Bu sürüm, video önizlemesi ve hedef bölgenin fare kullanılarak "
-#~ "ayarlanabileceği zaman çizelgesi ekler."
-
-#~ msgid "First release."
-#~ msgstr "İlk sürüm."
-
-#~ msgid ""
-#~ "This release fixes an issue where not all streams from the input file "
-#~ "were copied into the output file."
-#~ msgstr ""
-#~ "Bu sürüm, girdi dosyasındaki tüm akışların çıktı dosyasına "
-#~ "kopyalanmamasına neden olan bir sorunu düzeltir."
-
-#~ msgid ""
-#~ "All input file streams are now copied to the output file rather than just "
-#~ "a single of each type. Subtitles are now copied too rather than skipped."
-#~ msgstr ""
-#~ "Tüm girdi dosyası akışları artık her türden tek bir dosya yerine tek "
-#~ "çıktı dosyasına kopyalanıyor. Altyazılar da atlanmak yerine artık "
-#~ "kopyalanıyor."
-
-#~ msgid "Added Swedish translation (thanks Åke Engelbrektson)."
-#~ msgstr "İsveççe çeviri eklendi (Åke Engelbrektson'a teşekkürler)."
-
-#~ msgid "Added Spanish translation (thanks Óscar Fernández Díaz)."
-#~ msgstr "İspanyolca çeviri eklendi (Óscar Fernández Díaz'a teşekkürler)."
-
-#~ msgid "Made the commandline argument description translatable."
-#~ msgstr "Komut satırı argümanı tanımı, tercüme edilebilir kılındı."
-
-#~ msgid "This release fixes an error when trimming GoPro recordings."
-#~ msgstr "Bu sürümde GoPro kayıtlarını keserkenki bir hata düzeltildi."
-
-#~ msgid ""
-#~ "Data streams are no longer copied to the output file as a workaround to "
-#~ "prevent errors on GoPro recordings."
-#~ msgstr ""
-#~ "GoPro kayıtlarındaki hataları önlemek için veri akışları artık geçici bir "
-#~ "çözüm olarak çıktı dosyasına kopyalanmamaktadır."
-
-#~ msgid "Updated Spanish translation."
-#~ msgstr "İspanyolca çeviri güncellendi."
-
-#~ msgid "Video Trimmer is now a GTK 4 application!"
-#~ msgstr "Video Kırpıcı artık bir GTK 4 uygulaması!"
-
-#~ msgid "The GTK 4 port hopefully fixes video-driver-related crashes."
-#~ msgstr "GTK 4 uygulaması video sürücüsüyle ilgili çökmeleri düzeltecektir."
-
-#~ msgid "Improved window animations when opening videos."
-#~ msgstr "Pencere açılma animasyonları iyileştirildi."
-
-#~ msgid "Added Croatian translation (thanks milotype)."
-#~ msgstr "Hırvatça çeviri eklendi, milotype sağ olsun."
-
-#~ msgid ""
-#~ "The default name for the output video is now \"input video name "
-#~ "(trimmed)\"."
-#~ msgstr ""
-#~ "Kesilip aktarılacak videoların varsayılan adı \"video adı (kırpıldı)\" "
-#~ "şeklinde."
-
-#~ msgid ""
-#~ "The default folder for the output video is now the input video's folder. "
-#~ "Note: to make this work under Flatpak, you'll need to give Video Trimmer "
-#~ "the filesystem=host permission (for example, using Flatseal)."
-#~ msgstr ""
-#~ "Çıkış videosu için öntanımlı klasör artık giriş videosunun klasörüdür. "
-#~ "Not: Bunun Flatpak altında çalışması için, Video Kırpıcı'ya "
-#~ "filesystem=host izni vermeniz gerekir (bunun için Flatseal "
-#~ "kullanabilirsiniz)."
-
-#~ msgid ""
-#~ "It's now possible to open a new Video Trimmer window from the new primary "
-#~ "menu."
-#~ msgstr "Yeni menüyü kullanarak yeni bir Video Kırpıcı penceresi açılabilir."
-
-#~ msgid "This release contains a few small improvements."
-#~ msgstr "Bu sürümde birkaç küçük iyileştirme var."
-
-#~ msgid ""
-#~ "The timestamp text fields are now arranged in a better way in RTL "
-#~ "languages."
-#~ msgstr "Zaman damgası metin alanları Sağdan Sola diller için iyileştirildi."
-
-#~ msgid ""
-#~ "Video Trimmer now uses libadwaita, which means a slightly updated visual "
-#~ "style (rounded window corners!)."
-#~ msgstr ""
-#~ "Video Kırpıcı artık libadwaita kullanıyor, böylece görsel stil "
-#~ "iyileştirildi ve pencere köşeleri yuvarlaklaştırıldı."
-
-#~ msgid ""
-#~ "This release contains a few improvements and adds a number of "
-#~ "translations."
-#~ msgstr "Bu sürüm birkaç iyileştirme içerir ve bir dizi çeviri ekler."
-
-#~ msgid ""
-#~ "Added a checkbox to remove the audio track to the output file selection "
-#~ "dialog."
-#~ msgstr ""
-#~ "Çıkış dosyası seçim iletişim kutusuna ses parçasını kaldırmak için onay "
-#~ "kutusu eklendi."
-
-#~ msgid ""
-#~ "The video is now automatically paused when the trim button is pressed."
-#~ msgstr ""
-#~ "Kırpma düğmesine basıldığında video artık kendiliğinden duraklatılır."
-
-#~ msgid ""
-#~ "The .mp4 output file extension is no longer default when it cannot be "
-#~ "used (this affected videos from some Sony cameras)."
-#~ msgstr ""
-#~ ".mp4 çıktı dosyası uzantısı kullanılamadığında artık öntanımlı değil (bu "
-#~ "bazı Sony kameralardaki videoları etkiledi)."
-
-#~ msgid "Added a message when the opened file has no video track."
-#~ msgstr ""
-#~ "Açılan dosyada video parçası olmadığı durumlar için bir ileti eklendi."
-
-#~ msgid ""
-#~ "Updated libadwaita, which means slightly newer version of the Adwaita "
-#~ "theme."
-#~ msgstr "libadwaita güncellenerek Adwaita temasının yeni sürümüne geçildi."
-
-#~ msgid "Fixed a crash after closing a window with a visible notification."
-#~ msgstr ""
-#~ "Görünür bir bildirimle pencereyi kapattıktan sonraki çökme düzeltildi."
-
-#~ msgid "Added German translation (thanks Johannes Hayeß)."
-#~ msgstr "Almanca çeviri eklendi, Johannes Hayeß sağ olsun."
-
-#~ msgid "Added Basque translation (thanks Sergio)."
-#~ msgstr "Bask dili çevirisi eklendi, Sergio sağ olsun."
-
-#~ msgid "Added Hungarian translation (thanks ovari)."
-#~ msgstr "Macarca çeviri eklendi, ovari sağ olsun."
-
-#~ msgid "Added Brazilian Portuguese translation (thanks Gustavo Costa)."
-#~ msgstr "Brezilya Portekizcesi çevirisi eklendi, Gustavo Costa sağ olsun."
-
-#~ msgid ""
-#~ "Specified input device and screen size recommendations to improve display "
-#~ "in the new GNOME Software."
-#~ msgstr ""
-#~ "Yeni GNOME Yazılımlar'da görünümü iyileştirmek için ekran boyu ve giriş "
-#~ "aygıtı önerileri belirtildi."
-
-#~ msgid "Added Italian translation (thanks Albano Battistella)."
-#~ msgstr "İtalyanca çeviri eklendi, Albano Battistella sağ olsun."
-
-#~ msgid ""
-#~ "Added a checkbox for accurate trimming with re-encoding to the output "
-#~ "file selection dialog."
-#~ msgstr ""
-#~ "Çıktı dosyası seçimi iletişim kutusuna yeniden kodlama ile doğru kırpma "
-#~ "için bir onay kutusu eklendi."
-
-#~ msgid "Added Japanese translation (thanks Sibuya Kaz)."
-#~ msgstr "Japonca çeviri eklendi, Sibuya Kaz sağ olsun."
-
-#~ msgid "Added Polish translation (thanks Avery)."
-#~ msgstr "Lehçe çeviri eklendi, Avery sağ olsun."
-
-#~ msgid "Added Portuguese translation (thanks Bio DevM)."
-#~ msgstr "Portekizce çeviri eklendi, Bio DevM sağ olsun."
-
-#~ msgid ""
-#~ "This release adds an accurate trimming with re-encoding option and "
-#~ "refreshes the design a bit."
-#~ msgstr ""
-#~ "Bu sürüm, yeniden kodlama seçeneğiyle doğru kırpma ekler ve tasarımı "
-#~ "biraz yeniler."
-
-#~ msgid ""
-#~ "Updated the design to better match the newer version of the Adwaita theme."
-#~ msgstr ""
-#~ "Adwaita temasının yeni sürümüyle uyumlu olacak şekilde tasarım "
-#~ "güncellendi."
-
-#~ msgid ""
-#~ "Added dark style and high contrast support and made dark style the "
-#~ "default."
-#~ msgstr ""
-#~ "Koyu tema ve yüksek karşıtlık desteği eklendi ve koyu tema varsayılan "
-#~ "ayarlandı."
-
-#~ msgid ""
-#~ "Added a \"Show in Files\" button to the trimming done notification. Note: "
-#~ "due to a limitation this is currently disabled on some Flatpak installs, "
-#~ "but you can make it work by giving Video Trimmer the filesystem=host "
-#~ "permission (for example, using Flatseal)."
-#~ msgstr ""
-#~ "Kesme işlemi bitti bildiriine \"Dosyalar'da göster\" düğmesi eklendi. "
-#~ "Not: Bir sınırlama nedeniyle bazı Flatpak yüklemelerinde bu özellik devre "
-#~ "dışıdır, fakat Video Kırpıcı'ya filesystem=host iznini verirseniz "
-#~ "(örneğin Flatseal kullanarak) bu özellik çalışabilir."
-
-#~ msgid ""
-#~ "This release enables \"Show in Files\" for Flatpak and updates "
-#~ "translations."
-#~ msgstr ""
-#~ "Bu sürüm, Flatpak için \"Dosyalarda Göster\" özelliğini etkinleştirir ve "
-#~ "çevirileri günceller."
-
-#~ msgid ""
-#~ "The \"Show in Files\" button has been enabled for all Flatpak installs."
-#~ msgstr ""
-#~ "Tüm Flatpak kurulumları için \"Dosyalarda Göster\" düğmesi "
-#~ "etkinleştirildi."
-
-#~ msgid "Added Czech translation (thanks Jakub Mach)."
-#~ msgstr "Çekçe çeviri eklendi (Jakub Mach'a teşekkürler)."
-
-#~ msgid "Added French translation."
-#~ msgstr "Fransızca çeviri eklendi."
-
-#~ msgid "Added Galician translation (thanks Fran Diéguez)."
-#~ msgstr "Galiçyaca çeviri eklendi (Fran Diéguez'e teşekkürler)."
-
-#~ msgid "Added Turkish translation."
-#~ msgstr "Türkçe çeviri eklendi."
-
-#~ msgid "Added Ukrainian translation (thanks Andrij Mizyk)."
-#~ msgstr "Ukraynaca çeviri eklendi (Andrij Mizyk'a teşekkürler)."
-
-#~ msgid "Fixed app closing when trying to open inaccessible files."
-#~ msgstr ""
-#~ "Erişilemeyen dosyaları açmaya çalışırken uygulamanın kapanması düzeltildi."
-
-#~ msgid "Fixed crash when trying to open files from network locations."
-#~ msgstr ""
-#~ "Ağ konumlarından dosya açmaya çalışırken oluşan kilitlenme düzeltildi."
-
-#~ msgid ""
-#~ "Updated to the GNOME 43 platform, which brings the ability to drag-and-"
-#~ "drop from Files on Flatpak and a refreshed About dialog."
-#~ msgstr ""
-#~ "Flatpak'teki Dosyalar'dan sürükle ve bırak özelliği ve yenilenmiş "
-#~ "Hakkında iletişim kutusu getiren GNOME 43 platformuna güncellendi."
-
-#~ msgid "Added Tamil translation (thanks K.B.Dharun Krishna)."
-#~ msgstr "Tamil çevirisi eklendi (teşekkürler K.B.Dharun Krishna)."
-
-#~ msgid ""
-#~ "This release fixes app closing on inaccessible files and updates it to "
-#~ "the GNOME 43 platform."
-#~ msgstr ""
-#~ "Bu sürüm, erişilemeyen dosyalarda uygulamanın kapanmasını düzeltir ve "
-#~ "uygulamayı GNOME 43 platformuna günceller."
