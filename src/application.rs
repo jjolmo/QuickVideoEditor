@@ -129,11 +129,11 @@ impl VtApplication {
     pub fn new() -> Self {
         let flags = gio::ApplicationFlags::NON_UNIQUE | gio::ApplicationFlags::HANDLES_OPEN;
         glib::Object::builder()
-            .property("application-id", &config::APP_ID)
-            .property("flags", &flags)
+            .property("application-id", config::APP_ID)
+            .property("flags", flags)
             .property(
                 "resource-base-path",
-                &"/org/gnome/gitlab/YaLTeR/VideoTrimmer",
+                "/org/gnome/gitlab/YaLTeR/VideoTrimmer",
             )
             .build()
     }

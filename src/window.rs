@@ -625,7 +625,7 @@ mod imp {
                     .query_info_future(
                         "standard::display-name,standard::fast-content-type",
                         gio::FileQueryInfoFlags::NONE,
-                        glib::PRIORITY_DEFAULT,
+                        glib::Priority::DEFAULT,
                     )
                     .await;
 
