@@ -3,8 +3,8 @@ msgstr ""
 "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2023-08-16 10:20+0000\n"
-"PO-Revision-Date: \n"
+"POT-Creation-Date: 2023-08-17 04:52+0000\n"
+"PO-Revision-Date: 2023-08-17 08:21+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -24,7 +24,7 @@ msgstr "Utdatafilens sökväg"
 msgid "PATH"
 msgstr "SÖKVÄG"
 
-#: src/main.rs:39 src/window.rs:770 src/window.blp:27
+#: src/main.rs:40 src/window.rs:770 src/window.blp:27
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
@@ -80,42 +80,42 @@ msgstr ""
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:281
+#: src/window.rs:282
 msgid " (trimmed)"
 msgstr " (trimmad)"
 
 #. Translators: checkbox in output file selection dialog that strips audio from the
 #. video file.
-#: src/window.rs:306
+#: src/window.rs:307
 msgid "Remove audio"
 msgstr "Ta bort ljud"
 
 #. Translators: checkbox in output file selection dialog.
-#: src/window.rs:311
+#: src/window.rs:312
 msgid "Accurate trimming, but slower and may lose quality"
 msgstr "Noggrann trimning, men långsammare och kan förlora kvalitet"
 
 #. Translators: error dialog title.
-#: src/window.rs:330 src/window.rs:583 src/window.rs:945
+#: src/window.rs:331 src/window.rs:583 src/window.rs:945
 msgid "Error"
 msgstr "Fel"
 
 #. Translators: error dialog text.
-#: src/window.rs:333 src/window.rs:586 src/window.rs:948
+#: src/window.rs:334 src/window.rs:586 src/window.rs:948
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "Video Trimmer kan endast arbeta på lokala filer. Välj en annan fil."
 
 #. Translators: message dialog text.
-#: src/window.rs:435
+#: src/window.rs:436
 msgid "Trimming…"
 msgstr "Klipper…"
 
 #. Translators: text on the toast after trimming was done.
-#. The template is: <video filename> has been saved
-#: src/window.rs:461
-msgid "has been saved"
-msgstr "har sparats"
+#. The placeholder is the video filename.
+#: src/window.rs:460
+msgid "{} has been saved"
+msgstr "{} har sparats"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
