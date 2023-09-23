@@ -124,7 +124,9 @@ mod imp {
             let gesture_drag = gtk::GestureDrag::new();
             gesture_drag.connect_drag_begin({
                 let obj = obj.downgrade();
-                move |_, x, y| {
+                move |gesture, x, y| {
+                    gesture.set_state(gtk::EventSequenceState::Claimed);
+
                     let obj = obj.upgrade().unwrap();
                     let imp = obj.imp();
                     imp.on_drag_start(x, y);
