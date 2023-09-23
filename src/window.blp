@@ -23,92 +23,91 @@ menu primary_menu {
   }
 }
 
-template $VtWindow : ApplicationWindow {
+template $VtWindow : Adw.ApplicationWindow {
   title: _("Video Trimmer");
 
   /* These parameters are chosen to make the default size of the video 640×360. */
   default-width: 640;
   default-height: 535;
 
-  focus-widget: button_open;
-
-  [titlebar]
-  Stack stack_header_bar {
+  content: Stack stack {
     transition-type: crossfade;
 
-    HeaderBar {
-      /* GTK puts this on the stack above, but it has to be on the actual headerbar for the "devel" class to work. */
-      styles ["titlebar"]
-
-      Button button_open {
-        /* Translators: Video open button label. */
-        label: _("Open");
-        /* Translators: Video open button tooltip. */
-        tooltip-text: _("Select a File");
-
-        styles ["suggested-action"]
-      }
-
-      [end]
-      MenuButton {
-        menu-model: primary_menu;
-        primary: true;
-        icon-name: "open-menu-symbolic";
-        /* Translators: Main menu button tooltip. */
-        tooltip-text: _("Main Menu");
-      }
-    }
-
     StackPage {
-      name: "page_main";
+      child: Adw.ToolbarView {
+        [top]
+        Adw.HeaderBar {
+          title-widget: Adw.WindowTitle {
+            title: bind template.title;
+          };
 
-      child: HeaderBar {
-        /* GTK puts this on the stack above, but it has to be on the actual headerbar for the "devel" class to work. */
-        styles ["titlebar"]
+          [end]
+          MenuButton {
+            menu-model: primary_menu;
+            primary: true;
+            icon-name: "open-menu-symbolic";
+            /* Translators: Main menu button tooltip. */
+            tooltip-text: _("Main Menu");
+          }
+        }
 
-        title-widget: Adw.WindowTitle title {
-          title: bind template.title;
+        content: Adw.StatusPage {
+          vexpand: true;
+          icon-name: "video-trimmer-symbolic";
+
+          /* Translators: Title text on the window when no files are open. */
+          title: _("Trim Videos");
+
+          /* Translators: Description text on the window when no files are open. */
+          description: _("Drag and drop a video here");
+
+          child: Button button_open {
+            /* Translators: Open button label when no files are open. */
+            label: _("Open Video…");
+            /* Translators: Open button tooltip. */
+            tooltip-text: _("Select a Video");
+
+            styles ["suggested-action", "pill"]
+            halign: center;
+          };
         };
-
-        Button button_trim {
-          /* Translators: Trim button. */
-          label: _("Trim");
-          sensitive: false;
-          /* Translators: Trim button tooltip. */
-          tooltip-text: _("Trim Video");
-
-          styles ["suggested-action"]
-        }
-
-        [end]
-        MenuButton {
-          menu-model: primary_menu;
-          primary: true;
-          icon-name: "open-menu-symbolic";
-          /* Translators: Main menu button tooltip. */
-          tooltip-text: _("Main Menu");
-        }
       };
     }
-  }
-
-  Stack stack_main {
-    transition-type: under_up;
-
-    Adw.StatusPage status_page_empty_state {
-      icon-name: "video-trimmer-symbolic";
-
-      /* Translators: Label on the initial state. */
-      description: _("Press the Open button to open a video file.");
-    }
 
     StackPage {
       name: "page_main";
 
-      child: Box {
-        orientation: vertical;
+      child: Adw.ToolbarView toolbar_view {
+        top-bar-style: raised_border;
+        bottom-bar-style: raised_border;
 
-        Stack stack_video_preview {
+        [top]
+        Adw.HeaderBar {
+          title-widget: Adw.WindowTitle title {
+            title: bind template.title;
+          };
+
+          Button button_trim {
+            /* Translators: Trim button. */
+            label: _("Trim");
+            sensitive: false;
+            /* Translators: Trim button tooltip. */
+            tooltip-text: _("Trim Video");
+
+            styles ["suggested-action"]
+          }
+
+          [end]
+          MenuButton {
+            menu-model: primary_menu;
+            primary: true;
+            icon-name: "open-menu-symbolic";
+            /* Translators: Main menu button tooltip. */
+            tooltip-text: _("Main Menu");
+          }
+        }
+
+        content: Stack stack_video_preview {
           vexpand: true;
           transition-type: over_down_up;
           visible-child: spinner_video_preview;
@@ -137,8 +136,9 @@ template $VtWindow : ApplicationWindow {
               };
             };
           }
-        }
+        };
 
+        [bottom]
         Box box_start_end {
           halign: center;
           margin-start: 18;
@@ -183,5 +183,5 @@ template $VtWindow : ApplicationWindow {
         }
       };
     }
-  }
+  };
 }

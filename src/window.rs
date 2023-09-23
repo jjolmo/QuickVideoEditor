@@ -14,6 +14,7 @@ mod imp {
         time::Duration,
     };
 
+    use adw::subclass::prelude::*;
     use futures_util::future::{abortable, FutureExt};
     use gettextrs::*;
     use glib::{clone, debug, error, warn, FromVariant, Properties};
@@ -22,7 +23,6 @@ mod imp {
         gdk::{Key, ModifierType},
         gio, glib,
         prelude::*,
-        subclass::prelude::*,
         CompositeTemplate,
     };
 
@@ -99,17 +99,15 @@ mod imp {
         #[template_child]
         button_open: TemplateChild<gtk::Button>,
         #[template_child]
-        status_page_empty_state: TemplateChild<adw::StatusPage>,
-        #[template_child]
-        stack_main: TemplateChild<gtk::Stack>,
-        #[template_child]
-        stack_header_bar: TemplateChild<gtk::Stack>,
+        stack: TemplateChild<gtk::Stack>,
         #[template_child]
         title: TemplateChild<adw::WindowTitle>,
         #[template_child]
         box_start_end: TemplateChild<gtk::Box>,
         #[template_child]
         overlay_error_page: TemplateChild<adw::ToastOverlay>,
+        #[template_child]
+        toolbar_view: TemplateChild<adw::ToolbarView>,
 
         #[property(get = Self::is_playing, set = Self::set_is_playing, explicit_notify)]
         is_playing: PhantomData<bool>,
@@ -549,20 +547,13 @@ mod imp {
         }
 
         fn switch_to_main_page(&self) {
-            if self
-                .stack_main
-                .visible_child_name()
-                .as_ref()
-                .map(|x| x.as_str())
-                == Some("page_main")
-            {
+            if self.stack.visible_child_name().as_ref().map(|x| x.as_str()) == Some("page_main") {
                 return;
             }
 
             let obj = self.obj();
 
-            self.stack_main.set_visible_child_name("page_main");
-            self.stack_header_bar.set_visible_child_name("page_main");
+            self.stack.set_visible_child_name("page_main");
             obj.set_default_widget(Some(&*self.button_trim));
 
             // Focus the entry when coming from the empty state.
@@ -732,7 +723,7 @@ mod imp {
     impl ObjectSubclass for VtWindow {
         const NAME: &'static str = "VtWindow";
         type Type = super::VtWindow;
-        type ParentType = gtk::ApplicationWindow;
+        type ParentType = adw::ApplicationWindow;
 
         fn class_init(klass: &mut Self::Class) {
             Self::bind_template(klass);
@@ -856,6 +847,12 @@ mod imp {
 
             // Start entry is always on the left, just like the timeline.
             self.box_start_end.set_direction(gtk::TextDirection::Ltr);
+
+            // Add playback controls as a bottom bar into our ToolbarView.
+            self.toolbar_view.remove(&*self.box_start_end);
+            self.toolbar_view
+                .add_bottom_bar(self.video_preview.box_playback_controls());
+            self.toolbar_view.add_bottom_bar(&*self.box_start_end);
 
             self.video_preview
                 .connect_local("notify::duration", false, {
@@ -1011,13 +1008,14 @@ Please choose another file.",
                     false
                 }
             });
-            self.status_page_empty_state.add_controller(drop_target);
+            self.stack.add_controller(drop_target);
         }
     }
 
     impl WidgetImpl for VtWindow {}
     impl WindowImpl for VtWindow {}
     impl ApplicationWindowImpl for VtWindow {}
+    impl AdwApplicationWindowImpl for VtWindow {}
 
     fn validate_entries(entry_start: &gtk::Entry, entry_end: &gtk::Entry) -> Option<(u32, u32)> {
         let style_start = entry_start.style_context();

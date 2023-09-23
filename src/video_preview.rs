@@ -29,6 +29,8 @@ mod imp {
         label_current_time: TemplateChild<gtk::Label>,
         #[template_child]
         timeline: TemplateChild<VtTimeline>,
+        #[template_child]
+        box_playback_controls: TemplateChild<gtk::Box>,
 
         #[property(get = Self::duration)]
         duration: PhantomData<i64>,
@@ -235,6 +237,10 @@ mod imp {
         pub fn overlay(&self) -> &adw::ToastOverlay {
             &self.overlay
         }
+
+        pub fn box_playback_controls(&self) -> &gtk::Box {
+            &self.box_playback_controls
+        }
     }
 }
 
@@ -258,5 +264,9 @@ impl VtVideoPreview {
 
     pub fn overlay(&self) -> &adw::ToastOverlay {
         self.imp().overlay()
+    }
+
+    pub fn box_playback_controls(&self) -> &gtk::Box {
+        self.imp().box_playback_controls()
     }
 }

@@ -4,53 +4,49 @@ using Adw 1;
 template $VtVideoPreview : Widget {
   layout-manager: BinLayout {};
 
-  Box {
-    orientation: vertical;
+  Adw.ToastOverlay overlay {
+    child: Stack stack_video_preview {
+      vexpand: true;
 
-    Adw.ToastOverlay overlay {
-      child: Stack stack_video_preview {
-        vexpand: true;
+      Picture picture_video_preview {}
 
-        Picture picture_video_preview {}
+      Adw.StatusPage status_page_no_video {
+        icon-name: "broken-video-symbolic";
 
-        Adw.StatusPage status_page_no_video {
-          icon-name: "broken-video-symbolic";
+        /* Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio). */
+        title: _("Could Not Load Video Track");
 
-          /* Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio). */
-          title: _("Could Not Load Video Track");
+        /* Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio). */
+        description: _("Maybe the file only has an audio track, or maybe the necessary video codec is missing.");
+      }
+    };
+  }
+}
 
-          /* Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio). */
-          description: _("Maybe the file only has an audio track, or maybe the necessary video codec is missing.");
-        }
-      };
+Box box_playback_controls {
+  margin-start: 18;
+  margin-end: 18;
+  margin-top: 12;
+  margin-bottom: 12;
+
+  Button button_play_pause {
+    receives-default: true;
+    margin-end: 8;
+
+    Image button_play_pause_image {
+      icon-name: "media-playback-pause-symbolic";
     }
+  }
 
-    Box {
-      margin-start: 18;
-      margin-end: 18;
-      margin-top: 12;
-      margin-bottom: 12;
+  Label label_current_time {
+    margin-end: 8;
+    label: "0:00";
+    width-chars: 5;
 
-      Button button_play_pause {
-        receives-default: true;
-        margin-end: 8;
+    styles ["numeric"]
+  }
 
-        Image button_play_pause_image {
-          icon-name: "media-playback-pause-symbolic";
-        }
-      }
-
-      Label label_current_time {
-        margin-end: 8;
-        label: "0:00";
-        width-chars: 5;
-
-        styles ["numeric"]
-      }
-
-      $VtTimeline timeline {
-        hexpand: "1";
-      }
-    }
+  $VtTimeline timeline {
+    hexpand: "1";
   }
 }
