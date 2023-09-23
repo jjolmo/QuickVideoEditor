@@ -1,7 +1,7 @@
 using Gtk 4.0;
 using Adw 1;
 
-template VtVideoPreview : Widget {
+template $VtVideoPreview : Widget {
   layout-manager: BinLayout {};
 
   Box {
@@ -48,7 +48,7 @@ template VtVideoPreview : Widget {
         styles ["numeric"]
       }
 
-      .VtTimeline timeline {
+      $VtTimeline timeline {
         hexpand: "1";
       }
     }

@@ -23,7 +23,7 @@ menu primary_menu {
   }
 }
 
-template VtWindow : ApplicationWindow {
+template $VtWindow : ApplicationWindow {
   title: _("Video Trimmer");
 
   /* These parameters are chosen to make the default size of the video 640×360. */
@@ -67,7 +67,7 @@ template VtWindow : ApplicationWindow {
         styles ["titlebar"]
 
         title-widget: Adw.WindowTitle title {
-          title: bind VtWindow.title;
+          title: bind template.title;
         };
 
         Button button_trim {
@@ -113,7 +113,7 @@ template VtWindow : ApplicationWindow {
           transition-type: over_down_up;
           visible-child: spinner_video_preview;
 
-          .VtVideoPreview video_preview {}
+          $VtVideoPreview video_preview {}
 
           Spinner spinner_video_preview {
             halign: center;
