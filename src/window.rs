@@ -666,11 +666,17 @@ mod imp {
             ];
             debug!("invoking: {:?}", args);
 
-            let subprocess = gio::Subprocess::newv(
+            let subprocess = match gio::Subprocess::newv(
                 &args,
                 gio::SubprocessFlags::STDOUT_PIPE | gio::SubprocessFlags::STDERR_PIPE,
-            )
-            .unwrap();
+            ) {
+                Ok(subprocess) => subprocess,
+                Err(err) => {
+                    warn!("error spawning ffprobe: {err:?}");
+                    return;
+                }
+            };
+
             let obj = self.obj().clone();
             let future = async move {
                 match subprocess.communicate_future(None).await {
