@@ -22,7 +22,11 @@ blueprints = custom_target('blueprints',
 )
 
 gnome.compile_resources('video-trimmer',
-  'video_trimmer.gresource.xml',
+  configure_file(
+    input: 'video_trimmer.gresource.xml.in',
+    output: '@BASENAME@',
+    configuration: { 'appdata-file': appstream_file.full_path() },
+  ),
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,

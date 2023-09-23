@@ -26,6 +26,17 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.8.2" date="2023-09-23">
+			<description>
+				<p>This release contains a minor visual refresh for GNOME 45.</p>
+				<ul>
+					<li>Tweaked the visual style for the GNOME 45 release.</li>
+					<li>Fixed app crashing when ffprobe is missing.</li>
+					<li>Updated to the GNOME 45 platform.</li>
+					<li>Updated translations.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.8.1" date="2023-04-14">
 			<description>
 				<p>This release adds keyboard shortcuts and fixes a rare crash with some files.</p>

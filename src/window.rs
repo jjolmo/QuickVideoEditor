@@ -747,40 +747,28 @@ mod imp {
             klass.add_binding_action(Key::s, ModifierType::CONTROL_MASK, "win.trim", None);
 
             klass.install_action("win.about", None, |window, _, _| {
-                // Concat translated strings to reuse the metainfo translations.
-                let list_points = [
-                    gettext("Added several keyboard shortcuts along with the shortcuts window listing them."),
-                    gettext("Fixed app crashing when opening files which involve invalid UTF-8."),
-                    gettext("Updated to the GNOME 44 platform."),
-                    gettext("Added Arabic translation (thanks tech-man)."),
-                    gettext("Added Occitan translation (thanks Quentin PAGÈS)."),
-                    gettext("Updated translations."),
-                ];
-                let release_notes = String::from("<p>")
-                    + &gettext("This release adds keyboard shortcuts and fixes a rare crash with some files.")
-                    + "</p><ul><li>"
-                    + &list_points.join("</li><li>")
-                    + "</li></ul>";
-
-                let about_window = adw::AboutWindow::builder()
-                    .transient_for(window)
-                    .application_name(gettext("Video Trimmer"))
-                    .application_icon(config::APP_ID)
-                    .version(config::VERSION)
-                    .license_type(gtk::License::Gpl30)
-                    .developer_name(gettext("Ivan Molodetskikh"))
-                    .issue_url("https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues/new")
-                    // Translators: shown in the About dialog, put your name here.
-                    .translator_credits(gettext("translator-credits"))
-                    .release_notes(release_notes)
-                    .build();
-
+                let resource_path = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/\
+                                     org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml";
+                let about_window = adw::AboutWindow::from_appdata(resource_path, Some("0.8.2"));
+                about_window.set_transient_for(Some(window));
+                about_window.set_version(config::VERSION);
+                // Translators: shown in the About dialog, put your name here.
+                about_window.set_translator_credits(&gettext("translator-credits"));
                 about_window.add_link(
                     // Translators: link title in the About dialog.
                     &gettext("Contribute Translations"),
                     "https://l10n.gnome.org/module/video-trimmer/",
                 );
                 about_window.present();
+
+                // DL doesn't extract release notes from metainfo, so let's help it out with the
+                // ones shown in the dialog.
+                let gettext = |_| ();
+                gettext("This release contains a minor visual refresh for GNOME 45.");
+                gettext("Tweaked the visual style for the GNOME 45 release.");
+                gettext("Fixed app crashing when ffprobe is missing.");
+                gettext("Updated to the GNOME 45 platform.");
+                gettext("Updated translations.");
             });
 
             klass.install_action(
