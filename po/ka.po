@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: video-trimmer master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2023-08-18 17:37+0000\n"
-"PO-Revision-Date: 2023-08-23 07:56+0200\n"
+"POT-Creation-Date: 2023-09-23 13:06+0000\n"
+"PO-Revision-Date: 2023-09-24 20:10+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <ka@li.org>\n"
 "Language: ka\n"
@@ -29,7 +29,7 @@ msgstr "გამოტანის ფაილის ბილიკი"
 msgid "PATH"
 msgstr "PATH"
 
-#: src/main.rs:40 src/window.rs:770 src/window.blp:27
+#: src/main.rs:40 src/window.blp:27
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
@@ -71,12 +71,12 @@ msgid "Quit"
 msgstr "გასვლა"
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
-#: src/video_preview.blp:20
+#: src/video_preview.blp:17
 msgid "Could Not Load Video Track"
 msgstr "ვიდეოტრეკის ჩატვირთვა შეუძლებელია"
 
 #. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
-#: src/video_preview.blp:23
+#: src/video_preview.blp:20
 msgid ""
 "Maybe the file only has an audio track, or maybe the necessary video codec "
 "is missing."
@@ -86,124 +86,104 @@ msgstr ""
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:282
+#: src/window.rs:280
 msgid " (trimmed)"
 msgstr " (წაკვეთილია)"
 
 #. Translators: checkbox in output file selection dialog that strips audio from the
 #. video file.
-#: src/window.rs:307
+#: src/window.rs:305
 msgid "Remove audio"
 msgstr "ხმის მოცილება"
 
 #. Translators: checkbox in output file selection dialog.
-#: src/window.rs:312
+#: src/window.rs:310
 msgid "Accurate trimming, but slower and may lose quality"
 msgstr "ზუსტი წაკვეთა, მაგრამ ნელი და შეიძლება, ხარისხი დაკარგოს"
 
 #. Translators: error dialog title.
-#: src/window.rs:331 src/window.rs:583 src/window.rs:945
+#: src/window.rs:329 src/window.rs:574 src/window.rs:936
 msgid "Error"
 msgstr "შეცდომა"
 
 #. Translators: error dialog text.
-#: src/window.rs:334 src/window.rs:586 src/window.rs:948
+#: src/window.rs:332 src/window.rs:577 src/window.rs:939
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr ""
 "Video Trimmer-ს მხოლოდ ლოკალურ ფაილებზე შეუძლია მუშაობა. სხვა ფაილი აირჩიეთ."
 
 #. Translators: message dialog text.
-#: src/window.rs:436
+#: src/window.rs:434
 msgid "Trimming…"
 msgstr "წაკვეთა…"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:460
+#: src/window.rs:458
 msgid "{} has been saved"
 msgstr "{} შენახულია"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:467
+#: src/window.rs:465
 msgid "Show in Files"
 msgstr "ფაილებში ჩვენება"
 
 #. Translators: error dialog text.
-#: src/window.rs:488
+#: src/window.rs:486
 msgid "Error trimming video"
 msgstr "ვიდეოს წაკვეთის შეცდომა"
 
-#: src/window.rs:497
+#: src/window.rs:495
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "შეცდომა ffmpeg-ის ქვეპროცესთან ურთიერთობისას"
 
 #. Translators: error dialog text.
-#: src/window.rs:538
+#: src/window.rs:536
 msgid "Could not create the ffmpeg subprocess"
 msgstr "შეცდომა ffmpeg-ის ქვეპროცესის შექმნისას"
 
-#: src/window.rs:755
-msgid ""
-"Added several keyboard shortcuts along with the shortcuts window listing "
-"them."
-msgstr ""
-"დაემატა რამდენიმე კლავიატურის მალსახმობი და ისინი მალსახმობების სიაში "
-"გამოჩნდნენ."
-
-#: src/window.rs:756
-msgid "Fixed app crashing when opening files which involve invalid UTF-8."
-msgstr ""
-"გასწორდა მდგომარეობა, როცა აპი ავარიულად სრულდებოდა მაშინ, როცა ფაილი "
-"არასწორ UTF-8-ს შეიცავს."
-
-#: src/window.rs:757
-msgid "Updated to the GNOME 44 platform."
-msgstr "განახლდა GNOME 44 პლატფორმისთვის."
-
-#: src/window.rs:758
-msgid "Added Arabic translation (thanks tech-man)."
-msgstr "დაემატა არაბული თარგმანი (მადლობა tech-man-ს)."
-
-#: src/window.rs:759
-msgid "Added Occitan translation (thanks Quentin PAGÈS)."
-msgstr "დაემატა Occitan თარგმანი (მადლობა Quentin PAGÈS)."
-
-#: src/window.rs:760
-msgid "Updated translations."
-msgstr "განახლებული თარგმანები."
-
-#: src/window.rs:763
-msgid ""
-"This release adds keyboard shortcuts and fixes a rare crash with some files."
-msgstr ""
-"ეს რელიზი ამატებს კლავიატურის მალსახმობებს და ასწორებს იშვიათ ავარიას "
-"ზოგიერთ ფაილებთან."
-
-#: src/window.rs:774
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
-msgid "Ivan Molodetskikh"
-msgstr "Ivan Molodetskikh"
-
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:777
+#: src/window.rs:756
 msgid "translator-credits"
 msgstr "თარგმანი-შესრულებულია"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:783
+#: src/window.rs:759
 msgid "Contribute Translations"
 msgstr "თარგმანების შეწირვა"
 
+#: src/window.rs:767
+msgid "This release contains a minor visual refresh for GNOME 45."
+msgstr "ეს რელიზი გარეგნობის მცირე განახლებას შეიცავს, GNOME 45-სთვის."
+
+#: src/window.rs:768
+msgid "Tweaked the visual style for the GNOME 45 release."
+msgstr "შეიცავს მცირე განახლებას GNOME 45-სთვის."
+
+#: src/window.rs:769
+msgid "Fixed app crashing when ffprobe is missing."
+msgstr ""
+"გასწორდა მდგომარეობა, როცა აპი ავარიულად სრულდებოდა მაშინ, როცა ffprobe "
+"დაყენებული არ იყო."
+
+#: src/window.rs:770
+msgid "Updated to the GNOME 45 platform."
+msgstr "განახლდა GNOME 45 პლატფორმისთვის."
+
+#: src/window.rs:771
+msgid "Updated translations."
+msgstr "განახლებული თარგმანები."
+
 #. Translators: file chooser file filter name.
-#: src/window.rs:914
+#: src/window.rs:905
 msgid "Video files"
 msgstr "ვიდეო ფაილები"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:923
+#: src/window.rs:914
 msgid "Open video"
 msgstr "ვიდეოს გახსნა"
 
@@ -222,43 +202,48 @@ msgstr "_კლავიატურის მალსახმობები"
 msgid "_About Video Trimmer"
 msgstr "ვიდეომჭრელის _შესახებ"
 
-#. Translators: Video open button label.
-#: src/window.blp:45
-msgid "Open"
-msgstr "გახსნა"
-
-#. Translators: Video open button tooltip.
-#: src/window.blp:47
-msgid "Select a File"
-msgstr "ფაილის არჩევა"
-
 #. Translators: Main menu button tooltip.
-#: src/window.blp:58 src/window.blp:89
+#: src/window.blp:50 src/window.blp:106
 msgid "Main Menu"
 msgstr "მთავარი მენიუ"
 
+#. Translators: Title text on the window when no files are open.
+#: src/window.blp:59
+msgid "Trim Videos"
+msgstr "ვიდეოების წაკვეთა"
+
+#. Translators: Description text on the window when no files are open.
+#: src/window.blp:62
+msgid "Drag and drop a video here"
+msgstr "გადმოათრიეთ და დაყარეთ ვიდეო აქ"
+
+#. Translators: Open button label when no files are open.
+#: src/window.blp:66
+msgid "Open Video…"
+msgstr "ვიდეოს გახსნა…"
+
+#. Translators: Open button tooltip.
+#: src/window.blp:68
+msgid "Select a Video"
+msgstr "აირჩიეთ ვიდეო"
+
 #. Translators: Trim button.
-#: src/window.blp:75
+#: src/window.blp:92
 msgid "Trim"
 msgstr "დაჭრა"
 
 #. Translators: Trim button tooltip.
-#: src/window.blp:78
+#: src/window.blp:95
 msgid "Trim Video"
 msgstr "ვიდეოს წაკვეთა"
 
-#. Translators: Label on the initial state.
-#: src/window.blp:102
-msgid "Press the Open button to open a video file."
-msgstr "ვიდეოფაილის გასახსნელად გახსნის ღილაკს დააწექით."
-
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:133
+#: src/window.blp:132
 msgid "Video Preview Failed to Load"
 msgstr "ვიდეოს მინიატურის ჩატვირთვა ჩავარდა"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:136
+#: src/window.blp:135
 msgid ""
 "Please enter the start and end timestamps manually.\n"
 "\n"
@@ -290,6 +275,10 @@ msgstr "ვიდეოს სწრაფი წაკვეთა"
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Cut;Movie;Film;Clip;წაკვეთა;ფილმი;კლიპი;"
 
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
+msgid "Ivan Molodetskikh"
+msgstr "Ivan Molodetskikh"
+
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
 msgid ""
 "Video Trimmer cuts out a fragment of a video given the start and end "
@@ -303,3 +292,29 @@ msgstr ""
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
 msgid "Main Window"
 msgstr "მთავარი ფანჯარა"
+
+#~ msgid ""
+#~ "Added several keyboard shortcuts along with the shortcuts window listing "
+#~ "them."
+#~ msgstr ""
+#~ "დაემატა რამდენიმე კლავიატურის მალსახმობი და ისინი მალსახმობების სიაში "
+#~ "გამოჩნდნენ."
+
+#~ msgid "Added Arabic translation (thanks tech-man)."
+#~ msgstr "დაემატა არაბული თარგმანი (მადლობა tech-man-ს)."
+
+#~ msgid "Added Occitan translation (thanks Quentin PAGÈS)."
+#~ msgstr "დაემატა Occitan თარგმანი (მადლობა Quentin PAGÈS)."
+
+#~ msgid ""
+#~ "This release adds keyboard shortcuts and fixes a rare crash with some "
+#~ "files."
+#~ msgstr ""
+#~ "ეს რელიზი ამატებს კლავიატურის მალსახმობებს და ასწორებს იშვიათ ავარიას "
+#~ "ზოგიერთ ფაილებთან."
+
+#~ msgid "Open"
+#~ msgstr "გახსნა"
+
+#~ msgid "Press the Open button to open a video file."
+#~ msgstr "ვიდეოფაილის გასახსნელად გახსნის ღილაკს დააწექით."
