@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: video-trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2023-08-20 10:23+0000\n"
-"PO-Revision-Date: 2023-08-21 17:42+0200\n"
+"POT-Creation-Date: 2023-09-23 13:06+0000\n"
+"PO-Revision-Date: 2023-09-24 14:04+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -31,7 +31,7 @@ msgstr "Ścieżka do pliku wyjściowego"
 msgid "PATH"
 msgstr "ŚCIEŻKA"
 
-#: src/main.rs:40 src/window.rs:770 src/window.blp:27
+#: src/main.rs:40 src/window.blp:27
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
@@ -73,12 +73,12 @@ msgid "Quit"
 msgstr "Zakończenie działania"
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
-#: src/video_preview.blp:20
+#: src/video_preview.blp:17
 msgid "Could Not Load Video Track"
 msgstr "Nie można wczytać ścieżki wideo"
 
 #. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
-#: src/video_preview.blp:23
+#: src/video_preview.blp:20
 msgid ""
 "Maybe the file only has an audio track, or maybe the necessary video codec "
 "is missing."
@@ -87,127 +87,105 @@ msgstr ""
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:282
+#: src/window.rs:280
 msgid " (trimmed)"
 msgstr " (przycięte)"
 
 #. Translators: checkbox in output file selection dialog that strips audio from the
 #. video file.
-#: src/window.rs:307
+#: src/window.rs:305
 msgid "Remove audio"
 msgstr "Usunięcie dźwięku"
 
 #. Translators: checkbox in output file selection dialog.
-#: src/window.rs:312
+#: src/window.rs:310
 msgid "Accurate trimming, but slower and may lose quality"
 msgstr ""
 "Dokładne przycinanie, ale wolniejsze i mogące spowodować obniżenie jakości"
 
 #. Translators: error dialog title.
-#: src/window.rs:331 src/window.rs:583 src/window.rs:945
+#: src/window.rs:329 src/window.rs:574 src/window.rs:936
 msgid "Error"
 msgstr "Błąd"
 
 #. Translators: error dialog text.
-#: src/window.rs:334 src/window.rs:586 src/window.rs:948
+#: src/window.rs:332 src/window.rs:577 src/window.rs:939
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr ""
 "Ten program może działać tylko na lokalnych plikach. Proszę wybrać inny plik."
 
 #. Translators: message dialog text.
-#: src/window.rs:436
+#: src/window.rs:434
 msgid "Trimming…"
 msgstr "Przycinanie…"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:460
+#: src/window.rs:458
 msgid "{} has been saved"
 msgstr "Zapisano plik {}"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:467
+#: src/window.rs:465
 msgid "Show in Files"
 msgstr "Wyświetl w menedżerze plików"
 
 #. Translators: error dialog text.
-#: src/window.rs:488
+#: src/window.rs:486
 msgid "Error trimming video"
 msgstr "Błąd podczas przycinania pliku wideo"
 
-#: src/window.rs:497
+#: src/window.rs:495
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Nie można komunikować się z podprocesem FFmpeg"
 
 #. Translators: error dialog text.
-#: src/window.rs:538
+#: src/window.rs:536
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Nie można utworzyć podprocesu FFmpeg"
 
-#: src/window.rs:755
-msgid ""
-"Added several keyboard shortcuts along with the shortcuts window listing "
-"them."
-msgstr ""
-"Dodano kilka skrótów klawiszowych razem z oknem wyświetlającym ich listę."
-
-#: src/window.rs:756
-msgid "Fixed app crashing when opening files which involve invalid UTF-8."
-msgstr ""
-"Naprawiono awarię programu podczas otwierania plików zawierających "
-"nieprawidłowy tekst UTF-8."
-
-#: src/window.rs:757
-msgid "Updated to the GNOME 44 platform."
-msgstr "Zaktualizowano do platformy GNOME 44."
-
-#: src/window.rs:758
-msgid "Added Arabic translation (thanks tech-man)."
-msgstr "Dodano tłumaczenie na język arabski (podziękowania dla tech-man)."
-
-#: src/window.rs:759
-msgid "Added Occitan translation (thanks Quentin PAGÈS)."
-msgstr ""
-"Dodano tłumaczenie na język oksytański (podziękowania dla Quentina PAGÈS)."
-
-#: src/window.rs:760
-msgid "Updated translations."
-msgstr "Zaktualizowano tłumaczenia."
-
-#: src/window.rs:763
-msgid ""
-"This release adds keyboard shortcuts and fixes a rare crash with some files."
-msgstr ""
-"To wydanie dodaje skróty klawiszowe i naprawia rzadką awarię przy pewnych "
-"plikach."
-
-#: src/window.rs:774
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
-msgid "Ivan Molodetskikh"
-msgstr "Ivan Molodetskikh"
-
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:777
+#: src/window.rs:756
 msgid "translator-credits"
 msgstr ""
 "Piotr Drąg <piotrdrag@gmail.com>, 2023\n"
 "Aviary.pl <community-poland@mozilla.org>, 2023"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:783
+#: src/window.rs:759
 msgid "Contribute Translations"
 msgstr "Pomóż przy tłumaczeniu"
 
+#: src/window.rs:767
+msgid "This release contains a minor visual refresh for GNOME 45."
+msgstr "To wydanie nieznacznie odświeża wygląd dla GNOME 45."
+
+#: src/window.rs:768
+msgid "Tweaked the visual style for the GNOME 45 release."
+msgstr "Poprawiono styl wizualny dla wydania GNOME 45."
+
+#: src/window.rs:769
+msgid "Fixed app crashing when ffprobe is missing."
+msgstr "Naprawiono awarię programu, kiedy brakuje programu ffprobe."
+
+#: src/window.rs:770
+msgid "Updated to the GNOME 45 platform."
+msgstr "Zaktualizowano do platformy GNOME 45."
+
+#: src/window.rs:771
+msgid "Updated translations."
+msgstr "Zaktualizowano tłumaczenia."
+
 #. Translators: file chooser file filter name.
-#: src/window.rs:914
+#: src/window.rs:905
 msgid "Video files"
 msgstr "Pliki wideo"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:923
+#: src/window.rs:914
 msgid "Open video"
 msgstr "Otwarcie pliku wideo"
 
@@ -226,43 +204,48 @@ msgstr "_Skróty klawiszowe"
 msgid "_About Video Trimmer"
 msgstr "_O programie"
 
-#. Translators: Video open button label.
-#: src/window.blp:45
-msgid "Open"
-msgstr "Otwórz"
-
-#. Translators: Video open button tooltip.
-#: src/window.blp:47
-msgid "Select a File"
-msgstr "Wybiera plik"
-
 #. Translators: Main menu button tooltip.
-#: src/window.blp:58 src/window.blp:89
+#: src/window.blp:50 src/window.blp:106
 msgid "Main Menu"
 msgstr "Menu główne"
 
+#. Translators: Title text on the window when no files are open.
+#: src/window.blp:59
+msgid "Trim Videos"
+msgstr "Przycinanie plików wideo"
+
+#. Translators: Description text on the window when no files are open.
+#: src/window.blp:62
+msgid "Drag and drop a video here"
+msgstr "Tutaj można przeciągnąć plik wideo"
+
+#. Translators: Open button label when no files are open.
+#: src/window.blp:66
+msgid "Open Video…"
+msgstr "Otwórz plik wideo…"
+
+#. Translators: Open button tooltip.
+#: src/window.blp:68
+msgid "Select a Video"
+msgstr "Wybiera plik wideo"
+
 #. Translators: Trim button.
-#: src/window.blp:75
+#: src/window.blp:92
 msgid "Trim"
 msgstr "Przytnij"
 
 #. Translators: Trim button tooltip.
-#: src/window.blp:78
+#: src/window.blp:95
 msgid "Trim Video"
 msgstr "Przycina plik wideo"
 
-#. Translators: Label on the initial state.
-#: src/window.blp:102
-msgid "Press the Open button to open a video file."
-msgstr "Proszę nacisnąć przycisk „Otwórz”, aby otworzyć plik wideo."
-
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:133
+#: src/window.blp:132
 msgid "Video Preview Failed to Load"
 msgstr "Wczytanie podglądu pliku wideo się nie powiodło"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:136
+#: src/window.blp:135
 msgid ""
 "Please enter the start and end timestamps manually.\n"
 "\n"
@@ -295,6 +278,10 @@ msgid "Cut;Movie;Film;Clip;"
 msgstr ""
 "Przytnij;Przycięcie;Cięcie;Tnij;Potnij;Wytnij;Film;Wideo;Video;Movie;Clip;"
 "Klip;"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
+msgid "Ivan Molodetskikh"
+msgstr "Ivan Molodetskikh"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
 msgid ""
