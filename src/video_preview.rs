@@ -70,10 +70,16 @@ mod imp {
 
         fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<[Signal; 2]> = Lazy::new(|| {
+            static SIGNALS: Lazy<[Signal; 4]> = Lazy::new(|| {
                 [
                     Signal::builder("set-start-end")
                         .param_types([glib::Type::U32, glib::Type::U32])
+                        .build(),
+                    Signal::builder("set-start")
+                        .param_types([glib::Type::U32])
+                        .build(),
+                    Signal::builder("set-end")
+                        .param_types([glib::Type::U32])
                         .build(),
                     Signal::builder("error").build(),
                 ]
@@ -91,6 +97,22 @@ mod imp {
                 move |args| {
                     let obj = obj.upgrade().unwrap();
                     obj.emit_by_name_with_values("set-start-end", &args[1..])
+                }
+            });
+
+            self.timeline.connect_local("set-start", false, {
+                let obj = obj.downgrade();
+                move |args| {
+                    let obj = obj.upgrade().unwrap();
+                    obj.emit_by_name_with_values("set-start", &args[1..])
+                }
+            });
+
+            self.timeline.connect_local("set-end", false, {
+                let obj = obj.downgrade();
+                move |args| {
+                    let obj = obj.upgrade().unwrap();
+                    obj.emit_by_name_with_values("set-end", &args[1..])
                 }
             });
 
@@ -230,6 +252,14 @@ mod imp {
             self.timeline.set_start_end(start_end);
         }
 
+        pub fn set_start_as_position(&self) {
+            self.timeline.set_start_as_position();
+        }
+
+        pub fn set_end_as_position(&self) {
+            self.timeline.set_end_as_position();
+        }
+
         pub fn pause(&self) {
             self.media_file.get().unwrap().pause();
         }
@@ -256,6 +286,14 @@ impl VtVideoPreview {
 
     pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
         self.imp().set_start_end(start_end);
+    }
+
+    pub fn set_start_as_position(&self) {
+        self.imp().set_start_as_position();
+    }
+
+    pub fn set_end_as_position(&self) {
+        self.imp().set_end_as_position();
     }
 
     pub fn pause(&self) {

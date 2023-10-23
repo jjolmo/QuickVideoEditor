@@ -100,10 +100,18 @@ mod imp {
 
         fn signals() -> &'static [Signal] {
             use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<[Signal; 1]> = Lazy::new(|| {
-                [Signal::builder("set-start-end")
-                    .param_types([glib::Type::U32, glib::Type::U32])
-                    .build()]
+            static SIGNALS: Lazy<[Signal; 3]> = Lazy::new(|| {
+                [
+                    Signal::builder("set-start-end")
+                        .param_types([glib::Type::U32, glib::Type::U32])
+                        .build(),
+                    Signal::builder("set-start")
+                        .param_types([glib::Type::U32])
+                        .build(),
+                    Signal::builder("set-end")
+                        .param_types([glib::Type::U32])
+                        .build(),
+                ]
             });
 
             SIGNALS.as_ref()
@@ -252,6 +260,20 @@ mod imp {
         pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
             self.start_end.set(start_end);
             self.refresh();
+        }
+
+        pub fn set_start_as_position(&self) {
+            let media_file = self.media_file.get().unwrap();
+            let start = (media_file.timestamp() / 1000) as u32;
+
+            self.obj().emit_by_name::<()>("set-start", &[&start]);
+        }
+
+        pub fn set_end_as_position(&self) {
+            let media_file = self.media_file.get().unwrap();
+            let end = (media_file.timestamp() / 1000) as u32;
+
+            self.obj().emit_by_name::<()>("set-end", &[&end]);
         }
 
         pub fn refresh(&self) {
@@ -409,5 +431,11 @@ glib::wrapper! {
 impl VtTimeline {
     pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
         self.imp().set_start_end(start_end);
+    }
+    pub fn set_start_as_position(&self) {
+        self.imp().set_start_as_position();
+    }
+    pub fn set_end_as_position(&self) {
+        self.imp().set_end_as_position();
     }
 }

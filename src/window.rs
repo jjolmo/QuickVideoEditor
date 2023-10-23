@@ -181,6 +181,26 @@ mod imp {
             }
         }
 
+        fn on_set_start(&self, start: Duration) {
+            let text = time_to_entry_text(start);
+            if parse::timestamp(&self.entry_start.text())
+                .map(|x| x != parse::timestamp(&text).unwrap())
+                .unwrap_or(true)
+            {
+                self.entry_start.set_text(&text);
+            }
+        }
+
+        fn on_set_end(&self, end: Duration) {
+            let text = time_to_entry_text(end);
+            if parse::timestamp(&self.entry_end.text())
+                .map(|x| x != parse::timestamp(&text).unwrap())
+                .unwrap_or(true)
+            {
+                self.entry_end.set_text(&text);
+            }
+        }
+
         fn verify_and_trim(&self) {
             if validate_entries(&self.entry_start, &self.entry_end).is_none() {
                 debug!("the timestamps are invalid");
@@ -805,6 +825,26 @@ mod imp {
                     glib::MainContext::default().spawn_local(future);
                 },
             );
+
+            klass.install_action("win.set-start-as-position", None, |window, _, _| {
+                window.imp().video_preview.set_start_as_position()
+            });
+            klass.add_binding_action(
+                Key::i,
+                ModifierType::empty(),
+                "win.set-start-as-position",
+                None,
+            );
+
+            klass.install_action("win.set-end-as-position", None, |window, _, _| {
+                window.imp().video_preview.set_end_as_position()
+            });
+            klass.add_binding_action(
+                Key::o,
+                ModifierType::empty(),
+                "win.set-end-as-position",
+                None,
+            );
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -878,6 +918,40 @@ mod imp {
                     let obj = obj.upgrade().unwrap();
                     let imp = obj.imp();
                     imp.on_set_start_end(start, end);
+
+                    None
+                }
+            });
+
+            self.video_preview.connect_local("set-start", false, {
+                let obj = obj.downgrade();
+                move |args| {
+                    let mut args = args
+                        .iter()
+                        .skip(1)
+                        .map(|x| Duration::from_millis(x.get::<u32>().unwrap().into()));
+                    let start = args.next().unwrap();
+
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
+                    imp.on_set_start(start);
+
+                    None
+                }
+            });
+
+            self.video_preview.connect_local("set-end", false, {
+                let obj = obj.downgrade();
+                move |args| {
+                    let mut args = args
+                        .iter()
+                        .skip(1)
+                        .map(|x| Duration::from_millis(x.get::<u32>().unwrap().into()));
+                    let end = args.next().unwrap();
+
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
+                    imp.on_set_end(end);
 
                     None
                 }
