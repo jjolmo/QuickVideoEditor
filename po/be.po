@@ -1,0 +1,304 @@
+# Belarusian translation for video-trimmer.
+# Copyright (C) 2023 video-trimmer's COPYRIGHT HOLDER
+# This file is distributed under the same license as the video-trimmer package.
+# Yahor Haurylenka <k1llo2810@gmail.com>, 2023.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: video-trimmer master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
+"issues\n"
+"POT-Creation-Date: 2023-10-25 13:33+0000\n"
+"PO-Revision-Date: 2023-10-27 14:49+0300\n"
+"Last-Translator: Yahor Haurylenka <k1llo2810@gmail.com>\n"
+"Language-Team: Belarusian <i18n-bel-gnome@googlegroups.com>\n"
+"Language: be\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 3.3.2\n"
+
+#. Can't extract filenames from a VariantDict yet.
+#. Translators: --output commandline option description.
+#: src/application.rs:37
+msgid "Output file path"
+msgstr "Шлях выходнага файла"
+
+#. Translators: --output commandline option arg description.
+#: src/application.rs:39
+msgid "PATH"
+msgstr "ШЛЯХ"
+
+#: src/main.rs:40 src/window.blp:27
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
+msgid "Video Trimmer"
+msgstr "Відэатрымер"
+
+#: src/shortcuts.blp:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Агульныя"
+
+#: src/shortcuts.blp:12
+msgctxt "shortcut window"
+msgid "New window"
+msgstr "Новае акно"
+
+#: src/shortcuts.blp:17
+msgctxt "shortcut window"
+msgid "Play / Pause"
+msgstr "Прайграванне/паўза"
+
+#: src/shortcuts.blp:22
+msgctxt "shortcut window"
+msgid "Trim"
+msgstr "Абрэзаць"
+
+#: src/shortcuts.blp:27
+msgctxt "shortcut window"
+msgid "Set Start at current postion"
+msgstr "Задаць пачатак з бягучай пазіцыі"
+
+#: src/shortcuts.blp:32
+msgctxt "shortcut window"
+msgid "Set End at current position"
+msgstr "Задаць канец з бягучай пазіцыі"
+
+#: src/shortcuts.blp:37
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Спалучэнні клавіш"
+
+#: src/shortcuts.blp:42
+msgctxt "shortcut window"
+msgid "Close window"
+msgstr "Закрыць  акно"
+
+#: src/shortcuts.blp:47
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Закрыць"
+
+#. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:17
+msgid "Could Not Load Video Track"
+msgstr "Не ўдалося загрузіць відэадарожку"
+
+#. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:20
+msgid ""
+"Maybe the file only has an audio track, or maybe the necessary video codec "
+"is missing."
+msgstr ""
+"Магчыма, у файле ёсць толькі гукавая дарожка або адсутнічае неабходны "
+"відэакодэк."
+
+#. Translators: this is appended to the output video file name.
+#. So for example "my video.mp4" will become "my video (trimmed).mp4".
+#: src/window.rs:300
+msgid " (trimmed)"
+msgstr " (абрэзана)"
+
+#. Translators: checkbox in output file selection dialog that strips audio from the
+#. video file.
+#: src/window.rs:325
+msgid "Remove audio"
+msgstr "Выдаліць гук"
+
+#. Translators: checkbox in output file selection dialog.
+#: src/window.rs:330
+msgid "Accurate trimming, but slower and may lose quality"
+msgstr "Дакладнае абразанне, але павольней і са стратай якасці"
+
+#. Translators: error dialog title.
+#: src/window.rs:349 src/window.rs:594 src/window.rs:1010
+msgid "Error"
+msgstr "Памылка"
+
+#. Translators: error dialog text.
+#: src/window.rs:352 src/window.rs:597 src/window.rs:1013
+msgid ""
+"Video Trimmer can only operate on local files. Please choose another file."
+msgstr ""
+"Відэатрымер можа працаваць толькі з лакальнымі файламі. Выберыце іншы файл."
+
+#. Translators: message dialog text.
+#: src/window.rs:454
+msgid "Trimming…"
+msgstr "Абразанне…"
+
+#. Translators: text on the toast after trimming was done.
+#. The placeholder is the video filename.
+#: src/window.rs:478
+msgid "{} has been saved"
+msgstr "{} было захавана"
+
+#. Translators: text on the button of the toast after
+#. trimming was done to show the output file in the file
+#. manager.
+#: src/window.rs:485
+msgid "Show in Files"
+msgstr "Паказаць праз «Файлы»"
+
+#. Translators: error dialog text.
+#: src/window.rs:506
+msgid "Error trimming video"
+msgstr "Памылка пры абразанні відэа"
+
+#: src/window.rs:515
+msgid "Could not communicate with the ffmpeg subprocess"
+msgstr "Не ўдалося звязацца з падпрацэсам ffmpeg"
+
+#. Translators: error dialog text.
+#: src/window.rs:556
+msgid "Could not create the ffmpeg subprocess"
+msgstr "Не ўдалося стварыць падпрацэс ffmpeg"
+
+#. Translators: shown in the About dialog, put your name here.
+#: src/window.rs:776
+msgid "translator-credits"
+msgstr "Yahor Haurylenka <k1llo2810@gmail.com>"
+
+#. Translators: link title in the About dialog.
+#: src/window.rs:779
+msgid "Contribute Translations"
+msgstr "Дапамагчы з перакладам"
+
+#: src/window.rs:787
+msgid "This release contains a minor visual refresh for GNOME 45."
+msgstr "Гэта версія змяшчае нязначнае візуальнае абнаўленне для GNOME 45."
+
+#: src/window.rs:788
+msgid "Tweaked the visual style for the GNOME 45 release."
+msgstr "Зменены візуальны стыль для GNOME 45."
+
+#: src/window.rs:789
+msgid "Fixed app crashing when ffprobe is missing."
+msgstr "Выпраўлена аварыйнае завяршэнне праграмы, калі адсутнічае ffprobe."
+
+#: src/window.rs:790
+msgid "Updated to the GNOME 45 platform."
+msgstr "Абноўлена да платформы GNOME 45."
+
+#: src/window.rs:791
+msgid "Updated translations."
+msgstr "Абноўлены пераклады."
+
+#. Translators: file chooser file filter name.
+#: src/window.rs:979
+msgid "Video files"
+msgstr "Відэафайлы"
+
+#. Translators: file chooser dialog title.
+#: src/window.rs:988
+msgid "Open video"
+msgstr "Адкрыць відэа"
+
+#. Translators: Primary menu entry that opens a new window.
+#: src/window.blp:8
+msgid "_New Window"
+msgstr "_Новае акно"
+
+#. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
+#: src/window.blp:14
+msgid "_Keyboard Shortcuts"
+msgstr "_Спалучэнні клавіш"
+
+#. Translators: Primary menu entry that opens the About dialog.
+#: src/window.blp:20
+msgid "_About Video Trimmer"
+msgstr "_Аб праграме"
+
+#. Translators: Main menu button tooltip.
+#: src/window.blp:50 src/window.blp:106
+msgid "Main Menu"
+msgstr "Галоўнае меню"
+
+#. Translators: Title text on the window when no files are open.
+#: src/window.blp:59
+msgid "Trim Videos"
+msgstr "Абразанне відэа"
+
+#. Translators: Description text on the window when no files are open.
+#: src/window.blp:62
+msgid "Drag and drop a video here"
+msgstr "Перацягніце відэа сюды"
+
+#. Translators: Open button label when no files are open.
+#: src/window.blp:66
+msgid "Open Video…"
+msgstr "Адкрыць відэа…"
+
+#. Translators: Open button tooltip.
+#: src/window.blp:68
+msgid "Select a Video"
+msgstr "Выбраць відэа"
+
+#. Translators: Trim button.
+#: src/window.blp:92
+msgid "Trim"
+msgstr "Абрэзаць"
+
+#. Translators: Trim button tooltip.
+#: src/window.blp:95
+msgid "Trim Video"
+msgstr "Абрэзаць відэа"
+
+#. Translators: Title that is shown upon video preview loading error.
+#: src/window.blp:132
+msgid "Video Preview Failed to Load"
+msgstr "Памылка загрузкі папярэдняга прагляду відэа"
+
+#. Translators: Description that is shown upon video preview loading error.
+#: src/window.blp:135
+msgid ""
+"Please enter the start and end timestamps manually.\n"
+"\n"
+"If you're running Video Trimmer under Flatpak, note that opening files by "
+"drag-and-drop may not work."
+msgstr ""
+"Увядзіце час пачатку і канца ўручную.\n"
+"\n"
+"Звярніце ўвагу, што адкрыццё файлаў перацягваннем можа не працаваць, калі "
+"вы выкарыстоўваеце Відэатрымер пад Flatpak."
+
+#. Translators: Label for the entry for the start timestamp.
+#: src/window.blp:155
+msgid "Start"
+msgstr "Пачатак"
+
+#. Translators: Label for the entry for the end timestamp.
+#: src/window.blp:172
+msgid "End"
+msgstr "Канец"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
+msgid "Trim videos quickly"
+msgstr "Хуткае абразанне відэа"
+
+#. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
+msgid "Cut;Movie;Film;Clip;"
+msgstr "Cut;Movie;Film;Clip;Скараціць;Мантаж;Абрэзаць;Фільм;Кліп;Выразаць;"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
+msgid "Ivan Molodetskikh"
+msgstr "Іван Маладзецкіх"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
+msgid ""
+"Video Trimmer cuts out a fragment of a video given the start and end "
+"timestamps. The video is never re-encoded, so the process is very fast and "
+"does not reduce the video quality."
+msgstr ""
+"Відэатрымер выразае з відэа фрагмент, у адпаведнасці з пазначаным часам "
+"пачатку і канца. Відэа не пераўтвараецца, таму працэс вельмі хуткі і не "
+"зніжае якасці відэа."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
+msgid "Main Window"
+msgstr "Галоўнае акно"
