@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: video-trimmer master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2023-09-23 13:06+0000\n"
-"PO-Revision-Date: 2023-09-25 14:26+0700\n"
+"POT-Creation-Date: 2023-10-23 08:41+0000\n"
+"PO-Revision-Date: 2023-11-21 14:38+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome-l10n-id@googlegroups.com>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.1\n"
+"X-Generator: Poedit 3.4.1\n"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
@@ -58,15 +58,25 @@ msgstr "Pangkas"
 
 #: src/shortcuts.blp:27
 msgctxt "shortcut window"
+msgid "Set Start at current postion"
+msgstr "Atur Mulai pada posisi saat ini"
+
+#: src/shortcuts.blp:32
+msgctxt "shortcut window"
+msgid "Set End at current position"
+msgstr "Atur Akhir pada posisi saat ini"
+
+#: src/shortcuts.blp:37
+msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Pintasan papan tik"
 
-#: src/shortcuts.blp:32
+#: src/shortcuts.blp:42
 msgctxt "shortcut window"
 msgid "Close window"
 msgstr "Tutup jendela"
 
-#: src/shortcuts.blp:37
+#: src/shortcuts.blp:47
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Keluar"
@@ -87,29 +97,29 @@ msgstr ""
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:280
+#: src/window.rs:300
 msgid " (trimmed)"
 msgstr " (dipangkas)"
 
 #. Translators: checkbox in output file selection dialog that strips audio from the
 #. video file.
-#: src/window.rs:305
+#: src/window.rs:325
 msgid "Remove audio"
 msgstr "Hapus audio"
 
 #. Translators: checkbox in output file selection dialog.
-#: src/window.rs:310
+#: src/window.rs:330
 msgid "Accurate trimming, but slower and may lose quality"
 msgstr ""
 "Pemangkasan akurat, tetapi lebih lambat dan mungkin kehilangan kualitas"
 
 #. Translators: error dialog title.
-#: src/window.rs:329 src/window.rs:574 src/window.rs:936
+#: src/window.rs:349 src/window.rs:594 src/window.rs:1010
 msgid "Error"
 msgstr "Galat"
 
 #. Translators: error dialog text.
-#: src/window.rs:332 src/window.rs:577 src/window.rs:939
+#: src/window.rs:352 src/window.rs:597 src/window.rs:1013
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr ""
@@ -117,76 +127,76 @@ msgstr ""
 "lain."
 
 #. Translators: message dialog text.
-#: src/window.rs:434
+#: src/window.rs:454
 msgid "Trimming…"
 msgstr "Memangkas…"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:458
+#: src/window.rs:478
 msgid "{} has been saved"
 msgstr "{} telah disimpan"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:465
+#: src/window.rs:485
 msgid "Show in Files"
 msgstr "Tampilkan dalam Berkas"
 
 #. Translators: error dialog text.
-#: src/window.rs:486
+#: src/window.rs:506
 msgid "Error trimming video"
 msgstr "Galat saat memangkas video"
 
-#: src/window.rs:495
+#: src/window.rs:515
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Tidak bisa berkomunikasi dengan sub proses ffmpeg"
 
 #. Translators: error dialog text.
-#: src/window.rs:536
+#: src/window.rs:556
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Tidak bisa membuat sub proses ffmpeg"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:756
+#: src/window.rs:776
 msgid "translator-credits"
 msgstr ""
 "Andika Triwidada <andika@gmail.com>, 2023\n"
 "Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2023"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:759
+#: src/window.rs:779
 msgid "Contribute Translations"
 msgstr "Kontribusikan Terjemahan"
 
-#: src/window.rs:767
+#: src/window.rs:787
 msgid "This release contains a minor visual refresh for GNOME 45."
 msgstr "Rilis ini berisi sedikit penyegaran visual untuk GNOME 45."
 
-#: src/window.rs:768
+#: src/window.rs:788
 msgid "Tweaked the visual style for the GNOME 45 release."
 msgstr "Mengubah gaya visual untuk rilis GNOME 45."
 
-#: src/window.rs:769
+#: src/window.rs:789
 msgid "Fixed app crashing when ffprobe is missing."
 msgstr "Memperbaiki aplikasi yang mogok saat ffprobe hilang."
 
-#: src/window.rs:770
+#: src/window.rs:790
 msgid "Updated to the GNOME 45 platform."
 msgstr "Dimutakhirkan ke platform GNOME 45."
 
-#: src/window.rs:771
+#: src/window.rs:791
 msgid "Updated translations."
 msgstr "Memperbarui terjemahan."
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:905
+#: src/window.rs:979
 msgid "Video files"
 msgstr "Berkas video"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:914
+#: src/window.rs:988
 msgid "Open video"
 msgstr "Buka video"
 
