@@ -41,6 +41,7 @@
             "name" : "video-trimmer",
             "buildsystem" : "meson",
             "builddir" : true,
+            "run-tests" : true,
             "config-opts" : [
                 "-Dprofile=development"
             ],

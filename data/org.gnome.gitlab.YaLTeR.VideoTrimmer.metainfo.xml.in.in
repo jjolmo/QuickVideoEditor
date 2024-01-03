@@ -9,11 +9,16 @@
 	<launchable type="desktop-id">@app_id@.desktop</launchable>
 	<translation type="gettext">video-trimmer</translation>
 	<content_rating type="oars-1.0" />
+	<!-- developer_name tag deprecated with Appstream 1.0 -->
 	<developer_name>Ivan Molodetskikh</developer_name>
+	<developer id="gnome.org">
+		<name>Ivan Molodetskikh</name>
+	</developer>
 	<update_contact>yalterz@gmail.com</update_contact>
 	<url type="homepage">https://gitlab.gnome.org/YaLTeR/video-trimmer</url>
 	<url type="bugtracker">https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues</url>
 	<url type="translate">https://l10n.gnome.org/module/video-trimmer/</url>
+	<url type="vcs-browser">https://gitlab.gnome.org/YaLTeR/video-trimmer</url>
 	<description>
 		<p>
 			Video Trimmer cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality.
