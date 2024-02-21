@@ -1,14 +1,14 @@
 # Hungarian translation for Video Trimmer.
-# Copyright (C) 2021, 2022, 2023 Free Software Foundation, Inc.
+# Copyright (C) 2021, 2022, 2023, 2024 Free Software Foundation, Inc.
 # This file is distributed under the same license as the epiphany package.
 #
-# Balázs Úr <ur.balazs at fsf dot hu>, 2021, 2022, 2023.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2021, 2022, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues\n"
-"POT-Creation-Date: 2023-09-23 13:06+0000\n"
-"PO-Revision-Date: 2023-09-23 18:43+0200\n"
+"POT-Creation-Date: 2023-10-23 08:41+0000\n"
+"PO-Revision-Date: 2024-02-22 00:54+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <openscope at fsf dot hu>\n"
 "Language: hu\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 23.04.3\n"
+"X-Generator: Lokalize 23.08.4\n"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
@@ -57,15 +57,25 @@ msgstr "Vágás"
 
 #: src/shortcuts.blp:27
 msgctxt "shortcut window"
+msgid "Set Start at current postion"
+msgstr "Kezdés beállítása a jelenlegi pozíciónál"
+
+#: src/shortcuts.blp:32
+msgctxt "shortcut window"
+msgid "Set End at current position"
+msgstr "Befejezés beállítása a jelenlegi pozíciónál"
+
+#: src/shortcuts.blp:37
+msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Billentyűparancsok"
 
-#: src/shortcuts.blp:32
+#: src/shortcuts.blp:42
 msgctxt "shortcut window"
 msgid "Close window"
 msgstr "Ablak bezárása"
 
-#: src/shortcuts.blp:37
+#: src/shortcuts.blp:47
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Kilépés"
@@ -86,105 +96,103 @@ msgstr ""
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:280
+#: src/window.rs:300
 msgid " (trimmed)"
 msgstr " (vágva)"
 
 #. Translators: checkbox in output file selection dialog that strips audio from the
 #. video file.
-#: src/window.rs:305
+#: src/window.rs:325
 msgid "Remove audio"
 msgstr "Hang eltávolítása"
 
 #. Translators: checkbox in output file selection dialog.
-#: src/window.rs:310
+#: src/window.rs:330
 msgid "Accurate trimming, but slower and may lose quality"
 msgstr "Pontos vágás, de lassabb és minőségromlást okozhat"
 
 #. Translators: error dialog title.
-#: src/window.rs:329 src/window.rs:574 src/window.rs:936
+#: src/window.rs:349 src/window.rs:594 src/window.rs:1010
 msgid "Error"
 msgstr "Hiba"
 
 #. Translators: error dialog text.
-#: src/window.rs:332 src/window.rs:577 src/window.rs:939
+#: src/window.rs:352 src/window.rs:597 src/window.rs:1013
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "A Videóvágó csak helyi fájlokon működik. Válasszon egy másik fájlt."
 
 #. Translators: message dialog text.
-#: src/window.rs:434
+#: src/window.rs:454
 msgid "Trimming…"
 msgstr "Vágás…"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:458
+#: src/window.rs:478
 msgid "{} has been saved"
 msgstr "A(z) {} mentésre került"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:465
+#: src/window.rs:485
 msgid "Show in Files"
 msgstr "Megjelenítés a fájlokban"
 
 #. Translators: error dialog text.
-#: src/window.rs:486
+#: src/window.rs:506
 msgid "Error trimming video"
 msgstr "Hiba a videó vágásakor"
 
-#: src/window.rs:495
+#: src/window.rs:515
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Nem sikerült kommunikálni az ffmpeg alfolyamattal"
 
 #. Translators: error dialog text.
-#: src/window.rs:536
+#: src/window.rs:556
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Nem sikerült létrehozni az ffmpeg alfolyamatot"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:756
+#: src/window.rs:776
 msgid "translator-credits"
 msgstr ""
 "Óvári, 2021.\n"
 "Úr Balázs <ur dot balazs at fsf dot hu>, 2022."
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:759
+#: src/window.rs:779
 msgid "Contribute Translations"
 msgstr "Közreműködés a fordításban"
 
-#: src/window.rs:767
+#: src/window.rs:787
 msgid "This release contains a minor visual refresh for GNOME 45."
 msgstr "Ez a kiadás kisebb vizuális frissítést tartalmaz a GNOME 45-höz."
 
-#: src/window.rs:768
+#: src/window.rs:788
 msgid "Tweaked the visual style for the GNOME 45 release."
 msgstr "A vizuális stílus finomhangolva a GNOME 45 kiadáshoz."
 
-#: src/window.rs:769
-#| msgid "Fixed app crashing when opening files which involve invalid UTF-8."
+#: src/window.rs:789
 msgid "Fixed app crashing when ffprobe is missing."
 msgstr "Javítva az alkalmazás összeomlása, ha az ffprobe hiányzik."
 
-#: src/window.rs:770
-#| msgid "Updated to the GNOME 44 platform."
+#: src/window.rs:790
 msgid "Updated to the GNOME 45 platform."
 msgstr "Frissítve a GNOME 45 platformhoz."
 
-#: src/window.rs:771
+#: src/window.rs:791
 msgid "Updated translations."
 msgstr "Fordítások frissítve."
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:905
+#: src/window.rs:979
 msgid "Video files"
 msgstr "Videófájlok"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:914
+#: src/window.rs:988
 msgid "Open video"
 msgstr "Videó megnyitása"
 
@@ -210,7 +218,6 @@ msgstr "Főmenü"
 
 #. Translators: Title text on the window when no files are open.
 #: src/window.blp:59
-#| msgid "Trim Video"
 msgid "Trim Videos"
 msgstr "Videók vágása"
 
@@ -221,13 +228,11 @@ msgstr "Fogjon meg és ejtsen ide egy videót"
 
 #. Translators: Open button label when no files are open.
 #: src/window.blp:66
-#| msgid "Open video"
 msgid "Open Video…"
 msgstr "Videó megnyitása…"
 
 #. Translators: Open button tooltip.
 #: src/window.blp:68
-#| msgid "Select a File"
 msgid "Select a Video"
 msgstr "Videó kiválasztása"
 
