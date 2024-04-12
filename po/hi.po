@@ -1,0 +1,303 @@
+# Hindi translation for video-trimmer.
+# Copyright (C) 2024 video-trimmer's COPYRIGHT HOLDER
+# This file is distributed under the same license as the video-trimmer package.
+# Scrambled777 <weblate.scrambled777@simplelogin.com>, 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: video-trimmer master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
+"issues\n"
+"POT-Creation-Date: 2024-03-19 04:46+0000\n"
+"PO-Revision-Date: 2024-03-29 21:48+0530\n"
+"Last-Translator: Scrambled777 <weblate.scrambled777@simplelogin.com>\n"
+"Language-Team: Hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Gtranslator 46.0\n"
+
+#. Can't extract filenames from a VariantDict yet.
+#. Translators: --output commandline option description.
+#: src/application.rs:37
+msgid "Output file path"
+msgstr "आउटपुट फाइल पथ"
+
+#. Translators: --output commandline option arg description.
+#: src/application.rs:39
+msgid "PATH"
+msgstr "PATH"
+
+#: src/main.rs:40 src/window.blp:27
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
+msgid "Video Trimmer"
+msgstr "Video Trimmer"
+
+#: src/shortcuts.blp:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr "जनरल"
+
+#: src/shortcuts.blp:12
+msgctxt "shortcut window"
+msgid "New window"
+msgstr "नई विंडो"
+
+#: src/shortcuts.blp:17
+msgctxt "shortcut window"
+msgid "Play / Pause"
+msgstr "चलाएँ / रोकें"
+
+#: src/shortcuts.blp:22
+msgctxt "shortcut window"
+msgid "Trim"
+msgstr "छाँटे"
+
+#: src/shortcuts.blp:27
+msgctxt "shortcut window"
+msgid "Set Start at current postion"
+msgstr "वर्तमान स्थिति पर प्रारंभ निर्धारित करें"
+
+#: src/shortcuts.blp:32
+msgctxt "shortcut window"
+msgid "Set End at current position"
+msgstr "वर्तमान स्थिति पर समाप्ति निर्धारित करें"
+
+#: src/shortcuts.blp:37
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "कीबोर्ड शॉर्टकट"
+
+#: src/shortcuts.blp:42
+msgctxt "shortcut window"
+msgid "Close window"
+msgstr "विंडो बंद"
+
+#: src/shortcuts.blp:47
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "छोड़ें"
+
+#. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:17
+msgid "Could Not Load Video Track"
+msgstr "वीडियो ट्रैक लोड नहीं हो सका"
+
+#. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:20
+msgid ""
+"Maybe the file only has an audio track, or maybe the necessary video codec "
+"is missing."
+msgstr ""
+"शायद फाइल में केवल एक ऑडियो ट्रैक है, या हो सकता है कि आवश्यक वीडियो कोडेक गायब हो।"
+
+#. Translators: this is appended to the output video file name.
+#. So for example "my video.mp4" will become "my video (trimmed).mp4".
+#: src/window.rs:300
+msgid " (trimmed)"
+msgstr " (छंटाई की गई)"
+
+#. Translators: checkbox in output file selection dialog that strips audio from the
+#. video file.
+#: src/window.rs:325
+msgid "Remove audio"
+msgstr "ऑडियो हटाएँ"
+
+#. Translators: checkbox in output file selection dialog.
+#: src/window.rs:330
+msgid "Accurate trimming, but slower and may lose quality"
+msgstr "सटीक छंटाई, लेकिन धीमा और गुणवत्ता खो सकती है"
+
+#. Translators: error dialog title.
+#: src/window.rs:349 src/window.rs:594 src/window.rs:1010
+msgid "Error"
+msgstr "त्रुटि"
+
+#. Translators: error dialog text.
+#: src/window.rs:352 src/window.rs:597 src/window.rs:1013
+msgid ""
+"Video Trimmer can only operate on local files. Please choose another file."
+msgstr ""
+"Video Trimmer केवल स्थानीय फाइलों पर ही काम कर सकता है। कृपया कोई अन्य फाइल चुनें."
+
+#. Translators: message dialog text.
+#: src/window.rs:454
+msgid "Trimming…"
+msgstr "छंटाई हो रही है..."
+
+#. Translators: text on the toast after trimming was done.
+#. The placeholder is the video filename.
+#: src/window.rs:478
+msgid "{} has been saved"
+msgstr "{} सहेजा गया"
+
+#. Translators: text on the button of the toast after
+#. trimming was done to show the output file in the file
+#. manager.
+#: src/window.rs:485
+msgid "Show in Files"
+msgstr "फाइलों में दिखाएँ"
+
+#. Translators: error dialog text.
+#: src/window.rs:506
+msgid "Error trimming video"
+msgstr "वीडियो छंटाई में त्रुटि"
+
+#: src/window.rs:515
+msgid "Could not communicate with the ffmpeg subprocess"
+msgstr "ffmpeg उपप्रक्रिया के साथ संचार नहीं किया जा सका"
+
+#. Translators: error dialog text.
+#: src/window.rs:556
+msgid "Could not create the ffmpeg subprocess"
+msgstr "ffmpeg उपप्रक्रिया नहीं बना सका"
+
+#. Translators: shown in the About dialog, put your name here.
+#: src/window.rs:776
+msgid "translator-credits"
+msgstr "Scrambled777 <weblate.scrambled777@simplelogin.com>"
+
+#. Translators: link title in the About dialog.
+#: src/window.rs:779
+msgid "Contribute Translations"
+msgstr "अनुवाद में योगदान दें"
+
+#: src/window.rs:787
+msgid "This release contains a minor visual refresh for GNOME 45."
+msgstr "इस रिलीज़ में GNOME 45 के लिए एक छोटा सा ताज़ा दृश्य शामिल है।"
+
+#: src/window.rs:788
+msgid "Tweaked the visual style for the GNOME 45 release."
+msgstr "GNOME 45 रिलीज के लिए दृश्य शैली में बदलाव किया गया।"
+
+#: src/window.rs:789
+msgid "Fixed app crashing when ffprobe is missing."
+msgstr "ffprobe के गायब होने पर ऐप के क्रैश होने की समस्या को ठीक किया गया।"
+
+#: src/window.rs:790
+msgid "Updated to the GNOME 45 platform."
+msgstr "GNOME 45 प्लेटफॉर्म पर अपडेट किया गया।"
+
+#: src/window.rs:791
+msgid "Updated translations."
+msgstr "अनुवाद अपडेट किये गये."
+
+#. Translators: file chooser file filter name.
+#: src/window.rs:979
+msgid "Video files"
+msgstr "वीडियो फाइलें"
+
+#. Translators: file chooser dialog title.
+#: src/window.rs:988
+msgid "Open video"
+msgstr "वीडियो खोलें"
+
+#. Translators: Primary menu entry that opens a new window.
+#: src/window.blp:8
+msgid "_New Window"
+msgstr "नई विंडो (_N)"
+
+#. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
+#: src/window.blp:14
+msgid "_Keyboard Shortcuts"
+msgstr "कीबोर्ड शॉर्टकट (_K)"
+
+#. Translators: Primary menu entry that opens the About dialog.
+#: src/window.blp:20
+msgid "_About Video Trimmer"
+msgstr "Video Trimmer के बारे में (_A)"
+
+#. Translators: Main menu button tooltip.
+#: src/window.blp:50 src/window.blp:106
+msgid "Main Menu"
+msgstr "मुख्य मेन्यू"
+
+#. Translators: Title text on the window when no files are open.
+#: src/window.blp:59
+msgid "Trim Videos"
+msgstr "वीडियो छाँटे"
+
+#. Translators: Description text on the window when no files are open.
+#: src/window.blp:62
+msgid "Drag and drop a video here"
+msgstr "वीडियो को यहां खींचें और छोड़ें"
+
+#. Translators: Open button label when no files are open.
+#: src/window.blp:66
+msgid "Open Video…"
+msgstr "वीडियो खोलें…"
+
+#. Translators: Open button tooltip.
+#: src/window.blp:68
+msgid "Select a Video"
+msgstr "एक वीडियो चुनें"
+
+#. Translators: Trim button.
+#: src/window.blp:92
+msgid "Trim"
+msgstr "छाँटे"
+
+#. Translators: Trim button tooltip.
+#: src/window.blp:95
+msgid "Trim Video"
+msgstr "वीडियो छाँटे"
+
+#. Translators: Title that is shown upon video preview loading error.
+#: src/window.blp:132
+msgid "Video Preview Failed to Load"
+msgstr "वीडियो पूर्वावलोकन लोड होने में विफल"
+
+#. Translators: Description that is shown upon video preview loading error.
+#: src/window.blp:135
+msgid ""
+"Please enter the start and end timestamps manually.\n"
+"\n"
+"If you're running Video Trimmer under Flatpak, note that opening files by "
+"drag-and-drop may not work."
+msgstr ""
+"कृपया प्रारंभ और समाप्ति टाइमस्टैम्प मैन्युअल रूप से दर्ज करें।\n"
+"\n"
+"यदि आप Flatpak के अंतर्गत Video Trimmer चला रहे हैं, तो ध्यान दें कि खिंचने-और-छोड़ने "
+"द्वारा फाइलें खोलना काम नहीं कर सकता है।"
+
+#. Translators: Label for the entry for the start timestamp.
+#: src/window.blp:155
+msgid "Start"
+msgstr "प्रारंभ"
+
+#. Translators: Label for the entry for the end timestamp.
+#: src/window.blp:172
+msgid "End"
+msgstr "अंत"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
+msgid "Trim videos quickly"
+msgstr "वीडियो को शीघ्रता से छाँटे"
+
+#. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
+msgid "Cut;Movie;Film;Clip;"
+msgstr "Cut;Movie;Film;Clip;कट;मूवी;फ़िल्म;क्लिप;"
+
+#. developer_name tag deprecated with Appstream 1.0
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:13
+msgid "Ivan Molodetskikh"
+msgstr "इवान मोलोडेत्स्किख"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:23
+msgid ""
+"Video Trimmer cuts out a fragment of a video given the start and end "
+"timestamps. The video is never re-encoded, so the process is very fast and "
+"does not reduce the video quality."
+msgstr ""
+"वीडियो ट्रिमर प्रारंभ और समाप्ति टाइमस्टैम्प दिए गए वीडियो के एक टुकड़े को काट देता है। "
+"वीडियो को कभी भी दोबारा एन्कोड नहीं किया जाता है, इसलिए प्रक्रिया बहुत तेज़ है और "
+"वीडियो की गुणवत्ता कम नहीं होती है।"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
+msgid "Main Window"
+msgstr "मुख्य विंडो"
