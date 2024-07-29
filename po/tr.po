@@ -10,16 +10,16 @@ msgstr ""
 "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2023-10-23 08:41+0000\n"
+"POT-Creation-Date: 2023-10-25 13:33+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
+"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Poedit 3.4.3\n"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
@@ -286,7 +286,7 @@ msgstr "Videoları hızlıca kırpın"
 #. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
 msgid "Cut;Movie;Film;Clip;"
-msgstr "Kes;Film;Video;Klip;Video Trimmer;"
+msgstr "Cut;Movie;Film;Clip;Kes;Film;Video;Klip;Video Trimmer;Video Kırpıcı;"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
 msgid "Ivan Molodetskikh"
