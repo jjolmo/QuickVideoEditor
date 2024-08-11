@@ -8,22 +8,20 @@ mod imp {
         ffi::{OsStr, OsString},
         fs::File,
         marker::PhantomData,
-        os::unix::prelude::OsStringExt,
+        os::{fd::AsFd, unix::prelude::OsStringExt},
         path::{Component, Path, PathBuf},
         str,
         time::Duration,
     };
 
-    use adw::subclass::prelude::*;
+    use adw::{prelude::*, subclass::prelude::*};
     use futures_util::future::{abortable, FutureExt};
     use gettextrs::*;
-    use glib::{clone, debug, error, warn, FromVariant, Properties};
+    use glib::{debug, error, warn, Properties};
     use gtk::{
         gdk,
         gdk::{Key, ModifierType},
-        gio, glib,
-        prelude::*,
-        CompositeTemplate,
+        gio, glib, CompositeTemplate,
     };
 
     use crate::{
@@ -749,28 +747,22 @@ mod imp {
             Self::bind_template(klass);
 
             klass.install_property_action("win.play-pause", "is-playing");
-            klass.add_binding_action(Key::p, ModifierType::empty(), "win.play-pause", None);
-            klass.add_binding_action(Key::k, ModifierType::empty(), "win.play-pause", None);
-            klass.add_binding_action(
-                Key::space,
-                ModifierType::CONTROL_MASK,
-                "win.play-pause",
-                None,
-            );
+            klass.add_binding_action(Key::p, ModifierType::empty(), "win.play-pause");
+            klass.add_binding_action(Key::k, ModifierType::empty(), "win.play-pause");
+            klass.add_binding_action(Key::space, ModifierType::CONTROL_MASK, "win.play-pause");
 
             klass.install_action("win.close", None, |window, _, _| window.close());
-            klass.add_binding_action(Key::w, ModifierType::CONTROL_MASK, "win.close", None);
+            klass.add_binding_action(Key::w, ModifierType::CONTROL_MASK, "win.close");
 
             klass.install_action("win.trim", None, |window, _, _| {
                 window.imp().verify_and_trim()
             });
-            klass.add_binding_action(Key::s, ModifierType::CONTROL_MASK, "win.trim", None);
+            klass.add_binding_action(Key::s, ModifierType::CONTROL_MASK, "win.trim");
 
             klass.install_action("win.about", None, |window, _, _| {
                 let resource_path = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/\
                                      org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml";
-                let about_window = adw::AboutWindow::from_appdata(resource_path, Some("0.8.2"));
-                about_window.set_transient_for(Some(window));
+                let about_window = adw::AboutDialog::from_appdata(resource_path, Some("0.9.0"));
                 about_window.set_version(config::VERSION);
                 // Translators: shown in the About dialog, put your name here.
                 about_window.set_translator_credits(&gettext("translator-credits"));
@@ -779,7 +771,7 @@ mod imp {
                     &gettext("Contribute Translations"),
                     "https://l10n.gnome.org/module/video-trimmer/",
                 );
-                about_window.present();
+                about_window.present(Some(window));
 
                 // DL doesn't extract release notes from metainfo, so let's help it out with the
                 // ones shown in the dialog.
@@ -793,7 +785,7 @@ mod imp {
 
             klass.install_action(
                 "toast.show-in-files",
-                Some(Vec::<u8>::static_variant_type().as_str()),
+                Some(&Vec::<u8>::static_variant_type()),
                 |window, _, path| {
                     let path = Vec::<u8>::from_variant(path.unwrap()).unwrap();
                     let path = PathBuf::from(OsString::from_vec(path));
@@ -816,7 +808,7 @@ mod imp {
                         let identifier = ashpd::WindowIdentifier::from_native(&native).await;
                         if let Err(err) = OpenDirectoryRequest::default()
                             .identifier(identifier)
-                            .send(&file)
+                            .send(&file.as_fd())
                             .await
                         {
                             warn!("OpenDirectory returned an error: {:?}", err);
@@ -829,22 +821,12 @@ mod imp {
             klass.install_action("win.set-start-as-position", None, |window, _, _| {
                 window.imp().video_preview.set_start_as_position()
             });
-            klass.add_binding_action(
-                Key::i,
-                ModifierType::empty(),
-                "win.set-start-as-position",
-                None,
-            );
+            klass.add_binding_action(Key::i, ModifierType::empty(), "win.set-start-as-position");
 
             klass.install_action("win.set-end-as-position", None, |window, _, _| {
                 window.imp().video_preview.set_end_as_position()
             });
-            klass.add_binding_action(
-                Key::o,
-                ModifierType::empty(),
-                "win.set-end-as-position",
-                None,
-            );
+            klass.add_binding_action(Key::o, ModifierType::empty(), "win.set-end-as-position");
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
@@ -1052,10 +1034,16 @@ Please choose another file.",
             });
 
             // The trim button.
-            self.button_trim
-                .connect_clicked(clone!(@weak obj => move |_| {
+            self.button_trim.connect_clicked({
+                let obj = obj.downgrade();
+                move |_| {
+                    let Some(obj) = obj.upgrade() else {
+                        return;
+                    };
+
                     obj.imp().verify_and_trim();
-                }));
+                }
+            });
 
             let drop_target = gtk::DropTarget::new(gio::File::static_type(), gdk::DragAction::COPY);
             drop_target.connect_drop({

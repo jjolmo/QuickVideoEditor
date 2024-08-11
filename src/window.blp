@@ -114,11 +114,13 @@ template $VtWindow : Adw.ApplicationWindow {
 
           $VtVideoPreview video_preview {}
 
-          Spinner spinner_video_preview {
+          Adw.Spinner spinner_video_preview {
+            styles ["dim-label"]
+
+            width-request: 64;
+            height-request: 64;
             halign: center;
-            height-request: 32;
-            width-request: 32;
-            spinning: true;
+            valign: center;
           }
 
           StackPage {

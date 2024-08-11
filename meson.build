@@ -1,12 +1,12 @@
 project('video-trimmer',
         'rust',
-          version: '0.8.2',
+          version: '0.9.0',
     meson_version: '>= 0.59.0',
           license: 'GPL3+',
 )
 
 dependency('gtk4', version: '>= 4.0.0')
-dependency('libadwaita-1', version: '>= 1.4.0')
+dependency('libadwaita-1', version: '>= 1.6.beta')
 
 i18n = import('i18n')
 gnome = import('gnome')

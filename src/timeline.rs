@@ -6,8 +6,11 @@ mod imp {
     use crate::parse::{self, time_to_entry_text};
     use glib::{subclass::Signal, Properties};
     use gtk::{gdk, prelude::*, subclass::prelude::*, CompositeTemplate};
-    use once_cell::unsync::OnceCell;
-    use std::{cell::Cell, time::Duration};
+    use std::{
+        cell::{Cell, OnceCell},
+        sync::OnceLock,
+        time::Duration,
+    };
 
     const TOLERANCE: f64 = 5.;
 
@@ -99,8 +102,8 @@ mod imp {
         }
 
         fn signals() -> &'static [Signal] {
-            use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<[Signal; 3]> = Lazy::new(|| {
+            static SIGNALS: OnceLock<[Signal; 3]> = OnceLock::new();
+            SIGNALS.get_or_init(|| {
                 [
                     Signal::builder("set-start-end")
                         .param_types([glib::Type::U32, glib::Type::U32])
@@ -112,9 +115,7 @@ mod imp {
                         .param_types([glib::Type::U32])
                         .build(),
                 ]
-            });
-
-            SIGNALS.as_ref()
+            })
         }
 
         fn constructed(&self) {

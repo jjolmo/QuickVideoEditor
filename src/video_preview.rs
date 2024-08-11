@@ -6,8 +6,7 @@ mod imp {
     use crate::{config::G_LOG_DOMAIN, timeline::VtTimeline};
     use glib::{subclass::Signal, warn, Properties};
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
-    use once_cell::unsync::OnceCell;
-    use std::marker::PhantomData;
+    use std::{cell::OnceCell, marker::PhantomData, sync::OnceLock};
 
     #[derive(Debug, Default, CompositeTemplate, Properties)]
     #[properties(wrapper_type = super::VtVideoPreview)]
@@ -69,8 +68,8 @@ mod imp {
         }
 
         fn signals() -> &'static [Signal] {
-            use once_cell::sync::Lazy;
-            static SIGNALS: Lazy<[Signal; 4]> = Lazy::new(|| {
+            static SIGNALS: OnceLock<[Signal; 4]> = OnceLock::new();
+            SIGNALS.get_or_init(|| {
                 [
                     Signal::builder("set-start-end")
                         .param_types([glib::Type::U32, glib::Type::U32])
@@ -83,9 +82,7 @@ mod imp {
                         .build(),
                     Signal::builder("error").build(),
                 ]
-            });
-
-            SIGNALS.as_ref()
+            })
         }
 
         fn constructed(&self) {
