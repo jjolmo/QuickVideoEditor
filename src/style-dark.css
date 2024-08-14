@@ -1,7 +1,7 @@
 vt-timeline > .selection {
-	background-color: @blue_3;
+  background-color: var(--accent-bg-color);
 }
 
 vt-timeline > .position {
-	background-color: @light_1;
+  background-color: var(--view-fg-color);
 }
