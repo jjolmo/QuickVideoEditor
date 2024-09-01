@@ -1,16 +1,16 @@
 # Turkish translation for Video Trimmer.
-# Copyright (C) 2023 Video Trimmer's COPYRIGHT HOLDER
+# Copyright (C) 2023-2024 Video Trimmer's COPYRIGHT HOLDER
 # This file is distributed under the same license as the Video Trimmer package.
 #
-# Sabri Ünal <libreajans@gmail.com>, 2023.
-# Emin Tufan Çetin <etcetin@gmail.com>, 2023.
+# Sabri Ünal <yakushabb@gmail.com>, 2023, 2024.
+# Emin Tufan Çetin <etcetin@gmail.com>, 2023, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2023-10-25 13:33+0000\n"
+"POT-Creation-Date: 2024-07-29 20:39+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
@@ -163,7 +163,7 @@ msgstr "ffmpeg altişlemi oluşturulamıyor"
 msgid "translator-credits"
 msgstr ""
 "PoEditor üstünden çeviri veren herkese teşekkürler\n"
-"Sabri Ünal <libreajans@gmail.com>"
+"Sabri Ünal <yakushabb@gmail.com>"
 
 #. Translators: link title in the About dialog.
 #: src/window.rs:779
@@ -288,11 +288,12 @@ msgstr "Videoları hızlıca kırpın"
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Cut;Movie;Film;Clip;Kes;Film;Video;Klip;Video Trimmer;Video Kırpıcı;"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
+#. developer_name tag deprecated with Appstream 1.0
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:13
 msgid "Ivan Molodetskikh"
 msgstr "Ivan Molodetskikh"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:23
 msgid ""
 "Video Trimmer cuts out a fragment of a video given the start and end "
 "timestamps. The video is never re-encoded, so the process is very fast and "
@@ -302,31 +303,6 @@ msgstr ""
 "aktarır. Videolar asla tekrar işlenmez, bu yüzden kırpa işlemi hızlı "
 "gerçekleşir ve videonun kalitesi azalmaz."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "Ana Pencere"
-
-#~ msgid ""
-#~ "Added several keyboard shortcuts along with the shortcuts window listing "
-#~ "them."
-#~ msgstr ""
-#~ "Birkaç klavye kısayolu eklendi ve klavye kısayollları sayfasına eklendi."
-
-#~ msgid "Added Arabic translation (thanks tech-man)."
-#~ msgstr "Arapça çeviri eklendi (teşekkürler tech-man)."
-
-#~ msgid "Added Occitan translation (thanks Quentin PAGÈS)."
-#~ msgstr "Oksitanca çeviri eklendi (teşekkürler Quentin PAGÈS)."
-
-#~ msgid ""
-#~ "This release adds keyboard shortcuts and fixes a rare crash with some "
-#~ "files."
-#~ msgstr ""
-#~ "Bu sürüm, klavye kısayolları ekler ve bazı dosyalarda nadir görülen bir "
-#~ "çökmeyi düzeltir."
-
-#~ msgid "Open"
-#~ msgstr "Aç"
-
-#~ msgid "Press the Open button to open a video file."
-#~ msgstr "Bir video dosyası açmak için Aç düğmesine basın."
