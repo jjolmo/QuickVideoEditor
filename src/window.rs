@@ -197,7 +197,13 @@ mod imp {
 
         fn show_open_dialog(&self) {
             if self.input_path.borrow().is_some() {
-                debug!("a file is already open, cannot replace it");
+                // FIXME: replace the current file when that is supported.
+                let app = self.obj().application().unwrap();
+                let window = super::VtWindow::new(&app, None);
+                let group = gtk::WindowGroup::new();
+                group.add_window(&window);
+                window.present();
+                window.imp().show_open_dialog();
                 return;
             }
 
@@ -643,6 +649,11 @@ when reporting an issue.",
 
             debug!("VtWindow::open(\"{}\")", file.uri());
 
+            if self.input_path.borrow().is_some() {
+                debug!("a file is already open, cannot replace it");
+                return;
+            }
+
             if file.path().is_none() {
                 obj.present();
                 let dialog = adw::AlertDialog::builder()
@@ -1045,6 +1056,18 @@ Please choose another file.",
                 move |_, data, _, _| {
                     if let Ok(file) = data.get::<gio::File>() {
                         let obj = obj.upgrade().unwrap();
+
+                        if obj.imp().input_path.borrow().is_some() {
+                            // FIXME: replace the current file when that is supported.
+                            let app = obj.application().unwrap();
+                            let window = super::VtWindow::new(&app, None);
+                            window.open(file);
+                            let group = gtk::WindowGroup::new();
+                            group.add_window(&window);
+                            window.present();
+                            return true;
+                        }
+
                         obj.open(file);
                         return true;
                     }
