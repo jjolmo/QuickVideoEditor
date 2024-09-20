@@ -18,11 +18,7 @@ mod imp {
     use futures_util::future::{abortable, FutureExt};
     use gettextrs::*;
     use glib::{debug, error, warn, Properties};
-    use gtk::{
-        gdk,
-        gdk::{Key, ModifierType},
-        gio, glib, CompositeTemplate,
-    };
+    use gtk::{gdk, gio, glib, CompositeTemplate};
 
     use crate::{
         config::{self, G_LOG_DOMAIN},
@@ -788,22 +784,15 @@ Please choose another file.",
             Self::bind_template(klass);
 
             klass.install_property_action("win.play-pause", "is-playing");
-            klass.add_binding_action(Key::p, ModifierType::empty(), "win.play-pause");
-            klass.add_binding_action(Key::k, ModifierType::empty(), "win.play-pause");
-            klass.add_binding_action(Key::space, ModifierType::CONTROL_MASK, "win.play-pause");
-
             klass.install_action("win.close", None, |window, _, _| window.close());
-            klass.add_binding_action(Key::w, ModifierType::CONTROL_MASK, "win.close");
 
             klass.install_action("win.trim", None, |window, _, _| {
                 window.imp().verify_and_trim()
             });
-            klass.add_binding_action(Key::s, ModifierType::CONTROL_MASK, "win.trim");
 
             klass.install_action("win.open", None, |window, _, _| {
                 window.imp().show_open_dialog()
             });
-            klass.add_binding_action(Key::o, ModifierType::CONTROL_MASK, "win.open");
 
             klass.install_action("win.about", None, |window, _, _| {
                 let resource_path = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/\
@@ -867,12 +856,9 @@ Please choose another file.",
             klass.install_action("win.set-start-as-position", None, |window, _, _| {
                 window.imp().video_preview.set_start_as_position()
             });
-            klass.add_binding_action(Key::i, ModifierType::empty(), "win.set-start-as-position");
-
             klass.install_action("win.set-end-as-position", None, |window, _, _| {
                 window.imp().video_preview.set_end_as_position()
             });
-            klass.add_binding_action(Key::o, ModifierType::empty(), "win.set-end-as-position");
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
