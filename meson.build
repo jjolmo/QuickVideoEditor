@@ -5,7 +5,7 @@ project('video-trimmer',
           license: 'GPL3+',
 )
 
-dependency('gtk4', version: '>= 4.0.0')
+dependency('gtk4', version: '>= 4.16.0')
 dependency('libadwaita-1', version: '>= 1.6.0')
 
 i18n = import('i18n')

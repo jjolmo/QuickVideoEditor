@@ -48,7 +48,7 @@ mod imp {
             if let Some(file) = self.input_file.take() {
                 window.open(file);
             } else {
-                window.show();
+                window.present();
             }
         }
 
@@ -95,7 +95,7 @@ mod imp {
                     let group = gtk::WindowGroup::new();
                     group.add_window(&window);
 
-                    window.show();
+                    window.present();
                 }
             });
             obj.add_action(&action);

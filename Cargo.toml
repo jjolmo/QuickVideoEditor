@@ -11,7 +11,7 @@ futures-channel = "0.3.30"
 futures-util = "0.3.30"
 gettext-rs = { version = "0.7.1", features = ["gettext-system"] }
 glib = { version = "0.20.3", features = ["log", "log_macros"] }
-gtk = { version = "0.9.1", package = "gtk4" }
+gtk = { version = "0.9.1", package = "gtk4", features = ["v4_16"] }
 json = "0.12.4"
 log = "0.4.22"
 mime_guess = "2.0.5"

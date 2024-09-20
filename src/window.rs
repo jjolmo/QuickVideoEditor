@@ -214,55 +214,43 @@ mod imp {
                 filter.add_mime_type(mime_type);
             }
 
-            let file_chooser = gtk::FileChooserNative::builder()
-                .transient_for(&obj)
-                .action(gtk::FileChooserAction::Open)
+            let file_dialog = gtk::FileDialog::builder()
                 // Translators: file chooser dialog title.
                 .title(gettext("Open video"))
                 .modal(true)
+                .filters(&[filter].into_iter().collect::<gio::ListStore>())
                 .build();
 
-            file_chooser.add_filter(&filter);
-
-            file_chooser.connect_response({
-                let file_chooser = RefCell::new(Some(file_chooser.clone()));
-                move |_, response| {
-                    let file_chooser = file_chooser.borrow_mut().take().unwrap();
-
-                    if response != gtk::ResponseType::Accept {
-                        return;
-                    }
-
-                    // This is normally safe to unwrap(), however, due to a bug, it returns
-                    // None for remote files.
-                    // https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/issues/45
-                    let file = file_chooser.file();
-                    if file.is_none() || file.clone().unwrap().path().is_none() {
-                        let dialog = gtk::MessageDialog::builder()
-                            // Translators: error dialog title.
-                            .text(gettext("Error"))
-                            .secondary_text(gettext(
-                                // Translators: error dialog text.
-                                "Video Trimmer can only operate on local files. \
+            let future = async move {
+                match file_dialog.open_future(Some(&obj)).await {
+                    Ok(file) => {
+                        if file.path().is_none() {
+                            let dialog = adw::AlertDialog::builder()
+                                // Translators: error dialog title.
+                                .heading(gettext("Error"))
+                                .body(gettext(
+                                    // Translators: error dialog text.
+                                    "Video Trimmer can only operate on local files. \
 Please choose another file.",
-                            ))
-                            .message_type(gtk::MessageType::Error)
-                            .buttons(gtk::ButtonsType::Ok)
-                            .transient_for(&obj)
-                            .modal(true)
-                            .build();
-                        dialog.connect_response(|dialog, _| {
-                            dialog.close();
-                        });
-                        dialog.show();
-                        return;
+                                ))
+                                .build();
+                            // Translators: error dialog button.
+                            dialog.add_response("ok", &gettext("_OK"));
+                            dialog.present(Some(&obj));
+                            return;
+                        }
+
+                        obj.open(file);
                     }
-
-                    obj.open(file.unwrap());
+                    Err(err) => {
+                        if !err.matches(gtk::DialogError::Dismissed) {
+                            warn!("file dialog error: {err:?}");
+                        }
+                    }
                 }
-            });
+            };
 
-            file_chooser.show();
+            glib::MainContext::default().spawn_local(future);
         }
 
         fn verify_and_trim(&self) {
@@ -368,6 +356,8 @@ Please choose another file.",
                         path
                     });
 
+                // FIXME: migrate to FileDialog once the UI is redesigned to put the checkboxes
+                // into the UI itself, rather than into the save dialog.
                 let file_chooser = gtk::FileChooserNative::builder()
                     .transient_for(&obj)
                     .action(gtk::FileChooserAction::Save)
@@ -403,27 +393,30 @@ Please choose another file.",
                     move |file_chooser, response| {
                         if let Some(tx) = tx.borrow_mut().take() {
                             if response == gtk::ResponseType::Accept {
-                                if let Some(path) = file_chooser.file().and_then(|file| file.path()) {
-                                    let no_audio = file_chooser.choice("no-audio").map(|choice| choice == "true").unwrap_or(false);
-                                    let reencode = file_chooser.choice("reencode").map(|choice| choice == "true").unwrap_or(false);
+                                if let Some(path) = file_chooser.file().and_then(|file| file.path())
+                                {
+                                    let no_audio = file_chooser
+                                        .choice("no-audio")
+                                        .map(|choice| choice == "true")
+                                        .unwrap_or(false);
+                                    let reencode = file_chooser
+                                        .choice("reencode")
+                                        .map(|choice| choice == "true")
+                                        .unwrap_or(false);
                                     tx.send(Some((path, no_audio, reencode))).unwrap();
                                 } else {
-                                    let dialog = gtk::MessageDialog::builder()
+                                    let dialog = adw::AlertDialog::builder()
                                         // Translators: error dialog title.
-                                        .text(gettext("Error"))
-                                        .secondary_text(gettext(
+                                        .heading(gettext("Error"))
+                                        .body(gettext(
                                             // Translators: error dialog text.
-                                            "Video Trimmer can only operate on local files. Please choose another file.",
+                                            "Video Trimmer can only operate on local files. \
+Please choose another file.",
                                         ))
-                                        .message_type(gtk::MessageType::Error)
-                                        .buttons(gtk::ButtonsType::Ok)
-                                        .transient_for(&obj.upgrade().unwrap())
-                                        .modal(true)
                                         .build();
-                                    dialog.connect_response(|dialog, _| {
-                                        dialog.close();
-                                    });
-                                    dialog.show();
+                                    // Translators: error dialog button.
+                                    dialog.add_response("ok", &gettext("_OK"));
+                                    dialog.present(Some(&obj.upgrade().unwrap()));
 
                                     tx.send(None).unwrap();
                                 }
@@ -513,19 +506,18 @@ Please choose another file.",
                 gio::SubprocessFlags::STDOUT_PIPE | gio::SubprocessFlags::STDERR_PIPE,
             ) {
                 Ok(subprocess) => {
-                    let trimming_dialog = gtk::MessageDialog::builder()
+                    let trimming_dialog = adw::AlertDialog::builder()
                         // Translators: message dialog text.
-                        .text(gettext("Trimming…"))
-                        .message_type(gtk::MessageType::Info)
-                        .buttons(gtk::ButtonsType::Cancel)
-                        .transient_for(&obj)
-                        .modal(true)
+                        .heading(gettext("Trimming…"))
                         .build();
+                    // Translators: trimming dialog button.
+                    trimming_dialog.add_response("cancel", &gettext("_Cancel"));
 
+                    let obj_ = obj.clone();
                     let trimming_dialog_clone = trimming_dialog.clone();
                     let subprocess_clone = subprocess.clone();
                     let future = async move {
-                        let builder = match subprocess_clone.communicate_future(None).await {
+                        let dialog = match subprocess_clone.communicate_future(None).await {
                             Ok((_, stderr)) => {
                                 if subprocess_clone.has_exited()
                                     && subprocess_clone.exit_status() == 0
@@ -565,21 +557,21 @@ Please choose another file.",
                                 } else {
                                     let stderr = stderr
                                         .expect("should be Some() because we passed STDERR_PIPE");
-                                    gtk::MessageDialog::builder()
+                                    adw::AlertDialog::builder()
                                         // Translators: error dialog text.
-                                        .text(gettext("Error trimming video"))
-                                        .secondary_text(String::from_utf8_lossy(&stderr))
-                                        .message_type(gtk::MessageType::Error)
+                                        .heading(gettext("Error trimming video"))
+                                        .body(String::from_utf8_lossy(&stderr))
+                                        .build()
                                 }
                             }
                             Err(err) => {
-                                gtk::MessageDialog::builder()
+                                adw::AlertDialog::builder()
                                     // Translators: error dialog text.
-                                    .text(gettext(
+                                    .heading(gettext(
                                         "Could not communicate with the ffmpeg subprocess",
                                     ))
-                                    .secondary_text(format!("{}", err))
-                                    .message_type(gtk::MessageType::Error)
+                                    .body(format!("{}", err))
+                                    .build()
                             }
                         };
 
@@ -588,44 +580,31 @@ Please choose another file.",
                         // completed by then.
                         trimming_dialog_clone.close();
 
-                        let dialog = builder
-                            .buttons(gtk::ButtonsType::Ok)
-                            .transient_for(&obj)
-                            .modal(true)
-                            .build();
-                        dialog.connect_response(move |dialog, _| dialog.close());
-
-                        // Has to be in an idle to not block the close() above.
-                        // https://gitlab.gnome.org/GNOME/gtk/-/issues/2926
-                        glib::idle_add_local_once(move || {
-                            dialog.show();
-                        });
+                        // Translators: error dialog button.
+                        dialog.add_response("ok", &gettext("_OK"));
+                        dialog.present(Some(&obj));
                     };
                     let (future, handle) = abortable(future);
                     let future = future.map(|_| ());
 
-                    trimming_dialog.connect_response(move |dialog, _| {
+                    trimming_dialog.connect_response(None, move |_, _| {
                         debug!("force exiting the subprocess");
                         subprocess.force_exit();
                         handle.abort();
-                        dialog.close();
                     });
-                    trimming_dialog.show();
+                    trimming_dialog.present(Some(&obj_));
 
                     glib::MainContext::default().spawn_local(future);
                 }
                 Err(err) => {
-                    let dialog = gtk::MessageDialog::builder()
+                    let dialog = adw::AlertDialog::builder()
                         // Translators: error dialog text.
-                        .text(gettext("Could not create the ffmpeg subprocess"))
-                        .secondary_text(format!("{}", err))
-                        .message_type(gtk::MessageType::Error)
-                        .buttons(gtk::ButtonsType::Ok)
-                        .transient_for(&obj)
-                        .modal(true)
+                        .heading(gettext("Could not create the ffmpeg subprocess"))
+                        .body(format!("{}", err))
                         .build();
-                    dialog.connect_response(move |dialog, _| dialog.close());
-                    dialog.show();
+                    // Translators: error dialog button.
+                    dialog.add_response("ok", &gettext("_OK"));
+                    dialog.present(Some(&obj));
                 }
             }
         }
@@ -643,7 +622,7 @@ Please choose another file.",
             // Focus the entry when coming from the empty state.
             self.entry_start.grab_focus();
 
-            obj.show();
+            obj.present();
         }
 
         pub fn open(&self, file: gio::File) {
@@ -652,23 +631,19 @@ Please choose another file.",
             debug!("VtWindow::open(\"{}\")", file.uri());
 
             if file.path().is_none() {
-                obj.show();
-                let dialog = gtk::MessageDialog::builder()
+                obj.present();
+                let dialog = adw::AlertDialog::builder()
                     // Translators: error dialog title.
-                    .text(gettext("Error"))
-                    .secondary_text(gettext(
+                    .heading(gettext("Error"))
+                    .body(gettext(
                         // Translators: error dialog text.
-                        "Video Trimmer can only operate on local files. Please choose another file.",
+                        "Video Trimmer can only operate on local files. \
+Please choose another file.",
                     ))
-                    .message_type(gtk::MessageType::Error)
-                    .buttons(gtk::ButtonsType::Ok)
-                    .transient_for(&obj)
-                    .modal(true)
                     .build();
-                dialog.connect_response(|dialog, _| {
-                    dialog.close();
-                });
-                dialog.show();
+                // Translators: error dialog button.
+                dialog.add_response("ok", &gettext("_OK"));
+                dialog.present(Some(&obj));
                 return;
             }
 
@@ -923,7 +898,7 @@ Please choose another file.",
             self.parent_constructed();
 
             if config::PROFILE == "Devel" {
-                obj.style_context().add_class("devel");
+                obj.add_css_class("devel");
             }
 
             // Start entry is always on the left, just like the timeline.
@@ -1084,10 +1059,8 @@ Please choose another file.",
     impl AdwApplicationWindowImpl for VtWindow {}
 
     fn validate_entries(entry_start: &gtk::Entry, entry_end: &gtk::Entry) -> Option<(u32, u32)> {
-        let style_start = entry_start.style_context();
-        let style_end = entry_end.style_context();
-        style_start.remove_class("error");
-        style_end.remove_class("error");
+        entry_start.remove_css_class("error");
+        entry_end.remove_css_class("error");
 
         let text_start = entry_start.text();
         let timestamp_start = parse::timestamp(text_start.as_str());
@@ -1095,14 +1068,14 @@ Please choose another file.",
         let timestamp_end = parse::timestamp(text_end.as_str());
 
         if timestamp_start.is_none() {
-            style_start.add_class("error");
+            entry_start.add_css_class("error");
         }
         if timestamp_end.is_none() {
-            style_end.add_class("error");
+            entry_end.add_css_class("error");
         }
         if let (Some(timestamp_start), Some(timestamp_end)) = (timestamp_start, timestamp_end) {
             if timestamp_start >= timestamp_end {
-                style_end.add_class("error");
+                entry_end.add_css_class("error");
             } else {
                 return Some((timestamp_start, timestamp_end));
             }

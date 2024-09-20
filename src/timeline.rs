@@ -306,16 +306,17 @@ mod imp {
             self.drag_type.set(DragType::Playback);
 
             if self.start_end.get().is_some() {
-                let allocation = self.box_timeline_selection.allocation();
-                let start = allocation.x() as f64;
-                let end = (allocation.x() + allocation.width()) as f64;
+                if let Some(bounds) = self.box_timeline_selection.compute_bounds(&*self.obj()) {
+                    let start = bounds.x() as f64;
+                    let end = (bounds.x() + bounds.width()) as f64;
 
-                if (x - end).abs() <= TOLERANCE {
-                    self.drag_type.set(DragType::End);
-                    self.drag_start.set(end);
-                } else if (x - start).abs() <= TOLERANCE {
-                    self.drag_type.set(DragType::Start);
-                    self.drag_start.set(start);
+                    if (x - end).abs() <= TOLERANCE {
+                        self.drag_type.set(DragType::End);
+                        self.drag_start.set(end);
+                    } else if (x - start).abs() <= TOLERANCE {
+                        self.drag_type.set(DragType::Start);
+                        self.drag_start.set(start);
+                    }
                 }
             }
 
@@ -326,7 +327,7 @@ mod imp {
             let obj = self.obj();
 
             let x = self.drag_start.get() + offset_x;
-            let width = obj.allocated_width() as f64;
+            let width = obj.width() as f64;
 
             // Sanitize (this can get weird values when resizing the window while dragging).
             let x = x.clamp(0., width);
@@ -400,11 +401,14 @@ mod imp {
             }
 
             let resizing_cursor = if self.start_end.get().is_some() {
-                let allocation = self.box_timeline_selection.allocation();
-                let start = allocation.x() as f64;
-                let end = (allocation.x() + allocation.width()) as f64;
+                if let Some(bounds) = self.box_timeline_selection.compute_bounds(&*self.obj()) {
+                    let start = bounds.x() as f64;
+                    let end = (bounds.x() + bounds.width()) as f64;
 
-                (x - end).abs() <= TOLERANCE || (x - start).abs() <= TOLERANCE
+                    (x - end).abs() <= TOLERANCE || (x - start).abs() <= TOLERANCE
+                } else {
+                    false
+                }
             } else {
                 false
             };
