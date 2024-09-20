@@ -199,6 +199,72 @@ mod imp {
             }
         }
 
+        fn show_open_dialog(&self) {
+            if self.input_path.borrow().is_some() {
+                debug!("a file is already open, cannot replace it");
+                return;
+            }
+
+            let obj = self.obj().clone();
+
+            let filter = gtk::FileFilter::new();
+            // Translators: file chooser file filter name.
+            filter.set_name(Some(&gettext("Video files")));
+            for mime_type in VIDEO_MIME_TYPES {
+                filter.add_mime_type(mime_type);
+            }
+
+            let file_chooser = gtk::FileChooserNative::builder()
+                .transient_for(&obj)
+                .action(gtk::FileChooserAction::Open)
+                // Translators: file chooser dialog title.
+                .title(gettext("Open video"))
+                .modal(true)
+                .build();
+
+            file_chooser.add_filter(&filter);
+
+            file_chooser.connect_response({
+                let file_chooser = RefCell::new(Some(file_chooser.clone()));
+                move |_, response| {
+                    let file_chooser = file_chooser.borrow_mut().take().unwrap();
+
+                    if response != gtk::ResponseType::Accept {
+                        return;
+                    }
+
+                    // This is normally safe to unwrap(), however, due to a bug, it returns
+                    // None for remote files.
+                    // https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/issues/45
+                    let file = file_chooser.file();
+                    if file.is_none() || file.clone().unwrap().path().is_none() {
+                        let dialog = gtk::MessageDialog::builder()
+                            // Translators: error dialog title.
+                            .text(gettext("Error"))
+                            .secondary_text(gettext(
+                                // Translators: error dialog text.
+                                "Video Trimmer can only operate on local files. \
+Please choose another file.",
+                            ))
+                            .message_type(gtk::MessageType::Error)
+                            .buttons(gtk::ButtonsType::Ok)
+                            .transient_for(&obj)
+                            .modal(true)
+                            .build();
+                        dialog.connect_response(|dialog, _| {
+                            dialog.close();
+                        });
+                        dialog.show();
+                        return;
+                    }
+
+                    obj.open(file.unwrap());
+                }
+            });
+
+            file_chooser.show();
+        }
+
         fn verify_and_trim(&self) {
             if validate_entries(&self.entry_start, &self.entry_end).is_none() {
                 debug!("the timestamps are invalid");
@@ -759,6 +825,11 @@ mod imp {
             });
             klass.add_binding_action(Key::s, ModifierType::CONTROL_MASK, "win.trim");
 
+            klass.install_action("win.open", None, |window, _, _| {
+                window.imp().show_open_dialog()
+            });
+            klass.add_binding_action(Key::o, ModifierType::CONTROL_MASK, "win.open");
+
             klass.install_action("win.about", None, |window, _, _| {
                 let resource_path = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/\
                                      org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml";
@@ -953,65 +1024,10 @@ mod imp {
 
             // The open button.
             self.button_open.connect_clicked({
-                let obj = obj.downgrade();
+                let imp = self.downgrade();
                 move |_| {
-                    let obj = obj.upgrade().unwrap();
-                    let filter = gtk::FileFilter::new();
-                    // Translators: file chooser file filter name.
-                    filter.set_name(Some(&gettext("Video files")));
-                    for mime_type in VIDEO_MIME_TYPES {
-                        filter.add_mime_type(mime_type);
-                    }
-
-                    let file_chooser = gtk::FileChooserNative::builder()
-                        .transient_for(&obj)
-                        .action(gtk::FileChooserAction::Open)
-                        // Translators: file chooser dialog title.
-                        .title(gettext("Open video"))
-                        .modal(true)
-                        .build();
-
-                    file_chooser.add_filter(&filter);
-
-                    file_chooser.connect_response({
-                        let file_chooser = RefCell::new(Some(file_chooser.clone()));
-                        move |_, response| {
-                            let file_chooser = file_chooser.borrow_mut().take().unwrap();
-
-                            if response != gtk::ResponseType::Accept {
-                                return;
-                            }
-
-                            // This is normally safe to unwrap(), however, due to a bug, it returns
-                            // None for remote files.
-                            // https://gitlab.gnome.org/GNOME/xdg-desktop-portal-gnome/-/issues/45
-                            let file = file_chooser.file();
-                            if file.is_none() || file.clone().unwrap().path().is_none() {
-                                let dialog = gtk::MessageDialog::builder()
-                                    // Translators: error dialog title.
-                                    .text(gettext("Error"))
-                                    .secondary_text(gettext(
-                                        // Translators: error dialog text.
-                                        "Video Trimmer can only operate on local files. \
-Please choose another file.",
-                                    ))
-                                    .message_type(gtk::MessageType::Error)
-                                    .buttons(gtk::ButtonsType::Ok)
-                                    .transient_for(&obj)
-                                    .modal(true)
-                                    .build();
-                                dialog.connect_response(|dialog, _| {
-                                    dialog.close();
-                                });
-                                dialog.show();
-                                return;
-                            }
-
-                            obj.open(file.unwrap());
-                        }
-                    });
-
-                    file_chooser.show();
+                    let imp = imp.upgrade().unwrap();
+                    imp.show_open_dialog();
                 }
             });
 
