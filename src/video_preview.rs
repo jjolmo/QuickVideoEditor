@@ -242,7 +242,6 @@ mod imp {
         pub fn open(&self, file: &gio::File) {
             let media_file = self.media_file.get().unwrap();
             media_file.set_file(Some(file));
-            media_file.play();
         }
 
         pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
