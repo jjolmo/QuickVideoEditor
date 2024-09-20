@@ -1,19 +1,20 @@
-# Yuri Chornoivan <yurchor@ukr.net>, 2023.
+# Yuri Chornoivan <yurchor@ukr.net>, 2023, 2024.
 msgid ""
 msgstr ""
 "Project-Id-Version: Video Trimmer\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues\n"
-"POT-Creation-Date: 2023-10-23 08:41+0000\n"
-"PO-Revision-Date: 2023-10-23 18:59+0300\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues"
+"\n"
+"POT-Creation-Date: 2024-09-20 19:08+0000\n"
+"PO-Revision-Date: 2024-09-20 22:18+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
-"Language-Team: Ukrainian <kde-i18n-uk@kde.org>\n"
+"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 20.12.0\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<"
-"=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Lokalize 23.04.3\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
@@ -90,106 +91,144 @@ msgid ""
 msgstr ""
 "Можливо, у файлі є лише звукова доріжка чи відсутній необхідний відеокодек."
 
-#. Translators: this is appended to the output video file name.
-#. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:300
-msgid " (trimmed)"
-msgstr " (обрізано)"
+#. Translators: file chooser file filter name.
+#: src/window.rs:214
+msgid "Video files"
+msgstr "Файли відеозаписів"
 
-#. Translators: checkbox in output file selection dialog that strips audio from the
-#. video file.
-#: src/window.rs:325
-msgid "Remove audio"
-msgstr "Вилучити звук"
-
-#. Translators: checkbox in output file selection dialog.
-#: src/window.rs:330
-msgid "Accurate trimming, but slower and may lose quality"
-msgstr "Акуратне обрізання, але повільне і може втрачати якість"
+#. Translators: file chooser dialog title.
+#: src/window.rs:221
+msgid "Open video"
+msgstr "Відкрити відеозапис"
 
 #. Translators: error dialog title.
-#: src/window.rs:349 src/window.rs:594 src/window.rs:1010
+#: src/window.rs:232 src/window.rs:412 src/window.rs:661
 msgid "Error"
 msgstr "Помилка"
 
 #. Translators: error dialog text.
-#: src/window.rs:352 src/window.rs:597 src/window.rs:1013
+#: src/window.rs:235 src/window.rs:415 src/window.rs:664
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr ""
 "Video Trimmer може оперувати лише локальними файлами. Оберіть інший файл."
 
+#. Translators: error dialog button.
+#: src/window.rs:240 src/window.rs:420 src/window.rs:603 src/window.rs:625
+#: src/window.rs:669
+msgid "_OK"
+msgstr "_Гаразд"
+
+#. Translators: this is appended to the output video file name.
+#. So for example "my video.mp4" will become "my video (trimmed).mp4".
+#: src/window.rs:354
+msgid " (trimmed)"
+msgstr " (обрізано)"
+
+#. Translators: checkbox in output file selection dialog that strips audio from the
+#. video file.
+#: src/window.rs:381
+msgid "Remove audio"
+msgstr "Вилучити звук"
+
+#. Translators: checkbox in output file selection dialog.
+#: src/window.rs:386
+msgid "Accurate trimming, but slower and may lose quality"
+msgstr "Акуратне обрізання, але повільне і може втрачати якість"
+
 #. Translators: message dialog text.
-#: src/window.rs:454
+#: src/window.rs:513
 msgid "Trimming…"
 msgstr "Обрізання…"
 
+#. Translators: trimming dialog button.
+#: src/window.rs:516
+msgid "_Cancel"
+msgstr "_Скасувати"
+
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:478
+#: src/window.rs:536
 msgid "{} has been saved"
 msgstr "{} було збережено"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:485
+#: src/window.rs:543
 msgid "Show in Files"
 msgstr "Показувати у Файлах"
 
-#. Translators: error dialog text.
-#: src/window.rs:506
+#. Translators: error dialog heading.
+#: src/window.rs:575
 msgid "Error trimming video"
 msgstr "Помилка обрізання відео"
 
-#: src/window.rs:515
+#. Translators: error dialog text before the FFmpeg
+#. error output.
+#: src/window.rs:579
+msgid "Please attach the following information when reporting an issue."
+msgstr "Будь ласка, долучіть до звіту щодо вади наведені нижче дані."
+
+#: src/window.rs:590
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Не можливо комунікувати з підпроцесом ffmpeg"
 
 #. Translators: error dialog text.
-#: src/window.rs:556
+#: src/window.rs:621
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Не можливо створити підпроцес ffmpeg"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:776
+#: src/window.rs:831
 msgid "translator-credits"
 msgstr "Andrij Mizyk"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:779
+#: src/window.rs:834
 msgid "Contribute Translations"
 msgstr "Допомогти з перекладом"
 
-#: src/window.rs:787
-msgid "This release contains a minor visual refresh for GNOME 45."
-msgstr "Цей випуск містить незначне візуальне освіження для GNOME 45."
+#: src/window.rs:842
+#| msgid "This release contains a minor visual refresh for GNOME 45."
+msgid ""
+"This release improves the behavior of shortcuts and does a minor visual "
+"refresh for GNOME 47."
+msgstr ""
+"У цьому випуску удосконалено клавіатурні скорочення та виконано незначне"
+" освіження інтерфейсу для GNOME 47."
 
-#: src/window.rs:788
-msgid "Tweaked the visual style for the GNOME 45 release."
-msgstr "Скориговано візуальний стиль для випуску GNOME 45."
+#: src/window.rs:843
+msgid "Added I and O shortcuts to set start and end trimming point."
+msgstr ""
+"Додано клавіатурні скорочення I та O для встановлення початкової та кінцевої"
+" точок обрізання."
 
-#: src/window.rs:789
-msgid "Fixed app crashing when ffprobe is missing."
-msgstr "Усунено аварійне завершення програми, якщо не знайдено ffprobe."
+#: src/window.rs:844
+msgid ""
+"Made all single-letter shortcuts work even when the time input fields are "
+"focused."
+msgstr ""
+"Реалізовано працездатність усіх одноклавішних скорочень, навіть якщо фокус"
+" переведено на поля для введення часу."
 
-#: src/window.rs:790
-msgid "Updated to the GNOME 45 platform."
-msgstr "Програму оновлено до платформи GNOME 45."
+#: src/window.rs:845
+msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
+msgstr ""
+"Змінено скорочення для дії «Пуск/Пауза» з Ctrl+Пробіл на просто Пробіл."
 
-#: src/window.rs:791
+#: src/window.rs:846
+msgid "The video now starts paused after opening."
+msgstr "У новій версії після відкриття відтворення відео призупиняється."
+
+#: src/window.rs:847
+#| msgid "Updated to the GNOME 45 platform."
+msgid "Updated to the GNOME 47 platform."
+msgstr "Програму оновлено до платформи GNOME 47."
+
+#: src/window.rs:848
 msgid "Updated translations."
 msgstr "Оновлено переклади."
-
-#. Translators: file chooser file filter name.
-#: src/window.rs:979
-msgid "Video files"
-msgstr "Файли відеозаписів"
-
-#. Translators: file chooser dialog title.
-#: src/window.rs:988
-msgid "Open video"
-msgstr "Відкрити відеозапис"
 
 #. Translators: Primary menu entry that opens a new window.
 #: src/window.blp:8
@@ -242,12 +281,12 @@ msgid "Trim Video"
 msgstr "Обрізати відео"
 
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:132
+#: src/window.blp:134
 msgid "Video Preview Failed to Load"
 msgstr "Попередній перегляд відеозапису не вдалося завантажити"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:135
+#: src/window.blp:137
 msgid ""
 "Please enter the start and end timestamps manually.\n"
 "\n"
@@ -260,12 +299,12 @@ msgstr ""
 "файлів перетягуванням і відпусканням може не працювати."
 
 #. Translators: Label for the entry for the start timestamp.
-#: src/window.blp:155
+#: src/window.blp:157
 msgid "Start"
 msgstr "Початок"
 
 #. Translators: Label for the entry for the end timestamp.
-#: src/window.blp:172
+#: src/window.blp:174
 msgid "End"
 msgstr "Кінець"
 
@@ -279,11 +318,12 @@ msgstr "Обрізати відеозаписи швидко"
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Вирізати;Фільм;Кліп;Нарізка;"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
+#. developer_name tag deprecated with Appstream 1.0
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:13
 msgid "Ivan Molodetskikh"
 msgstr "Ivan Molodetskikh"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:23
 msgid ""
 "Video Trimmer cuts out a fragment of a video given the start and end "
 "timestamps. The video is never re-encoded, so the process is very fast and "
@@ -293,9 +333,15 @@ msgstr ""
 "початку та кінця. Відео ніколи не перекодовується, тому процес дуже швидкий "
 "і не знижує якість відеозапису."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "Основне вікно"
+
+#~ msgid "Tweaked the visual style for the GNOME 45 release."
+#~ msgstr "Скориговано візуальний стиль для випуску GNOME 45."
+
+#~ msgid "Fixed app crashing when ffprobe is missing."
+#~ msgstr "Усунено аварійне завершення програми, якщо не знайдено ffprobe."
 
 #~ msgid ""
 #~ "Added several keyboard shortcuts along with the shortcuts window listing "
