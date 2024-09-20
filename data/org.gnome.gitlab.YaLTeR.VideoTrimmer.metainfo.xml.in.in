@@ -30,6 +30,10 @@
 			<caption>Main Window</caption>
 		</screenshot>
 	</screenshots>
+	<branding>
+		<color type="primary" scheme_preference="light">#aecef4</color>
+		<color type="primary" scheme_preference="dark">#1c3f68</color>
+	</branding>
 	<releases>
 		<release version="0.9.0" date="2024-09-20">
 			<description>
