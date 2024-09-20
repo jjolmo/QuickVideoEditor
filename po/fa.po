@@ -6,17 +6,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: video-trimmer master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
-"issues\n"
-"POT-Creation-Date: 2024-01-20 15:06+0000\n"
-"PO-Revision-Date: 2024-02-06 03:42+0330\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues\n"
+"POT-Creation-Date: 2024-09-20 19:08+0000\n"
+"PO-Revision-Date: 2024-09-21 02:35+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <fa@li.org>\n"
 "Language: fa\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.5\n"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
@@ -88,111 +87,142 @@ msgstr "نتوانست قطعهٔ ویدیویی را بار کند"
 #. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:20
 msgid ""
-"Maybe the file only has an audio track, or maybe the necessary video codec "
-"is missing."
+"Maybe the file only has an audio track, or maybe the necessary video codec is "
+"missing."
 msgstr "شاید پرونده فقط قطعهٔ صوتی داشته یا رمزینهٔ ویدیویی لازم وجود ندارد."
 
-#. Translators: this is appended to the output video file name.
-#. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:300
-msgid " (trimmed)"
-msgstr " (تراشیده)"
+#. Translators: file chooser file filter name.
+#: src/window.rs:214
+msgid "Video files"
+msgstr "پرونده‌های ویدیویی"
 
-#. Translators: checkbox in output file selection dialog that strips audio from the
-#. video file.
-#: src/window.rs:325
-msgid "Remove audio"
-msgstr "برداشتن صدا"
-
-#. Translators: checkbox in output file selection dialog.
-#: src/window.rs:330
-msgid "Accurate trimming, but slower and may lose quality"
-msgstr "تراشیدن دقیق، ولی آهسته‌تر و با امکان از دست رفتن کیفیت"
+#. Translators: file chooser dialog title.
+#: src/window.rs:221
+msgid "Open video"
+msgstr "گشودن ویدیو"
 
 #. Translators: error dialog title.
-#: src/window.rs:349 src/window.rs:594 src/window.rs:1010
+#: src/window.rs:232 src/window.rs:412 src/window.rs:661
 msgid "Error"
 msgstr "خطا"
 
 #. Translators: error dialog text.
-#: src/window.rs:352 src/window.rs:597 src/window.rs:1013
+#: src/window.rs:235 src/window.rs:415 src/window.rs:664
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr ""
 "ویدیو تراش تنها می‌تواند روی پرونده‌های محلی اجرا شود. لطفاً پرونده‌ای دیگر "
 "برگزینید."
 
+#. Translators: error dialog button.
+#: src/window.rs:240 src/window.rs:420 src/window.rs:603 src/window.rs:625
+#: src/window.rs:669
+msgid "_OK"
+msgstr "_تأیید"
+
+#. Translators: this is appended to the output video file name.
+#. So for example "my video.mp4" will become "my video (trimmed).mp4".
+#: src/window.rs:354
+msgid " (trimmed)"
+msgstr " (تراشیده)"
+
+#. Translators: checkbox in output file selection dialog that strips audio from the
+#. video file.
+#: src/window.rs:381
+msgid "Remove audio"
+msgstr "برداشتن صدا"
+
+#. Translators: checkbox in output file selection dialog.
+#: src/window.rs:386
+msgid "Accurate trimming, but slower and may lose quality"
+msgstr "تراشیدن دقیق، ولی آهسته‌تر و با امکان از دست رفتن کیفیت"
+
 #. Translators: message dialog text.
-#: src/window.rs:454
+#: src/window.rs:513
 msgid "Trimming…"
 msgstr "تراشیدن…"
 
+#. Translators: trimming dialog button.
+#: src/window.rs:516
+msgid "_Cancel"
+msgstr "_لغو"
+
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:478
+#: src/window.rs:536
 msgid "{} has been saved"
 msgstr "{} ذخیره شده"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:485
+#: src/window.rs:543
 msgid "Show in Files"
 msgstr "نمایش در پرونده‌ها"
 
-#. Translators: error dialog text.
-#: src/window.rs:506
+#. Translators: error dialog heading.
+#: src/window.rs:575
 msgid "Error trimming video"
 msgstr "خطای تراشیدن ویدیو"
 
-#: src/window.rs:515
+#. Translators: error dialog text before the FFmpeg
+#. error output.
+#: src/window.rs:579
+msgid "Please attach the following information when reporting an issue."
+msgstr "لطفاً اطّلاعات زیر را هنگام گزارش کردن مشکل پیوست کنید."
+
+#: src/window.rs:590
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "نتوانست با زیرفرایند ffmpeg ارتباط برقرار کند"
 
 #. Translators: error dialog text.
-#: src/window.rs:556
+#: src/window.rs:621
 msgid "Could not create the ffmpeg subprocess"
 msgstr "نتوانست زیرفرایند ffmpeg را ایجاد کند"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:776
+#: src/window.rs:831
 msgid "translator-credits"
 msgstr "دانیال بهزادی <dani.behzi@ubuntu.com>"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:779
+#: src/window.rs:834
 msgid "Contribute Translations"
 msgstr "مشارکت در ترجمه‌ها"
 
-#: src/window.rs:787
-msgid "This release contains a minor visual refresh for GNOME 45."
-msgstr "این ارائه شامل نوسازی بصری کوچکی برای گنوم ۴۵ است."
+#: src/window.rs:842
+msgid ""
+"This release improves the behavior of shortcuts and does a minor visual "
+"refresh for GNOME 47."
+msgstr ""
+"این ارائه رفتار میان‌برها را بهبود داده و نوسازی بصری کوچکی برای گنوم ۴۷ انجام "
+"می‌دهد."
 
-#: src/window.rs:788
-msgid "Tweaked the visual style for the GNOME 45 release."
-msgstr "دستکاری سبک بصری ارائه برای گنوم ۴۵."
+#: src/window.rs:843
+msgid "Added I and O shortcuts to set start and end trimming point."
+msgstr "میان‌برهای I و O برای تنظیم نقطه‌های آغاز و پایان تراشیدن افزوده شدند."
 
-#: src/window.rs:789
-msgid "Fixed app crashing when ffprobe is missing."
-msgstr "رفع فروپاشی کاره هنگام فقدان ffprobe."
+#: src/window.rs:844
+msgid ""
+"Made all single-letter shortcuts work even when the time input fields are "
+"focused."
+msgstr "همهٔ میان‌برهای تک‌حرفی حتا هنگام تمرکز روی زمینه‌های ورودی نیز کار می‌کنند."
 
-#: src/window.rs:790
-msgid "Updated to the GNOME 45 platform."
-msgstr "به‌روز شده به بن‌سازهٔ گنوم ۴۵."
+#: src/window.rs:845
+msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
+msgstr "میان‌بر پخش یا مکث از مهار+فاصله به فاصلهٔ خالی تغییر کرد."
 
-#: src/window.rs:791
+#: src/window.rs:846
+msgid "The video now starts paused after opening."
+msgstr "ویدیو اکنون پس از گشودن به صورت مکث شده آغاز می‌شود."
+
+#: src/window.rs:847
+msgid "Updated to the GNOME 47 platform."
+msgstr "به‌روز شده به بن‌سازهٔ گنوم ۴۷."
+
+#: src/window.rs:848
 msgid "Updated translations."
 msgstr "ترجمه‌های به‌روز شده."
-
-#. Translators: file chooser file filter name.
-#: src/window.rs:979
-msgid "Video files"
-msgstr "پرونده‌های ویدیویی"
-
-#. Translators: file chooser dialog title.
-#: src/window.rs:988
-msgid "Open video"
-msgstr "گشودن ویدیو"
 
 #. Translators: Primary menu entry that opens a new window.
 #: src/window.blp:8
@@ -245,30 +275,30 @@ msgid "Trim Video"
 msgstr "تراشیدن ویدیو"
 
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:132
+#: src/window.blp:134
 msgid "Video Preview Failed to Load"
 msgstr "بار کردن پیش‌نمایش ویدیو شکست خورد"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:135
+#: src/window.blp:137
 msgid ""
 "Please enter the start and end timestamps manually.\n"
 "\n"
-"If you're running Video Trimmer under Flatpak, note that opening files by "
-"drag-and-drop may not work."
+"If you're running Video Trimmer under Flatpak, note that opening files by drag-"
+"and-drop may not work."
 msgstr ""
 "لطفاً برچسب‌های زمانی آغاز و پایان را به صورت دستی وارد کنید.\n"
 "\n"
-"اگر ویدیو تراش را با فلت‌پک اجرا می‌کنید،‌ به خاطر داشته باشید که ممکن است "
-"گشودن پرونده‌ها با کشیدن و انداختن کار نکند."
+"اگر ویدیو تراش را با فلت‌پک اجرا می‌کنید،‌ به خاطر داشته باشید که ممکن است گشودن "
+"پرونده‌ها با کشیدن و انداختن کار نکند."
 
 #. Translators: Label for the entry for the start timestamp.
-#: src/window.blp:155
+#: src/window.blp:157
 msgid "Start"
 msgstr "آغاز"
 
 #. Translators: Label for the entry for the end timestamp.
-#: src/window.blp:172
+#: src/window.blp:174
 msgid "End"
 msgstr "پایان"
 
@@ -293,10 +323,16 @@ msgid ""
 "timestamps. The video is never re-encoded, so the process is very fast and "
 "does not reduce the video quality."
 msgstr ""
-"ویدیو تراش بخشی از ویدیوی داده شده با برچسب‌های زمانی آغاز و پایان را "
-"می‌بُرد. از آن‌جا که ویدیو دوباره کدگذاری نمی‌شود، فرایند بسیار سریع بوده و "
-"کیفیت ویدیو را نمی‌کاهد."
+"ویدیو تراش بخشی از ویدیوی داده شده با برچسب‌های زمانی آغاز و پایان را می‌بُرد. از "
+"آن‌جا که ویدیو دوباره کدگذاری نمی‌شود، فرایند بسیار سریع بوده و کیفیت ویدیو را "
+"نمی‌کاهد."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "پنجرهٔ اصلی"
+
+#~ msgid "Tweaked the visual style for the GNOME 45 release."
+#~ msgstr "دستکاری سبک بصری ارائه برای گنوم ۴۵."
+
+#~ msgid "Fixed app crashing when ffprobe is missing."
+#~ msgstr "رفع فروپاشی کاره هنگام فقدان ffprobe."
