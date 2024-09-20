@@ -31,6 +31,19 @@
 		</screenshot>
 	</screenshots>
 	<releases>
+		<release version="0.9.0" date="2024-09-20">
+			<description>
+				<p>This release improves the behavior of shortcuts and does a minor visual refresh for GNOME 47.</p>
+				<ul>
+					<li>Added I and O shortcuts to set start and end trimming point.</li>
+					<li>Made all single-letter shortcuts work even when the time input fields are focused.</li>
+					<li>Changed the play/pause Ctrl+Space shortcut to just Space.</li>
+					<li>The video now starts paused after opening.</li>
+					<li>Updated to the GNOME 47 platform.</li>
+					<li>Updated translations.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.8.2" date="2023-10-08">
 			<description>
 				<p>This release contains a minor visual refresh for GNOME 45.</p>
