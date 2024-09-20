@@ -553,10 +553,27 @@ Please choose another file.",
                                 } else {
                                     let stderr = stderr
                                         .expect("should be Some() because we passed STDERR_PIPE");
+
+                                    let view = gtk::TextView::new();
+                                    view.buffer().set_text(&String::from_utf8_lossy(&stderr));
+                                    view.set_editable(false);
+                                    view.set_monospace(true);
+                                    view.add_css_class("card");
+
+                                    let child = gtk::ScrolledWindow::new();
+                                    child.set_child(Some(&view));
+                                    child.set_vscrollbar_policy(gtk::PolicyType::Never);
+
                                     adw::AlertDialog::builder()
-                                        // Translators: error dialog text.
+                                        // Translators: error dialog heading.
                                         .heading(gettext("Error trimming video"))
-                                        .body(String::from_utf8_lossy(&stderr))
+                                        .body(gettext(
+                                            // Translators: error dialog text before the FFmpeg
+                                            // error output.
+                                            "Please attach the following information \
+when reporting an issue.",
+                                        ))
+                                        .extra_child(&child)
                                         .build()
                                 }
                             }
