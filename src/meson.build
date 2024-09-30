@@ -30,7 +30,7 @@ gnome.compile_resources('video-trimmer',
   gresource_bundle: true,
   install: true,
   install_dir: pkgdatadir,
-  dependencies: blueprints,
+  dependencies: [blueprints, appstream_file],
 )
 
 conf = configuration_data()
