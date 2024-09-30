@@ -24,7 +24,6 @@
     "finish-args" : [
         "--env=RUST_BACKTRACE=1",
         "--env=G_MESSAGES_DEBUG=VideoTrimmer",
-        "--env=GSK_RENDERER=ngl",
         "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
