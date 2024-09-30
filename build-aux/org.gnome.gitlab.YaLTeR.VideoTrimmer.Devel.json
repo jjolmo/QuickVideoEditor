@@ -35,7 +35,10 @@
         "append-path" : "/usr/lib/sdk/rust-stable/bin",
         "build-args" : [
             "--share=network"
-        ]
+        ],
+        "env": {
+            "RUSTFLAGS": "-C force-frame-pointers=yes"
+        }
     },
     "modules" : [
         {
