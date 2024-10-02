@@ -46,6 +46,10 @@ mod imp {
             let window = VtWindow::new(self.obj().upcast_ref(), self.output_file.take());
 
             if let Some(file) = self.input_file.take() {
+                // Realize the window right away, before it's shown, so that the media file can
+                // start loading right away.
+                window.realize();
+
                 window.open(file);
             } else {
                 window.present();
