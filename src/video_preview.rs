@@ -6,11 +6,7 @@ mod imp {
     use crate::{config::G_LOG_DOMAIN, timeline::VtTimeline};
     use glib::{subclass::Signal, warn, Properties};
     use gtk::{glib, prelude::*, subclass::prelude::*, CompositeTemplate};
-    use std::{
-        cell::{OnceCell, RefCell},
-        marker::PhantomData,
-        sync::OnceLock,
-    };
+    use std::{cell::OnceCell, marker::PhantomData, sync::OnceLock};
 
     #[derive(Debug, Default, CompositeTemplate, Properties)]
     #[properties(wrapper_type = super::VtVideoPreview)]
@@ -41,7 +37,6 @@ mod imp {
         is_playing: PhantomData<bool>,
 
         media_file: OnceCell<gtk::MediaFile>,
-        file: RefCell<Option<gio::File>>,
     }
 
     #[glib::object_subclass]
@@ -223,29 +218,7 @@ mod imp {
         }
     }
 
-    impl WidgetImpl for VtVideoPreview {
-        fn realize(&self) {
-            self.parent_realize();
-
-            let obj = &*self.obj();
-            let surface = obj.native().unwrap().surface().unwrap();
-            let media_file = self.media_file.get().unwrap();
-            media_file.realize(&surface);
-
-            if let Some(file) = &*self.file.borrow() {
-                media_file.set_file(Some(file));
-            }
-        }
-
-        fn unrealize(&self) {
-            let obj = &*self.obj();
-            let surface = obj.native().unwrap().surface().unwrap();
-            let media_file = self.media_file.get().unwrap();
-            media_file.unrealize(&surface);
-
-            self.parent_unrealize();
-        }
-    }
+    impl WidgetImpl for VtVideoPreview {}
 
     impl VtVideoPreview {
         fn duration(&self) -> i64 {
@@ -267,16 +240,8 @@ mod imp {
         }
 
         pub fn open(&self, file: &gio::File) {
-            let obj = &*self.obj();
-
-            self.file.replace(Some(file.clone()));
-
-            if obj.is_realized() {
-                let surface = obj.native().unwrap().surface().unwrap();
-                let media_file = self.media_file.get().unwrap();
-                media_file.realize(&surface);
-                media_file.set_file(Some(file));
-            }
+            let media_file = self.media_file.get().unwrap();
+            media_file.set_file(Some(file));
         }
 
         pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {

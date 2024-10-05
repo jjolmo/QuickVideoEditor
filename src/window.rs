@@ -1081,16 +1081,7 @@ Please choose another file.",
         }
     }
 
-    impl WidgetImpl for VtWindow {
-        fn realize(&self) {
-            self.parent_realize();
-
-            // Realize the video preview right away, even though it's hidden, so that the media
-            // file can start loading right away.
-            self.video_preview.realize();
-        }
-    }
-
+    impl WidgetImpl for VtWindow {}
     impl WindowImpl for VtWindow {}
     impl ApplicationWindowImpl for VtWindow {}
     impl AdwApplicationWindowImpl for VtWindow {}
