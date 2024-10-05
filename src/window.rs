@@ -2,13 +2,11 @@ use glib::subclass::prelude::*;
 use gtk::{gio, glib};
 
 mod imp {
-    use ashpd::desktop::open_uri::OpenDirectoryRequest;
     use std::{
         cell::{Cell, RefCell},
         ffi::{OsStr, OsString},
-        fs::File,
         marker::PhantomData,
-        os::{fd::AsFd, unix::prelude::OsStringExt},
+        os::unix::prelude::OsStringExt,
         path::{Component, Path, PathBuf},
         str,
         time::Duration,
@@ -854,32 +852,17 @@ Please choose another file.",
                 |window, _, path| {
                     let path = Vec::<u8>::from_variant(path.unwrap()).unwrap();
                     let path = PathBuf::from(OsString::from_vec(path));
-                    let file = match File::open(path) {
-                        Ok(value) => value,
-                        Err(err) => {
-                            warn!("couldn't open the output file: {:?}", err);
-                            return;
-                        }
-                    };
+                    let file = gio::File::for_path(path);
 
-                    let native = if let Some(value) = window.native() {
-                        value
-                    } else {
-                        warn!("window.native() returned None");
-                        return;
-                    };
-
-                    let future = async move {
-                        let identifier = ashpd::WindowIdentifier::from_native(&native).await;
-                        if let Err(err) = OpenDirectoryRequest::default()
-                            .identifier(identifier)
-                            .send(&file.as_fd())
-                            .await
-                        {
-                            warn!("OpenDirectory returned an error: {:?}", err);
-                        }
-                    };
-                    glib::MainContext::default().spawn_local(future);
+                    gtk::FileLauncher::new(Some(&file)).open_containing_folder(
+                        Some(window),
+                        gio::Cancellable::NONE,
+                        move |res| {
+                            if let Err(err) = res {
+                                warn!("OpenDirectory returned an error: {:?}", err);
+                            }
+                        },
+                    );
                 },
             );
 

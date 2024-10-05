@@ -6,7 +6,6 @@ license = "GPL-3.0-or-later"
 
 [dependencies]
 adw = { version = "0.7.0", package = "libadwaita", features = ["v1_6"] }
-ashpd = { version = "0.9.1", features = ["gtk4"] }
 futures-channel = "0.3.30"
 futures-util = "0.3.30"
 gettext-rs = { version = "0.7.1", features = ["gettext-system"] }
