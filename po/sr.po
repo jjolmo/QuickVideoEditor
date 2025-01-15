@@ -1,0 +1,340 @@
+# Serbian translation for video-trimmer.
+# Copyright (C) 2024 video-trimmer's COPYRIGHT HOLDER
+# This file is distributed under the same license as the video-trimmer package.
+# Мирослав Николић <miroslavnikolic@rocketmail.com> 2024.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: video-trimmer master\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
+"issues\n"
+"POT-Creation-Date: 2024-10-07 21:12+0000\n"
+"PO-Revision-Date: 2024-12-24 14:46+0100\n"
+"Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
+"Language-Team: Serbian <Serbian>\n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Poedit 3.5\n"
+
+#. Can't extract filenames from a VariantDict yet.
+#. Translators: --output commandline option description.
+#: src/application.rs:37
+msgid "Output file path"
+msgstr "Путања излазне даатотеке"
+
+#. Translators: --output commandline option arg description.
+#: src/application.rs:39
+msgid "PATH"
+msgstr "ПУТАЊА"
+
+#: src/main.rs:40 src/window.blp:27
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
+msgid "Video Trimmer"
+msgstr "Видео скраћивач"
+
+#: src/shortcuts.blp:9
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Опште"
+
+#: src/shortcuts.blp:12
+msgctxt "shortcut window"
+msgid "New window"
+msgstr "Нови прозор"
+
+#: src/shortcuts.blp:17
+msgctxt "shortcut window"
+msgid "Play / Pause"
+msgstr "Пушта / Застаје"
+
+#: src/shortcuts.blp:22
+msgctxt "shortcut window"
+msgid "Trim"
+msgstr "Одсеца"
+
+#: src/shortcuts.blp:27
+msgctxt "shortcut window"
+msgid "Set Start at current postion"
+msgstr "Поставља почетак на текући положај"
+
+#: src/shortcuts.blp:32
+msgctxt "shortcut window"
+msgid "Set End at current position"
+msgstr "Поставља крај на текући положај"
+
+#: src/shortcuts.blp:37
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Пречице тастатуре"
+
+#: src/shortcuts.blp:42
+msgctxt "shortcut window"
+msgid "Close window"
+msgstr "Затвара прозор"
+
+#: src/shortcuts.blp:47
+msgctxt "shortcut window"
+msgid "Quit"
+msgstr "Излази"
+
+#. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:17
+msgid "Could Not Load Video Track"
+msgstr "Не могу да учитам видео нумеру"
+
+#. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
+#: src/video_preview.blp:20
+msgid ""
+"Maybe the file only has an audio track, or maybe the necessary video codec "
+"is missing."
+msgstr ""
+"Можда датотека има само звучну нумеру, или можда недостаје неопходни видео "
+"кодек."
+
+#. Translators: file chooser file filter name.
+#: src/window.rs:212
+msgid "Video files"
+msgstr "Видео датотеке"
+
+#. Translators: file chooser dialog title.
+#: src/window.rs:219
+msgid "Open video"
+msgstr "Отворите видео"
+
+#. Translators: error dialog title.
+#: src/window.rs:230 src/window.rs:410 src/window.rs:659
+msgid "Error"
+msgstr "Грешка"
+
+#. Translators: error dialog text.
+#: src/window.rs:233 src/window.rs:413 src/window.rs:662
+msgid ""
+"Video Trimmer can only operate on local files. Please choose another file."
+msgstr ""
+"Видео скраћивач може да ради само на локалним датотекама. Изаберите неку "
+"другу датотеку."
+
+#. Translators: error dialog button.
+#: src/window.rs:238 src/window.rs:418 src/window.rs:601 src/window.rs:623
+#: src/window.rs:667
+msgid "_OK"
+msgstr "_У реду"
+
+#. Translators: this is appended to the output video file name.
+#. So for example "my video.mp4" will become "my video (trimmed).mp4".
+#: src/window.rs:352
+msgid " (trimmed)"
+msgstr " (скраћен)"
+
+#. Translators: checkbox in output file selection dialog that strips audio from the
+#. video file.
+#: src/window.rs:379
+msgid "Remove audio"
+msgstr "Уклони аудио"
+
+#. Translators: checkbox in output file selection dialog.
+#: src/window.rs:384
+msgid "Accurate trimming, but slower and may lose quality"
+msgstr "Прецизно скраћивање, али спорије и може изгубити квалитет"
+
+#. Translators: message dialog text.
+#: src/window.rs:511
+msgid "Trimming…"
+msgstr "Скраћујем…"
+
+#. Translators: trimming dialog button.
+#: src/window.rs:514
+msgid "_Cancel"
+msgstr ":Откажи"
+
+#. Translators: text on the toast after trimming was done.
+#. The placeholder is the video filename.
+#: src/window.rs:534
+msgid "{} has been saved"
+msgstr "„{}“ је сачуван"
+
+#. Translators: text on the button of the toast after
+#. trimming was done to show the output file in the file
+#. manager.
+#: src/window.rs:541
+msgid "Show in Files"
+msgstr "Прикажи у програму „Датотеке“"
+
+#. Translators: error dialog heading.
+#: src/window.rs:573
+msgid "Error trimming video"
+msgstr "Грешка скраћивања видеа"
+
+#. Translators: error dialog text before the FFmpeg
+#. error output.
+#: src/window.rs:577
+msgid "Please attach the following information when reporting an issue."
+msgstr "Приложите следеће податке када пријављујете проблем."
+
+#: src/window.rs:588
+msgid "Could not communicate with the ffmpeg subprocess"
+msgstr "Не могу да комуницирам са „ffmpeg“ подпроцесом"
+
+#. Translators: error dialog text.
+#: src/window.rs:619
+msgid "Could not create the ffmpeg subprocess"
+msgstr "Не могу да направим „ffmpeg“ подпроцес"
+
+#. Translators: shown in the About dialog, put your name here.
+#: src/window.rs:829
+msgid "translator-credits"
+msgstr "Мирослав Николић <miroslavnikolic@rocketmail.com>"
+
+#. Translators: link title in the About dialog.
+#: src/window.rs:832
+msgid "Contribute Translations"
+msgstr "Допринесите у превођењу"
+
+#: src/window.rs:840
+msgid ""
+"This release improves the behavior of shortcuts and does a minor visual "
+"refresh for GNOME 47."
+msgstr ""
+"Ово издање побољшава понашање пречица и садржи мање визуелно освежење за "
+"Гном 47."
+
+#: src/window.rs:841
+msgid "Added I and O shortcuts to set start and end trimming point."
+msgstr ""
+"Додате су пречице за У и И за постављање почетне и крајње тачке скраћења."
+
+#: src/window.rs:842
+msgid ""
+"Made all single-letter shortcuts work even when the time input fields are "
+"focused."
+msgstr ""
+"Чини да све пречице са једним словом раде чак и када су поља улаза времена "
+"у првом плану."
+
+#: src/window.rs:843
+msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
+msgstr "Пречица за пуштање/паузирање „Ктрл+Размак“ је измењена у „Размак“."
+
+#: src/window.rs:844
+msgid "The video now starts paused after opening."
+msgstr "Видео се сада покреће пузиран након отварања."
+
+#: src/window.rs:845
+msgid "Updated to the GNOME 47 platform."
+msgstr "Отпремљено на платформу Гном 47."
+
+#: src/window.rs:846
+msgid "Updated translations."
+msgstr "Отпремљени преводи."
+
+#. Translators: Primary menu entry that opens a new window.
+#: src/window.blp:8
+msgid "_New Window"
+msgstr "_Нови прозор"
+
+#. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
+#: src/window.blp:14
+msgid "_Keyboard Shortcuts"
+msgstr "_Пречице тастатуре"
+
+#. Translators: Primary menu entry that opens the About dialog.
+#: src/window.blp:20
+msgid "_About Video Trimmer"
+msgstr "_О Видео скраћивачу"
+
+#. Translators: Main menu button tooltip.
+#: src/window.blp:50 src/window.blp:106
+msgid "Main Menu"
+msgstr "Главни изборник"
+
+#. Translators: Title text on the window when no files are open.
+#: src/window.blp:59
+msgid "Trim Videos"
+msgstr "Скратите снимке"
+
+#. Translators: Description text on the window when no files are open.
+#: src/window.blp:62
+msgid "Drag and drop a video here"
+msgstr "Превуците и убаците видео овде"
+
+#. Translators: Open button label when no files are open.
+#: src/window.blp:66
+msgid "Open Video…"
+msgstr "Отвори видео…"
+
+#. Translators: Open button tooltip.
+#: src/window.blp:68
+msgid "Select a Video"
+msgstr "Изаберите видео"
+
+#. Translators: Trim button.
+#: src/window.blp:92
+msgid "Trim"
+msgstr "Скрати"
+
+#. Translators: Trim button tooltip.
+#: src/window.blp:95
+msgid "Trim Video"
+msgstr "Скратите видео"
+
+#. Translators: Title that is shown upon video preview loading error.
+#: src/window.blp:134
+msgid "Video Preview Failed to Load"
+msgstr "Претпреглед видеа није успео да се учита"
+
+#. Translators: Description that is shown upon video preview loading error.
+#: src/window.blp:137
+msgid ""
+"Please enter the start and end timestamps manually.\n"
+"\n"
+"If you're running Video Trimmer under Flatpak, note that opening files by "
+"drag-and-drop may not work."
+msgstr ""
+"Упишите ручно временске ознаке почетка и краја.\n"
+"\n"
+"Ако овај програм покрећете под Флатпаком, знајте да отварање датотека "
+"превлачењем и убацивањем можда неће радити."
+
+#. Translators: Label for the entry for the start timestamp.
+#: src/window.blp:157
+msgid "Start"
+msgstr "Почетак"
+
+#. Translators: Label for the entry for the end timestamp.
+#: src/window.blp:174
+msgid "End"
+msgstr "Крај"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
+msgid "Trim videos quickly"
+msgstr "Брзо скратите видео снимке"
+
+#. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
+msgid "Cut;Movie;Film;Clip;"
+msgstr "исеци;филм;снимак;видео;Cut;Movie;Film;Clip;"
+
+#. developer_name tag deprecated with Appstream 1.0
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:13
+msgid "Ivan Molodetskikh"
+msgstr "Ivan Molodetskikh"
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:23
+msgid ""
+"Video Trimmer cuts out a fragment of a video given the start and end "
+"timestamps. The video is never re-encoded, so the process is very fast and "
+"does not reduce the video quality."
+msgstr ""
+"Видео скраћивач одсеца део снимка са датим временским ознакама почетка и "
+"краја. Видео се никада поново не кодира, тако да је поступак врло брз и не "
+"смањује квалитет снимка."
+
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
+msgid "Main Window"
+msgstr "Главни прозор"
