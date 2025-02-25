@@ -699,8 +699,6 @@ Please choose another file.",
                 "ffprobe".as_ref(),
                 "-print_format".as_ref(),
                 "json".as_ref(),
-                "-select_streams".as_ref(),
-                "a".as_ref(),
                 "-show_streams".as_ref(),
                 input_path.as_ref().unwrap().as_ref(),
             ];
@@ -729,9 +727,17 @@ Please choose another file.",
                                     let imp = obj.imp();
                                     let output = json::parse(stdout)
                                         .expect("ffprobe should return valid JSON");
-                                    let mut audio_formats = output["streams"]
+                                    let streams = &output["streams"];
+
+                                    let mut audio_formats = streams
                                         .members()
-                                        .filter_map(|stream| stream["codec_name"].as_str())
+                                        .filter_map(|stream| {
+                                            if stream["codec_type"].as_str() == Some("audio") {
+                                                stream["codec_name"].as_str()
+                                            } else {
+                                                None
+                                            }
+                                        })
                                         .inspect(|name| debug!("audio codec: {}", name));
 
                                     // Some Sony cameras produce .mp4 videos with PCM audio. This is invalid
@@ -743,6 +749,39 @@ Please choose another file.",
                                             "avoiding default .mp4 extension: PCM audio detected"
                                         );
                                         imp.do_not_default_to_mp4.set(true);
+                                    }
+
+                                    // Only get the first one we can find, because that's what GTK is going to display
+                                    let frame_rate_fraction = streams
+                                        .members()
+                                        .find(|stream| {
+                                            stream["codec_type"].as_str() == Some("video")
+                                        })
+                                        .and_then(|video_stream| {
+                                            video_stream["r_frame_rate"].as_str()
+                                        })
+                                        .inspect(|value| debug!("r_frame_rate: {value}"))
+                                        .and_then(|frame_rate| frame_rate.split_once('/'));
+
+                                    let mut frame_time = None;
+                                    if let Some((numerator, denominator)) = frame_rate_fraction {
+                                        if let Some((numerator, denominator)) = Option::zip(
+                                            numerator.parse::<f64>().ok(),
+                                            denominator.parse::<f64>().ok(),
+                                        ) {
+                                            if numerator > 0. && denominator > 0. {
+                                                frame_time = Some(Duration::from_secs_f64(
+                                                    denominator / numerator,
+                                                ));
+                                            }
+                                        }
+                                    }
+
+                                    if let Some(frame_time) = frame_time {
+                                        debug!("computed frame time: {frame_time:?}");
+                                        imp.video_preview.get().set_frame_time_approx(frame_time);
+                                    } else {
+                                        warn!("failed get frame time, stepping will not work")
                                     }
                                 }
                                 Err(err) => {
@@ -766,6 +805,14 @@ Please choose another file.",
             };
             glib::MainContext::default().spawn_local(future);
         }
+
+        pub fn step_forward(&self) {
+            self.video_preview.step_forward()
+        }
+
+        pub fn step_back(&self) {
+            self.video_preview.step_back()
+        }
     }
 
     #[glib::object_subclass]
@@ -778,6 +825,14 @@ Please choose another file.",
             Self::bind_template(klass);
 
             klass.install_property_action("win.play-pause", "is-playing");
+
+            klass.install_action("win.step-forward", None, |window, _, _| {
+                window.imp().step_forward()
+            });
+            klass.install_action("win.step-back", None, |window, _, _| {
+                window.imp().step_back()
+            });
+
             klass.install_action("win.close", None, |window, _, _| window.close());
 
             klass.install_action("win.trim", None, |window, _, _| {

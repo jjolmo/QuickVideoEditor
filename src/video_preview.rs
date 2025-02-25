@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use glib::subclass::prelude::*;
 use gtk::{gio, glib};
 
@@ -244,6 +246,18 @@ mod imp {
             media_file.set_file(Some(file));
         }
 
+        pub fn set_frame_time_approx(&self, value: Duration) {
+            self.timeline.set_frame_time_approx(value)
+        }
+
+        pub fn step_forward(&self) {
+            self.timeline.step_forward()
+        }
+
+        pub fn step_back(&self) {
+            self.timeline.step_back()
+        }
+
         pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
             self.timeline.set_start_end(start_end);
         }
@@ -278,6 +292,18 @@ glib::wrapper! {
 impl VtVideoPreview {
     pub fn open(&self, file: &gio::File) {
         self.imp().open(file);
+    }
+
+    pub fn step_forward(&self) {
+        self.imp().step_forward();
+    }
+
+    pub fn step_back(&self) {
+        self.imp().step_back();
+    }
+
+    pub fn set_frame_time_approx(&self, value: Duration) {
+        self.imp().set_frame_time_approx(value);
     }
 
     pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
