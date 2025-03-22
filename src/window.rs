@@ -1098,7 +1098,7 @@ Please choose another file.",
 
 glib::wrapper! {
     pub struct VtWindow(ObjectSubclass<imp::VtWindow>)
-        @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow,
+        @extends gtk::Widget, gtk::Window, gtk::ApplicationWindow, adw::ApplicationWindow,
         @implements gio::ActionMap, gio::ActionGroup;
 }
 
