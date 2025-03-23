@@ -3,8 +3,6 @@ include:
     file: 'flatpak/flatpak_ci_initiative.yml'
 
 flatpak:
-  except:
-    - poeditor
   extends: '.flatpak'
   variables:
     BUNDLE: "video-trimmer-nightly.flatpak"
@@ -18,8 +16,6 @@ nightly@x86_64:
   needs: ['flatpak']
 
 rustfmt:
-  except:
-    - poeditor
   image: "rust:slim"
   script:
     - rustup component add rustfmt
