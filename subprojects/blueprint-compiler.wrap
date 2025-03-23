@@ -1,6 +1,6 @@
 [wrap-git]
 url = https://gitlab.gnome.org/jwestman/blueprint-compiler.git
-revision = v0.12.0
+revision = v0.16.0
 depth = 1
 
 [provide]
