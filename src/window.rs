@@ -21,7 +21,7 @@ mod imp {
     use crate::{
         config::{self, G_LOG_DOMAIN},
         parse::{self, time_to_entry_text},
-        util::gettext_f,
+        util::{gettext_f, with_recursive_children},
         video_preview::VtVideoPreview,
     };
 
@@ -100,6 +100,12 @@ mod imp {
         overlay_error_page: TemplateChild<adw::ToastOverlay>,
         #[template_child]
         toolbar_view: TemplateChild<adw::ToolbarView>,
+        #[template_child]
+        popover_options: TemplateChild<gtk::Popover>,
+        #[template_child]
+        switch_row_reencode: TemplateChild<adw::SwitchRow>,
+        #[template_child]
+        switch_row_remove_audio: TemplateChild<adw::SwitchRow>,
 
         #[property(get = Self::is_playing, set = Self::set_is_playing, explicit_notify)]
         is_playing: PhantomData<bool>,
@@ -310,131 +316,93 @@ Please choose another file.",
 
             self.video_preview.pause();
 
-            let obj = self.obj().clone();
+            let output_path = self
+                .output_file
+                .borrow()
+                .as_ref()
+                .and_then(|file| file.path())
+                .unwrap_or_else(|| {
+                    let document_portal_components = [
+                        Component::RootDir,
+                        Component::Normal(OsStr::new("run")),
+                        Component::Normal(OsStr::new("user")),
+                        Component::Normal(OsStr::new("doc")),
+                    ];
 
-            let future = async move {
-                let imp = obj.imp();
+                    let mut components = input_path.components();
 
-                let output_path = imp
-                    .output_file
-                    .borrow()
-                    .as_ref()
-                    .and_then(|file| file.path())
-                    .unwrap_or_else(|| {
-                        let document_portal_components = [
-                            Component::RootDir,
-                            Component::Normal(OsStr::new("run")),
-                            Component::Normal(OsStr::new("user")),
-                            Component::Normal(OsStr::new("doc")),
-                        ];
+                    let prefix = if components.next() == Some(document_portal_components[0])
+                        && components.next() == Some(document_portal_components[1])
+                        && components.next() == Some(document_portal_components[2])
+                        && components.nth(1) == Some(document_portal_components[3])
+                    {
+                        // input_path comes from the document portal, no use in opening the
+                        // file chooser there.
+                        None
+                    } else {
+                        input_path.parent().map(Path::to_path_buf)
+                    };
 
-                        let mut components = input_path.components();
+                    let mut path = prefix.unwrap_or_default();
 
-                        let prefix = if components.next() == Some(document_portal_components[0])
-                            && components.next() == Some(document_portal_components[1])
-                            && components.next() == Some(document_portal_components[2])
-                            && components.nth(1) == Some(document_portal_components[3])
-                        {
-                            // input_path comes from the document portal, no use in opening the
-                            // file chooser there.
-                            None
-                        } else {
-                            input_path.parent().map(Path::to_path_buf)
-                        };
+                    path.push(format!(
+                        "{}{}.{}",
+                        input_path.file_stem().and_then(OsStr::to_str).unwrap_or(""),
+                        // Translators: this is appended to the output video file name.
+                        // So for example "my video.mp4" will become "my video (trimmed).mp4".
+                        gettext(" (trimmed)"),
+                        extension
+                    ));
 
-                        let mut path = prefix.unwrap_or_default();
-
-                        path.push(format!(
-                            "{}{}.{}",
-                            input_path.file_stem().and_then(OsStr::to_str).unwrap_or(""),
-                            // Translators: this is appended to the output video file name.
-                            // So for example "my video.mp4" will become "my video (trimmed).mp4".
-                            gettext(" (trimmed)"),
-                            extension
-                        ));
-
-                        path
-                    });
-
-                // FIXME: migrate to FileDialog once the UI is redesigned to put the checkboxes
-                // into the UI itself, rather than into the save dialog.
-                let file_chooser = gtk::FileChooserNative::builder()
-                    .transient_for(&obj)
-                    .action(gtk::FileChooserAction::Save)
-                    .modal(true)
-                    .build();
-                if let Some(parent) = output_path.parent() {
-                    if parent.to_str().map(|x| !x.is_empty()).unwrap_or(false) {
-                        debug!("setting current folder to {:?}", parent);
-                        let _ = file_chooser.set_current_folder(Some(&gio::File::for_path(parent)));
-                    }
-                }
-                if let Some(name) = output_path.file_name().and_then(OsStr::to_str) {
-                    debug!("setting current name to {:?}", name);
-                    file_chooser.set_current_name(name);
-                }
-
-                // Translators: checkbox in output file selection dialog that strips audio from the
-                // video file.
-                file_chooser.add_choice("no-audio", gettext("Remove audio"), &[]);
-
-                file_chooser.add_choice(
-                    "reencode",
-                    // Translators: checkbox in output file selection dialog.
-                    gettext("Accurate trimming, but slower and may lose quality"),
-                    &[],
-                );
-
-                let (tx, rx) = futures_channel::oneshot::channel();
-
-                let tx = RefCell::new(Some(tx));
-                file_chooser.connect_response({
-                    let obj = obj.downgrade();
-                    move |file_chooser, response| {
-                        if let Some(tx) = tx.borrow_mut().take() {
-                            if response == gtk::ResponseType::Accept {
-                                if let Some(path) = file_chooser.file().and_then(|file| file.path())
-                                {
-                                    let no_audio = file_chooser
-                                        .choice("no-audio")
-                                        .map(|choice| choice == "true")
-                                        .unwrap_or(false);
-                                    let reencode = file_chooser
-                                        .choice("reencode")
-                                        .map(|choice| choice == "true")
-                                        .unwrap_or(false);
-                                    tx.send(Some((path, no_audio, reencode))).unwrap();
-                                } else {
-                                    let dialog = adw::AlertDialog::builder()
-                                        // Translators: error dialog title.
-                                        .heading(gettext("Error"))
-                                        .body(gettext(
-                                            // Translators: error dialog text.
-                                            "Video Trimmer can only operate on local files. \
-Please choose another file.",
-                                        ))
-                                        .build();
-                                    // Translators: error dialog button.
-                                    dialog.add_response("ok", &gettext("_OK"));
-                                    dialog.present(Some(&obj.upgrade().unwrap()));
-
-                                    tx.send(None).unwrap();
-                                }
-                            } else {
-                                tx.send(None).unwrap();
-                            }
-                        }
-                    }
+                    path
                 });
 
-                file_chooser.show();
+            let file_dialog = gtk::FileDialog::builder().modal(true).build();
+            if let Some(parent) = output_path.parent() {
+                if parent.to_str().map(|x| !x.is_empty()).unwrap_or(false) {
+                    debug!("setting initial folder to {:?}", parent);
+                    file_dialog.set_initial_folder(Some(&gio::File::for_path(parent)));
+                }
+            }
+            if let Some(name) = output_path.file_name().and_then(OsStr::to_str) {
+                debug!("setting initial name to {:?}", name);
+                file_dialog.set_initial_name(Some(name));
+            }
 
-                let (output_path, no_audio, reencode) = if let Some(value) = rx.await.unwrap() {
-                    value
-                } else {
-                    return;
+            let obj = self.obj().clone();
+            let reencode = self.switch_row_reencode.is_active();
+            let no_audio = self.switch_row_remove_audio.is_active();
+
+            let future = async move {
+                let output_path = match file_dialog.save_future(Some(&obj)).await {
+                    Ok(file) => {
+                        if let Some(path) = file.path() {
+                            path
+                        } else {
+                            let dialog = adw::AlertDialog::builder()
+                                // Translators: error dialog title.
+                                .heading(gettext("Error"))
+                                .body(gettext(
+                                    // Translators: error dialog text.
+                                    "Video Trimmer can only operate on local files. \
+Please choose another file.",
+                                ))
+                                .build();
+                            // Translators: error dialog button.
+                            dialog.add_response("ok", &gettext("_OK"));
+                            dialog.present(Some(&obj));
+                            return;
+                        }
+                    }
+                    Err(err) => {
+                        if !err.matches(gtk::DialogError::Dismissed) {
+                            warn!("file dialog error: {err:?}");
+                        }
+                        return;
+                    }
                 };
 
+                let imp = obj.imp();
                 imp.do_trim(&input_path, output_path, no_audio, reencode, start, end);
             };
 
@@ -1061,6 +1029,16 @@ Please choose another file.",
                 }
             });
             self.stack.add_controller(drop_target);
+
+            // HACK: Make options popover action row subtitles wrap eagerly to ensure that they fit
+            // into the mobile window widths even with especially long translations, etc.
+            with_recursive_children(self.popover_options.upcast_ref(), &mut |widget| {
+                if let Some(label) = widget.downcast_ref::<gtk::Label>() {
+                    if label.has_css_class("subtitle") {
+                        label.set_max_width_chars(20);
+                    }
+                }
+            });
         }
     }
 

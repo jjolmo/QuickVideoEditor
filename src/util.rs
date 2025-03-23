@@ -1,4 +1,5 @@
 use glib::warn;
+use gtk::prelude::WidgetExt;
 
 use crate::config::G_LOG_DOMAIN;
 
@@ -39,6 +40,16 @@ fn freplace(s: &str, args: &[&str]) -> String {
 pub fn gettext_f(format: &str, args: &[&str]) -> String {
     let s = gettextrs::gettext(format);
     freplace(&s, args)
+}
+
+pub fn with_recursive_children(widget: &gtk::Widget, f: &mut impl FnMut(&gtk::Widget)) {
+    f(widget);
+
+    let mut widget = widget.first_child();
+    while let Some(child) = widget {
+        with_recursive_children(&child, f);
+        widget = child.next_sibling();
+    }
 }
 
 #[cfg(test)]

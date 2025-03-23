@@ -16,3 +16,7 @@ vt-timeline > .position {
 picture {
   background-color: black;
 }
+
+.vt-options-menu row {
+  padding: 0;
+}

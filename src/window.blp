@@ -23,6 +23,24 @@ menu primary_menu {
   }
 }
 
+Popover popover_options {
+  styles ["menu", "vt-options-menu"]
+
+  child: ListBox {
+    Adw.SwitchRow switch_row_reencode {
+      /* Translators: Options menu entry title that enables accurate trimming with re-encoding. */
+      title: _("Precise Trim");
+      /* Translators: Options menu entry subtitle that enables accurate trimming with re-encoding. */
+      subtitle: _("Slower and may lose quality due to re-encoding");
+    }
+
+    Adw.SwitchRow switch_row_remove_audio {
+      /* Translators: Options menu entry that strips audio from the video file. */
+      title: _("Remove Audio");
+    }
+  };
+}
+
 template $VtWindow : Adw.ApplicationWindow {
   title: _("Video Trimmer");
 
@@ -181,6 +199,13 @@ template $VtWindow : Adw.ApplicationWindow {
 
               styles ["numeric", "error"]
             }
+          }
+
+          MenuButton button_options {
+            styles ["circular"]
+
+            icon-name: "nautilus-file-chooser-options-symbolic";
+            popover: popover_options;
           }
         }
       };
