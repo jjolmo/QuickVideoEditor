@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: video-trimmer master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues\n"
-"POT-Creation-Date: 2025-03-23 17:50+0000\n"
-"PO-Revision-Date: 2025-03-24 00:48+0330\n"
+"POT-Creation-Date: 2025-03-24 11:13+0000\n"
+"PO-Revision-Date: 2025-03-25 01:57+0330\n"
 "Last-Translator: Danial Behzadi <dani.behzi@ubuntu.com>\n"
 "Language-Team: Persian <fa@li.org>\n"
 "Language: fa\n"
@@ -41,28 +41,28 @@ msgstr "عمومی"
 
 #: src/shortcuts.blp:12
 msgctxt "shortcut window"
-msgid "New window"
-msgstr "پنجرهٔ جدید"
-
-#: src/shortcuts.blp:17
-msgctxt "shortcut window"
-msgid "Play / Pause"
-msgstr "پخش / مکث"
-
-#: src/shortcuts.blp:22
-msgctxt "shortcut window"
 msgid "Trim"
 msgstr "تراشیدن"
 
-#: src/shortcuts.blp:27
+#: src/shortcuts.blp:17
 msgctxt "shortcut window"
 msgid "Set Start at current postion"
 msgstr "تنظیم آغاز در موقعیت کنونی"
 
-#: src/shortcuts.blp:32
+#: src/shortcuts.blp:22
 msgctxt "shortcut window"
 msgid "Set End at current position"
 msgstr "تنظیم پایان در موقعیت کنونی"
+
+#: src/shortcuts.blp:27
+msgctxt "shortcut window"
+msgid "New window"
+msgstr "پنجرهٔ جدید"
+
+#: src/shortcuts.blp:32
+msgctxt "shortcut window"
+msgid "Close window"
+msgstr "بستن پنجره"
 
 #: src/shortcuts.blp:37
 msgctxt "shortcut window"
@@ -71,13 +71,28 @@ msgstr "میان‌برهای صفحه‌کلید"
 
 #: src/shortcuts.blp:42
 msgctxt "shortcut window"
-msgid "Close window"
-msgstr "بستن پنجره"
-
-#: src/shortcuts.blp:47
-msgctxt "shortcut window"
 msgid "Quit"
 msgstr "خروج"
+
+#: src/shortcuts.blp:48
+msgctxt "shortcut window"
+msgid "Playback"
+msgstr "پخش"
+
+#: src/shortcuts.blp:51
+msgctxt "shortcut window"
+msgid "Play / Pause"
+msgstr "پخش یا مکث"
+
+#: src/shortcuts.blp:56
+msgctxt "shortcut window"
+msgid "Step forward"
+msgstr "یک قاب به پیش"
+
+#: src/shortcuts.blp:61
+msgctxt "shortcut window"
+msgid "Step back"
+msgstr "یک قاب به پس"
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:17
@@ -170,46 +185,49 @@ msgid "Could not create the ffmpeg subprocess"
 msgstr "نتوانست زیرفرایند ffmpeg را ایجاد کند"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:797
+#: src/window.rs:852
 msgid "translator-credits"
 msgstr "دانیال بهزادی <dani.behzi@ubuntu.com>"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:800
+#: src/window.rs:855
 msgid "Contribute Translations"
 msgstr "مشارکت در ترجمه‌ها"
 
-#: src/window.rs:808
+#. Translators: name of https://gitlab.gnome.org/YaLTeR/identity
+#: src/window.rs:861
+msgid "Identity"
+msgstr "هویّت"
+
+#. Translators: summary of https://gitlab.gnome.org/YaLTeR/identity
+#: src/window.rs:863
+msgid "Compare images and videos"
+msgstr "مقایسهٔ تصویرها و ویدیوها"
+
+#: src/window.rs:870
+msgid "This release makes the trimming options more discoverable."
+msgstr "این ارائه گزینه‌های تراش را کشف‌پذیرتر می‌کند."
+
+#: src/window.rs:871
+msgid "Changed the versioning scheme to year.month."
+msgstr "تغییر طرحوارهٔ نگارش به سال.ماه."
+
+#: src/window.rs:872
 msgid ""
-"This release improves the behavior of shortcuts and does a minor visual "
-"refresh for GNOME 47."
+"Moved the accurate trimming and remove audio options from the save dialog to "
+"the main window."
 msgstr ""
-"این ارائه رفتار میان‌برها را بهبود داده و نوسازی بصری کوچکی برای گنوم ۴۷ انجام "
-"می‌دهد."
+"جابه‌جایی تراش دقیق و برداشتن گزینه‌های صدا از گفت‌وگوی ذخیره به پنجرهٔ اصلی."
 
-#: src/window.rs:809
-msgid "Added I and O shortcuts to set start and end trimming point."
-msgstr "میان‌برهای I و O برای تنظیم نقطه‌های آغاز و پایان تراشیدن افزوده شدند."
+#: src/window.rs:873
+msgid "Added , and . shortcuts for short video stepping."
+msgstr "افزودن میان برهای , و . برای به پس و پیش رفتن کوتاه ویدیو."
 
-#: src/window.rs:810
-msgid ""
-"Made all single-letter shortcuts work even when the time input fields are "
-"focused."
-msgstr "همهٔ میان‌برهای تک‌حرفی حتا هنگام تمرکز روی زمینه‌های ورودی نیز کار می‌کنند."
+#: src/window.rs:874
+msgid "Updated to the GNOME 48 platform."
+msgstr "به‌روز شده به بن‌سازهٔ گنوم ۴۸."
 
-#: src/window.rs:811
-msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
-msgstr "میان‌بر پخش یا مکث از مهار+فاصله به فاصلهٔ خالی تغییر کرد."
-
-#: src/window.rs:812
-msgid "The video now starts paused after opening."
-msgstr "ویدیو اکنون پس از گشودن به صورت مکث شده آغاز می‌شود."
-
-#: src/window.rs:813
-msgid "Updated to the GNOME 47 platform."
-msgstr "به‌روز شده به بن‌سازهٔ گنوم ۴۷."
-
-#: src/window.rs:814
+#: src/window.rs:875
 msgid "Updated translations."
 msgstr "ترجمه‌های به‌روز شده."
 
@@ -334,6 +352,25 @@ msgstr ""
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "پنجرهٔ اصلی"
+
+#~ msgid ""
+#~ "This release improves the behavior of shortcuts and does a minor visual "
+#~ "refresh for GNOME 47."
+#~ msgstr ""
+#~ "این ارائه رفتار میان‌برها را بهبود داده و نوسازی بصری کوچکی برای گنوم ۴۷ "
+#~ "انجام می‌دهد."
+
+#~ msgid ""
+#~ "Made all single-letter shortcuts work even when the time input fields are "
+#~ "focused."
+#~ msgstr ""
+#~ "همهٔ میان‌برهای تک‌حرفی حتا هنگام تمرکز روی زمینه‌های ورودی نیز کار می‌کنند."
+
+#~ msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
+#~ msgstr "میان‌بر پخش یا مکث از مهار+فاصله به فاصلهٔ خالی تغییر کرد."
+
+#~ msgid "The video now starts paused after opening."
+#~ msgstr "ویدیو اکنون پس از گشودن به صورت مکث شده آغاز می‌شود."
 
 #~ msgid "Accurate trimming, but slower and may lose quality"
 #~ msgstr "تراشیدن دقیق، ولی آهسته‌تر و با امکان از دست رفتن کیفیت"
