@@ -1,11 +1,11 @@
 vt-timeline {
   background-color: color-mix(in srgb, currentColor 10%, transparent);
-  border-radius: 6px;
+  border-radius: 9px;
 }
 
 vt-timeline > .selection {
   background-color: color-mix(in srgb, var(--accent-bg-color) 40%, transparent);
-  border-radius: 6px;
+  border-radius: 9px;
 }
 
 vt-timeline > .position {
