@@ -1,5 +1,6 @@
 use glib::subclass::prelude::*;
 use gtk::glib;
+use std::time::Duration;
 
 mod imp {
     use super::*;
@@ -9,7 +10,6 @@ mod imp {
     use std::{
         cell::{Cell, OnceCell},
         sync::OnceLock,
-        time::Duration,
     };
 
     const TOLERANCE: f64 = 5.;
@@ -47,6 +47,7 @@ mod imp {
 
         #[property(set = Self::set_media_file)]
         media_file: OnceCell<gtk::MediaFile>,
+        frame_time_approx: Cell<Option<Duration>>,
         position: Cell<i64>,
         duration: Cell<i64>,
         start_end: Cell<Option<(u32, u32)>>,
@@ -77,6 +78,7 @@ mod imp {
                 box_timeline_position: Default::default(),
                 box_timeline_selection: Default::default(),
                 media_file: OnceCell::new(),
+                frame_time_approx: Cell::new(None),
                 position: Cell::new(0),
                 duration: Cell::new(0),
                 start_end: Cell::new(None),
@@ -258,6 +260,23 @@ mod imp {
             self.media_file.set(media_file).unwrap();
         }
 
+        pub fn set_frame_time_approx(&self, value: Duration) {
+            self.frame_time_approx.set(Some(value));
+        }
+
+        pub fn step(&self, direction: i64) {
+            if let Some(frame_time) = self.frame_time_approx.get() {
+                let media_file = self.media_file.get().unwrap();
+                let seek = direction * frame_time.as_micros() as i64;
+                let time = media_file.timestamp() + seek;
+                let time = time.max(0);
+
+                media_file.seek(time);
+                self.position.set(time);
+                self.obj().queue_allocate();
+            }
+        }
+
         pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
             self.start_end.set(start_end);
             self.refresh();
@@ -434,6 +453,15 @@ glib::wrapper! {
 }
 
 impl VtTimeline {
+    pub fn set_frame_time_approx(&self, value: Duration) {
+        self.imp().set_frame_time_approx(value);
+    }
+    pub fn step_forward(&self) {
+        self.imp().step(1)
+    }
+    pub fn step_back(&self) {
+        self.imp().step(-1)
+    }
     pub fn set_start_end(&self, start_end: Option<(u32, u32)>) {
         self.imp().set_start_end(start_end);
     }
