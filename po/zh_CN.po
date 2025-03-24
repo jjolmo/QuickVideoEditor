@@ -1,20 +1,20 @@
 #
-# lumingzh <lumingzh@qq.com>, 2023-2024.
+# lumingzh <lumingzh@qq.com>, 2023-2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2024-09-20 19:08+0000\n"
-"PO-Revision-Date: 2024-09-21 20:05+0800\n"
+"POT-Creation-Date: 2025-03-24 06:26+0000\n"
+"PO-Revision-Date: 2025-03-24 18:39+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Gtranslator 46.1\n"
+"X-Generator: Gtranslator 47.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Can't extract filenames from a VariantDict yet.
@@ -28,7 +28,7 @@ msgstr "输出文件路径"
 msgid "PATH"
 msgstr "路径"
 
-#: src/main.rs:40 src/window.blp:27
+#: src/main.rs:40 src/window.blp:45
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
@@ -41,28 +41,28 @@ msgstr "常规"
 
 #: src/shortcuts.blp:12
 msgctxt "shortcut window"
-msgid "New window"
-msgstr "新建窗口"
-
-#: src/shortcuts.blp:17
-msgctxt "shortcut window"
-msgid "Play / Pause"
-msgstr "播放 / 暂停"
-
-#: src/shortcuts.blp:22
-msgctxt "shortcut window"
 msgid "Trim"
 msgstr "剪裁"
 
-#: src/shortcuts.blp:27
+#: src/shortcuts.blp:17
 msgctxt "shortcut window"
 msgid "Set Start at current postion"
 msgstr "在当前位置设置起始点"
 
-#: src/shortcuts.blp:32
+#: src/shortcuts.blp:22
 msgctxt "shortcut window"
 msgid "Set End at current position"
 msgstr "在当前位置设置结束点"
+
+#: src/shortcuts.blp:27
+msgctxt "shortcut window"
+msgid "New window"
+msgstr "新建窗口"
+
+#: src/shortcuts.blp:32
+msgctxt "shortcut window"
+msgid "Close window"
+msgstr "关闭窗口"
 
 #: src/shortcuts.blp:37
 msgctxt "shortcut window"
@@ -71,13 +71,28 @@ msgstr "键盘快捷键"
 
 #: src/shortcuts.blp:42
 msgctxt "shortcut window"
-msgid "Close window"
-msgstr "关闭窗口"
-
-#: src/shortcuts.blp:47
-msgctxt "shortcut window"
 msgid "Quit"
 msgstr "退出"
+
+#: src/shortcuts.blp:48
+msgctxt "shortcut window"
+msgid "Playback"
+msgstr "播放"
+
+#: src/shortcuts.blp:51
+msgctxt "shortcut window"
+msgid "Play / Pause"
+msgstr "播放 / 暂停"
+
+#: src/shortcuts.blp:56
+msgctxt "shortcut window"
+msgid "Step forward"
+msgstr "快进"
+
+#: src/shortcuts.blp:61
+msgctxt "shortcut window"
+msgid "Step back"
+msgstr "快退"
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:17
@@ -92,131 +107,114 @@ msgid ""
 msgstr "也许该文件只有一个音轨，或者可能缺少必要的视频编解码器。"
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:214
+#: src/window.rs:218
 msgid "Video files"
 msgstr "视频文件"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:221
+#: src/window.rs:225
 msgid "Open video"
 msgstr "打开视频"
 
 #. Translators: error dialog title.
-#: src/window.rs:232 src/window.rs:412 src/window.rs:661
+#: src/window.rs:236 src/window.rs:384 src/window.rs:627
 msgid "Error"
 msgstr "错误"
 
 #. Translators: error dialog text.
-#: src/window.rs:235 src/window.rs:415 src/window.rs:664
+#: src/window.rs:239 src/window.rs:387 src/window.rs:630
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "视频剪裁器只能对本地文件进行操作。请选择其他文件。"
 
 #. Translators: error dialog button.
-#: src/window.rs:240 src/window.rs:420 src/window.rs:603 src/window.rs:625
-#: src/window.rs:669
+#: src/window.rs:244 src/window.rs:392 src/window.rs:569 src/window.rs:591
+#: src/window.rs:635
 msgid "_OK"
 msgstr "确定(_O)"
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:354
+#: src/window.rs:353
 msgid " (trimmed)"
 msgstr "（已修剪）"
 
-#. Translators: checkbox in output file selection dialog that strips audio from the
-#. video file.
-#: src/window.rs:381
-msgid "Remove audio"
-msgstr "移除音频"
-
-#. Translators: checkbox in output file selection dialog.
-#: src/window.rs:386
-msgid "Accurate trimming, but slower and may lose quality"
-msgstr "精确修剪，但速度较慢且可能会降低质量"
-
 #. Translators: message dialog text.
-#: src/window.rs:513
+#: src/window.rs:479
 msgid "Trimming…"
 msgstr "正在剪裁…"
 
 #. Translators: trimming dialog button.
-#: src/window.rs:516
+#: src/window.rs:482
 msgid "_Cancel"
 msgstr "取消(_C)"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:536
+#: src/window.rs:502
 msgid "{} has been saved"
 msgstr "{} 已保存"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:543
+#: src/window.rs:509
 msgid "Show in Files"
 msgstr "在文件中显示"
 
 #. Translators: error dialog heading.
-#: src/window.rs:575
+#: src/window.rs:541
 msgid "Error trimming video"
 msgstr "剪裁视频出错"
 
 #. Translators: error dialog text before the FFmpeg
 #. error output.
-#: src/window.rs:579
+#: src/window.rs:545
 msgid "Please attach the following information when reporting an issue."
 msgstr "报告问题时请附加以下信息。"
 
-#: src/window.rs:590
+#: src/window.rs:556
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "无法与 ffmpeg 子进程通信"
 
 #. Translators: error dialog text.
-#: src/window.rs:621
+#: src/window.rs:587
 msgid "Could not create the ffmpeg subprocess"
 msgstr "无法创建 ffmpeg 子进程"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:831
+#: src/window.rs:852
 msgid "translator-credits"
-msgstr "lumingzh <lumingzh@qq.com>, 2023-2024."
+msgstr "lumingzh <lumingzh@qq.com>, 2023-2025."
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:834
+#: src/window.rs:855
 msgid "Contribute Translations"
 msgstr "贡献翻译"
 
-#: src/window.rs:842
+#: src/window.rs:863
+msgid "This release makes the trimming options more discoverable."
+msgstr "该版本使剪裁选项更易发现。"
+
+#: src/window.rs:864
+msgid "Changed the versioning scheme to year.month."
+msgstr "将发行版本策略改为“年.月”。"
+
+#: src/window.rs:865
 msgid ""
-"This release improves the behavior of shortcuts and does a minor visual "
-"refresh for GNOME 47."
-msgstr "此次发布优化了快捷键行为并针对 GNOME 47 做了微小视觉更新。"
+"Moved the accurate trimming and remove audio options from the save dialog to "
+"the main window."
+msgstr "将精确剪裁和移除音频选项从保存对话框移至主窗口。"
 
-#: src/window.rs:843
-msgid "Added I and O shortcuts to set start and end trimming point."
-msgstr "添加了 I 和 O 快捷键来设定起始和结束剪辑点。"
+#: src/window.rs:866
+msgid "Added , and . shortcuts for short video stepping."
+msgstr "添加了 , 和 . 快捷键用于短间隔的视频进度跳转。"
 
-#: src/window.rs:844
-msgid ""
-"Made all single-letter shortcuts work even when the time input fields are "
-"focused."
-msgstr "使所有单字母快捷键即使在聚焦时间输入区域时也能生效。"
+#: src/window.rs:867
+msgid "Updated to the GNOME 48 platform."
+msgstr "更新至 GNOME 48 平台。"
 
-#: src/window.rs:845
-msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
-msgstr "更改了播放/暂停的 Ctrl+Space 快捷键为仅空格键。"
-
-#: src/window.rs:846
-msgid "The video now starts paused after opening."
-msgstr "现在视频在打开后为暂停状态。"
-
-#: src/window.rs:847
-msgid "Updated to the GNOME 47 platform."
-msgstr "更新至 GNOME 47 平台。"
-
-#: src/window.rs:848
+#: src/window.rs:868
 msgid "Updated translations."
 msgstr "更新了翻译。"
 
@@ -235,48 +233,63 @@ msgstr "键盘快捷键(_K)"
 msgid "_About Video Trimmer"
 msgstr "关于视频剪裁器(_A)"
 
+#. Translators: Options menu entry title that enables accurate trimming with re-encoding.
+#: src/window.blp:32
+msgid "Precise Trim"
+msgstr "精确剪裁"
+
+#. Translators: Options menu entry subtitle that enables accurate trimming with re-encoding.
+#: src/window.blp:34
+msgid "Slower and may lose quality due to re-encoding"
+msgstr "由于重新编码剪裁速度会更慢且可能会损失质量"
+
+#. Translators: Options menu entry that strips audio from the video file.
+#: src/window.blp:39
+msgid "Remove Audio"
+msgstr "移除音频"
+
 #. Translators: Main menu button tooltip.
-#: src/window.blp:50 src/window.blp:106
+#: src/window.blp:68 src/window.blp:124
 msgid "Main Menu"
 msgstr "主菜单"
 
 #. Translators: Title text on the window when no files are open.
-#: src/window.blp:59
+#: src/window.blp:77
 msgid "Trim Videos"
 msgstr "剪裁视频"
 
 #. Translators: Description text on the window when no files are open.
-#: src/window.blp:62
+#: src/window.blp:80
 msgid "Drag and drop a video here"
 msgstr "拖放视频到这里"
 
 #. Translators: Open button label when no files are open.
-#: src/window.blp:66
+#: src/window.blp:84
 msgid "Open Video…"
 msgstr "打开视频…"
 
 #. Translators: Open button tooltip.
-#: src/window.blp:68
+#: src/window.blp:86
 msgid "Select a Video"
 msgstr "选择视频"
 
 #. Translators: Trim button.
-#: src/window.blp:92
+#: src/window.blp:110
 msgid "Trim"
 msgstr "剪裁"
 
 #. Translators: Trim button tooltip.
-#: src/window.blp:95
+#: src/window.blp:113
 msgid "Trim Video"
 msgstr "剪裁视频"
 
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:134
+#: src/window.blp:152
 msgid "Video Preview Failed to Load"
 msgstr "视频预览加载失败"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:137
+#: src/window.blp:155
 msgid ""
 "Please enter the start and end timestamps manually.\n"
 "\n"
@@ -288,12 +301,12 @@ msgstr ""
 "如果您在 Flatpak 下运行视频剪裁器，请注意通过拖放打开文件的方式可能无效。"
 
 #. Translators: Label for the entry for the start timestamp.
-#: src/window.blp:157
+#: src/window.blp:175
 msgid "Start"
 msgstr "开始"
 
 #. Translators: Label for the entry for the end timestamp.
-#: src/window.blp:174
+#: src/window.blp:192
 msgid "End"
 msgstr "结束"
 
@@ -324,6 +337,25 @@ msgstr ""
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "主窗口"
+
+#~ msgid "Accurate trimming, but slower and may lose quality"
+#~ msgstr "精确修剪，但速度较慢且可能会降低质量"
+
+#~ msgid ""
+#~ "This release improves the behavior of shortcuts and does a minor visual "
+#~ "refresh for GNOME 47."
+#~ msgstr "此次发布优化了快捷键行为并针对 GNOME 47 做了微小视觉更新。"
+
+#~ msgid ""
+#~ "Made all single-letter shortcuts work even when the time input fields are "
+#~ "focused."
+#~ msgstr "使所有单字母快捷键即使在聚焦时间输入区域时也能生效。"
+
+#~ msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
+#~ msgstr "更改了播放/暂停的 Ctrl+Space 快捷键为仅空格键。"
+
+#~ msgid "The video now starts paused after opening."
+#~ msgstr "现在视频在打开后为暂停状态。"
 
 #~ msgid "Tweaked the visual style for the GNOME 45 release."
 #~ msgstr "为 GNOME 45 发布调整了视觉风格。"
@@ -443,9 +475,6 @@ msgstr "主窗口"
 
 #~ msgid "Made the commandline argument description translatable."
 #~ msgstr "使命令行参数描述可以被翻译。"
-
-#~ msgid "This release fixes an error when trimming GoPro recordings."
-#~ msgstr "该版本修复了修剪 GoPro 录像时的一个错误。"
 
 #~ msgid ""
 #~ "Data streams are no longer copied to the output file as a workaround to "
