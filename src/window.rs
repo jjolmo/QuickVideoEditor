@@ -855,6 +855,13 @@ Please choose another file.",
                     &gettext("Contribute Translations"),
                     "https://l10n.gnome.org/module/video-trimmer/",
                 );
+                about_window.add_other_app(
+                    "org.gnome.gitlab.YaLTeR.Identity",
+                    // Translators: name of https://gitlab.gnome.org/YaLTeR/identity
+                    &gettext("Identity"),
+                    // Translators: summary of https://gitlab.gnome.org/YaLTeR/identity
+                    &gettext("Compare images and videos"),
+                );
                 about_window.present(Some(window));
 
                 // DL doesn't extract release notes from metainfo, so let's help it out with the

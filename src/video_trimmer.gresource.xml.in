@@ -12,6 +12,7 @@
     <file alias="icons/scalable/actions/broken-video-symbolic.svg">../data/icons/broken-video-symbolic.svg</file>
     <file alias="icons/scalable/actions/nautilus-file-chooser-options-symbolic.svg">../data/icons/nautilus-file-chooser-options-symbolic.svg</file>
     <file alias="icons/scalable/actions/video-trimmer-symbolic.svg">../data/icons/hicolor/symbolic/apps/org.gnome.gitlab.YaLTeR.VideoTrimmer-symbolic.svg</file>
+    <file alias="icons/scalable/apps/org.gnome.gitlab.YaLTeR.Identity.svg">../data/icons/org.gnome.gitlab.YaLTeR.Identity.svg</file>
     <file compressed="true" preprocess="xml-stripblanks" alias="org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml">@appdata-file@</file>
   </gresource>
 </gresources>
