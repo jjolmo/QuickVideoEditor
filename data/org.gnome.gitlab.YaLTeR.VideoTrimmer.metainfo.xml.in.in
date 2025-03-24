@@ -35,6 +35,18 @@
 		<color type="primary" scheme_preference="dark">#1c3f68</color>
 	</branding>
 	<releases>
+		<release version="25.03" date="2025-03-24">
+			<description>
+				<p>This release makes the trimming options more discoverable.</p>
+				<ul>
+					<li>Changed the versioning scheme to year.month.</li>
+					<li>Moved the accurate trimming and remove audio options from the save dialog to the main window.</li>
+					<li>Added , and . shortcuts for short video stepping.</li>
+					<li>Updated to the GNOME 48 platform.</li>
+					<li>Updated translations.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="0.9.0" date="2024-09-30">
 			<description>
 				<p>This release improves the behavior of shortcuts and does a minor visual refresh for GNOME 47.</p>

@@ -860,12 +860,11 @@ Please choose another file.",
                 // DL doesn't extract release notes from metainfo, so let's help it out with the
                 // ones shown in the dialog.
                 let gettext = |_| ();
-                gettext("This release improves the behavior of shortcuts and does a minor visual refresh for GNOME 47.");
-                gettext("Added I and O shortcuts to set start and end trimming point.");
-                gettext("Made all single-letter shortcuts work even when the time input fields are focused.");
-                gettext("Changed the play/pause Ctrl+Space shortcut to just Space.");
-                gettext("The video now starts paused after opening.");
-                gettext("Updated to the GNOME 47 platform.");
+                gettext("This release makes the trimming options more discoverable.");
+                gettext("Changed the versioning scheme to year.month.");
+                gettext("Moved the accurate trimming and remove audio options from the save dialog to the main window.");
+                gettext("Added , and . shortcuts for short video stepping.");
+                gettext("Updated to the GNOME 48 platform.");
                 gettext("Updated translations.");
             });
 
