@@ -1,6 +1,6 @@
 project('video-trimmer',
         'rust',
-          version: '0.9.0',
+          version: '25.03',
     meson_version: '>= 0.59.0',
           license: 'GPL3+',
 )
