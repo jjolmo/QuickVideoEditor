@@ -9,26 +9,6 @@ ShortcutsWindow help_overlay {
       title: C_("shortcut window", "General");
 
       ShortcutsShortcut {
-        title: C_("shortcut window", "New window");
-        action-name: "app.new-window";
-      }
-
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Play / Pause");
-        action-name: "win.play-pause";
-      }
-
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Step forward");
-        action-name: "win.step-forward";
-      }
-
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Step back");
-        action-name: "win.step-back";
-      }
-
-      ShortcutsShortcut {
         title: C_("shortcut window", "Trim");
         action-name: "win.trim";
       }
@@ -44,8 +24,8 @@ ShortcutsWindow help_overlay {
       }
 
       ShortcutsShortcut {
-        title: C_("shortcut window", "Keyboard shortcuts");
-        action-name: "win.show-help-overlay";
+        title: C_("shortcut window", "New window");
+        action-name: "app.new-window";
       }
 
       ShortcutsShortcut {
@@ -54,8 +34,32 @@ ShortcutsWindow help_overlay {
       }
 
       ShortcutsShortcut {
+        title: C_("shortcut window", "Keyboard shortcuts");
+        action-name: "win.show-help-overlay";
+      }
+
+      ShortcutsShortcut {
         title: C_("shortcut window", "Quit");
         action-name: "app.quit";
+      }
+    }
+
+    ShortcutsGroup {
+      title: C_("shortcut window", "Playback");
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Play / Pause");
+        action-name: "win.play-pause";
+      }
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Step forward");
+        action-name: "win.step-forward";
+      }
+
+      ShortcutsShortcut {
+        title: C_("shortcut window", "Step back");
+        action-name: "win.step-back";
       }
     }
   }
