@@ -6,15 +6,15 @@ msgstr ""
 "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2025-03-24 06:26+0000\n"
-"PO-Revision-Date: 2025-03-24 18:39+0800\n"
+"POT-Creation-Date: 2025-03-24 11:13+0000\n"
+"PO-Revision-Date: 2025-03-25 18:23+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Gtranslator 47.1\n"
+"X-Generator: Gtranslator 48.0\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. Can't extract filenames from a VariantDict yet.
@@ -192,29 +192,39 @@ msgstr "lumingzh <lumingzh@qq.com>, 2023-2025."
 msgid "Contribute Translations"
 msgstr "贡献翻译"
 
+#. Translators: name of https://gitlab.gnome.org/YaLTeR/identity
+#: src/window.rs:861
+msgid "Identity"
+msgstr "识别"
+
+#. Translators: summary of https://gitlab.gnome.org/YaLTeR/identity
 #: src/window.rs:863
+msgid "Compare images and videos"
+msgstr "比较图像和视频"
+
+#: src/window.rs:870
 msgid "This release makes the trimming options more discoverable."
 msgstr "该版本使剪裁选项更易发现。"
 
-#: src/window.rs:864
+#: src/window.rs:871
 msgid "Changed the versioning scheme to year.month."
 msgstr "将发行版本策略改为“年.月”。"
 
-#: src/window.rs:865
+#: src/window.rs:872
 msgid ""
 "Moved the accurate trimming and remove audio options from the save dialog to "
 "the main window."
 msgstr "将精确剪裁和移除音频选项从保存对话框移至主窗口。"
 
-#: src/window.rs:866
+#: src/window.rs:873
 msgid "Added , and . shortcuts for short video stepping."
 msgstr "添加了 , 和 . 快捷键用于短间隔的视频进度跳转。"
 
-#: src/window.rs:867
+#: src/window.rs:874
 msgid "Updated to the GNOME 48 platform."
 msgstr "更新至 GNOME 48 平台。"
 
-#: src/window.rs:868
+#: src/window.rs:875
 msgid "Updated translations."
 msgstr "更新了翻译。"
 
