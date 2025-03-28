@@ -96,6 +96,13 @@ mod tests {
         assert_eq!(timestamp(":3"), None);
         assert_eq!(timestamp("2:"), None);
         assert_eq!(timestamp("2:03"), Some(123000));
+        assert_eq!(timestamp("2:3"), None);
+        assert_eq!(timestamp("99:00:00"), Some(356400000));
+        assert_eq!(timestamp("100:00:00"), None);
+        assert_eq!(timestamp("1:02:03:04"), None);
+        assert_eq!(timestamp("1.2.3"), None);
+        assert_eq!(timestamp("1.2345"), None);
+        assert_eq!(timestamp(""), None);
     }
 
     #[test]
