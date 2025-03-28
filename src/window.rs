@@ -16,7 +16,10 @@ mod imp {
     use futures_util::future::{abortable, FutureExt};
     use gettextrs::*;
     use glib::{debug, error, warn, Properties};
-    use gtk::{gdk, gio, glib, CompositeTemplate};
+    use gtk::{
+        gdk::{self, Key, ModifierType},
+        gio, glib, CompositeTemplate,
+    };
 
     use crate::{
         config::{self, G_LOG_DOMAIN},
@@ -901,6 +904,11 @@ Please choose another file.",
             klass.install_action("win.set-end-as-position", None, |window, _, _| {
                 window.imp().video_preview.set_end_as_position()
             });
+
+            // Add these here instead of set_accels_for_action so that they don't override typing in
+            // the time entries.
+            klass.add_binding_action(Key::period, ModifierType::empty(), "win.step-forward");
+            klass.add_binding_action(Key::comma, ModifierType::empty(), "win.step-back");
         }
 
         fn instance_init(obj: &glib::subclass::InitializingObject<Self>) {
