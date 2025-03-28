@@ -4,7 +4,7 @@ Video Trimmer cuts out a fragment of a video given the start and end timestamps.
 
 <a href='https://flathub.org/apps/details/org.gnome.gitlab.YaLTeR.VideoTrimmer'><img width='240' alt='Download on Flathub' src='https://flathub.org/api/badge?svg&locale=en'/></a>
 
-![Screenshot of the window.](/uploads/e840fa093439348448007197d07c8033/image.png)
+![Screenshot of the window.](https://gitlab.gnome.org/-/project/11135/uploads/f6e5a36b50822816e1aa191b63bab3b5/Screenshot_from_2025-03-28_15-32-23.png)
 
 ## Command-line arguments
 
