@@ -15,4 +15,3 @@ gtk = { version = "0.9", package = "gtk4", features = ["v4_16"] }
 json = "0.12"
 log = "0.4"
 mime_guess = "2"
-nom = "7"

@@ -1,68 +1,69 @@
 use std::{str::FromStr, time::Duration};
 
-use nom::{
-    branch::alt,
-    bytes::complete::take_while_m_n,
-    character::complete::char,
-    combinator::{all_consuming, map, map_res, opt, verify},
-    sequence::{pair, preceded, separated_pair, terminated, tuple},
-    IResult,
-};
+fn seconds(whole: &str) -> Option<u32> {
+    let mut iter = whole.rsplitn(3, ':');
+    let seconds = iter.next().unwrap();
+    let minutes = iter.next();
+    let hours = iter.next();
 
-fn is_digit(input: char) -> bool {
-    input.is_ascii_digit()
+    if iter.next().is_some() {
+        return None;
+    }
+
+    fn min_len(has_next: bool) -> usize {
+        if has_next {
+            2
+        } else {
+            1
+        }
+    }
+
+    if seconds.len() > 2 || seconds.len() < min_len(minutes.is_some()) {
+        return None;
+    }
+    let seconds = u32::from_str(seconds).ok()?;
+    if seconds >= 60 {
+        return None;
+    }
+
+    let minutes = minutes.unwrap_or("0");
+    if minutes.len() > 2 || minutes.len() < min_len(hours.is_some()) {
+        return None;
+    }
+    let minutes = u32::from_str(minutes).ok()?;
+    if minutes >= 60 {
+        return None;
+    }
+
+    let hours = hours.unwrap_or("0");
+    if hours.len() > 2 || hours.is_empty() {
+        return None;
+    }
+    let hours = u32::from_str(hours).ok()?;
+
+    Some(hours * 3600 + minutes * 60 + seconds)
 }
 
-fn digits_m_n(m: usize, n: usize, input: &str) -> IResult<&str, u32> {
-    map_res(take_while_m_n(m, n, is_digit), u32::from_str)(input)
-}
+fn milliseconds(fractional: &str) -> Option<u32> {
+    let mut iter = fractional.chars();
+    let h = iter.next()?.to_digit(10)?;
+    let t = iter.next().unwrap_or('0').to_digit(10)?;
+    let u = iter.next().unwrap_or('0').to_digit(10)?;
 
-fn one_digit(input: &str) -> IResult<&str, u32> {
-    digits_m_n(1, 1, input)
-}
+    if iter.next().is_some() {
+        return None;
+    }
 
-fn one_or_two_digits(input: &str) -> IResult<&str, u32> {
-    digits_m_n(1, 2, input)
-}
-
-fn two_digits(input: &str) -> IResult<&str, u32> {
-    digits_m_n(2, 2, input)
-}
-
-fn milliseconds(input: &str) -> IResult<&str, u32> {
-    map(
-        tuple((one_digit, opt(one_digit), opt(one_digit))),
-        |(h, t, u)| h * 100 + t.unwrap_or(0) * 10 + u.unwrap_or(0),
-    )(input)
+    Some(h * 100 + t * 10 + u)
 }
 
 pub fn timestamp(input: &str) -> Option<u32> {
-    let hours_minutes_seconds = tuple((
-        terminated(one_or_two_digits, char(':')),
-        terminated(two_digits, char(':')),
-        two_digits,
-    ));
-    let minutes_seconds = map(
-        separated_pair(one_or_two_digits, char(':'), two_digits),
-        |(minutes, seconds)| (0, minutes, seconds),
-    );
-    let seconds = map(one_or_two_digits, |seconds| (0, 0, seconds));
+    let (whole, fractional) = input.split_once('.').unwrap_or((input, "0"));
 
-    let non_fractional = verify(
-        alt((hours_minutes_seconds, minutes_seconds, seconds)),
-        |&(_hours, minutes, seconds)| minutes < 60 && seconds < 60,
-    );
+    let seconds = seconds(whole)?;
+    let milliseconds = milliseconds(fractional)?;
 
-    let fractional = preceded(char('.'), milliseconds);
-
-    let parser = map(
-        pair(non_fractional, opt(fractional)),
-        |((hours, minutes, seconds), milliseconds)| {
-            hours * 3_600_000 + minutes * 60_000 + seconds * 1000 + milliseconds.unwrap_or(0)
-        },
-    );
-
-    all_consuming(parser)(input).ok().map(|(_i, o)| o)
+    Some(seconds * 1000 + milliseconds)
 }
 
 pub fn time_to_entry_text(time: Duration) -> String {
