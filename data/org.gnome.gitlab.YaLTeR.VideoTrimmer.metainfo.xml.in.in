@@ -236,12 +236,4 @@
 	<requires>
 		<display_length compare="ge">360</display_length>
 	</requires>
-	<kudos>
-		<!--
-			GNOME Software kudos:
-			https://gitlab.gnome.org/GNOME/gnome-software/blob/master/doc/kudos.md
-		-->
-		<kudo>ModernToolkit</kudo>
-		<kudo>HiDpiIcon</kudo>
-	</kudos>
 </component>
