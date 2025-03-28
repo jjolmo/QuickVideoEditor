@@ -6,8 +6,6 @@ license = "GPL-3.0-or-later"
 
 [dependencies]
 adw = { version = "0.7.2", package = "libadwaita", features = ["v1_7"] }
-# This minimal version should be in glib, it uses is_terminated() on channels.
-futures-channel = "0.3.9"
 futures-util = "0.3"
 gettext-rs = { version = "0.7", features = ["gettext-system"] }
 glib = { version = "0.20", features = ["log", "log_macros"] }
