@@ -139,6 +139,7 @@ impl VtApplication {
         let flags = gio::ApplicationFlags::NON_UNIQUE | gio::ApplicationFlags::HANDLES_OPEN;
         glib::Object::builder()
             .property("application-id", config::APP_ID)
+            .property("version", config::VERSION)
             .property("flags", flags)
             .property(
                 "resource-base-path",
