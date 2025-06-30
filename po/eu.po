@@ -6,9 +6,9 @@
 msgid ""
 msgstr "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues\n"
-"POT-Creation-Date: 2024-09-20 19:08+0000\n"
-"PO-Revision-Date: 2025-02-15 17:00+0100\n"
-"Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
+"POT-Creation-Date: 2025-03-28 07:32+0000\n"
+"PO-Revision-Date: 2025-06-30 17:00+0100\n"
+"Last-Translator: Asier Saratsua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "Irteerako fitxategiaren bide-izena"
 msgid "PATH"
 msgstr "BIDE-IZENA"
 
-#: src/main.rs:40 src/window.blp:27
+#: src/main.rs:40 src/window.blp:45
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
@@ -40,28 +40,28 @@ msgstr "Orokorra"
 
 #: src/shortcuts.blp:12
 msgctxt "shortcut window"
-msgid "New window"
-msgstr "Leiho berria"
-
-#: src/shortcuts.blp:17
-msgctxt "shortcut window"
-msgid "Play / Pause"
-msgstr "Erreproduzitu / pausarazi"
-
-#: src/shortcuts.blp:22
-msgctxt "shortcut window"
 msgid "Trim"
 msgstr "Trim"
 
-#: src/shortcuts.blp:27
+#: src/shortcuts.blp:17
 msgctxt "shortcut window"
 msgid "Set Start at current postion"
 msgstr "Ezarri hasiera uneko kokalekuan"
 
-#: src/shortcuts.blp:32
+#: src/shortcuts.blp:22
 msgctxt "shortcut window"
 msgid "Set End at current position"
 msgstr "Ezarri amaiera uneko kokalekuan"
+
+#: src/shortcuts.blp:27
+msgctxt "shortcut window"
+msgid "New window"
+msgstr "Leiho berria"
+
+#: src/shortcuts.blp:32
+msgctxt "shortcut window"
+msgid "Close window"
+msgstr "Itxi leihoa"
 
 #: src/shortcuts.blp:37
 msgctxt "shortcut window"
@@ -70,13 +70,28 @@ msgstr "Laster-teklak"
 
 #: src/shortcuts.blp:42
 msgctxt "shortcut window"
-msgid "Close window"
-msgstr "Itxi leihoa"
-
-#: src/shortcuts.blp:47
-msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Irten"
+
+#: src/shortcuts.blp:48
+msgctxt "shortcut window"
+msgid "Playback"
+msgstr "Erreproduzitu"
+
+#: src/shortcuts.blp:51
+msgctxt "shortcut window"
+msgid "Play / Pause"
+msgstr "Erreproduzitu / pausarazi"
+
+#: src/shortcuts.blp:56
+msgctxt "shortcut window"
+msgid "Step forward"
+msgstr "Salto aurrerantz"
+
+#: src/shortcuts.blp:61
+msgctxt "shortcut window"
+msgid "Step back"
+msgstr "Salto atzerantz"
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:17
@@ -91,131 +106,124 @@ msgid ""
 msgstr "Baliteke fitxategiak audio-pista soilik izatea edo beharrezko bideo-kodeka faltan izatea."
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:214
+#: src/window.rs:221
 msgid "Video files"
 msgstr "Bideo-fitxategiak"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:221
+#: src/window.rs:228
 msgid "Open video"
 msgstr "Ireki bideoa"
 
 #. Translators: error dialog title.
-#: src/window.rs:232 src/window.rs:412 src/window.rs:661
+#: src/window.rs:239 src/window.rs:387 src/window.rs:630
 msgid "Error"
 msgstr "Errorea"
 
 #. Translators: error dialog text.
-#: src/window.rs:235 src/window.rs:415 src/window.rs:664
+#: src/window.rs:242 src/window.rs:390 src/window.rs:633
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "Bideo-kimatzaileak fitxategi lokalekin soilik egin dezake lan. Aukeratu beste fitxategi bat."
 
 #. Translators: error dialog button.
-#: src/window.rs:240 src/window.rs:420 src/window.rs:603 src/window.rs:625
-#: src/window.rs:669
+#: src/window.rs:247 src/window.rs:395 src/window.rs:572 src/window.rs:594
+#: src/window.rs:638
 msgid "_OK"
 msgstr "_Ados"
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:354
+#: src/window.rs:356
 msgid " (trimmed)"
 msgstr " (kimatuta)"
 
-#. Translators: checkbox in output file selection dialog that strips audio from the
-#. video file.
-#: src/window.rs:381
-msgid "Remove audio"
-msgstr "Kendu audioa"
-
-#. Translators: checkbox in output file selection dialog.
-#: src/window.rs:386
-msgid "Accurate trimming, but slower and may lose quality"
-msgstr "Kimatze zehatza, baina motelagoa eta kalitatea gutxiagokoa izan daitekeena"
-
 #. Translators: message dialog text.
-#: src/window.rs:513
+#: src/window.rs:482
 msgid "Trimming…"
 msgstr "Kimatzen..."
 
 #. Translators: trimming dialog button.
-#: src/window.rs:516
+#: src/window.rs:485
 msgid "_Cancel"
 msgstr "_Utzi"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:536
+#: src/window.rs:505
 msgid "{} has been saved"
 msgstr "{} gorde da"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:543
+#: src/window.rs:512
 msgid "Show in Files"
 msgstr "Erakutsi Fitxategiak aplikazioan"
 
 #. Translators: error dialog heading.
-#: src/window.rs:575
+#: src/window.rs:544
 msgid "Error trimming video"
 msgstr "Errorea bideoa kimatzean"
 
 #. Translators: error dialog text before the FFmpeg
 #. error output.
-#: src/window.rs:579
+#: src/window.rs:548
 msgid "Please attach the following information when reporting an issue."
 msgstr "Erantsi hurrengo informazioa akats bat jakinaraztean."
 
-#: src/window.rs:590
+#: src/window.rs:559
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Ezin izan da ffmpeg azpiprozesuarekin komunikatu"
 
 #. Translators: error dialog text.
-#: src/window.rs:621
+#: src/window.rs:590
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Ezin izan da ffmpeg azpiprozesua sortu"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:831
+#: src/window.rs:855
 msgid "translator-credits"
 msgstr "Asier Sarasua Garmendia <asiersarasua@ni.eus>"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:834
+#: src/window.rs:858
 msgid "Contribute Translations"
 msgstr "Lagundu itzultzen"
 
-#: src/window.rs:842
+#. Translators: name of https://gitlab.gnome.org/YaLTeR/identity
+#: src/window.rs:864
+msgid "Identity"
+msgstr "Identitatea"
+
+#. Translators: summary of https://gitlab.gnome.org/YaLTeR/identity
+#: src/window.rs:866
+msgid "Compare images and videos"
+msgstr "Konparatu irudiak eta bideoak"
+
+#: src/window.rs:873
+msgid "This release makes the trimming options more discoverable."
+msgstr "Bertsio honetan kimatze-aukerak errazago aurkitzen dira."
+
+#: src/window.rs:874
+msgid "Changed the versioning scheme to year.month."
+msgstr "Bertsioen eskema urtea.hilabetea formara aldatu da."
+
+#: src/window.rs:875
 msgid ""
-"This release improves the behavior of shortcuts and does a minor visual "
-"refresh for GNOME 47."
-msgstr "Bertsio honek lasterbideen portaera hobetzen du eta itxura apur bat hobetzen du GNOME 47 bertsiorako."
+"Moved the accurate trimming and remove audio options from the save dialog to "
+"the main window."
+msgstr "Kimatze zehatza lekuz aldatu da eta audio-aukerak kendu egin dira gordetzeko elkarrizketa-koadrotik leiho nagusira."
 
-#: src/window.rs:843
-msgid "Added I and O shortcuts to set start and end trimming point."
-msgstr "I eta O lasterbideak gehitu dira hasierako eta amaierako kimatze-puntuak ezartzeko."
+#: src/window.rs:876
+msgid "Added , and . shortcuts for short video stepping."
+msgstr "Bideoen salto txikietarako , eta . lasterbideak gehitu dira."
 
-#: src/window.rs:844
-msgid ""
-"Made all single-letter shortcuts work even when the time input fields are "
-"focused."
-msgstr "Letra bakarreko lasterbideek orain beti funtzionatzen dute, baita sarrerako eremuak fokuratuta daudenean ere."
+#: src/window.rs:877
+msgid "Updated to the GNOME 48 platform."
+msgstr "GNOME 48 plataformara eguneratu da."
 
-#: src/window.rs:845
-msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
-msgstr "Erreproduzitzeko/pausatzeko Ctrl+Zuriunea lasterbidea aldatu da, orain Zuriunea da."
-
-#: src/window.rs:846
-msgid "The video now starts paused after opening."
-msgstr "Orain bideoa pausatuta dago hura irekitzean."
-
-#: src/window.rs:847
-msgid "Updated to the GNOME 47 platform."
-msgstr "GNOME 47 plataformara eguneratu da."
-
-#: src/window.rs:848
+#: src/window.rs:878
 msgid "Updated translations."
 msgstr "Eguneratutako itzulpenak."
 
@@ -234,48 +242,63 @@ msgstr "Las_ter-teklak"
 msgid "_About Video Trimmer"
 msgstr "Bideo Trimmeri aplikazioari _buruz"
 
+#. Translators: Options menu entry title that enables accurate trimming with re-encoding.
+#: src/window.blp:32
+msgid "Precise Trim"
+msgstr "Kimatze zehatza"
+
+#. Translators: Options menu entry subtitle that enables accurate trimming with re-encoding.
+#: src/window.blp:34
+msgid "Slower and may lose quality due to re-encoding"
+msgstr "Motelagoa eta kalitatea galdu daiteke birkodetzeen ondorioz"
+
+#. Translators: Options menu entry that strips audio from the video file.
+#: src/window.blp:39
+msgid "Remove Audio"
+msgstr "Kendu audioa"
+
 #. Translators: Main menu button tooltip.
-#: src/window.blp:50 src/window.blp:106
+#: src/window.blp:68 src/window.blp:124
 msgid "Main Menu"
 msgstr "Menu nagusia"
 
 #. Translators: Title text on the window when no files are open.
-#: src/window.blp:59
+#: src/window.blp:77
 msgid "Trim Videos"
 msgstr "Kimatu bideoak"
 
 #. Translators: Description text on the window when no files are open.
-#: src/window.blp:62
+#: src/window.blp:80
 msgid "Drag and drop a video here"
 msgstr "Arrastatu eta jaregin bideoa hemen"
 
 #. Translators: Open button label when no files are open.
-#: src/window.blp:66
+#: src/window.blp:84
 msgid "Open Video…"
 msgstr "Ireki bideoa…"
 
 #. Translators: Open button tooltip.
-#: src/window.blp:68
+#: src/window.blp:86
 msgid "Select a Video"
 msgstr "Hautatu bideo bat"
 
 #. Translators: Trim button.
-#: src/window.blp:92
+#: src/window.blp:110
 msgid "Trim"
 msgstr "Trim"
 
 #. Translators: Trim button tooltip.
-#: src/window.blp:95
+#: src/window.blp:113
 msgid "Trim Video"
 msgstr "Kimatu bideoa"
 
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:134
+#: src/window.blp:152
 msgid "Video Preview Failed to Load"
 msgstr "Ezin da bideoaren aurrebista kargatu"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:137
+#: src/window.blp:155
 msgid ""
 "Please enter the start and end timestamps manually.\n"
 "\n"
@@ -286,12 +309,12 @@ msgstr "Sartu hasierako eta amaierako denbora-zigiluak eskuz.\n"
 "Video Trimmer aplikazioa Flatpak bidez erabiltzen ari bazara, kontuan izan fitxategiak arrastatu eta jaregiteak agian ez duela funtzionatzen."
 
 #. Translators: Label for the entry for the start timestamp.
-#: src/window.blp:157
+#: src/window.blp:175
 msgid "Start"
 msgstr "Hasi"
 
 #. Translators: Label for the entry for the end timestamp.
-#: src/window.blp:174
+#: src/window.blp:192
 msgid "End"
 msgstr "Amaiera"
 
@@ -320,6 +343,32 @@ msgstr "Video Trimmer aplikazioak bideoen zatiak kimatzen ditu, emandako hasiera
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "Leiho nagusia"
+
+#~ msgid "Accurate trimming, but slower and may lose quality"
+#~ msgstr ""
+#~ "Kimatze zehatza, baina motelagoa eta kalitatea gutxiagokoa izan daitekeena"
+
+#~ msgid ""
+#~ "This release improves the behavior of shortcuts and does a minor visual "
+#~ "refresh for GNOME 47."
+#~ msgstr ""
+#~ "Bertsio honek lasterbideen portaera hobetzen du eta itxura apur bat "
+#~ "hobetzen du GNOME 47 bertsiorako."
+
+#~ msgid ""
+#~ "Made all single-letter shortcuts work even when the time input fields are "
+#~ "focused."
+#~ msgstr ""
+#~ "Letra bakarreko lasterbideek orain beti funtzionatzen dute, baita "
+#~ "sarrerako eremuak fokuratuta daudenean ere."
+
+#~ msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
+#~ msgstr ""
+#~ "Erreproduzitzeko/pausatzeko Ctrl+Zuriunea lasterbidea aldatu da, orain "
+#~ "Zuriunea da."
+
+#~ msgid "The video now starts paused after opening."
+#~ msgstr "Orain bideoa pausatuta dago hura irekitzean."
 
 #~ msgid "Tweaked the visual style for the GNOME 45 release."
 #~ msgstr "Ikusizko estiloa doitu da GNOME 45 bertsiorako egokitzeko."
@@ -458,9 +507,6 @@ msgstr "Leiho nagusia"
 
 #~ msgid "Made the commandline argument description translatable."
 #~ msgstr "Komandoen lerroko argudioen deskribapena itzulgarria egin da."
-
-#~ msgid "This release fixes an error when trimming GoPro recordings."
-#~ msgstr "Bertsio honek akats bat zuzentzen du GoPro grabazioak moztean."
 
 #~ msgid ""
 #~ "Data streams are no longer copied to the output file as a workaround to "
