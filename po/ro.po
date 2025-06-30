@@ -1,35 +1,39 @@
+#
+# Antonio Marin <gnmer.6qxyg@slmail.me>, 2025.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2023-10-23 08:41+0000\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Florentina Mușat <florentina [dot] musat [dot] 28 [at] "
-"gmail [dot] com>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2025-03-28 07:32+0000\n"
+"PO-Revision-Date: 2025-06-30 19:23+0200\n"
+"Last-Translator: Antonio Marin <gnmer.6qxyg@slmail.me>\n"
+"Language-Team: Romanian <gnomero-list@lists.sourceforge.net>\n"
 "Language: ro\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4\n"
+"X-Generator: Gtranslator 48.0\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2);\n"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
 #: src/application.rs:37
 msgid "Output file path"
-msgstr "Calea fișierului de ieșire"
+msgstr "Calea fișierului rezultat"
 
 #. Translators: --output commandline option arg description.
 #: src/application.rs:39
 msgid "PATH"
 msgstr "CALE"
 
-#: src/main.rs:40 src/window.blp:27
+#: src/main.rs:40 src/window.blp:45
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
-msgstr "Decupator Video"
+msgstr "Taie Video"
 
 #: src/shortcuts.blp:9
 msgctxt "shortcut window"
@@ -38,43 +42,58 @@ msgstr "Generale"
 
 #: src/shortcuts.blp:12
 msgctxt "shortcut window"
-msgid "New window"
-msgstr "Fereastră nouă"
-
-#: src/shortcuts.blp:17
-msgctxt "shortcut window"
-msgid "Play / Pause"
-msgstr "Redare / pauză"
-
-#: src/shortcuts.blp:22
-msgctxt "shortcut window"
 msgid "Trim"
 msgstr "Taie"
 
-#: src/shortcuts.blp:27
+#: src/shortcuts.blp:17
 msgctxt "shortcut window"
 msgid "Set Start at current postion"
-msgstr "Stabilește începutul la poziția curentă"
+msgstr "Stabilește începutul la poziția actuală"
 
-#: src/shortcuts.blp:32
+#: src/shortcuts.blp:22
 msgctxt "shortcut window"
 msgid "Set End at current position"
-msgstr "Stabilește sfârșitul la poziția curentă"
+msgstr "Stabilește sfârșitul la poziția actuală"
 
-#: src/shortcuts.blp:37
+#: src/shortcuts.blp:27
 msgctxt "shortcut window"
-msgid "Keyboard shortcuts"
-msgstr "Scurtături de tastatură"
+msgid "New window"
+msgstr "Fereastră nouă"
 
-#: src/shortcuts.blp:42
+#: src/shortcuts.blp:32
 msgctxt "shortcut window"
 msgid "Close window"
 msgstr "Închide fereastra"
 
-#: src/shortcuts.blp:47
+#: src/shortcuts.blp:37
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Scurtături"
+
+#: src/shortcuts.blp:42
 msgctxt "shortcut window"
 msgid "Quit"
-msgstr "Ieși"
+msgstr "Închide"
+
+#: src/shortcuts.blp:48
+msgctxt "shortcut window"
+msgid "Playback"
+msgstr "Redare"
+
+#: src/shortcuts.blp:51
+msgctxt "shortcut window"
+msgid "Play / Pause"
+msgstr "Redare / pauză"
+
+#: src/shortcuts.blp:56
+msgctxt "shortcut window"
+msgid "Step forward"
+msgstr "Pas înainte"
+
+#: src/shortcuts.blp:61
+msgctxt "shortcut window"
+msgid "Step back"
+msgstr "Pas înapoi"
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:17
@@ -90,110 +109,135 @@ msgstr ""
 "Poate că fișierul are doar o pistă audio sau poate lipsește codecul video "
 "necesar."
 
-#. Translators: this is appended to the output video file name.
-#. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:300
-msgid " (trimmed)"
-msgstr " (decupat)"
+#. Translators: file chooser file filter name.
+#: src/window.rs:221
+msgid "Video files"
+msgstr "Fișiere video"
 
-#. Translators: checkbox in output file selection dialog that strips audio from the
-#. video file.
-#: src/window.rs:325
-msgid "Remove audio"
-msgstr "Eliminați sunetul"
-
-#. Translators: checkbox in output file selection dialog.
-#: src/window.rs:330
-msgid "Accurate trimming, but slower and may lose quality"
-msgstr "Tăiere precisă, dar mai lentă și poate pierde calitatea"
+#. Translators: file chooser dialog title.
+#: src/window.rs:228
+msgid "Open video"
+msgstr "Deschide video"
 
 #. Translators: error dialog title.
-#: src/window.rs:349 src/window.rs:594 src/window.rs:1010
+#: src/window.rs:239 src/window.rs:387 src/window.rs:630
 msgid "Error"
 msgstr "Eroare"
 
 #. Translators: error dialog text.
-#: src/window.rs:352 src/window.rs:597 src/window.rs:1013
+#: src/window.rs:242 src/window.rs:390 src/window.rs:633
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
-msgstr ""
-"Video Trimmer poate funcționa numai pe fișiere locale. Vă rugăm să alegeți "
-"un alt fișier."
+msgstr "Aplicația poate procesa numai fișiere locale. Trebuie ales alt fișier."
+
+#. Translators: error dialog button.
+#: src/window.rs:247 src/window.rs:395 src/window.rs:572 src/window.rs:594
+#: src/window.rs:638
+msgid "_OK"
+msgstr "_Bine"
+
+#. Translators: this is appended to the output video file name.
+#. So for example "my video.mp4" will become "my video (trimmed).mp4".
+#: src/window.rs:356
+msgid " (trimmed)"
+msgstr " (decupat)"
 
 #. Translators: message dialog text.
-#: src/window.rs:454
+#: src/window.rs:482
 msgid "Trimming…"
-msgstr "Se decupează…"
+msgstr "Se taie…"
+
+#. Translators: trimming dialog button.
+#: src/window.rs:485
+msgid "_Cancel"
+msgstr "_Anulează"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:478
+#: src/window.rs:505
 msgid "{} has been saved"
 msgstr "{} a fost salvat"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:485
+#: src/window.rs:512
 msgid "Show in Files"
-msgstr "Afișați în fișiere"
+msgstr "Arată în Fișiere"
 
-#. Translators: error dialog text.
-#: src/window.rs:506
+#. Translators: error dialog heading.
+#: src/window.rs:544
 msgid "Error trimming video"
-msgstr "Eroare la decuparea videoclipului"
+msgstr "Eroare la tăierea videoului"
 
-#: src/window.rs:515
+#. Translators: error dialog text before the FFmpeg
+#. error output.
+#: src/window.rs:548
+msgid "Please attach the following information when reporting an issue."
+msgstr "Atașează următoarele informații la raportarea problemei."
+
+#: src/window.rs:559
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Nu s-a putut comunica cu subprocesul ffmpeg"
 
 #. Translators: error dialog text.
-#: src/window.rs:556
+#: src/window.rs:590
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Nu s-a putut crea subprocesul ffmpeg"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:776
+#: src/window.rs:855
 msgid "translator-credits"
 msgstr ""
 "EnderIce2\n"
-"Florentina Mușat <florentina [dot] musat [dot] 28 [at] gmail [dot] com>, 2023"
+"Florentina Mușat <florentina [dot] musat [dot] 28 [at] gmail [dot] com>, "
+"2023\n"
+"Antonio Marin <gnmer.6qxyg@slmail.me>, 2025"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:779
+#: src/window.rs:858
 msgid "Contribute Translations"
-msgstr "Contribuiți la traduceri"
+msgstr "Contribuie la traduceri"
 
-#: src/window.rs:787
-msgid "This release contains a minor visual refresh for GNOME 45."
+#. Translators: name of https://gitlab.gnome.org/YaLTeR/identity
+#: src/window.rs:864
+msgid "Identity"
+msgstr "Identitate"
+
+#. Translators: summary of https://gitlab.gnome.org/YaLTeR/identity
+#: src/window.rs:866
+msgid "Compare images and videos"
+msgstr "Compară imagini și video"
+
+#: src/window.rs:873
+msgid "This release makes the trimming options more discoverable."
 msgstr ""
-"Această versiune conține o reîmprospătare vizuală minoră pentru GNOME 45."
+"Această versiune face ca opțiunile de tăiere să fie mai ușor de descoperit."
 
-#: src/window.rs:788
-msgid "Tweaked the visual style for the GNOME 45 release."
-msgstr "S-a ajustat stilul vizual pentru versiunea GNOME 45."
+#: src/window.rs:874
+msgid "Changed the versioning scheme to year.month."
+msgstr "A fost schimbat sistemul de versiuni în an.lună."
 
-#: src/window.rs:789
-msgid "Fixed app crashing when ffprobe is missing."
-msgstr "S-a remediat căderea aplicației când lipsește ffprobe."
+#: src/window.rs:875
+msgid ""
+"Moved the accurate trimming and remove audio options from the save dialog to "
+"the main window."
+msgstr ""
+"Au fost mutate opțiunile de tăiere precisă și de eliminare a sunetului din "
+"dialogul de salvare în fereastra principală."
 
-#: src/window.rs:790
-msgid "Updated to the GNOME 45 platform."
-msgstr "Actualizat la platforma GNOME 45."
+#: src/window.rs:876
+msgid "Added , and . shortcuts for short video stepping."
+msgstr ""
+"Au fost adăugate scurtături și pentru deplasările pas cu pas din video."
 
-#: src/window.rs:791
+#: src/window.rs:877
+msgid "Updated to the GNOME 48 platform."
+msgstr "Actualizată la platforma GNOME 48."
+
+#: src/window.rs:878
 msgid "Updated translations."
 msgstr "Traduceri actualizate."
-
-#. Translators: file chooser file filter name.
-#: src/window.rs:979
-msgid "Video files"
-msgstr "Fișiere video"
-
-#. Translators: file chooser dialog title.
-#: src/window.rs:988
-msgid "Open video"
-msgstr "Deschide videoclipul"
 
 #. Translators: Primary menu entry that opens a new window.
 #: src/window.blp:8
@@ -203,447 +247,116 @@ msgstr "_Fereastră Nouă"
 #. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
 #: src/window.blp:14
 msgid "_Keyboard Shortcuts"
-msgstr "Scurtături de _tastatură"
+msgstr "Scur_tături"
 
 #. Translators: Primary menu entry that opens the About dialog.
 #: src/window.blp:20
 msgid "_About Video Trimmer"
-msgstr "_Despre Decupator Video"
+msgstr "_Despre Taie Video"
+
+#. Translators: Options menu entry title that enables accurate trimming with re-encoding.
+#: src/window.blp:32
+msgid "Precise Trim"
+msgstr "Tăiere precisă"
+
+#. Translators: Options menu entry subtitle that enables accurate trimming with re-encoding.
+#: src/window.blp:34
+msgid "Slower and may lose quality due to re-encoding"
+msgstr "Mai lentă și poate pierde din calitate din cauza recodificării"
+
+#. Translators: Options menu entry that strips audio from the video file.
+#: src/window.blp:39
+msgid "Remove Audio"
+msgstr "Elimină sunetul"
 
 #. Translators: Main menu button tooltip.
-#: src/window.blp:50 src/window.blp:106
+#: src/window.blp:68 src/window.blp:124
 msgid "Main Menu"
-msgstr "Meniu principal"
+msgstr "Opțiuni"
 
 #. Translators: Title text on the window when no files are open.
-#: src/window.blp:59
+#: src/window.blp:77
 msgid "Trim Videos"
-msgstr "Taie video-uri"
+msgstr "Taie video"
 
 #. Translators: Description text on the window when no files are open.
-#: src/window.blp:62
+#: src/window.blp:80
 msgid "Drag and drop a video here"
-msgstr "Trage și plasează un video aici"
+msgstr "Trage și așează aici un video"
 
 #. Translators: Open button label when no files are open.
-#: src/window.blp:66
+#: src/window.blp:84
 msgid "Open Video…"
-msgstr "Deschide video-ul…"
+msgstr "Deschide un video…"
 
 #. Translators: Open button tooltip.
-#: src/window.blp:68
+#: src/window.blp:86
 msgid "Select a Video"
-msgstr "Selectați un video"
+msgstr "Alege un video"
 
 #. Translators: Trim button.
-#: src/window.blp:92
+#: src/window.blp:110
 msgid "Trim"
-msgstr "Decupeaza"
+msgstr "Taie"
 
 #. Translators: Trim button tooltip.
-#: src/window.blp:95
+#: src/window.blp:113
 msgid "Trim Video"
-msgstr "Taie video-ul"
+msgstr "Taie video"
 
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:132
+#: src/window.blp:152
 msgid "Video Preview Failed to Load"
-msgstr "Previzualizarea videoclipului nu s-a încărcat"
+msgstr "Previzualizarea videoului nu s-a încărcat"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:135
+#: src/window.blp:155
 msgid ""
 "Please enter the start and end timestamps manually.\n"
 "\n"
 "If you're running Video Trimmer under Flatpak, note that opening files by "
 "drag-and-drop may not work."
 msgstr ""
-"Vă rugăm să introduceți manual marcajele de timp de început și de sfârșit.\n"
+"Trebuie introduse manual începutul și sfârșitul fragmentului de tăiat.\n"
 "\n"
-"Dacă rulați Video Trimmer sub Flatpak, rețineți că deschiderea fișierelor "
-"prin glisare și plasare ar putea să nu funcționeze."
+"Dacă aplicația este tip Flatpak, deschiderea fișierelor prin trage și așează "
+"s-ar putea să nu funcționeze."
 
 #. Translators: Label for the entry for the start timestamp.
-#: src/window.blp:155
+#: src/window.blp:175
 msgid "Start"
 msgstr "Start"
 
 #. Translators: Label for the entry for the end timestamp.
-#: src/window.blp:172
+#: src/window.blp:192
 msgid "End"
 msgstr "Sfârşit"
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
 msgid "Trim videos quickly"
-msgstr "Decupați rapid videoclipurile"
+msgstr "Taie rapid video"
 
 #. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
 msgid "Cut;Movie;Film;Clip;"
-msgstr "Cut;Movie;Film;Clip;"
+msgstr "Cut;Movie;Film;Clip;Taie;Video;"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
+#. developer_name tag deprecated with Appstream 1.0
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:13
 msgid "Ivan Molodetskikh"
 msgstr "Ivan Molodetskikh"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:23
 msgid ""
 "Video Trimmer cuts out a fragment of a video given the start and end "
 "timestamps. The video is never re-encoded, so the process is very fast and "
 "does not reduce the video quality."
 msgstr ""
-"Video Trimmer decupează un fragment dintr-un videoclip având în vedere "
-"marcajele de timp de început și de sfârșit. Videoclipul nu este niciodată "
-"recodificat, așa că procesul este foarte rapid și nu reduce calitatea "
-"videoclipului."
+"Aplicația taie un fragment dintr-un video odată ce au fost stabilite "
+"începutul și sfârșitul. Videoul nu este niciodată recodificat, așa că "
+"procesul este foarte rapid și nu reduce calitatea videoului."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "Fereastra principala"
-
-#~ msgid "Press the Open button to open a video file."
-#~ msgstr "Apăsați butonul Deschide pentru a deschide un fișier video."
-
-#~ msgid "Open"
-#~ msgstr "Deschide"
-
-#~ msgid ""
-#~ "This release replaces the Done dialog with an in-app notification and "
-#~ "adds a command-line argument to specify the output file."
-#~ msgstr ""
-#~ "Această versiune înlocuiește dialogul Terminat cu o notificare în "
-#~ "aplicație și adaugă un argument de linie de comandă pentru a specifica "
-#~ "fișierul de ieșire."
-
-#~ msgid ""
-#~ "Added an --output or -o argument to specify the output video path. It "
-#~ "will be pre-filled in the save dialog."
-#~ msgstr ""
-#~ "S-a adăugat un argument --output sau -o pentru a specifica calea video de "
-#~ "ieșire. Acesta va fi pre-completat în dialogul de salvare."
-
-#~ msgid ""
-#~ "Added support for opening videos with DnD, although it doesn't work on "
-#~ "Flatpak unless Video Trimmer is given filesystem access."
-#~ msgstr ""
-#~ "S-a adăugat suport pentru deschiderea videoclipurilor cu DnD, deși nu "
-#~ "funcționează pe Flatpak decât dacă Video Trimmer are acces la sistemul de "
-#~ "fișiere."
-
-#~ msgid ""
-#~ "Replaced the Done dialog with an in-app notification to better follow the "
-#~ "GNOME HIG."
-#~ msgstr ""
-#~ "S-a înlocuit dialogul Terminat cu o notificare în aplicație pentru a "
-#~ "urmări mai bine GNOME HIG."
-
-#~ msgid ""
-#~ "This release fixes file filter not working on Flatpak and possibly a "
-#~ "related file chooser crash."
-#~ msgstr ""
-#~ "Această versiune remediază filtrul de fișiere care nu funcționează pe "
-#~ "Flatpak și, posibil, o blocare a selectorului de fișiere asociată."
-
-#~ msgid ""
-#~ "This release fixes crashes related to video preview errors, adds a Ctrl+Q "
-#~ "exit shortcut and a Dutch translation."
-#~ msgstr ""
-#~ "Această versiune remediază blocările legate de erorile de previzualizare "
-#~ "video, adaugă o comandă rapidă de ieșire Ctrl+Q și o traducere în "
-#~ "olandeză."
-
-#~ msgid "Added a Ctrl+Q shortcut to quit Video Trimmer."
-#~ msgstr "S-a adăugat o comandă rapidă Ctrl+Q pentru a părăsi Video Trimmer."
-
-#~ msgid "Added a Dutch translation."
-#~ msgstr "S-a adăugat o traducere în olandeză."
-
-#~ msgid "Made video preview display an error message when it fails to load."
-#~ msgstr ""
-#~ "Previzualizarea video făcută să afișeze un mesaj de eroare atunci când nu "
-#~ "se încarcă."
-
-#~ msgid ""
-#~ "Fixed a crash when the GL runtime is not installed (e.g. when installing "
-#~ "the Flathub package on clean Ubuntu 18.04 through Ubuntu Software)."
-#~ msgstr ""
-#~ "S-a remediat o blocare atunci când GL runtime nu este instalat (de "
-#~ "exemplu, când instalați pachetul Flathub pe Ubuntu curat 18.04 prin "
-#~ "Ubuntu Software)."
-
-#~ msgid "Fixed a crash when required GStreamer plugins are not installed."
-#~ msgstr ""
-#~ "S-a remediat o blocare când pluginurile GStreamer necesare nu sunt "
-#~ "instalate."
-
-#~ msgid "Fixed a crash on failing to change the playback position."
-#~ msgstr "S-a remediat o blocare la eșecul de a schimba poziția de redare."
-
-#~ msgid ""
-#~ "This release adds a video preview and a timeline where the target region "
-#~ "can be adjusted using the mouse."
-#~ msgstr ""
-#~ "Această versiune adaugă o previzualizare video și o cronologie în care "
-#~ "regiunea țintă poate fi ajustată folosind mouse-ul."
-
-#~ msgid "First release."
-#~ msgstr "Prima versiune."
-
-#~ msgid ""
-#~ "This release fixes an issue where not all streams from the input file "
-#~ "were copied into the output file."
-#~ msgstr ""
-#~ "Această versiune rezolvă o problemă în care nu toate fluxurile din "
-#~ "fișierul de intrare au fost copiate în fișierul de ieșire."
-
-#~ msgid ""
-#~ "All input file streams are now copied to the output file rather than just "
-#~ "a single of each type. Subtitles are now copied too rather than skipped."
-#~ msgstr ""
-#~ "Toate fluxurile de fișiere de intrare sunt acum copiate în fișierul de "
-#~ "ieșire, mai degrabă decât unul singur de fiecare tip. Acum, și "
-#~ "subtitrările sunt copiate și nu omite."
-
-#~ msgid "Added Swedish translation (thanks Åke Engelbrektson)."
-#~ msgstr "S-a adăugat traducerea suedeză (mulțumesc lui Åke Engelbrektson)."
-
-#~ msgid "Added Spanish translation (thanks Óscar Fernández Díaz)."
-#~ msgstr ""
-#~ "S-a adăugat traducerea spaniolă (mulțumesc lui Óscar Fernández Díaz)."
-
-#~ msgid "Made the commandline argument description translatable."
-#~ msgstr ""
-#~ "A făcut ca descrierea argumentului din linia de comandă să fie "
-#~ "traducabilă."
-
-#~ msgid "This release fixes an error when trimming GoPro recordings."
-#~ msgstr ""
-#~ "Această versiune remediază o eroare la tăierea înregistrărilor GoPro."
-
-#~ msgid ""
-#~ "Data streams are no longer copied to the output file as a workaround to "
-#~ "prevent errors on GoPro recordings."
-#~ msgstr ""
-#~ "Fluxurile de date nu mai sunt copiate în fișierul de ieșire ca o soluție "
-#~ "pentru a preveni erorile la înregistrările GoPro."
-
-#~ msgid "Updated Spanish translation."
-#~ msgstr "Traducere spaniolă actualizată."
-
-#~ msgid "Video Trimmer is now a GTK 4 application!"
-#~ msgstr "Video Trimmer este acum o aplicație GTK 4!"
-
-#~ msgid "The GTK 4 port hopefully fixes video-driver-related crashes."
-#~ msgstr ""
-#~ "Portul GTK 4, sperăm, remediază blocările legate de driverele video."
-
-#~ msgid "Improved window animations when opening videos."
-#~ msgstr ""
-#~ "Animații îmbunătățite ale ferestrelor la deschiderea videoclipurilor."
-
-#~ msgid "Added Croatian translation (thanks milotype)."
-#~ msgstr "S-a adăugat traducerea croată (mulțumesc milotype)."
-
-#~ msgid ""
-#~ "The default name for the output video is now \"input video name "
-#~ "(trimmed)\"."
-#~ msgstr ""
-#~ "Numele implicit pentru videoclipul de ieșire este acum „nume video de "
-#~ "intrare (decupat)”."
-
-#~ msgid ""
-#~ "The default folder for the output video is now the input video's folder. "
-#~ "Note: to make this work under Flatpak, you'll need to give Video Trimmer "
-#~ "the filesystem=host permission (for example, using Flatseal)."
-#~ msgstr ""
-#~ "Dosarul implicit pentru videoclipul de ieșire este acum folderul video de "
-#~ "intrare. Notă: pentru ca acest lucru să funcționeze sub Flatpak, va "
-#~ "trebui să acordați Video Trimmer permisiunea sistem de filesystem=host "
-#~ "(de exemplu, folosind Flatseal)."
-
-#~ msgid ""
-#~ "It's now possible to open a new Video Trimmer window from the new primary "
-#~ "menu."
-#~ msgstr ""
-#~ "Acum este posibil să deschideți o nouă fereastră Decupator Video din noul "
-#~ "meniu principal."
-
-#~ msgid ""
-#~ "The timestamp text fields are now arranged in a better way in RTL "
-#~ "languages."
-#~ msgstr ""
-#~ "Câmpurile de text cu marca temporală sunt acum aranjate într-un mod mai "
-#~ "bun în limbile RTL."
-
-#~ msgid ""
-#~ "Video Trimmer now uses libadwaita, which means a slightly updated visual "
-#~ "style (rounded window corners!)."
-#~ msgstr ""
-#~ "Decupator Video folosește acum libadwaita, ceea ce înseamnă un stil "
-#~ "vizual ușor actualizat (colțurile ferestrelor rotunjite!)."
-
-#~ msgid ""
-#~ "This release contains a few improvements and adds a number of "
-#~ "translations."
-#~ msgstr ""
-#~ "Această versiune conține câteva îmbunătățiri și adaugă o serie de "
-#~ "traduceri."
-
-#~ msgid ""
-#~ "Added a checkbox to remove the audio track to the output file selection "
-#~ "dialog."
-#~ msgstr ""
-#~ "S-a adăugat o casetă de selectare pentru a elimina pista audio din "
-#~ "dialogul de selectare a fișierului de ieșire."
-
-#~ msgid ""
-#~ "The video is now automatically paused when the trim button is pressed."
-#~ msgstr ""
-#~ "Videoclipul este acum întrerupt automat când este apăsat butonul de "
-#~ "tăiere."
-
-#~ msgid ""
-#~ "The .mp4 output file extension is no longer default when it cannot be "
-#~ "used (this affected videos from some Sony cameras)."
-#~ msgstr ""
-#~ "Extensia fișierului de ieșire .mp4 nu mai este implicită atunci când nu "
-#~ "poate fi utilizată (aceasta a afectat videoclipurile de la unele camere "
-#~ "Sony)."
-
-#~ msgid "Added a message when the opened file has no video track."
-#~ msgstr ""
-#~ "S-a adăugat un mesaj când fișierul deschis nu are nicio pistă video."
-
-#~ msgid ""
-#~ "Updated libadwaita, which means slightly newer version of the Adwaita "
-#~ "theme."
-#~ msgstr ""
-#~ "Libadwaita actualizată, ceea ce înseamnă o versiune puțin mai nouă a "
-#~ "temei Adwaita."
-
-#~ msgid "Fixed a crash after closing a window with a visible notification."
-#~ msgstr ""
-#~ "S-a remediat o blocare după închiderea unei ferestre cu o notificare "
-#~ "vizibilă."
-
-#~ msgid "Added German translation (thanks Johannes Hayeß)."
-#~ msgstr "S-a adăugat traducere în germană (mulțumesc Johannes Hayeß)."
-
-#~ msgid "Added Basque translation (thanks Sergio)."
-#~ msgstr "S-a adăugat traducerea bască (mulțumesc Sergio)."
-
-#~ msgid "Added Hungarian translation (thanks ovari)."
-#~ msgstr "S-a adăugat traducere în limba maghiară (mulțumesc ovari)."
-
-#~ msgid "Added Brazilian Portuguese translation (thanks Gustavo Costa)."
-#~ msgstr ""
-#~ "S-a adăugat traducerea portugheză braziliană (mulțumesc Gustavo Costa)."
-
-#~ msgid ""
-#~ "Specified input device and screen size recommendations to improve display "
-#~ "in the new GNOME Software."
-#~ msgstr ""
-#~ "Dispozitiv de intrare specificat și recomandări privind dimensiunea "
-#~ "ecranului pentru a îmbunătăți afișarea în noul software GNOME."
-
-#~ msgid "Added Italian translation (thanks Albano Battistella)."
-#~ msgstr "S-a adăugat traducere în italiană (mulțumesc Albano Battistella)."
-
-#~ msgid ""
-#~ "Added a checkbox for accurate trimming with re-encoding to the output "
-#~ "file selection dialog."
-#~ msgstr ""
-#~ "S-a adăugat o casetă de selectare pentru tăierea precisă cu recodificare "
-#~ "în dialogul de selectare a fișierului de ieșire."
-
-#~ msgid "Added Japanese translation (thanks Sibuya Kaz)."
-#~ msgstr "S-a adăugat traducerea japoneză (mulțumesc Sibuya Kaz)."
-
-#~ msgid "Added Polish translation (thanks Avery)."
-#~ msgstr "S-a adăugat traducerea poloneză (mulțumesc Avery)."
-
-#~ msgid "Added Portuguese translation (thanks Bio DevM)."
-#~ msgstr "S-a adăugat traducerea portugheză (mulțumesc Bio DevM)."
-
-#~ msgid ""
-#~ "This release adds an accurate trimming with re-encoding option and "
-#~ "refreshes the design a bit."
-#~ msgstr ""
-#~ "Această versiune adaugă o tăiere precisă cu opțiune de re-codificare și "
-#~ "reîmprospătează puțin designul."
-
-#~ msgid ""
-#~ "Updated the design to better match the newer version of the Adwaita theme."
-#~ msgstr ""
-#~ "S-a actualizat designul pentru a se potrivi mai bine cu versiunea mai "
-#~ "nouă a temei Adwaita."
-
-#~ msgid ""
-#~ "Added dark style and high contrast support and made dark style the "
-#~ "default."
-#~ msgstr ""
-#~ "S-a adăugat stil întunecat și suport de contrast ridicat și a făcut ca "
-#~ "stilul întunecat să fie implicit."
-
-#~ msgid ""
-#~ "Added a \"Show in Files\" button to the trimming done notification. Note: "
-#~ "due to a limitation this is currently disabled on some Flatpak installs, "
-#~ "but you can make it work by giving Video Trimmer the filesystem=host "
-#~ "permission (for example, using Flatseal)."
-#~ msgstr ""
-#~ "S-a adăugat un buton „Afișați în fișiere” la notificarea de tăiere "
-#~ "finalizată. Notă: din cauza unei limitări, acest lucru este dezactivat în "
-#~ "prezent pe unele instalări Flatpak, dar îl puteți face să funcționeze "
-#~ "acordând Video Trimmer permisiunea filesystem=host (de exemplu, folosind "
-#~ "Flatseal)."
-
-#~ msgid ""
-#~ "This release enables \"Show in Files\" for Flatpak and updates "
-#~ "translations."
-#~ msgstr ""
-#~ "Această versiune activează „Afișare în fișiere” pentru Flatpak și "
-#~ "actualizează traducerile."
-
-#~ msgid ""
-#~ "The \"Show in Files\" button has been enabled for all Flatpak installs."
-#~ msgstr ""
-#~ "Butonul „Afișare în fișiere” a fost activat pentru toate instalările "
-#~ "Flatpak."
-
-#~ msgid "Added Czech translation (thanks Jakub Mach)."
-#~ msgstr "S-a adăugat traducerea în cehă (mulțumesc Jakub Mach)."
-
-#~ msgid "Added French translation."
-#~ msgstr "S-a adăugat traducere franceză."
-
-#~ msgid "Added Galician translation (thanks Fran Diéguez)."
-#~ msgstr "S-a adăugat traducerea în limba galică (mulțumesc Fran Diéguez)."
-
-#~ msgid "Added Turkish translation."
-#~ msgstr "S-a adăugat traducere turcă."
-
-#~ msgid "Added Ukrainian translation (thanks Andrij Mizyk)."
-#~ msgstr "S-a adăugat traducerea ucraineană (mulțumesc Andrij Mizyk)."
-
-#~ msgid "Fixed crash when trying to open files from network locations."
-#~ msgstr ""
-#~ "S-a remediat blocarea la încercarea de a deschide fișiere din locații de "
-#~ "rețea."
-
-#~ msgid ""
-#~ "Updated to the GNOME 43 platform, which brings the ability to drag-and-"
-#~ "drop from Files on Flatpak and a refreshed About dialog."
-#~ msgstr ""
-#~ "Actualizat la platforma GNOME 43, care oferă posibilitatea de a glisa și "
-#~ "plasa din fișiere pe Flatpak și un dialog actualizat Despre."
-
-#~ msgid "Added Tamil translation (thanks K.B.Dharun Krishna)."
-#~ msgstr "S-a adăugat traducerea tamilă (mulțumesc K.B.Dharun Krishna)."
-
-#~ msgid ""
-#~ "This release fixes app closing on inaccessible files and updates it to "
-#~ "the GNOME 43 platform."
-#~ msgstr ""
-#~ "Această versiune remediază închiderea aplicației pe fișiere inaccesibile "
-#~ "și o actualizează pe platforma GNOME 43."
