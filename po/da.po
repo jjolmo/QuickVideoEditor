@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: video-trimmer master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2024-09-20 19:08+0000\n"
-"PO-Revision-Date: 2025-02-16 16:04+0100\n"
+"POT-Creation-Date: 2025-08-11 00:57+0000\n"
+"PO-Revision-Date: 2025-08-18 18:16+0200\n"
 "Last-Translator: Alan Mortensen <alanmortensen.am@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -30,8 +30,8 @@ msgstr "Outputfilsti"
 msgid "PATH"
 msgstr "STI"
 
-#: src/main.rs:40 src/window.blp:27
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: src/main.rs:40 src/window.blp:45
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:2
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
 msgstr "Videotrimmer"
@@ -43,28 +43,28 @@ msgstr "Generelt"
 
 #: src/shortcuts.blp:12
 msgctxt "shortcut window"
-msgid "New window"
-msgstr "Nyt vindue"
-
-#: src/shortcuts.blp:17
-msgctxt "shortcut window"
-msgid "Play / Pause"
-msgstr "Afspil / pause"
-
-#: src/shortcuts.blp:22
-msgctxt "shortcut window"
 msgid "Trim"
 msgstr "Trim"
 
-#: src/shortcuts.blp:27
+#: src/shortcuts.blp:17
 msgctxt "shortcut window"
 msgid "Set Start at current postion"
 msgstr "Angiv begyndelse ved nuværende placering"
 
-#: src/shortcuts.blp:32
+#: src/shortcuts.blp:22
 msgctxt "shortcut window"
 msgid "Set End at current position"
 msgstr "Angiv slutning ved nuværende placering"
+
+#: src/shortcuts.blp:27
+msgctxt "shortcut window"
+msgid "New window"
+msgstr "Nyt vindue"
+
+#: src/shortcuts.blp:32
+msgctxt "shortcut window"
+msgid "Close window"
+msgstr "Luk vindue"
 
 #: src/shortcuts.blp:37
 msgctxt "shortcut window"
@@ -73,13 +73,28 @@ msgstr "Tastaturgenveje"
 
 #: src/shortcuts.blp:42
 msgctxt "shortcut window"
-msgid "Close window"
-msgstr "Luk vindue"
-
-#: src/shortcuts.blp:47
-msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Afslut"
+
+#: src/shortcuts.blp:48
+msgctxt "shortcut window"
+msgid "Playback"
+msgstr "Afspilning"
+
+#: src/shortcuts.blp:51
+msgctxt "shortcut window"
+msgid "Play / Pause"
+msgstr "Afspil / pause"
+
+#: src/shortcuts.blp:56
+msgctxt "shortcut window"
+msgid "Step forward"
+msgstr "Gå frem"
+
+#: src/shortcuts.blp:61
+msgctxt "shortcut window"
+msgid "Step back"
+msgstr "Gå tilbage"
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:17
@@ -95,94 +110,83 @@ msgstr ""
 "Måske har filen kun et lydspor, eller det nødvendige videocodec mangler."
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:214
+#: src/window.rs:221
 msgid "Video files"
 msgstr "Videofiler"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:221
+#: src/window.rs:228
 msgid "Open video"
 msgstr "Åbn video"
 
 #. Translators: error dialog title.
-#: src/window.rs:232 src/window.rs:412 src/window.rs:661
+#: src/window.rs:239 src/window.rs:387 src/window.rs:630
 msgid "Error"
 msgstr "Fejl"
 
 #. Translators: error dialog text.
-#: src/window.rs:235 src/window.rs:415 src/window.rs:664
+#: src/window.rs:242 src/window.rs:390 src/window.rs:633
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "Videotrimmer kan kun arbejde med lokale filer. Vælg en anden fil."
 
 #. Translators: error dialog button.
-#: src/window.rs:240 src/window.rs:420 src/window.rs:603 src/window.rs:625
-#: src/window.rs:669
+#: src/window.rs:247 src/window.rs:395 src/window.rs:572 src/window.rs:594
+#: src/window.rs:638
 msgid "_OK"
 msgstr "_OK"
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:354
+#: src/window.rs:356
 msgid " (trimmed)"
 msgstr " (trimmet)"
 
-#. Translators: checkbox in output file selection dialog that strips audio from the
-#. video file.
-#: src/window.rs:381
-msgid "Remove audio"
-msgstr "Fjern lyd"
-
-#. Translators: checkbox in output file selection dialog.
-#: src/window.rs:386
-msgid "Accurate trimming, but slower and may lose quality"
-msgstr "Nøjagtig trimning men langsommere og med potentielt kvalitetstab"
-
 #. Translators: message dialog text.
-#: src/window.rs:513
+#: src/window.rs:482
 msgid "Trimming…"
 msgstr "Trimmer …"
 
 #. Translators: trimming dialog button.
-#: src/window.rs:516
+#: src/window.rs:485
 msgid "_Cancel"
 msgstr "_Annullér"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:536
+#: src/window.rs:505
 msgid "{} has been saved"
 msgstr "{} er blevet gemt"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:543
+#: src/window.rs:512
 msgid "Show in Files"
 msgstr "Vis i Filer"
 
 #. Translators: error dialog heading.
-#: src/window.rs:575
+#: src/window.rs:544
 msgid "Error trimming video"
 msgstr "Der opstod en fejl under trimning af videoen"
 
 #. Translators: error dialog text before the FFmpeg
 #. error output.
-#: src/window.rs:579
+#: src/window.rs:548
 msgid "Please attach the following information when reporting an issue."
 msgstr "Vedhæft følgende oplysninger, når du rapporterer et problem."
 
-#: src/window.rs:590
+#: src/window.rs:559
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Kunne ikke kommunikere med ffmpeg-underprocessen"
 
 #. Translators: error dialog text.
-#: src/window.rs:621
+#: src/window.rs:590
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Kunne ikke oprette ffmpeg-underprocessen"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:831
+#: src/window.rs:855
 msgid "translator-credits"
 msgstr ""
 "Alan Mortensen\n"
@@ -191,45 +195,45 @@ msgstr ""
 "Mere info: http://www.dansk-gruppen.dk"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:834
+#: src/window.rs:858
 msgid "Contribute Translations"
 msgstr "Bidrag med oversættelse"
 
-#: src/window.rs:842
+#. Translators: name of https://gitlab.gnome.org/YaLTeR/identity
+#: src/window.rs:864
+msgid "Identity"
+msgstr "Identitet"
+
+#. Translators: summary of https://gitlab.gnome.org/YaLTeR/identity
+#: src/window.rs:866
+msgid "Compare images and videos"
+msgstr "Sammenlign billeder og videoer"
+
+#: src/window.rs:873
+msgid "This release makes the trimming options more discoverable."
+msgstr "Denne udgave gør trimningsmulighederne nemmere at finde."
+
+#: src/window.rs:874
+msgid "Changed the versioning scheme to year.month."
+msgstr "Versionstalsystem ændret til år.måned."
+
+#: src/window.rs:875
 msgid ""
-"This release improves the behavior of shortcuts and does a minor visual "
-"refresh for GNOME 47."
+"Moved the accurate trimming and remove audio options from the save dialog to "
+"the main window."
 msgstr ""
-"Denne udgivelse forbedrer genvejes opførsel og indeholder en mindre visuel "
-"opdatering til GNOME 47."
+"Indstillingerne for Præcis trimning og Fjern lyd flyttet fra dialogen Gem "
+"til hovedvinduet."
 
-#: src/window.rs:843
-msgid "Added I and O shortcuts to set start and end trimming point."
-msgstr ""
-"Tilføjet I- og O-genveje til at indstille start- og slutpunkt for trimning."
+#: src/window.rs:876
+msgid "Added , and . shortcuts for short video stepping."
+msgstr "Tilføjet ,- og .-genveje til små skridt frem og tilbage."
 
-#: src/window.rs:844
-msgid ""
-"Made all single-letter shortcuts work even when the time input fields are "
-"focused."
-msgstr ""
-"Fået alle genveje med ét bogstav til at virke, selv når tidsinputfelterne er "
-"i fokus."
+#: src/window.rs:877
+msgid "Updated to the GNOME 48 platform."
+msgstr "Opdateret til GNOME 48-platformen."
 
-#: src/window.rs:845
-msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
-msgstr ""
-"Ændret genvejen Ctrl+mellemrum for afspilning/pause til bare mellemrum."
-
-#: src/window.rs:846
-msgid "The video now starts paused after opening."
-msgstr "Videoen starter nu på pause efter åbning."
-
-#: src/window.rs:847
-msgid "Updated to the GNOME 47 platform."
-msgstr "Opdateret til GNOME 47-platformen."
-
-#: src/window.rs:848
+#: src/window.rs:878
 msgid "Updated translations."
 msgstr "Opdaterede oversættelser."
 
@@ -248,48 +252,63 @@ msgstr "_Tastaturgenveje"
 msgid "_About Video Trimmer"
 msgstr "_Om Videotrimmer"
 
+#. Translators: Options menu entry title that enables accurate trimming with re-encoding.
+#: src/window.blp:32
+msgid "Precise Trim"
+msgstr "Præcis trimning"
+
+#. Translators: Options menu entry subtitle that enables accurate trimming with re-encoding.
+#: src/window.blp:34
+msgid "Slower and may lose quality due to re-encoding"
+msgstr "Langsommere og kan medføre kvalitetstab pga. genkodning"
+
+#. Translators: Options menu entry that strips audio from the video file.
+#: src/window.blp:39
+msgid "Remove Audio"
+msgstr "Fjern lyd"
+
 #. Translators: Main menu button tooltip.
-#: src/window.blp:50 src/window.blp:106
+#: src/window.blp:68 src/window.blp:124
 msgid "Main Menu"
 msgstr "Hovedmenu"
 
 #. Translators: Title text on the window when no files are open.
-#: src/window.blp:59
+#: src/window.blp:77
 msgid "Trim Videos"
 msgstr "Trim videoer"
 
 #. Translators: Description text on the window when no files are open.
-#: src/window.blp:62
+#: src/window.blp:80
 msgid "Drag and drop a video here"
 msgstr "Træk og slip en video her"
 
 #. Translators: Open button label when no files are open.
-#: src/window.blp:66
+#: src/window.blp:84
 msgid "Open Video…"
 msgstr "Åbn video …"
 
 #. Translators: Open button tooltip.
-#: src/window.blp:68
+#: src/window.blp:86
 msgid "Select a Video"
 msgstr "Vælg en video"
 
 #. Translators: Trim button.
-#: src/window.blp:92
+#: src/window.blp:110
 msgid "Trim"
 msgstr "Trim"
 
 #. Translators: Trim button tooltip.
-#: src/window.blp:95
+#: src/window.blp:113
 msgid "Trim Video"
 msgstr "Trim video"
 
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:134
+#: src/window.blp:152
 msgid "Video Preview Failed to Load"
 msgstr "Videoforhåndsvisning kunne ikke indlæses"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:137
+#: src/window.blp:155
 msgid ""
 "Please enter the start and end timestamps manually.\n"
 "\n"
@@ -302,22 +321,22 @@ msgstr ""
 "åbning af filer ved træk-og-slip muligvis ikke fungerer."
 
 #. Translators: Label for the entry for the start timestamp.
-#: src/window.blp:157
+#: src/window.blp:175
 msgid "Start"
 msgstr "Start"
 
 #. Translators: Label for the entry for the end timestamp.
-#: src/window.blp:174
+#: src/window.blp:192
 msgid "End"
 msgstr "Slut"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
 msgid "Trim videos quickly"
 msgstr "Trim videoer hurtigt"
 
 #. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:5
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Klip;Film;"
 
@@ -339,6 +358,30 @@ msgstr ""
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "Hovedvindue"
+
+#~ msgid "Accurate trimming, but slower and may lose quality"
+#~ msgstr "Nøjagtig trimning men langsommere og med potentielt kvalitetstab"
+
+#~ msgid ""
+#~ "This release improves the behavior of shortcuts and does a minor visual "
+#~ "refresh for GNOME 47."
+#~ msgstr ""
+#~ "Denne udgivelse forbedrer genvejes opførsel og indeholder en mindre "
+#~ "visuel opdatering til GNOME 47."
+
+#~ msgid ""
+#~ "Made all single-letter shortcuts work even when the time input fields are "
+#~ "focused."
+#~ msgstr ""
+#~ "Fået alle genveje med ét bogstav til at virke, selv når tidsinputfelterne "
+#~ "er i fokus."
+
+#~ msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
+#~ msgstr ""
+#~ "Ændret genvejen Ctrl+mellemrum for afspilning/pause til bare mellemrum."
+
+#~ msgid "The video now starts paused after opening."
+#~ msgstr "Videoen starter nu på pause efter åbning."
 
 #~ msgid "Tweaked the visual style for the GNOME 45 release."
 #~ msgstr "Den visuelle stil er blevet tilpasset GNOME 45-udgivelsen."
