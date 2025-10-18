@@ -8,9 +8,9 @@ msgstr ""
 "Project-Id-Version: video-trimmer master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2024-01-02 08:55+0000\n"
+"POT-Creation-Date: 2024-09-20 19:08+0000\n"
 "PO-Revision-Date: 2024-01-02 08:55+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Last-Translator: Giannis Antypas <gianni.antypas@gmail.com>\n"
 "Language-Team: Greek <gnome-el-list@gnome.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
@@ -91,70 +91,100 @@ msgid ""
 "Maybe the file only has an audio track, or maybe the necessary video codec "
 "is missing."
 msgstr ""
-"Ίσως το αρχείο έχει μόνο κομμάτι ήχου, ή ίσως λείπει ο απαραίτητος κωδικοποιητής βίντεο."
+"Ίσως το αρχείο έχει μόνο κομμάτι ήχου, ή ίσως λείπει ο απαραίτητος "
+"κωδικοποιητής βίντεο."
+
+#. Translators: file chooser file filter name.
+#: src/window.rs:214
+msgid "Video files"
+msgstr "Αρχεία βίντεο"
+
+#. Translators: file chooser dialog title.
+#: src/window.rs:221
+msgid "Open video"
+msgstr "Άνοιγμα βίντεο"
+
+#. Translators: error dialog title.
+#: src/window.rs:232 src/window.rs:412 src/window.rs:661
+msgid "Error"
+msgstr "Σφάλμα"
+
+#. Translators: error dialog text.
+#: src/window.rs:235 src/window.rs:415 src/window.rs:664
+msgid ""
+"Video Trimmer can only operate on local files. Please choose another file."
+msgstr ""
+"Το πρόγραμμα Επεξεργασίας Βίντεο μπορεί να λειτουργήσει μόνο σε τοπικά "
+"αρχεία. Παρακαλούμε επιλέξτε ένα άλλο αρχείο."
+
+#. Translators: error dialog button.
+#: src/window.rs:240 src/window.rs:420 src/window.rs:603 src/window.rs:625
+#: src/window.rs:669
+msgid "_OK"
+msgstr "_Εντάξει"
 
 #. Translators: this is appended to the output video file name.
 #. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:300
+#: src/window.rs:354
 msgid " (trimmed)"
 msgstr " (περικομμένο)"
 
 #. Translators: checkbox in output file selection dialog that strips audio from the
 #. video file.
-#: src/window.rs:325
+#: src/window.rs:381
 msgid "Remove audio"
 msgstr "Αφαίρεση ήχου"
 
 #. Translators: checkbox in output file selection dialog.
-#: src/window.rs:330
+#: src/window.rs:386
 msgid "Accurate trimming, but slower and may lose quality"
 msgstr "Ακριβής περικοπή, αλλά πιο αργή και μπορεί να χάσει ποιότητα"
 
-#. Translators: error dialog title.
-#: src/window.rs:349 src/window.rs:594 src/window.rs:1010
-msgid "Error"
-msgstr "Σφάλμα"
-
-#. Translators: error dialog text.
-#: src/window.rs:352 src/window.rs:597 src/window.rs:1013
-msgid ""
-"Video Trimmer can only operate on local files. Please choose another file."
-msgstr "Το πρόγραμμα Επεξεργασίας Βίντεο μπορεί να λειτουργήσει μόνο σε τοπικά αρχεία. Παρακαλούμε επιλέξτε ένα άλλο αρχείο."
-
 #. Translators: message dialog text.
-#: src/window.rs:454
+#: src/window.rs:513
 msgid "Trimming…"
 msgstr "Γίνεται Περικοπή…"
 
+#. Translators: trimming dialog button.
+#: src/window.rs:516
+msgid "_Cancel"
+msgstr "_Ακύρωση"
+
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:478
+#: src/window.rs:536
 msgid "{} has been saved"
 msgstr "Το {} έχει αποθηκευτεί"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:485
+#: src/window.rs:543
 msgid "Show in Files"
 msgstr "Εμφάνιση στα Αρχεία"
 
-#. Translators: error dialog text.
-#: src/window.rs:506
+#. Translators: error dialog heading.
+#: src/window.rs:575
 msgid "Error trimming video"
 msgstr "Σφάλμα κατά την περικοπή του βίντεο"
 
-#: src/window.rs:515
+#. Translators: error dialog text before the FFmpeg
+#. error output.
+#: src/window.rs:579
+msgid "Please attach the following information when reporting an issue."
+msgstr "Παρακαλούμε επισυνάψτε την ακόλουθη πληροφορία όταν αναφέρετε ένα ζήτημα."
+
+#: src/window.rs:590
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Δεν ήταν δυνατή η επικοινωνία με τη διεργασία-υποπρόγραμμα ffmpeg"
 
 #. Translators: error dialog text.
-#: src/window.rs:556
+#: src/window.rs:621
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Αδυναμία δημιουργίας της διεργασίας-υποπρογράμματος ffmpeg"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:776
+#: src/window.rs:831
 msgid "translator-credits"
 msgstr ""
 "Ελληνική μεταφραστική ομάδα GNOME\n"
@@ -164,39 +194,46 @@ msgstr ""
 "http://gnome.gr/"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:779
+#: src/window.rs:834
 msgid "Contribute Translations"
 msgstr "Συνεισφορά Μεταφράσεων"
 
-#: src/window.rs:787
-msgid "This release contains a minor visual refresh for GNOME 45."
-msgstr "Αυτή η έκδοση περιλαμβάνει μια μικρή ανανέωση της εμφάνισης για το GNOME 45."
+#: src/window.rs:842
+#| msgid "This release contains a minor visual refresh for GNOME 45."
+msgid ""
+"This release improves the behavior of shortcuts and does a minor visual "
+"refresh for GNOME 47."
+msgstr ""
+"Αυτή η έκδοση βελτιώνει τη συμπεριφορά των συντομεύσεων και κάνει μια μικρή "
+"ανανέωση της εμφάνισης για το GNOME 47."
 
-#: src/window.rs:788
-msgid "Tweaked the visual style for the GNOME 45 release."
-msgstr "Διορθώθηκε το οπτικό στυλ για την έκδοση GNOME 45."
+#: src/window.rs:843
+msgid "Added I and O shortcuts to set start and end trimming point."
+msgstr "Προστέθηκαν συντομεύσεις I και O για ορισμό σημείων περικοπής έναρξης και τέλους."
 
-#: src/window.rs:789
-msgid "Fixed app crashing when ffprobe is missing."
-msgstr "Διορθώθηκε η συντριβή της εφαρμογής όταν λείπει το ffprobe."
+#: src/window.rs:844
+msgid ""
+"Made all single-letter shortcuts work even when the time input fields are "
+"focused."
+msgstr "Έγιναν λειτουργικές όλες οι συντομεύσεις ενός γράμματος ακόμα και όταν"
+"είναι εστιασμένα τα πεδία εισαγωγής χρόνου."
 
-#: src/window.rs:790
-msgid "Updated to the GNOME 45 platform."
-msgstr "Ενημερώθηκε στην πλατφόρμα GNOME 45."
+#: src/window.rs:845
+msgid "Changed the play/pause Ctrl+Space shortcut to just Space."
+msgstr "Η συντόμευση αναπαραγωγή/παύση Ctrl+Space άλλαξε σε Space σκέτο."
 
-#: src/window.rs:791
+#: src/window.rs:846
+msgid "The video now starts paused after opening."
+msgstr "Το βίντεο τώρα ξεκινά σε παύση μετά το άνοιγμα."
+
+#: src/window.rs:847
+#| msgid "Updated to the GNOME 45 platform."
+msgid "Updated to the GNOME 47 platform."
+msgstr "Ενημερώθηκε στην πλατφόρμα GNOME 47."
+
+#: src/window.rs:848
 msgid "Updated translations."
 msgstr "Ενημερώθηκαν οι μεταφράσεις."
-
-#. Translators: file chooser file filter name.
-#: src/window.rs:979
-msgid "Video files"
-msgstr "Αρχεία βίντεο"
-
-#. Translators: file chooser dialog title.
-#: src/window.rs:988
-msgid "Open video"
-msgstr "Άνοιγμα βίντεο"
 
 #. Translators: Primary menu entry that opens a new window.
 #: src/window.blp:8
@@ -211,7 +248,7 @@ msgstr "_Συντομεύσεις Πληκτρολογίου"
 #. Translators: Primary menu entry that opens the About dialog.
 #: src/window.blp:20
 msgid "_About Video Trimmer"
-msgstr "_Περί με τον Επεξεργαστή Βίντεο"
+msgstr "_Περί του Επεξεργαστή Βίντεο"
 
 #. Translators: Main menu button tooltip.
 #: src/window.blp:50 src/window.blp:106
@@ -249,12 +286,12 @@ msgid "Trim Video"
 msgstr "Περικοπή Βίντεο"
 
 #. Translators: Title that is shown upon video preview loading error.
-#: src/window.blp:132
+#: src/window.blp:134
 msgid "Video Preview Failed to Load"
 msgstr "Αποτυχία φόρτωσης προεπισκόπησης βίντεο"
 
 #. Translators: Description that is shown upon video preview loading error.
-#: src/window.blp:135
+#: src/window.blp:137
 msgid ""
 "Please enter the start and end timestamps manually.\n"
 "\n"
@@ -263,16 +300,16 @@ msgid ""
 msgstr ""
 "Εισαγάγετε χειροκίνητα τα χρονικά σημεία έναρξης και λήξης.\n"
 "\n"
-"Αν εκτελείτε τον Επεξεργαστή Βίντεο υπό το Flatpak, σημειώστε ότι το "
-"άνοιγμα αρχείων με μεταφορά και απόθεση ενδέχεται να μην λειτουργεί."
+"Αν εκτελείτε τον Επεξεργαστή Βίντεο υπό το Flatpak, σημειώστε ότι το άνοιγμα "
+"αρχείων με μεταφορά και απόθεση ενδέχεται να μην λειτουργεί."
 
 #. Translators: Label for the entry for the start timestamp.
-#: src/window.blp:155
+#: src/window.blp:157
 msgid "Start"
 msgstr "Έναρξη"
 
 #. Translators: Label for the entry for the end timestamp.
-#: src/window.blp:172
+#: src/window.blp:174
 msgid "End"
 msgstr "Λήξη"
 
@@ -286,21 +323,27 @@ msgstr "Περικοπή βίντεο γρήγορα"
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Αποκοπή;Ταινία;Ταινία;Κλιπ;"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:12
+#. developer_name tag deprecated with Appstream 1.0
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:13
 msgid "Ivan Molodetskikh"
 msgstr "Ivan Molodetskikh"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:18
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:23
 msgid ""
 "Video Trimmer cuts out a fragment of a video given the start and end "
 "timestamps. The video is never re-encoded, so the process is very fast and "
 "does not reduce the video quality."
 msgstr ""
-"Ο Επεξεργαστής Βίντεο αφαιρεί ένα απόσπασμα ενός βίντεο δεδομένων των χρονικών "
-"σημείων έναρξης και λήξης. Το βίντεο δεν επανακωδικοποιείται ποτέ, έτσι η "
-"διαδικασία είναι πολύ γρήγορη και δεν μειώνει την ποιότητα του βίντεο."
+"Ο Επεξεργαστής Βίντεο αφαιρεί ένα απόσπασμα ενός βίντεο δεδομένων των "
+"χρονικών σημείων έναρξης και λήξης. Το βίντεο δεν επανακωδικοποιείται ποτέ, "
+"έτσι η διαδικασία είναι πολύ γρήγορη και δεν μειώνει την ποιότητα του βίντεο."
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:25
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "Κυρίως παράθυρο"
 
+#~ msgid "Tweaked the visual style for the GNOME 45 release."
+#~ msgstr "Διορθώθηκε το οπτικό στυλ για την έκδοση GNOME 45."
+
+#~ msgid "Fixed app crashing when ffprobe is missing."
+#~ msgstr "Διορθώθηκε η συντριβή της εφαρμογής όταν λείπει το ffprobe."
