@@ -10,7 +10,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
 "POT-Creation-Date: 2025-12-10 23:13+0000\n"
-"PO-Revision-Date: 2025-12-25 19:34-0300\n"
+"PO-Revision-Date: 2025-12-25 20:59-0300\n"
 "Last-Translator: Emilio Sepúlveda <emism.translations@gmail.com>\n"
 "Language-Team: Interlingua <softinterlingua@gmail.com>\n"
 "Language: ia\n"
@@ -96,12 +96,12 @@ msgstr "Reproducer / Pausar"
 #: src/shortcuts.blp:56
 msgctxt "shortcut window"
 msgid "Step forward"
-msgstr ""
+msgstr "Passo avante"
 
 #: src/shortcuts.blp:61
 msgctxt "shortcut window"
 msgid "Step back"
-msgstr ""
+msgstr "Passo retro"
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:17
@@ -114,6 +114,8 @@ msgid ""
 "Maybe the file only has an audio track, or maybe the necessary video codec "
 "is missing."
 msgstr ""
+"Forsan le file solmene ha un pista de audio, o forsan le codec de video "
+"necessari es perdite."
 
 #. Translators: file chooser file filter name.
 #: src/window.rs:221
@@ -181,11 +183,11 @@ msgstr "Error in tonder le video"
 #. error output.
 #: src/window.rs:548
 msgid "Please attach the following information when reporting an issue."
-msgstr ""
+msgstr "Per favor annexa le sequente information al signalar un incidente."
 
 #: src/window.rs:559
 msgid "Could not communicate with the ffmpeg subprocess"
-msgstr ""
+msgstr "Non poteva communicar con le subprocesso ffmpeg"
 
 #. Translators: error dialog text.
 #: src/window.rs:590
@@ -195,7 +197,7 @@ msgstr "Non poteva crear le subprocesso ffmpeg"
 #. Translators: shown in the About dialog, put your name here.
 #: src/window.rs:855
 msgid "translator-credits"
-msgstr ""
+msgstr "Emilio Sepúlveda <emism.translations@gmail.com>"
 
 #. Translators: link title in the About dialog.
 #: src/window.rs:858
@@ -214,7 +216,7 @@ msgstr "Compara imagines e videos"
 
 #: src/window.rs:873
 msgid "This release makes the trimming options more discoverable."
-msgstr ""
+msgstr "Iste version face le optiones de tonditura plus discoperabile."
 
 #: src/window.rs:874
 msgid "Changed the versioning scheme to year.month."
@@ -225,10 +227,12 @@ msgid ""
 "Moved the accurate trimming and remove audio options from the save dialog to "
 "the main window."
 msgstr ""
+"Movite le tonditura exacte e remove le optiones de audio ab le dialogo "
+"salvar a le fenestra principal"
 
 #: src/window.rs:876
 msgid "Added , and . shortcuts for short video stepping."
-msgstr ""
+msgstr "Addite le vias breve , e . pro passos curte de video."
 
 #: src/window.rs:877
 msgid "Updated to the GNOME 48 platform."
@@ -256,7 +260,7 @@ msgstr "_A proposito de Tonditura de video"
 #. Translators: Options menu entry title that enables accurate trimming with re-encoding.
 #: src/window.blp:32
 msgid "Precise Trim"
-msgstr ""
+msgstr "Tonditura precise"
 
 #. Translators: Options menu entry subtitle that enables accurate trimming with re-encoding.
 #: src/window.blp:34
@@ -276,7 +280,7 @@ msgstr "Menu principal"
 #. Translators: Title text on the window when no files are open.
 #: src/window.blp:77
 msgid "Trim Videos"
-msgstr ""
+msgstr "Tonder videos"
 
 #. Translators: Description text on the window when no files are open.
 #: src/window.blp:80
@@ -296,12 +300,12 @@ msgstr "Selige un video"
 #. Translators: Trim button.
 #: src/window.blp:110
 msgid "Trim"
-msgstr ""
+msgstr "Tonder"
 
 #. Translators: Trim button tooltip.
 #: src/window.blp:113
 msgid "Trim Video"
-msgstr ""
+msgstr "Tonder video"
 
 #. Translators: Title that is shown upon video preview loading error.
 #: src/window.blp:152
@@ -316,6 +320,10 @@ msgid ""
 "If you're running Video Trimmer under Flatpak, note that opening files by "
 "drag-and-drop may not work."
 msgstr ""
+"Insere le marcas de tempore de initio e fin manualmente\n"
+"\n"
+"Si tu executa Tonditura de video sur Flatpak, nota que le apertura de files "
+"per traher e deponer poterea non functionar."
 
 #. Translators: Label for the entry for the start timestamp.
 #: src/window.blp:175
@@ -335,7 +343,7 @@ msgstr "Tonde videos rapidemente"
 #. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:5
 msgid "Cut;Movie;Film;Clip;"
-msgstr ""
+msgstr "Taliar;Movie;Cinema;Clip;"
 
 #. developer_name tag deprecated with Appstream 1.0
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:13
@@ -348,6 +356,9 @@ msgid ""
 "timestamps. The video is never re-encoded, so the process is very fast and "
 "does not reduce the video quality."
 msgstr ""
+"Tonditura de video talia un fragmento de un video date le marcas de tempore "
+"de initio e fin. Le video nunquam es recodificate, assi le processo es multo "
+"rapide e non reduce le qualitate del video."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
