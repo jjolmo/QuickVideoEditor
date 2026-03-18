@@ -6,16 +6,6 @@
     "sdk-extensions" : [
         "org.freedesktop.Sdk.Extension.rust-stable"
     ],
-    "add-extensions" : {
-        "org.freedesktop.Platform.ffmpeg-full" : {
-            "directory" : "lib/ffmpeg",
-            "version" : "24.08",
-            "add-ld-path" : "."
-        }
-    },
-    "cleanup-commands" : [
-        "mkdir -p ${FLATPAK_DEST}/lib/ffmpeg"
-    ],
     "command" : "video-trimmer",
     "tags" : [
         "nightly"
@@ -40,18 +30,6 @@
         }
     },
     "modules" : [
-        {
-            "name": "blueprint",
-            "buildsystem": "meson",
-            "cleanup": ["*"],
-            "sources": [
-                {
-                    "type": "git",
-                    "url": "https://gitlab.gnome.org/jwestman/blueprint-compiler.git",
-                    "commit": "04ef0944db56ab01307a29aaa7303df6067cb3c0"
-                }
-            ]
-        },
         {
             "name" : "video-trimmer",
             "buildsystem" : "meson",
