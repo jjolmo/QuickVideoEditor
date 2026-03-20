@@ -35,6 +35,18 @@
 		<color type="primary" scheme_preference="dark">#1c3f68</color>
 	</branding>
 	<releases>
+		<release version="26.03" date="2026-03-20">
+			<description>
+				<p>This release improves the default output file naming and adds command-line options.</p>
+				<ul>
+					<li>The default output filename now includes start and end timestamps.</li>
+					<li>Added command-line flags for start and end timestamps, precise trimming, and removing audio.</li>
+					<li>Increased the default window size to make the video 960×540.</li>
+					<li>Updated to the GNOME 50 platform.</li>
+					<li>Updated translations.</li>
+				</ul>
+			</description>
+		</release>
 		<release version="25.03" date="2025-03-30">
 			<description>
 				<p>This release makes the trimming options more discoverable.</p>

@@ -917,11 +917,11 @@ Please choose another file.",
                 // DL doesn't extract release notes from metainfo, so let's help it out with the
                 // ones shown in the dialog.
                 let gettext = |_| ();
-                gettext("This release makes the trimming options more discoverable.");
-                gettext("Changed the versioning scheme to year.month.");
-                gettext("Moved the accurate trimming and remove audio options from the save dialog to the main window.");
-                gettext("Added , and . shortcuts for short video stepping.");
-                gettext("Updated to the GNOME 48 platform.");
+                gettext("This release improves the default output file naming and adds command-line options.");
+                gettext("The default output filename now includes start and end timestamps.");
+                gettext("Added command-line flags for start and end timestamps, precise trimming, and removing audio.");
+                gettext("Increased the default window size to make the video 960×540.");
+                gettext("Updated to the GNOME 50 platform.");
                 gettext("Updated translations.");
             });
 
