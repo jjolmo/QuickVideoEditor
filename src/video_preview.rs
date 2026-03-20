@@ -286,7 +286,8 @@ mod imp {
 
 glib::wrapper! {
     pub struct VtVideoPreview(ObjectSubclass<imp::VtVideoPreview>)
-        @extends gtk::Widget;
+        @extends gtk::Widget,
+        @implements gtk::Accessible, gtk::Buildable, gtk::ConstraintTarget;
 }
 
 impl VtVideoPreview {
