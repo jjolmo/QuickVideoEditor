@@ -9,12 +9,19 @@ mod imp {
     use gettextrs::*;
     use glib::{debug, prelude::*};
     use gtk::prelude::*;
-    use std::{cell::Cell, ops::ControlFlow};
+    use std::{
+        cell::{Cell, RefCell},
+        ops::ControlFlow,
+    };
 
     #[derive(Default)]
     pub struct VtApplication {
         input_file: Cell<Option<gio::File>>,
         output_file: Cell<Option<gio::File>>,
+        start: RefCell<Option<String>>,
+        end: RefCell<Option<String>>,
+        precise: Cell<bool>,
+        remove_audio: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -42,12 +49,66 @@ mod imp {
                 // Translators: --output commandline option arg description.
                 Some(&gettext("PATH")),
             );
+
+            obj.add_main_option(
+                "start",
+                glib::Char::from(b's'),
+                glib::OptionFlags::NONE,
+                glib::OptionArg::String,
+                // Translators: --start commandline option description.
+                &gettext("Start timestamp"),
+                // Translators: --start commandline option arg description.
+                Some(&gettext("TIMESTAMP")),
+            );
+
+            obj.add_main_option(
+                "end",
+                glib::Char::from(b'e'),
+                glib::OptionFlags::NONE,
+                glib::OptionArg::String,
+                // Translators: --end commandline option description.
+                &gettext("End timestamp"),
+                Some(&gettext("TIMESTAMP")),
+            );
+
+            obj.add_main_option(
+                "precise",
+                glib::Char::from(b'p'),
+                glib::OptionFlags::NONE,
+                glib::OptionArg::None,
+                // Translators: --precise commandline option description.
+                &gettext("Precise trim (re-encode)"),
+                None,
+            );
+
+            obj.add_main_option(
+                "remove-audio",
+                glib::Char::from(b'r'),
+                glib::OptionFlags::NONE,
+                glib::OptionArg::None,
+                // Translators: --remove-audio commandline option description.
+                &gettext("Remove audio"),
+                None,
+            );
         }
     }
 
     impl ApplicationImpl for VtApplication {
         fn activate(&self) {
             let window = VtWindow::new(self.obj().upcast_ref(), self.output_file.take());
+
+            if let Some(start) = self.start.take() {
+                window.set_start(&start);
+            }
+            if let Some(end) = self.end.take() {
+                window.set_end(&end);
+            }
+            if self.precise.get() {
+                window.set_precise(true);
+            }
+            if self.remove_audio.get() {
+                window.set_remove_audio(true);
+            }
 
             if let Some(file) = self.input_file.take() {
                 window.open(file);
@@ -122,6 +183,18 @@ mod imp {
                     .and_then(|x| x.get::<String>())
                     .map(gio::File::for_path),
             );
+
+            *self.start.borrow_mut() = options
+                .lookup_value("start", None)
+                .and_then(|x| x.get::<String>());
+
+            *self.end.borrow_mut() = options
+                .lookup_value("end", None)
+                .and_then(|x| x.get::<String>());
+
+            self.precise.set(options.contains("precise"));
+
+            self.remove_audio.set(options.contains("remove-audio"));
 
             self.parent_handle_local_options(options)
         }

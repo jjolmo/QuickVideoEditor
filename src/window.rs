@@ -129,6 +129,22 @@ mod imp {
             self.video_preview.set_is_playing(value)
         }
 
+        pub fn set_start(&self, timestamp: &str) {
+            self.entry_start.set_text(timestamp);
+        }
+
+        pub fn set_end(&self, timestamp: &str) {
+            self.entry_end.set_text(timestamp);
+        }
+
+        pub fn set_precise(&self, value: bool) {
+            self.switch_row_reencode.set_active(value);
+        }
+
+        pub fn set_remove_audio(&self, value: bool) {
+            self.switch_row_remove_audio.set_active(value);
+        }
+
         fn on_entry_changed(&self) {
             let start_end = validate_entries(&self.entry_start, &self.entry_end);
             self.video_preview.set_start_end(start_end);
@@ -136,24 +152,40 @@ mod imp {
         }
 
         fn on_got_duration(&self, duration: i64) {
-            // If the user hasn't started typing in the timestamp entries, fill them with default
-            // values.
-            if !self.entry_start.text().is_empty() || !self.entry_end.text().is_empty() {
+            let has_start = !self.entry_start.text().is_empty();
+            let has_end = !self.entry_end.text().is_empty();
+
+            if has_start && has_end {
                 return;
             }
 
+            // The start and end can be pre-filled, either via command-line arguments
+            // or if the user types something before we get duration. If the entries are both empty,
+            // default to 1/3 and 2/3 of the duration.
             let duration = duration as f64;
             let start = duration / 3.;
             let end = start * 2.;
 
-            let start = start as u64;
-            let end = (end as u64).max(start + 1);
+            let mut start = start as u64;
+            let mut end = (end as u64).max(start + 1);
 
-            let start = Duration::from_micros(start);
-            let end = Duration::from_micros(end);
+            if !has_start {
+                // If the other entry was pre-filled, default to the start of the video.
+                if has_end {
+                    start = 0;
+                }
+                self.entry_start
+                    .set_text(&time_to_entry_text(Duration::from_micros(start)));
+            }
 
-            self.entry_start.set_text(&time_to_entry_text(start));
-            self.entry_end.set_text(&time_to_entry_text(end));
+            if !has_end {
+                // If the other entry was pre-filled, default to the end of the video.
+                if has_start {
+                    end = duration as u64;
+                }
+                self.entry_end
+                    .set_text(&time_to_entry_text(Duration::from_micros(end)));
+            }
 
             // Select the text so the behavior of typing doesn't change compared to if we hadn't set
             // the text.
@@ -1171,6 +1203,22 @@ impl VtWindow {
             .property("application", app)
             .property("output-file", &output_file)
             .build()
+    }
+
+    pub fn set_start(&self, timestamp: &str) {
+        self.imp().set_start(timestamp);
+    }
+
+    pub fn set_end(&self, timestamp: &str) {
+        self.imp().set_end(timestamp);
+    }
+
+    pub fn set_precise(&self, value: bool) {
+        self.imp().set_precise(value);
+    }
+
+    pub fn set_remove_audio(&self, value: bool) {
+        self.imp().set_remove_audio(value);
     }
 
     pub fn open(&self, file: gio::File) {
