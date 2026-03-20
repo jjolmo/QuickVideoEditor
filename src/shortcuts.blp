@@ -1,66 +1,64 @@
 using Gtk 4.0;
+using Adw 1;
 
-ShortcutsWindow help_overlay {
-  ShortcutsSection {
-    section-name: "shortcuts";
-    max-height: 10;
+Adw.ShortcutsDialog shortcuts_dialog {
+  Adw.ShortcutsSection {
+    title: C_("shortcut window", "General");
 
-    ShortcutsGroup {
-      title: C_("shortcut window", "General");
-
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Trim");
-        action-name: "win.trim";
-      }
-
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Set Start at current postion");
-        action-name: "win.set-start-as-position";
-      }
-
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Set End at current position");
-        action-name: "win.set-end-as-position";
-      }
-
-      ShortcutsShortcut {
-        title: C_("shortcut window", "New window");
-        action-name: "app.new-window";
-      }
-
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Close window");
-        action-name: "win.close";
-      }
-
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Keyboard shortcuts");
-        action-name: "win.show-help-overlay";
-      }
-
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Quit");
-        action-name: "app.quit";
-      }
+    Adw.ShortcutsItem {
+      title: C_("shortcut window", "Trim");
+      action-name: "win.trim";
     }
 
-    ShortcutsGroup {
-      title: C_("shortcut window", "Playback");
+    Adw.ShortcutsItem {
+      title: C_("shortcut window", "Set Start at current postion");
+      action-name: "win.set-start-as-position";
+    }
 
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Play / Pause");
-        action-name: "win.play-pause";
-      }
+    Adw.ShortcutsItem {
+      title: C_("shortcut window", "Set End at current position");
+      action-name: "win.set-end-as-position";
+    }
+  }
 
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Step forward");
-        accelerator: "period";
-      }
+  Adw.ShortcutsSection {
+    Adw.ShortcutsItem {
+      title: C_("shortcut window", "New window");
+      action-name: "app.new-window";
+    }
 
-      ShortcutsShortcut {
-        title: C_("shortcut window", "Step back");
-        accelerator: "comma";
-      }
+    Adw.ShortcutsItem {
+      title: C_("shortcut window", "Close window");
+      action-name: "win.close";
+    }
+
+    Adw.ShortcutsItem {
+      title: C_("shortcut window", "Keyboard shortcuts");
+      action-name: "app.shortcuts";
+    }
+
+    Adw.ShortcutsItem {
+      title: C_("shortcut window", "Quit");
+      action-name: "app.quit";
+    }
+  }
+
+  Adw.ShortcutsSection {
+    title: C_("shortcut window", "Playback");
+
+    Adw.ShortcutsItem {
+      title: C_("shortcut window", "Play / Pause");
+      action-name: "win.play-pause";
+    }
+
+    Adw.ShortcutsItem {
+      title: C_("shortcut window", "Step forward");
+      accelerator: "period";
+    }
+
+    Adw.ShortcutsItem {
+      title: C_("shortcut window", "Step back");
+      accelerator: "comma";
     }
   }
 }
