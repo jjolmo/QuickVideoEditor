@@ -5,11 +5,11 @@ edition = "2021"
 license = "GPL-3.0-or-later"
 
 [dependencies]
-adw = { version = "0.7.1", package = "libadwaita", features = ["v1_7"] }
+adw = { version = "0.9", package = "libadwaita", features = ["v1_7"] }
 futures-util = "0.3"
 gettext-rs = { version = "0.7", features = ["gettext-system"] }
-glib = { version = "0.20", features = ["log", "log_macros"] }
-gtk = { version = "0.9", package = "gtk4", features = ["v4_16"] }
+glib = { version = "0.22", features = ["log", "log_macros"] }
+gtk = { version = "0.11", package = "gtk4", features = ["v4_16"] }
 json = "0.12"
 log = "0.4"
 mime_guess = "2"

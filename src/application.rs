@@ -9,7 +9,7 @@ mod imp {
     use gettextrs::*;
     use glib::{debug, prelude::*};
     use gtk::prelude::*;
-    use std::cell::Cell;
+    use std::{cell::Cell, ops::ControlFlow};
 
     #[derive(Default)]
     pub struct VtApplication {
@@ -111,7 +111,7 @@ mod imp {
             obj.set_accels_for_action("win.set-end-as-position", &["o"]);
         }
 
-        fn handle_local_options(&self, options: &glib::VariantDict) -> glib::ExitCode {
+        fn handle_local_options(&self, options: &glib::VariantDict) -> ControlFlow<glib::ExitCode> {
             self.output_file.set(
                 options
                     .lookup_value("output", None)
