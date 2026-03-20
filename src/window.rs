@@ -896,7 +896,7 @@ Please choose another file.",
             klass.install_action("win.about", None, |window, _, _| {
                 let resource_path = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/\
                                      org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml";
-                let about_window = adw::AboutDialog::from_appdata(resource_path, Some("25.03"));
+                let about_window = adw::AboutDialog::from_appdata(resource_path, Some("26.03"));
                 about_window.set_version(config::VERSION);
                 // Translators: shown in the About dialog, put your name here.
                 about_window.set_translator_credits(&gettext("translator-credits"));
