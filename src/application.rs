@@ -119,7 +119,7 @@ mod imp {
                     .map(gio::File::for_path),
             );
 
-            glib::ExitCode::from(-1)
+            self.parent_handle_local_options(options)
         }
     }
 
