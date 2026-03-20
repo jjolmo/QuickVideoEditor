@@ -26,9 +26,13 @@ mod imp {
 
     impl ObjectImpl for VtApplication {
         fn constructed(&self) {
+            let obj = self.obj();
             self.parent_constructed();
 
-            self.obj().add_main_option(
+            // Translators: shown in --help usage line as: video-trimmer [OPTION…] [VIDEO]
+            obj.set_option_context_parameter_string(Some(&gettext("[VIDEO]")));
+
+            obj.add_main_option(
                 "output",
                 glib::Char::from(b'o'),
                 glib::OptionFlags::NONE,
