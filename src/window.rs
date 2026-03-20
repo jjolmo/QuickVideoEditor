@@ -348,12 +348,27 @@ Please choose another file.",
 
                     let mut path = prefix.unwrap_or_default();
 
+                    let normalize = |time: &str| {
+                        parse::timestamp(time)
+                            .map(|ms| time_to_entry_text(Duration::from_millis(ms.into())))
+                            .unwrap_or_else(|| time.to_string())
+                    };
+                    let start_text = normalize(&start);
+                    let end_text = normalize(&end);
+
                     path.push(format!(
                         "{}{}.{}",
                         input_path.file_stem().and_then(OsStr::to_str).unwrap_or(""),
                         // Translators: this is appended to the output video file name.
-                        // So for example "my video.mp4" will become "my video (trimmed).mp4".
-                        gettext(" (trimmed)"),
+                        // The two {} are replaced with the start and end timestamps.
+                        // So for example "my video.mp4" will become "my video (0:32 - 1:06).mp4".
+                        gettext_f(
+                            " ({} - {})",
+                            &[
+                                parse::time_for_filename(&start_text),
+                                parse::time_for_filename(&end_text),
+                            ],
+                        ),
                         extension
                     ));
 

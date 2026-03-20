@@ -83,6 +83,15 @@ pub fn time_to_entry_text(time: Duration) -> String {
     }
 }
 
+pub fn time_for_filename(time: &str) -> &str {
+    if !time.contains('.') {
+        return time;
+    }
+    let trimmed = time.trim_end_matches('0');
+    // If all fractional digits were zero, strip the dot too.
+    trimmed.strip_suffix('.').unwrap_or(trimmed)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -115,5 +124,16 @@ mod tests {
             &time_to_entry_text(Duration::from_millis(3600000)),
             "1:00:00.0"
         );
+    }
+
+    #[test]
+    fn test_time_for_filename() {
+        assert_eq!(time_for_filename("0:32.0"), "0:32");
+        assert_eq!(time_for_filename("1:05.300"), "1:05.3");
+        assert_eq!(time_for_filename("1:05.2"), "1:05.2");
+        assert_eq!(time_for_filename("1:05"), "1:05");
+        assert_eq!(time_for_filename("1:00:00.000"), "1:00:00");
+        assert_eq!(time_for_filename("10:00.0"), "10:00");
+        assert_eq!(time_for_filename("0:00.0"), "0:00");
     }
 }
