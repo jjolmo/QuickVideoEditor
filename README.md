@@ -20,6 +20,8 @@ The Flatpak version needs a special `--file-forwarding` flag and `@@` marker to 
 $ flatpak run --file-forwarding org.gnome.gitlab.YaLTeR.VideoTrimmer -o trimmed.mp4 @@ input_video.mp4
 ```
 
+Other options like start and end timestamp can also be set through command-line arguments. See `video-trimmer --help`.
+
 ## Format support
 
 For trimming Video Trimmer uses the `ffmpeg` binary, thus the non-Flatpak version depends on the muxers and demuxers available in your system's `ffmpeg`. The Flatpak package uses the `org.freedesktop.Platform.ffmpeg-full` extension.
