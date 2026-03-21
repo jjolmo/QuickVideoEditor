@@ -110,7 +110,7 @@ msgstr "終了する"
 #: src/shortcuts.blp:47
 msgctxt "shortcut window"
 msgid "Playback"
-msgstr "再生"
+msgstr "再生コントロール"
 
 #: src/shortcuts.blp:50
 msgctxt "shortcut window"
@@ -120,12 +120,12 @@ msgstr "再生/一時停止する"
 #: src/shortcuts.blp:55
 msgctxt "shortcut window"
 msgid "Step forward"
-msgstr "早送りする"
+msgstr "進む"
 
 #: src/shortcuts.blp:60
 msgctxt "shortcut window"
 msgid "Step back"
-msgstr "巻き戻す"
+msgstr "戻る"
 
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:17
@@ -371,8 +371,8 @@ msgid ""
 msgstr ""
 "開始/終了タイムスタンプを手動で入力してください。\n"
 "\n"
-"Video Trimmer を Flatpak で実行している場合では、ドラック &amp; ドロップでは"
-"ファイルを開けない場合があります。"
+"Video Trimmer を Flatpak で実行している場合、ドラック &amp; ドロップではファ"
+"イルを開けない場合があります。"
 
 #. Translators: Label for the entry for the start timestamp.
 #: src/window.blp:175
@@ -387,7 +387,7 @@ msgstr "終了"
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
 msgid "Trim videos quickly"
-msgstr "ビデオを素早くトリミングする"
+msgstr "ビデオを素早くトリミングします"
 
 #. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:5
