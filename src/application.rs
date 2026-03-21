@@ -168,7 +168,7 @@ mod imp {
             obj.add_action(&action);
             obj.set_accels_for_action("app.new-window", &["<primary>n"]);
 
-            obj.set_accels_for_action("win.play-pause", &["p", "k", "space"]);
+            obj.set_accels_for_action("win.play-pause", &["p", "k", "space", "<ctrl>space"]);
             obj.set_accels_for_action("win.close", &["<ctrl>w"]);
             obj.set_accels_for_action("win.trim", &["<ctrl>s"]);
             obj.set_accels_for_action("win.open", &["<ctrl>o"]);
