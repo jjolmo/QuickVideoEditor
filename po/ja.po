@@ -8,8 +8,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Video Trimmer\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-21 02:04+0900\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
+"issues\n"
+"POT-Creation-Date: 2026-03-21 07:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Ryo Nakano <ryonakaknock3@gmail.com>\n"
 "Language-Team: \n"
@@ -242,7 +243,6 @@ msgid "Compare images and videos"
 msgstr "画像やビデオを比較します"
 
 #: src/window.rs:920
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:40
 msgid ""
 "This release improves the default output file naming and adds command-line "
 "options."
@@ -251,14 +251,12 @@ msgstr ""
 "オプションを追加しました。"
 
 #: src/window.rs:921
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:42
 msgid "The default output filename now includes start and end timestamps."
 msgstr ""
 "デフォルトの出力ファイル名に、開始/終了タイムスタンプを追加するように修正しま"
 "した。"
 
 #: src/window.rs:922
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:43
 msgid ""
 "Added command-line flags for start and end timestamps, precise trimming, and "
 "removing audio."
@@ -267,34 +265,23 @@ msgstr ""
 "を追加しました。"
 
 #: src/window.rs:923
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:44
 msgid "Increased the default window size to make the video 960×540."
-msgstr "ビデオ作成時のデフォルトウィンドウサイズを 960×540 に拡大しました。"
+msgstr ""
+"ビデオの解像度が 960×540 になるよう、デフォルトのウィンドウサイズを大きくしま"
+"した。"
 
 #: src/window.rs:924
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:45
 msgid "Updated to the GNOME 50 platform."
 msgstr "GNOME 50 プラットフォームにアップデートしました。"
 
 #: src/window.rs:925
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:46
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:58
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:71
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:82
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:95
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:107
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:121
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:136
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:156
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:169
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:180
 msgid "Updated translations."
 msgstr "翻訳をアップデートしました。"
 
 #. Translators: Primary menu entry that opens a new window.
 #: src/window.blp:8
 msgid "_New Window"
-msgstr "新しいウィンドウ(_W)"
+msgstr "新しいウィンドウ(_N)"
 
 #. Translators: Primary menu entry that opens the Keyboard Shortcuts dialog.
 #: src/window.blp:14
@@ -397,7 +384,6 @@ msgstr ""
 
 #. developer_name tag deprecated with Appstream 1.0
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:13
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:15
 msgid "Ivan Molodetskikh"
 msgstr "Ivan Molodetskikh"
 
