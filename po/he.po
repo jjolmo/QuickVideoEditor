@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues\n"
 "POT-Creation-Date: 2026-03-21 07:21+0000\n"
-"PO-Revision-Date: 2026-03-22 11:45+0200\n"
+"PO-Revision-Date: 2026-03-22 11:46+0200\n"
 "Last-Translator: Yaron Shahrabani <sh.yaron@gmail.com>\n"
 "Language-Team: Hebrew <yoseforb@gmail.com>\n"
 "Language: he\n"
@@ -250,7 +250,7 @@ msgstr "נוספו דגלוני שורת פקודה לחותמות התחלה ו
 
 #: src/window.rs:923
 msgid "Increased the default window size to make the video 960×540."
-msgstr ""
+msgstr "גודל החלון כברירת מחדל הוגדל כדי שהסרטון יהיה 960×540."
 
 #: src/window.rs:924
 msgid "Updated to the GNOME 50 platform."
