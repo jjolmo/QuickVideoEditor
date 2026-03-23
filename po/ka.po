@@ -1,96 +1,126 @@
 # Georgian translation for video-trimmer.
 # Copyright (C) 2023 video-trimmer's authors
 # This file is distributed under the same license as the video-trimmer package.
-# Ekaterine Papava <papava.e@gtu.ge>, 2023-2025.
+# Ekaterine Papava <papava.e@gtu.ge>, 2023-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: video-trimmer master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2025-03-24 11:13+0000\n"
-"PO-Revision-Date: 2025-03-26 03:22+0100\n"
+"POT-Creation-Date: 2026-03-21 07:21+0000\n"
+"PO-Revision-Date: 2026-03-23 03:24+0100\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <ka@li.org>\n"
 "Language: ka\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.9\n"
+
+#. Translators: shown in --help usage line as: video-trimmer [OPTION…] [VIDEO]
+#: src/application.rs:40
+msgid "[VIDEO]"
+msgstr "[ვიდეო]"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
-#: src/application.rs:37
+#: src/application.rs:48
 msgid "Output file path"
 msgstr "გამოტანის ფაილის ბილიკი"
 
 #. Translators: --output commandline option arg description.
-#: src/application.rs:39
+#: src/application.rs:50
 msgid "PATH"
 msgstr "PATH"
 
+#. Translators: --start commandline option description.
+#: src/application.rs:59
+msgid "Start timestamp"
+msgstr "დაწყების დროის შტამპი"
+
+#. Translators: --start commandline option arg description.
+#: src/application.rs:61 src/application.rs:71
+msgid "TIMESTAMP"
+msgstr "დროის შტამპი"
+
+#. Translators: --end commandline option description.
+#: src/application.rs:70
+msgid "End timestamp"
+msgstr "დასასრულის დროის შტამპი"
+
+#. Translators: --precise commandline option description.
+#: src/application.rs:80
+msgid "Precise trim (re-encode)"
+msgstr "ზუსტი წაკვეთა (თავიდან კოდირება)"
+
+#. Translators: --remove-audio commandline option description.
+#: src/application.rs:90
+msgid "Remove audio"
+msgstr "ხმის მოცილება"
+
 #: src/main.rs:40 src/window.blp:45
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:2
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
 msgstr "ვიდეომჭრელი"
 
-#: src/shortcuts.blp:9
+#: src/shortcuts.blp:6
 msgctxt "shortcut window"
 msgid "General"
 msgstr "ზოგადი"
 
-#: src/shortcuts.blp:12
+#: src/shortcuts.blp:9
 msgctxt "shortcut window"
 msgid "Trim"
 msgstr "დაჭრა"
 
-#: src/shortcuts.blp:17
+#: src/shortcuts.blp:14
 msgctxt "shortcut window"
 msgid "Set Start at current postion"
 msgstr "დასაწყისის დაყენება მიმდინარე მდებარეობასთან"
 
-#: src/shortcuts.blp:22
+#: src/shortcuts.blp:19
 msgctxt "shortcut window"
 msgid "Set End at current position"
 msgstr "დასრულების დაყენება მიმდინარე მდებარეობასთან"
 
-#: src/shortcuts.blp:27
+#: src/shortcuts.blp:26
 msgctxt "shortcut window"
 msgid "New window"
 msgstr "ახალი ფანჯარა"
 
-#: src/shortcuts.blp:32
+#: src/shortcuts.blp:31
 msgctxt "shortcut window"
 msgid "Close window"
 msgstr "ფანჯრის დახურვა"
 
-#: src/shortcuts.blp:37
+#: src/shortcuts.blp:36
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "კლავიატურის მალსახმობები"
 
-#: src/shortcuts.blp:42
+#: src/shortcuts.blp:41
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "გასვლა"
 
-#: src/shortcuts.blp:48
+#: src/shortcuts.blp:47
 msgctxt "shortcut window"
 msgid "Playback"
 msgstr "დაკვრა"
 
-#: src/shortcuts.blp:51
+#: src/shortcuts.blp:50
 msgctxt "shortcut window"
 msgid "Play / Pause"
 msgstr "დაკვრა/პაუზა"
 
-#: src/shortcuts.blp:56
+#: src/shortcuts.blp:55
 msgctxt "shortcut window"
 msgid "Step forward"
 msgstr "ნაბიჯი წინ"
 
-#: src/shortcuts.blp:61
+#: src/shortcuts.blp:60
 msgctxt "shortcut window"
 msgid "Step back"
 msgstr "ნაბიჯი უკან"
@@ -110,127 +140,133 @@ msgstr ""
 "დაყენებული არაა."
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:218
+#: src/window.rs:253
 msgid "Video files"
 msgstr "ვიდეო ფაილები"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:225
+#: src/window.rs:260
 msgid "Open video"
 msgstr "ვიდეოს გახსნა"
 
 #. Translators: error dialog title.
-#: src/window.rs:236 src/window.rs:384 src/window.rs:627
+#: src/window.rs:271 src/window.rs:434 src/window.rs:677
 msgid "Error"
 msgstr "შეცდომა"
 
 #. Translators: error dialog text.
-#: src/window.rs:239 src/window.rs:387 src/window.rs:630
+#: src/window.rs:274 src/window.rs:437 src/window.rs:680
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr ""
 "Video Trimmer-ს მხოლოდ ლოკალურ ფაილებზე შეუძლია მუშაობა. სხვა ფაილი აირჩიეთ."
 
 #. Translators: error dialog button.
-#: src/window.rs:244 src/window.rs:392 src/window.rs:569 src/window.rs:591
-#: src/window.rs:635
+#: src/window.rs:279 src/window.rs:442 src/window.rs:619 src/window.rs:641
+#: src/window.rs:685
 msgid "_OK"
 msgstr "_დიახ"
 
-#. Translators: this is appended to the output video file name.
-#. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:353
-msgid " (trimmed)"
-msgstr " (წაკვეთილია)"
+#: src/window.rs:398
+#, rust-format
+msgid " ({} - {})"
+msgstr " ({} - {})"
 
 #. Translators: message dialog text.
-#: src/window.rs:479
+#: src/window.rs:529
 msgid "Trimming…"
 msgstr "წაკვეთა…"
 
 #. Translators: trimming dialog button.
-#: src/window.rs:482
+#: src/window.rs:532
 msgid "_Cancel"
 msgstr "_შეწყვეტა"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:502
+#: src/window.rs:552
+#, rust-format
 msgid "{} has been saved"
 msgstr "{} შენახულია"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:509
+#: src/window.rs:559
 msgid "Show in Files"
 msgstr "ფაილებში ჩვენება"
 
 #. Translators: error dialog heading.
-#: src/window.rs:541
+#: src/window.rs:591
 msgid "Error trimming video"
 msgstr "ვიდეოს წაკვეთის შეცდომა"
 
 #. Translators: error dialog text before the FFmpeg
 #. error output.
-#: src/window.rs:545
+#: src/window.rs:595
 msgid "Please attach the following information when reporting an issue."
 msgstr "მიამაგრეთ შემდეგი ინფორმაცია პრობლემის შესახებ მოწერისას."
 
-#: src/window.rs:556
+#: src/window.rs:606
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "შეცდომა ffmpeg-ის ქვეპროცესთან ურთიერთობისას"
 
 #. Translators: error dialog text.
-#: src/window.rs:587
+#: src/window.rs:637
 msgid "Could not create the ffmpeg subprocess"
 msgstr "შეცდომა ffmpeg-ის ქვეპროცესის შექმნისას"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:852
+#: src/window.rs:902
 msgid "translator-credits"
 msgstr "თარგმანი-შესრულებულია"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:855
+#: src/window.rs:905
 msgid "Contribute Translations"
 msgstr "თარგმანების შეწირვა"
 
 #. Translators: name of https://gitlab.gnome.org/YaLTeR/identity
-#: src/window.rs:861
+#: src/window.rs:911
 msgid "Identity"
 msgstr "იდენტიფიკაცია"
 
 #. Translators: summary of https://gitlab.gnome.org/YaLTeR/identity
-#: src/window.rs:863
+#: src/window.rs:913
 msgid "Compare images and videos"
 msgstr "გამოსახულებებისა და ვიდეოების შედარება"
 
-#: src/window.rs:870
-msgid "This release makes the trimming options more discoverable."
-msgstr "ეს რელიზი მოკვეთის პარამეტრებს უფრო აღმოსაჩენს გახდის."
-
-#: src/window.rs:871
-msgid "Changed the versioning scheme to year.month."
-msgstr "შეიცვალა ვერსიის რიცხვების სქემა წელი.თვეზე."
-
-#: src/window.rs:872
+#: src/window.rs:920
 msgid ""
-"Moved the accurate trimming and remove audio options from the save dialog to "
-"the main window."
+"This release improves the default output file naming and adds command-line "
+"options."
 msgstr ""
-"ზუსტი წაკვეთისა და აუდიოს მოცილების ბრძანებები გადატანილია შენახვის "
-"დიალოგიდან მთავარ ფანჯარაში."
+"ამ გამოცემაში გაუმჯობესდა ნაგულისხმევი გამოტანის ფაილის სახელს დარქმევა და "
+"დაემატა ბრძანების სტრიქონის პარამეტრები."
 
-#: src/window.rs:873
-msgid "Added , and . shortcuts for short video stepping."
-msgstr "დაემატა , და . მალსახმობები ვიდეოს მოკლე ნაბიჯებისთვის."
+#: src/window.rs:921
+msgid "The default output filename now includes start and end timestamps."
+msgstr ""
+"ნაგულისხმევი გამოტანის ფაილის სახელი ახლა დასაწყისისა და დასასრულის დროის "
+"შტამპებს შეიცავს."
 
-#: src/window.rs:874
-msgid "Updated to the GNOME 48 platform."
-msgstr "განახლდა GNOME 48 პლატფორმისთვის."
+#: src/window.rs:922
+msgid ""
+"Added command-line flags for start and end timestamps, precise trimming, and "
+"removing audio."
+msgstr ""
+"დაემატა ბრძანების სტრიქონის ალმები დასაწყისისა და დასასრულის დროის "
+"შტამპებისთვის, ზუსტი წაკვეთისთვის და ხმის მოსაცილებლად."
 
-#: src/window.rs:875
+#: src/window.rs:923
+msgid "Increased the default window size to make the video 960×540."
+msgstr "ნაგულისხმევი ფანჯრის ზომა გაიზარდა, რომ ვიდეო 960×540 გახდეს."
+
+#: src/window.rs:924
+msgid "Updated to the GNOME 50 platform."
+msgstr "განახლდა GNOME 50 პლატფორმისთვის."
+
+#: src/window.rs:925
 msgid "Updated translations."
 msgstr "განახლებული თარგმანები."
 
@@ -327,13 +363,13 @@ msgstr "დასაწყისი"
 msgid "End"
 msgstr "დასასრული"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
 msgid "Trim videos quickly"
 msgstr "ვიდეოს სწრაფი წაკვეთა"
 
 #. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:5
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Cut;Movie;Film;Clip;წაკვეთა;ფილმი;კლიპი;"
 
@@ -355,6 +391,25 @@ msgstr ""
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "მთავარი ფანჯარა"
+
+#~ msgid " (trimmed)"
+#~ msgstr " (წაკვეთილია)"
+
+#~ msgid "This release makes the trimming options more discoverable."
+#~ msgstr "ეს რელიზი მოკვეთის პარამეტრებს უფრო აღმოსაჩენს გახდის."
+
+#~ msgid "Changed the versioning scheme to year.month."
+#~ msgstr "შეიცვალა ვერსიის რიცხვების სქემა წელი.თვეზე."
+
+#~ msgid ""
+#~ "Moved the accurate trimming and remove audio options from the save dialog "
+#~ "to the main window."
+#~ msgstr ""
+#~ "ზუსტი წაკვეთისა და აუდიოს მოცილების ბრძანებები გადატანილია შენახვის "
+#~ "დიალოგიდან მთავარ ფანჯარაში."
+
+#~ msgid "Added , and . shortcuts for short video stepping."
+#~ msgstr "დაემატა , და . მალსახმობები ვიდეოს მოკლე ნაბიჯებისთვის."
 
 #~ msgid "Accurate trimming, but slower and may lose quality"
 #~ msgstr "ზუსტი წაკვეთა, მაგრამ ნელი და შეიძლება, ხარისხი დაკარგოს"
