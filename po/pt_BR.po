@@ -1,100 +1,130 @@
 # Brazilian Portuguese translations for video-trimmer.
-# Copyright (C) 2025 THE video-trimmer'S COPYRIGHT HOLDER
+# Copyright (C) 2026 THE video-trimmer'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the video-trimmer package.
 # Gustavo Costa <xfgusta@gmail.com>, ?
 # Alex Jr <alexjrsh@proton.me>, 2023.
-# Rafael Fontenelle <rafaelff@gnome.org>, 2023-2024.
 # Álvaro Burns, 2025.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2023-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2025-03-24 11:13+0000\n"
-"PO-Revision-Date: 2025-03-23 19:33-0300\n"
-"Last-Translator: Álvaro Burns\n"
+"POT-Creation-Date: 2026-03-21 07:21+0000\n"
+"PO-Revision-Date: 2026-03-23 09:28-0300\n"
+"Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <https://br.gnome.org/traducao>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Gtranslator 47.1\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Gtranslator 49.0\n"
+
+#. Translators: shown in --help usage line as: video-trimmer [OPTION…] [VIDEO]
+#: src/application.rs:40
+msgid "[VIDEO]"
+msgstr "[VÍDEO]"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
-#: src/application.rs:37
+#: src/application.rs:48
 msgid "Output file path"
 msgstr "Caminho do arquivo de saída"
 
 #. Translators: --output commandline option arg description.
-#: src/application.rs:39
+#: src/application.rs:50
 msgid "PATH"
 msgstr "CAMINHO"
 
+#. Translators: --start commandline option description.
+#: src/application.rs:59
+msgid "Start timestamp"
+msgstr "Registro de data e hora de início"
+
+#. Translators: --start commandline option arg description.
+#: src/application.rs:61 src/application.rs:71
+msgid "TIMESTAMP"
+msgstr "DATA-E-HORA"
+
+#. Translators: --end commandline option description.
+#: src/application.rs:70
+msgid "End timestamp"
+msgstr "Registro de data e hora de fim"
+
+#. Translators: --precise commandline option description.
+#: src/application.rs:80
+msgid "Precise trim (re-encode)"
+msgstr "Corte preciso (recodifica)"
+
+#. Translators: --remove-audio commandline option description.
+#: src/application.rs:90
+msgid "Remove audio"
+msgstr "Remove áudio"
+
 #: src/main.rs:40 src/window.blp:45
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:2
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
 msgstr "Video Trimmer"
 
-#: src/shortcuts.blp:9
+#: src/shortcuts.blp:6
 msgctxt "shortcut window"
 msgid "General"
 msgstr "Geral"
 
-#: src/shortcuts.blp:12
+#: src/shortcuts.blp:9
 msgctxt "shortcut window"
 msgid "Trim"
 msgstr "Corta"
 
-#: src/shortcuts.blp:17
+#: src/shortcuts.blp:14
 msgctxt "shortcut window"
 msgid "Set Start at current postion"
 msgstr "Definir o Início na posição atual"
 
-#: src/shortcuts.blp:22
+#: src/shortcuts.blp:19
 msgctxt "shortcut window"
 msgid "Set End at current position"
 msgstr "Definir o Fim na posição atual"
 
-#: src/shortcuts.blp:27
+#: src/shortcuts.blp:26
 msgctxt "shortcut window"
 msgid "New window"
 msgstr "Nova janela"
 
-#: src/shortcuts.blp:32
+#: src/shortcuts.blp:31
 msgctxt "shortcut window"
 msgid "Close window"
 msgstr "Fecha a janela"
 
-#: src/shortcuts.blp:37
+#: src/shortcuts.blp:36
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Atalhos de teclado"
 
-#: src/shortcuts.blp:42
+#: src/shortcuts.blp:41
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "Sai"
 
-#: src/shortcuts.blp:48
+#: src/shortcuts.blp:47
 msgctxt "shortcut window"
 msgid "Playback"
 msgstr "Reprodução"
 
-#: src/shortcuts.blp:51
+#: src/shortcuts.blp:50
 msgctxt "shortcut window"
 msgid "Play / Pause"
 msgstr "Reproduz/Pausa"
 
-#: src/shortcuts.blp:56
+#: src/shortcuts.blp:55
 msgctxt "shortcut window"
 msgid "Step forward"
 msgstr "Avança"
 
-#: src/shortcuts.blp:61
+#: src/shortcuts.blp:60
 msgctxt "shortcut window"
 msgid "Step back"
 msgstr "Volta"
@@ -114,129 +144,135 @@ msgstr ""
 "o codec de vídeo necessário."
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:218
+#: src/window.rs:253
 msgid "Video files"
 msgstr "Arquivos de vídeo"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:225
+#: src/window.rs:260
 msgid "Open video"
 msgstr "Abrir vídeo"
 
 #. Translators: error dialog title.
-#: src/window.rs:236 src/window.rs:384 src/window.rs:627
+#: src/window.rs:271 src/window.rs:434 src/window.rs:677
 msgid "Error"
 msgstr "Erro"
 
 #. Translators: error dialog text.
-#: src/window.rs:239 src/window.rs:387 src/window.rs:630
+#: src/window.rs:274 src/window.rs:437 src/window.rs:680
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr ""
 "Video Trimmer só pode operar em arquivos locais. Escolha outro arquivo."
 
 #. Translators: error dialog button.
-#: src/window.rs:244 src/window.rs:392 src/window.rs:569 src/window.rs:591
-#: src/window.rs:635
+#: src/window.rs:279 src/window.rs:442 src/window.rs:619 src/window.rs:641
+#: src/window.rs:685
 msgid "_OK"
 msgstr "_OK"
 
-#. Translators: this is appended to the output video file name.
-#. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:353
-msgid " (trimmed)"
-msgstr " (cortado)"
+#: src/window.rs:398
+#, rust-format
+msgid " ({} - {})"
+msgstr " ({} - {})"
 
 #. Translators: message dialog text.
-#: src/window.rs:479
+#: src/window.rs:529
 msgid "Trimming…"
 msgstr "Cortando…"
 
 #. Translators: trimming dialog button.
-#: src/window.rs:482
+#: src/window.rs:532
 msgid "_Cancel"
 msgstr "_Cancelar"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:502
+#: src/window.rs:552
+#, rust-format
 msgid "{} has been saved"
 msgstr "{} foi salvo"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:509
+#: src/window.rs:559
 msgid "Show in Files"
 msgstr "Mostrar no Arquivos"
 
 #. Translators: error dialog heading.
-#: src/window.rs:541
+#: src/window.rs:591
 msgid "Error trimming video"
 msgstr "Erro ao cortar vídeo"
 
 #. Translators: error dialog text before the FFmpeg
 #. error output.
-#: src/window.rs:545
+#: src/window.rs:595
 msgid "Please attach the following information when reporting an issue."
 msgstr "Acrescente as seguintes informações ao relatar um problema."
 
-#: src/window.rs:556
+#: src/window.rs:606
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "Não foi possível comunicar com o subprocesso ffmpeg"
 
 #. Translators: error dialog text.
-#: src/window.rs:587
+#: src/window.rs:637
 msgid "Could not create the ffmpeg subprocess"
 msgstr "Não foi possível criar o subprocesso ffmpeg"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:852
+#: src/window.rs:902
 msgid "translator-credits"
 msgstr ""
 "Gustavo Costa <xfgusta@gmail.com>\n"
 "Rafael Fontenelle <rafaelff@gnome.org>"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:855
+#: src/window.rs:905
 msgid "Contribute Translations"
 msgstr "Contribua com traduções"
 
 #. Translators: name of https://gitlab.gnome.org/YaLTeR/identity
-#: src/window.rs:861
+#: src/window.rs:911
 msgid "Identity"
 msgstr "Identidades"
 
 #. Translators: summary of https://gitlab.gnome.org/YaLTeR/identity
-#: src/window.rs:863
+#: src/window.rs:913
 msgid "Compare images and videos"
 msgstr "Compare imagens e vídeos"
 
-#: src/window.rs:870
-msgid "This release makes the trimming options more discoverable."
-msgstr "Esta versão torna as opções de corte mais fáceis de serem descobertas."
-
-#: src/window.rs:871
-msgid "Changed the versioning scheme to year.month."
-msgstr "Alterado o esquema de versionamento para ano.mês"
-
-#: src/window.rs:872
+#: src/window.rs:920
 msgid ""
-"Moved the accurate trimming and remove audio options from the save dialog to "
-"the main window."
+"This release improves the default output file naming and adds command-line "
+"options."
 msgstr ""
-"As opções de corte preciso e remoção de áudio foram movidas da caixa de "
-"diálogo de salvamento para a janela principal."
+"Esta versão melhora a nomenclatura padrão do arquivo de saída e adiciona "
+"opções de linha de comando."
 
-#: src/window.rs:873
-msgid "Added , and . shortcuts for short video stepping."
-msgstr "Adicionados atalhos , e . para vídeos curtos."
+#: src/window.rs:921
+msgid "The default output filename now includes start and end timestamps."
+msgstr ""
+"O nome do arquivo de saída padrão agora inclui registro de data e hora de "
+"início e fim."
 
-#: src/window.rs:874
-msgid "Updated to the GNOME 48 platform."
-msgstr "Atualizado para a plataforma GNOME 48."
+#: src/window.rs:922
+msgid ""
+"Added command-line flags for start and end timestamps, precise trimming, and "
+"removing audio."
+msgstr ""
+"Adicionados sinalizadores de linha de comando para registro de data e hora "
+"de início e de fim, corte preciso e remoção de áudio."
 
-#: src/window.rs:875
+#: src/window.rs:923
+msgid "Increased the default window size to make the video 960×540."
+msgstr "Aumentado o tamanho padrão da janela para tornar o vídeo 960×540."
+
+#: src/window.rs:924
+msgid "Updated to the GNOME 50 platform."
+msgstr "Atualizado para a plataforma GNOME 50."
+
+#: src/window.rs:925
 msgid "Updated translations."
 msgstr "Traduções atualizadas."
 
@@ -308,7 +344,7 @@ msgstr "Corta o vídeo"
 #. Translators: Title that is shown upon video preview loading error.
 #: src/window.blp:152
 msgid "Video Preview Failed to Load"
-msgstr "A visualização do vídeo falhou ao carregar."
+msgstr "A visualização do vídeo falhou ao carregar"
 
 #. Translators: Description that is shown upon video preview loading error.
 #: src/window.blp:155
@@ -318,7 +354,7 @@ msgid ""
 "If you're running Video Trimmer under Flatpak, note that opening files by "
 "drag-and-drop may not work."
 msgstr ""
-"Insira os carimbos de data/hora de início e término manualmente.\n"
+"Insira os registros de data/hora de início e término manualmente.\n"
 "\n"
 "Se você estiver executando o Video Trimmer no Flatpak, observe que abrir "
 "arquivos arrastando e soltando pode não funcionar."
@@ -333,13 +369,13 @@ msgstr "Começo"
 msgid "End"
 msgstr "Fim"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
 msgid "Trim videos quickly"
 msgstr "Corte vídeos rapidamente"
 
 #. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:5
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Cortar;Vídeo;Filme;Clipe;"
 
@@ -354,13 +390,33 @@ msgid ""
 "timestamps. The video is never re-encoded, so the process is very fast and "
 "does not reduce the video quality."
 msgstr ""
-"O Video Trimmer corta um fragmento de um vídeo de acordo com os carimbos de "
+"O Video Trimmer corta um fragmento de um vídeo de acordo com os registros de "
 "data/hora de início e término. O vídeo nunca é recodificado, então o "
 "processo é muito rápido e não reduz a qualidade do vídeo."
 
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "Janela principal"
+
+#~ msgid " (trimmed)"
+#~ msgstr " (cortado)"
+
+#~ msgid "This release makes the trimming options more discoverable."
+#~ msgstr ""
+#~ "Esta versão torna as opções de corte mais fáceis de serem descobertas."
+
+#~ msgid "Changed the versioning scheme to year.month."
+#~ msgstr "Alterado o esquema de versionamento para ano.mês"
+
+#~ msgid ""
+#~ "Moved the accurate trimming and remove audio options from the save dialog "
+#~ "to the main window."
+#~ msgstr ""
+#~ "As opções de corte preciso e remoção de áudio foram movidas da caixa de "
+#~ "diálogo de salvamento para a janela principal."
+
+#~ msgid "Added , and . shortcuts for short video stepping."
+#~ msgstr "Adicionados atalhos , e . para vídeos curtos."
 
 #~ msgid ""
 #~ "This release improves the behavior of shortcuts and does a minor visual "
@@ -528,8 +584,8 @@ msgstr "Janela principal"
 #~ msgstr "Adicionada tradução croata (obrigado milotype)."
 
 #~ msgid ""
-#~ "The default name for the output video is now \"input video name "
-#~ "(trimmed)\"."
+#~ "The default name for the output video is now \"input video name (trimmed)"
+#~ "\"."
 #~ msgstr ""
 #~ "O nome padrão para o vídeo de saída agora é \"nome do vídeo de entrada "
 #~ "(cortado)\"."
