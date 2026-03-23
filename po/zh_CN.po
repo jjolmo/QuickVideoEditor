@@ -1,95 +1,127 @@
-#
-# lumingzh <lumingzh@qq.com>, 2023-2025.
+# Chinese translation for video-trimmer.
+# Copyright (C) YEAR THE video-trimmer's COPYRIGHT HOLDER
+# This file is distributed under the same license as the video-trimmer package.
+# lumingzh <lumingzh@qq.com>, 2023-2026.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Video Trimmer\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
 "issues\n"
-"POT-Creation-Date: 2025-03-24 11:13+0000\n"
-"PO-Revision-Date: 2025-03-25 18:23+0800\n"
+"POT-Creation-Date: 2026-03-21 07:21+0000\n"
+"PO-Revision-Date: 2026-03-23 08:21+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Gtranslator 48.0\n"
+"X-Generator: Gtranslator 50.0\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#. Translators: shown in --help usage line as: video-trimmer [OPTION…] [VIDEO]
+#: src/application.rs:40
+msgid "[VIDEO]"
+msgstr "[视频]"
 
 #. Can't extract filenames from a VariantDict yet.
 #. Translators: --output commandline option description.
-#: src/application.rs:37
+#: src/application.rs:48
 msgid "Output file path"
 msgstr "输出文件路径"
 
 #. Translators: --output commandline option arg description.
-#: src/application.rs:39
+#: src/application.rs:50
 msgid "PATH"
 msgstr "路径"
 
+#. Translators: --start commandline option description.
+#: src/application.rs:59
+msgid "Start timestamp"
+msgstr "起始时间戳"
+
+#. Translators: --start commandline option arg description.
+#: src/application.rs:61 src/application.rs:71
+msgid "TIMESTAMP"
+msgstr "时间戳"
+
+#. Translators: --end commandline option description.
+#: src/application.rs:70
+msgid "End timestamp"
+msgstr "结束时间戳"
+
+#. Translators: --precise commandline option description.
+#: src/application.rs:80
+msgid "Precise trim (re-encode)"
+msgstr "精确剪裁（重新编码）"
+
+#. Translators: --remove-audio commandline option description.
+#: src/application.rs:90
+msgid "Remove audio"
+msgstr "移除音频"
+
 #: src/main.rs:40 src/window.blp:45
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:2
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:5
 msgid "Video Trimmer"
 msgstr "视频剪裁器"
 
-#: src/shortcuts.blp:9
+#: src/shortcuts.blp:6
 msgctxt "shortcut window"
 msgid "General"
 msgstr "常规"
 
-#: src/shortcuts.blp:12
+#: src/shortcuts.blp:9
 msgctxt "shortcut window"
 msgid "Trim"
 msgstr "剪裁"
 
-#: src/shortcuts.blp:17
+#: src/shortcuts.blp:14
 msgctxt "shortcut window"
 msgid "Set Start at current postion"
 msgstr "在当前位置设置起始点"
 
-#: src/shortcuts.blp:22
+#: src/shortcuts.blp:19
 msgctxt "shortcut window"
 msgid "Set End at current position"
 msgstr "在当前位置设置结束点"
 
-#: src/shortcuts.blp:27
+#: src/shortcuts.blp:26
 msgctxt "shortcut window"
 msgid "New window"
 msgstr "新建窗口"
 
-#: src/shortcuts.blp:32
+#: src/shortcuts.blp:31
 msgctxt "shortcut window"
 msgid "Close window"
 msgstr "关闭窗口"
 
-#: src/shortcuts.blp:37
+#: src/shortcuts.blp:36
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "键盘快捷键"
 
-#: src/shortcuts.blp:42
+#: src/shortcuts.blp:41
 msgctxt "shortcut window"
 msgid "Quit"
 msgstr "退出"
 
-#: src/shortcuts.blp:48
+#: src/shortcuts.blp:47
 msgctxt "shortcut window"
 msgid "Playback"
 msgstr "播放"
 
-#: src/shortcuts.blp:51
+#: src/shortcuts.blp:50
 msgctxt "shortcut window"
 msgid "Play / Pause"
 msgstr "播放 / 暂停"
 
-#: src/shortcuts.blp:56
+#: src/shortcuts.blp:55
 msgctxt "shortcut window"
 msgid "Step forward"
 msgstr "快进"
 
-#: src/shortcuts.blp:61
+#: src/shortcuts.blp:60
 msgctxt "shortcut window"
 msgid "Step back"
 msgstr "快退"
@@ -107,124 +139,126 @@ msgid ""
 msgstr "也许该文件只有一个音轨，或者可能缺少必要的视频编解码器。"
 
 #. Translators: file chooser file filter name.
-#: src/window.rs:218
+#: src/window.rs:253
 msgid "Video files"
 msgstr "视频文件"
 
 #. Translators: file chooser dialog title.
-#: src/window.rs:225
+#: src/window.rs:260
 msgid "Open video"
 msgstr "打开视频"
 
 #. Translators: error dialog title.
-#: src/window.rs:236 src/window.rs:384 src/window.rs:627
+#: src/window.rs:271 src/window.rs:434 src/window.rs:677
 msgid "Error"
 msgstr "错误"
 
 #. Translators: error dialog text.
-#: src/window.rs:239 src/window.rs:387 src/window.rs:630
+#: src/window.rs:274 src/window.rs:437 src/window.rs:680
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "视频剪裁器只能对本地文件进行操作。请选择其他文件。"
 
 #. Translators: error dialog button.
-#: src/window.rs:244 src/window.rs:392 src/window.rs:569 src/window.rs:591
-#: src/window.rs:635
+#: src/window.rs:279 src/window.rs:442 src/window.rs:619 src/window.rs:641
+#: src/window.rs:685
 msgid "_OK"
 msgstr "确定(_O)"
 
-#. Translators: this is appended to the output video file name.
-#. So for example "my video.mp4" will become "my video (trimmed).mp4".
-#: src/window.rs:353
-msgid " (trimmed)"
-msgstr "（已修剪）"
+#: src/window.rs:398
+#, rust-format
+msgid " ({} - {})"
+msgstr "（{} - {}）"
 
 #. Translators: message dialog text.
-#: src/window.rs:479
+#: src/window.rs:529
 msgid "Trimming…"
 msgstr "正在剪裁…"
 
 #. Translators: trimming dialog button.
-#: src/window.rs:482
+#: src/window.rs:532
 msgid "_Cancel"
 msgstr "取消(_C)"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:502
+#: src/window.rs:552
+#, rust-format
 msgid "{} has been saved"
 msgstr "{} 已保存"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:509
+#: src/window.rs:559
 msgid "Show in Files"
 msgstr "在文件中显示"
 
 #. Translators: error dialog heading.
-#: src/window.rs:541
+#: src/window.rs:591
 msgid "Error trimming video"
 msgstr "剪裁视频出错"
 
 #. Translators: error dialog text before the FFmpeg
 #. error output.
-#: src/window.rs:545
+#: src/window.rs:595
 msgid "Please attach the following information when reporting an issue."
 msgstr "报告问题时请附加以下信息。"
 
-#: src/window.rs:556
+#: src/window.rs:606
 msgid "Could not communicate with the ffmpeg subprocess"
 msgstr "无法与 ffmpeg 子进程通信"
 
 #. Translators: error dialog text.
-#: src/window.rs:587
+#: src/window.rs:637
 msgid "Could not create the ffmpeg subprocess"
 msgstr "无法创建 ffmpeg 子进程"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:852
+#: src/window.rs:902
 msgid "translator-credits"
-msgstr "lumingzh <lumingzh@qq.com>, 2023-2025."
+msgstr "lumingzh <lumingzh@qq.com>, 2023-2026"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:855
+#: src/window.rs:905
 msgid "Contribute Translations"
 msgstr "贡献翻译"
 
 #. Translators: name of https://gitlab.gnome.org/YaLTeR/identity
-#: src/window.rs:861
+#: src/window.rs:911
 msgid "Identity"
 msgstr "识别"
 
 #. Translators: summary of https://gitlab.gnome.org/YaLTeR/identity
-#: src/window.rs:863
+#: src/window.rs:913
 msgid "Compare images and videos"
 msgstr "比较图像和视频"
 
-#: src/window.rs:870
-msgid "This release makes the trimming options more discoverable."
-msgstr "该版本使剪裁选项更易发现。"
-
-#: src/window.rs:871
-msgid "Changed the versioning scheme to year.month."
-msgstr "将发行版本策略改为“年.月”。"
-
-#: src/window.rs:872
+#: src/window.rs:920
 msgid ""
-"Moved the accurate trimming and remove audio options from the save dialog to "
-"the main window."
-msgstr "将精确剪裁和移除音频选项从保存对话框移至主窗口。"
+"This release improves the default output file naming and adds command-line "
+"options."
+msgstr "此次发布优化了默认输出文件名并添加了命令行选项。"
 
-#: src/window.rs:873
-msgid "Added , and . shortcuts for short video stepping."
-msgstr "添加了 , 和 . 快捷键用于短间隔的视频进度跳转。"
+#: src/window.rs:921
+msgid "The default output filename now includes start and end timestamps."
+msgstr "默认输出文件名现在包括了起始和结束时间戳。"
 
-#: src/window.rs:874
-msgid "Updated to the GNOME 48 platform."
-msgstr "更新至 GNOME 48 平台。"
+#: src/window.rs:922
+msgid ""
+"Added command-line flags for start and end timestamps, precise trimming, and "
+"removing audio."
+msgstr "添加了用于起始和结束时间戳，精确裁剪以及移除音频等的命令行标志。"
 
-#: src/window.rs:875
+#: src/window.rs:923
+msgid "Increased the default window size to make the video 960×540."
+msgstr "增加了默认窗口大小以使视频默认大小为 960×540。"
+
+#: src/window.rs:924
+msgid "Updated to the GNOME 50 platform."
+msgstr "更新至 GNOME 50 平台。"
+
+#: src/window.rs:925
 msgid "Updated translations."
 msgstr "更新了翻译。"
 
@@ -320,13 +354,13 @@ msgstr "开始"
 msgid "End"
 msgstr "结束"
 
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:4
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
 msgid "Trim videos quickly"
 msgstr "快速剪裁视频"
 
 #. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
-#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:6
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:5
 msgid "Cut;Movie;Film;Clip;"
 msgstr "Cut;Movie;Film;Clip;剪裁;剪切;修剪;剪辑;电影;视频;片段;"
 
@@ -347,6 +381,23 @@ msgstr ""
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:30
 msgid "Main Window"
 msgstr "主窗口"
+
+#~ msgid " (trimmed)"
+#~ msgstr "（已修剪）"
+
+#~ msgid "This release makes the trimming options more discoverable."
+#~ msgstr "该版本使剪裁选项更易发现。"
+
+#~ msgid "Changed the versioning scheme to year.month."
+#~ msgstr "将发行版本策略改为“年.月”。"
+
+#~ msgid ""
+#~ "Moved the accurate trimming and remove audio options from the save dialog "
+#~ "to the main window."
+#~ msgstr "将精确剪裁和移除音频选项从保存对话框移至主窗口。"
+
+#~ msgid "Added , and . shortcuts for short video stepping."
+#~ msgstr "添加了 , 和 . 快捷键用于短间隔的视频进度跳转。"
 
 #~ msgid "Accurate trimming, but slower and may lose quality"
 #~ msgstr "精确修剪，但速度较慢且可能会降低质量"
@@ -508,8 +559,8 @@ msgstr "主窗口"
 #~ msgstr "添加了克罗地亚语翻译（感谢 milotype）。"
 
 #~ msgid ""
-#~ "The default name for the output video is now \"input video name "
-#~ "(trimmed)\"."
+#~ "The default name for the output video is now \"input video name (trimmed)"
+#~ "\"."
 #~ msgstr "输出视频的默认名称现在是 \"输入视频名称（已修剪）\"。"
 
 #~ msgid ""
