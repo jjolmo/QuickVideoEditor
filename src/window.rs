@@ -491,6 +491,23 @@ Please choose another file.",
                 // It fails to even simply copy them over, so I'm assuming this is an FFmpeg bug and
                 // disabling data stream copying altogether as a workaround.
                 "-dn".as_ref(),
+                // Without reencoding, the output video can only start from a keyframe. We expect
+                // the -ss argument placed before -i to make the output video start from the
+                // earliest keyframe before the starting timestamp.
+                //
+                // However, when outputting .mp4, FFmpeg will by default use negative timestamps to
+                // make the video start at the start timestamp. This is problematic because frames
+                // from the keyframe to the start timestamp are still present in the video, just not
+                // shown by players. To make matters worse, some players (VLC, Firefox) ignore
+                // negative timestamps and show those starting frames. If the user has anything
+                // sensitive there, they may not even realize they're leaking it.
+                //
+                // The following -avoid_negative_ts make_zero flag makes FFmpeg shift negative
+                // timestamps forward so the video starts at zero. It makes the output video play
+                // from the starting keyframe in all players, preventing leakage (it will be clearly
+                // visible to the user).
+                "-avoid_negative_ts".as_ref(),
+                "make_zero".as_ref(),
                 "-y".as_ref(),
             ]
             .to_vec();
