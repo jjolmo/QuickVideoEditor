@@ -1,20 +1,22 @@
 # Yuri Chornoivan <yurchor@ukr.net>, 2023, 2024, 2025, 2026.
+# Dymko <Dymkovych@proton.me>, 2026.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Video Trimmer\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues"
-"\n"
-"POT-Creation-Date: 2026-03-21 07:21+0000\n"
-"PO-Revision-Date: 2026-03-23 08:26+0200\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
+"issues\n"
+"POT-Creation-Date: 2026-05-26 05:57+0000\n"
+"PO-Revision-Date: 2026-07-13 12:53+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Lokalize 23.04.3\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Gtranslator 50.0\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n != 0 ? 1 : "
+"2);\n"
 
 #. Translators: shown in --help usage line as: video-trimmer [OPTION…] [VIDEO]
 #: src/application.rs:40
@@ -49,13 +51,11 @@ msgstr "Часова позначка кінця"
 
 #. Translators: --precise commandline option description.
 #: src/application.rs:80
-#| msgid "Precise Trim"
 msgid "Precise trim (re-encode)"
 msgstr "Точне підрізання (повторне кодування)"
 
 #. Translators: --remove-audio commandline option description.
 #: src/application.rs:90
-#| msgid "Remove Audio"
 msgid "Remove audio"
 msgstr "Вилучити звук"
 
@@ -128,7 +128,7 @@ msgstr "Крок назад"
 #. Translators: Title that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:17
 msgid "Could Not Load Video Track"
-msgstr "Не можливо завантажити доріжку відеозапису"
+msgstr "Неможливо завантажити доріжку відеозапису"
 
 #. Translators: Description that is shown if we couldn't load the video track for the opened file (but possibly loaded audio).
 #: src/video_preview.blp:20
@@ -149,20 +149,20 @@ msgid "Open video"
 msgstr "Відкрити відеозапис"
 
 #. Translators: error dialog title.
-#: src/window.rs:271 src/window.rs:434 src/window.rs:677
+#: src/window.rs:271 src/window.rs:434 src/window.rs:694
 msgid "Error"
 msgstr "Помилка"
 
 #. Translators: error dialog text.
-#: src/window.rs:274 src/window.rs:437 src/window.rs:680
+#: src/window.rs:274 src/window.rs:437 src/window.rs:697
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr ""
 "Video Trimmer може оперувати лише локальними файлами. Оберіть інший файл."
 
 #. Translators: error dialog button.
-#: src/window.rs:279 src/window.rs:442 src/window.rs:619 src/window.rs:641
-#: src/window.rs:685
+#: src/window.rs:279 src/window.rs:442 src/window.rs:636 src/window.rs:658
+#: src/window.rs:702
 msgid "_OK"
 msgstr "_Гаразд"
 
@@ -172,18 +172,18 @@ msgid " ({} - {})"
 msgstr " ({} - {})"
 
 #. Translators: message dialog text.
-#: src/window.rs:529
+#: src/window.rs:546
 msgid "Trimming…"
 msgstr "Обрізання…"
 
 #. Translators: trimming dialog button.
-#: src/window.rs:532
+#: src/window.rs:549
 msgid "_Cancel"
 msgstr "_Скасувати"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:552
+#: src/window.rs:569
 #, rust-format
 msgid "{} has been saved"
 msgstr "{} було збережено"
@@ -191,83 +191,82 @@ msgstr "{} було збережено"
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:559
+#: src/window.rs:576
 msgid "Show in Files"
-msgstr "Показувати у Файлах"
+msgstr "Показати у Файлах"
 
 #. Translators: error dialog heading.
-#: src/window.rs:591
+#: src/window.rs:608
 msgid "Error trimming video"
 msgstr "Помилка обрізання відео"
 
 #. Translators: error dialog text before the FFmpeg
 #. error output.
-#: src/window.rs:595
+#: src/window.rs:612
 msgid "Please attach the following information when reporting an issue."
 msgstr "Будь ласка, долучіть до звіту щодо вади наведені нижче дані."
 
-#: src/window.rs:606
+#: src/window.rs:623
 msgid "Could not communicate with the ffmpeg subprocess"
-msgstr "Не можливо комунікувати з підпроцесом ffmpeg"
+msgstr "Неможливо комунікувати з підпроцесом ffmpeg"
 
 #. Translators: error dialog text.
-#: src/window.rs:637
+#: src/window.rs:654
 msgid "Could not create the ffmpeg subprocess"
-msgstr "Не можливо створити підпроцес ffmpeg"
+msgstr "Неможливо створити підпроцес ffmpeg"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:902
+#: src/window.rs:919
 msgid "translator-credits"
 msgstr "Andrij Mizyk"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:905
+#: src/window.rs:922
 msgid "Contribute Translations"
 msgstr "Допомогти з перекладом"
 
 #. Translators: name of https://gitlab.gnome.org/YaLTeR/identity
-#: src/window.rs:911
+#: src/window.rs:928
 msgid "Identity"
 msgstr "Профіль"
 
 #. Translators: summary of https://gitlab.gnome.org/YaLTeR/identity
-#: src/window.rs:913
+#: src/window.rs:930
 msgid "Compare images and videos"
 msgstr "Порівняння зображень і відео"
 
-#: src/window.rs:920
+#: src/window.rs:937
 msgid ""
 "This release improves the default output file naming and adds command-line "
 "options."
 msgstr ""
-"У цьому випуску удосконалено визначення типової назви файла результатів та"
-" додано параметри командного рядка."
+"У цьому випуску удосконалено визначення типової назви файла результатів та "
+"додано параметри командного рядка."
 
-#: src/window.rs:921
+#: src/window.rs:938
 msgid "The default output filename now includes start and end timestamps."
 msgstr ""
-"До типових назв файлів результатів нова версія програми додає часові"
-" позначки початку і кінця."
+"До типових назв файлів результатів нова версія програми додає часові "
+"позначки початку і кінця."
 
-#: src/window.rs:922
+#: src/window.rs:939
 msgid ""
 "Added command-line flags for start and end timestamps, precise trimming, and "
 "removing audio."
 msgstr ""
-"Додано прапорці командного рядка для часових позначок початку і кінця,"
-" точного підрізання та вилучення звукових даних."
+"Додано прапорці командного рядка для часових позначок початку і кінця, "
+"точного підрізання та вилучення звукових даних."
 
-#: src/window.rs:923
+#: src/window.rs:940
 msgid "Increased the default window size to make the video 960×540."
 msgstr ""
 "Збільшено типовий розмір вікна для забезпечення розмірів відео 960×540."
 
-#: src/window.rs:924
-#| msgid "Updated to the GNOME 48 platform."
+#: src/window.rs:941
 msgid "Updated to the GNOME 50 platform."
 msgstr "Програму оновлено до платформи GNOME 50."
 
-#: src/window.rs:925
+#: src/window.rs:942
 msgid "Updated translations."
 msgstr "Оновлено переклади."
 
@@ -367,7 +366,7 @@ msgstr "Кінець"
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:3
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:6
 msgid "Trim videos quickly"
-msgstr "Обрізати відеозаписи швидко"
+msgstr "Швидке обрізання відеозаписів"
 
 #. Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.desktop.in.in:5
