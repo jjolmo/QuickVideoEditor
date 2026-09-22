@@ -7,8 +7,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: video-trimmer master\n"
-"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues\n"
-"POT-Creation-Date: 2026-03-20 17:04+0000\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/YaLTeR/video-trimmer/-/"
+"issues\n"
+"POT-Creation-Date: 2026-07-27 10:34+0000\n"
 "PO-Revision-Date: 2026-03-20 17:57+0000\n"
 "Last-Translator: Sveinn í Felli <sv1@fellsnet.is>\n"
 "Language-Team: Icelandic\n"
@@ -137,8 +138,7 @@ msgid ""
 "Maybe the file only has an audio track, or maybe the necessary video codec "
 "is missing."
 msgstr ""
-"Kannski hefur skráin aðeins hljóðrás, eða kannski er vantar víxilþjöpunn "
-"fyrir myndskeiðið."
+"Kannski er skráin aðeins með  hljóðrás, eða kannski vantar myndkóðunarlykil "
 
 #. Translators: file chooser file filter name.
 #: src/window.rs:253
@@ -151,19 +151,19 @@ msgid "Open video"
 msgstr "Opna myndskeið"
 
 #. Translators: error dialog title.
-#: src/window.rs:271 src/window.rs:434 src/window.rs:677
+#: src/window.rs:271 src/window.rs:434 src/window.rs:694
 msgid "Error"
 msgstr "Villa"
 
 #. Translators: error dialog text.
-#: src/window.rs:274 src/window.rs:437 src/window.rs:680
+#: src/window.rs:274 src/window.rs:437 src/window.rs:697
 msgid ""
 "Video Trimmer can only operate on local files. Please choose another file."
 msgstr "Video Trimmer getur bara unnið með staðværar skrár. Veldu aðra skrá."
 
 #. Translators: error dialog button.
-#: src/window.rs:279 src/window.rs:442 src/window.rs:619 src/window.rs:641
-#: src/window.rs:685
+#: src/window.rs:279 src/window.rs:442 src/window.rs:636 src/window.rs:658
+#: src/window.rs:702
 msgid "_OK"
 msgstr "Í _lagi"
 
@@ -173,95 +173,94 @@ msgid " ({} - {})"
 msgstr " ({} - {})"
 
 #. Translators: message dialog text.
-#: src/window.rs:529
+#: src/window.rs:546
 msgid "Trimming…"
 msgstr "Framkvæmi klippingu..."
 
 #. Translators: trimming dialog button.
-#: src/window.rs:532
+#: src/window.rs:549
 msgid "_Cancel"
 msgstr "_Hætta við"
 
 #. Translators: text on the toast after trimming was done.
 #. The placeholder is the video filename.
-#: src/window.rs:552
+#: src/window.rs:569
 #, rust-format
 msgid "{} has been saved"
-msgstr "{} hefur verið vistuð"
+msgstr "{} hefur verið vistað"
 
 #. Translators: text on the button of the toast after
 #. trimming was done to show the output file in the file
 #. manager.
-#: src/window.rs:559
+#: src/window.rs:576
 msgid "Show in Files"
 msgstr "Sýna í skrám"
 
 #. Translators: error dialog heading.
-#: src/window.rs:591
+#: src/window.rs:608
 msgid "Error trimming video"
 msgstr "Villa við að klippa myndskeið"
 
 #. Translators: error dialog text before the FFmpeg
 #. error output.
-#: src/window.rs:595
+#: src/window.rs:612
 msgid "Please attach the following information when reporting an issue."
 msgstr "Vinsamlegast hafðu eftirfarandi upplýsingar með í villuskýrslu."
 
-#: src/window.rs:606
+#: src/window.rs:623
 msgid "Could not communicate with the ffmpeg subprocess"
-msgstr "Gat ekki átt samskipti við ffmpeg undirferli"
+msgstr "Gat ekki átt samskipti við ffmpeg-undirferli"
 
 #. Translators: error dialog text.
-#: src/window.rs:637
+#: src/window.rs:654
 msgid "Could not create the ffmpeg subprocess"
-msgstr "gat ekki myndað ffmepeg undirferli"
+msgstr "Gat ekki myndað ffmepeg-undirferli"
 
 #. Translators: shown in the About dialog, put your name here.
-#: src/window.rs:902
+#: src/window.rs:919
 msgid "translator-credits"
 msgstr "Ingirafn ingirafn at this dot is ,2023"
 
 #. Translators: link title in the About dialog.
-#: src/window.rs:905
+#: src/window.rs:922
 msgid "Contribute Translations"
 msgstr "Leggðu til þýðingar"
 
 #. Translators: name of https://gitlab.gnome.org/YaLTeR/identity
-#: src/window.rs:911
+#: src/window.rs:928
 msgid "Identity"
 msgstr "Auðkenni"
 
 #. Translators: summary of https://gitlab.gnome.org/YaLTeR/identity
-#: src/window.rs:913
+#: src/window.rs:930
 msgid "Compare images and videos"
-msgstr "Bera saman myndir og hreyfimyndir"
+msgstr "Bera saman myndir og myndskeið"
 
-#: src/window.rs:920
+#: src/window.rs:937
 msgid ""
 "This release improves the default output file naming and adds command-line "
 "options."
 msgstr ""
 
-#: src/window.rs:921
+#: src/window.rs:938
 msgid "The default output filename now includes start and end timestamps."
 msgstr "Sjálfgefið skráarheiti inniheldur núna upphaf og endi tímamerkja."
 
-#: src/window.rs:922
+#: src/window.rs:939
 msgid ""
 "Added command-line flags for start and end timestamps, precise trimming, and "
 "removing audio."
 msgstr ""
 
-#: src/window.rs:923
+#: src/window.rs:940
 msgid "Increased the default window size to make the video 960×540."
 msgstr "Sjálfgefin stærð glugga var aukin í 960×540px."
 
-#: src/window.rs:924
-#| msgid "Updated to the GNOME 45 platform."
+#: src/window.rs:941
 msgid "Updated to the GNOME 50 platform."
 msgstr "Uppfært í GNOME 50 kerfið."
 
-#: src/window.rs:925
+#: src/window.rs:942
 msgid "Updated translations."
 msgstr "Þýðingar uppfærðar."
 
@@ -292,7 +291,6 @@ msgstr "Hægvirkara og gæðin gætu verið lakari vegna endurkóðunar"
 
 #. Translators: Options menu entry that strips audio from the video file.
 #: src/window.blp:39
-#| msgid "Remove audio"
 msgid "Remove Audio"
 msgstr "Fjarlægja hljóð"
 
@@ -344,10 +342,10 @@ msgid ""
 "If you're running Video Trimmer under Flatpak, note that opening files by "
 "drag-and-drop may not work."
 msgstr ""
-"Setjið tímahak handvirkt inn við byrjun og enda.\n"
+"Settu tímamerki handvirkt inn við byrjun og enda.\n"
 "\n"
 "Ef þú settir upp Video Trimmer með flatpak, getur verið að draga og sleppa "
-"eiginleikin sé ekki virkur."
+"eiginleikinn sé ekki virkur."
 
 #. Translators: Label for the entry for the start timestamp.
 #: src/window.blp:175
@@ -371,6 +369,7 @@ msgstr "Klippa;Kvikmynd;Ræma;Myndskeið;"
 
 #. developer_name tag deprecated with Appstream 1.0
 #: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:13
+#: data/org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml.in.in:15
 msgid "Ivan Molodetskikh"
 msgstr "Ivan Molodetskikh"
 
@@ -425,4 +424,3 @@ msgstr "Aðalgluggi"
 
 #~ msgid "Press the Open button to open a video file."
 #~ msgstr "Smelltu á opna valhnappinn til að opna skrá."
-
