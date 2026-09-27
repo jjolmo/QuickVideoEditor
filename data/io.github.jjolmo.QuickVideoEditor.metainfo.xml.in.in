@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Copyright 2020 Ivan Molodetskikh -->
+<!-- Copyright 2020 Ivan Molodetskikh; fork by jjolmo -->
 <component type="desktop-application">
 	<id>@app_id@</id>
-	<name>Video Trimmer</name>
+	<name>Quick Video Editor</name>
 	<summary>Trim videos quickly</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
 	<launchable type="desktop-id">@app_id@.desktop</launchable>
-	<translation type="gettext">video-trimmer</translation>
+	<translation type="gettext">quick-video-editor</translation>
 	<content_rating type="oars-1.0" />
 	<!-- developer_name tag deprecated with Appstream 1.0 -->
-	<developer_name>Ivan Molodetskikh</developer_name>
-	<developer id="rs.bxt">
-		<name>Ivan Molodetskikh</name>
+	<developer_name>jjolmo</developer_name>
+	<developer id="io.github.jjolmo">
+		<name>jjolmo</name>
 	</developer>
-	<update_contact>yalterz@gmail.com</update_contact>
-	<url type="homepage">https://gitlab.gnome.org/YaLTeR/video-trimmer</url>
-	<url type="bugtracker">https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues</url>
+	<update_contact>olmogil@gmail.com</update_contact>
+	<url type="homepage">https://github.com/jjolmo/QuickVideoEditor</url>
+	<url type="bugtracker">https://github.com/jjolmo/QuickVideoEditor/issues</url>
 	<url type="translate">https://l10n.gnome.org/module/video-trimmer/</url>
-	<url type="vcs-browser">https://gitlab.gnome.org/YaLTeR/video-trimmer</url>
+	<url type="vcs-browser">https://github.com/jjolmo/QuickVideoEditor</url>
 	<description>
 		<p>
-			Video Trimmer cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality.
+			Quick Video Editor cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality.
+		</p>
+		<p>
+			Quick Video Editor is a fork of Video Trimmer by Ivan Molodetskikh.
 		</p>
 	</description>
 	<screenshots>
@@ -134,7 +137,7 @@
 					<li>Added a checkbox for accurate trimming with re-encoding to the output file selection dialog.</li>
 					<li>Updated the design to better match the newer version of the Adwaita theme.</li>
 					<li>Added dark style and high contrast support and made dark style the default.</li>
-					<li>Added a "Show in Files" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Video Trimmer the filesystem=host permission (for example, using Flatseal).</li>
+					<li>Added a "Show in Files" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Quick Video Editor the filesystem=host permission (for example, using Flatseal).</li>
 					<li>Added Japanese translation (thanks Sibuya Kaz).</li>
 					<li>Added Polish translation (thanks Avery).</li>
 					<li>Added Portuguese translation (thanks Bio DevM).</li>
@@ -167,17 +170,17 @@
 				<p>This release contains a few small improvements.</p>
 				<ul>
 					<li>The default name for the output video is now "input video name (trimmed)".</li>
-					<li>The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Video Trimmer the filesystem=host permission (for example, using Flatseal).</li>
-					<li>It's now possible to open a new Video Trimmer window from the new primary menu.</li>
+					<li>The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Quick Video Editor the filesystem=host permission (for example, using Flatseal).</li>
+					<li>It's now possible to open a new Quick Video Editor window from the new primary menu.</li>
 					<li>The timestamp text fields are now arranged in a better way in RTL languages.</li>
-					<li>Video Trimmer now uses libadwaita, which means a slightly updated visual style (rounded window corners!).</li>
+					<li>Quick Video Editor now uses libadwaita, which means a slightly updated visual style (rounded window corners!).</li>
 					<li>Updated translations.</li>
 				</ul>
 			</description>
 		</release>
 		<release version="0.5.0" date="2021-03-29">
 			<description>
-				<p>Video Trimmer is now a GTK 4 application!</p>
+				<p>Quick Video Editor is now a GTK 4 application!</p>
 				<ul>
 					<li>The GTK 4 port hopefully fixes video-driver-related crashes.</li>
 					<li>Improved window animations when opening videos.</li>
@@ -211,7 +214,7 @@
 				<p>This release replaces the Done dialog with an in-app notification and adds a command-line argument to specify the output file.</p>
 				<ul>
 					<li>Added an --output or -o argument to specify the output video path. It will be pre-filled in the save dialog.</li>
-					<li>Added support for opening videos with DnD, although it doesn't work on Flatpak unless Video Trimmer is given filesystem access.</li>
+					<li>Added support for opening videos with DnD, although it doesn't work on Flatpak unless Quick Video Editor is given filesystem access.</li>
 					<li>Replaced the Done dialog with an in-app notification to better follow the GNOME HIG.</li>
 				</ul>
 			</description>
@@ -225,7 +228,7 @@
 			<description>
 				<p>This release fixes crashes related to video preview errors, adds a Ctrl+Q exit shortcut and a Dutch translation.</p>
 				<ul>
-					<li>Added a Ctrl+Q shortcut to quit Video Trimmer.</li>
+					<li>Added a Ctrl+Q shortcut to quit Quick Video Editor.</li>
 					<li>Added a Dutch translation.</li>
 					<li>Made video preview display an error message when it fails to load.</li>
 					<li>Fixed a crash when the GL runtime is not installed (e.g. when installing the Flathub package on clean Ubuntu 18.04 through Ubuntu Software).</li>

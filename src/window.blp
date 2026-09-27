@@ -17,7 +17,7 @@ menu primary_menu {
 
     item {
       /* Translators: Primary menu entry that opens the About dialog. */
-      label: _("_About Video Trimmer");
+      label: _("_About Quick Video Editor");
       action: "win.about";
     }
   }
@@ -42,7 +42,7 @@ Popover popover_options {
 }
 
 template $VtWindow : Adw.ApplicationWindow {
-  title: _("Video Trimmer");
+  title: _("Quick Video Editor");
 
   /* These parameters are chosen to make the default size of the video 960×540. */
   default-width: 960;
@@ -71,7 +71,7 @@ template $VtWindow : Adw.ApplicationWindow {
 
         content: Adw.StatusPage {
           vexpand: true;
-          icon-name: "video-trimmer-symbolic";
+          icon-name: "quick-video-editor-symbolic";
 
           /* Translators: Title text on the window when no files are open. */
           title: _("Trim Videos");
@@ -152,7 +152,7 @@ template $VtWindow : Adw.ApplicationWindow {
                 title: _("Video Preview Failed to Load");
 
                 /* Translators: Description that is shown upon video preview loading error. */
-                description: _("Please enter the start and end timestamps manually.\n\nIf you\'re running Video Trimmer under Flatpak, note that opening files by drag-and-drop may not work.");
+                description: _("Please enter the start and end timestamps manually.\n\nIf you\'re running Quick Video Editor under Flatpak, note that opening files by drag-and-drop may not work.");
               };
             };
           }

@@ -12,7 +12,7 @@ mod imp {
 
     #[derive(Debug, Default, CompositeTemplate, Properties)]
     #[properties(wrapper_type = super::VtVideoPreview)]
-    #[template(resource = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/video_preview.ui")]
+    #[template(resource = "/io/github/jjolmo/QuickVideoEditor/video_preview.ui")]
     pub struct VtVideoPreview {
         #[template_child]
         overlay: TemplateChild<adw::ToastOverlay>,

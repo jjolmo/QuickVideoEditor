@@ -1,4 +1,4 @@
-project('video-trimmer',
+project('quick-video-editor',
         'rust',
           version: '26.03.1',
     meson_version: '>= 0.59.0',
@@ -29,7 +29,7 @@ else
   version_suffix = ''
 endif
 
-base_id = 'org.gnome.gitlab.YaLTeR.VideoTrimmer'
+base_id = 'io.github.jjolmo.QuickVideoEditor'
 app_id = base_id + app_id_suffix
 
 sources = files(

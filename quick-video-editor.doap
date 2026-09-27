@@ -5,9 +5,9 @@
     xmlns:foaf="http://xmlns.com/foaf/0.1/"
     xmlns:gnome="http://api.gnome.org/doap-extensions#"
     xmlns="http://usefulinc.com/ns/doap#">
-  <name xml:lang="en">Video Trimmer</name>
+  <name xml:lang="en">Quick Video Editor</name>
   <shortdesc xml:lang="en">Trim videos quickly</shortdesc>
-  <description xml:lang="en">Video Trimmer cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality.</description>
+  <description xml:lang="en">Quick Video Editor cuts out a fragment of a video given the start and end timestamps. The video is never re-encoded, so the process is very fast and does not reduce the video quality.</description>
   <bug-database rdf:resource="https://gitlab.gnome.org/YaLTeR/video-trimmer/-/issues" />
   <programming-language>Rust</programming-language>
   <maintainer>

@@ -42,7 +42,7 @@ if appstreamcli.found()
   )
 endif
 
-install_data('org.gnome.gitlab.YaLTeR.VideoTrimmer.gschema.xml',
+install_data('io.github.jjolmo.QuickVideoEditor.gschema.xml',
   install_dir: get_option('datadir') / 'glib-2.0' / 'schemas'
 )
 gnome.compile_schemas()

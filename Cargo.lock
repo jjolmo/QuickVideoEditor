@@ -638,6 +638,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "quick-video-editor"
+version = "0.1.0"
+dependencies = [
+ "futures-util",
+ "gettext-rs",
+ "glib",
+ "gtk4",
+ "json",
+ "libadwaita",
+ "log",
+ "mime_guess",
+]
+
+[[package]]
 name = "quote"
 version = "1.0.45"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -850,20 +864,6 @@ name = "version-compare"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "03c2856837ef78f57382f06b2b8563a2f512f7185d732608fd9176cb3b8edf0e"
-
-[[package]]
-name = "video-trimmer"
-version = "0.1.0"
-dependencies = [
- "futures-util",
- "gettext-rs",
- "glib",
- "gtk4",
- "json",
- "libadwaita",
- "log",
- "mime_guess",
-]
 
 [[package]]
 name = "winapi"

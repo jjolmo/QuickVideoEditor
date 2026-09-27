@@ -79,7 +79,7 @@ mod imp {
 
     #[derive(Debug, Default, CompositeTemplate, Properties)]
     #[properties(wrapper_type = super::VtWindow)]
-    #[template(resource = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/window.ui")]
+    #[template(resource = "/io/github/jjolmo/QuickVideoEditor/window.ui")]
     pub struct VtWindow {
         #[template_child]
         video_preview: TemplateChild<VtVideoPreview>,
@@ -271,7 +271,7 @@ mod imp {
                                 .heading(gettext("Error"))
                                 .body(gettext(
                                     // Translators: error dialog text.
-                                    "Video Trimmer can only operate on local files. \
+                                    "Quick Video Editor can only operate on local files. \
 Please choose another file.",
                                 ))
                                 .build();
@@ -434,7 +434,7 @@ Please choose another file.",
                                 .heading(gettext("Error"))
                                 .body(gettext(
                                     // Translators: error dialog text.
-                                    "Video Trimmer can only operate on local files. \
+                                    "Quick Video Editor can only operate on local files. \
 Please choose another file.",
                                 ))
                                 .build();
@@ -694,7 +694,7 @@ when reporting an issue.",
                     .heading(gettext("Error"))
                     .body(gettext(
                         // Translators: error dialog text.
-                        "Video Trimmer can only operate on local files. \
+                        "Quick Video Editor can only operate on local files. \
 Please choose another file.",
                     ))
                     .build();
@@ -911,8 +911,8 @@ Please choose another file.",
             });
 
             klass.install_action("win.about", None, |window, _, _| {
-                let resource_path = "/org/gnome/gitlab/YaLTeR/VideoTrimmer/\
-                                     org.gnome.gitlab.YaLTeR.VideoTrimmer.metainfo.xml";
+                let resource_path = "/io/github/jjolmo/QuickVideoEditor/\
+                                     io.github.jjolmo.QuickVideoEditor.metainfo.xml";
                 let about_window = adw::AboutDialog::from_appdata(resource_path, Some("26.03"));
                 about_window.set_version(config::VERSION);
                 // Translators: shown in the About dialog, put your name here.

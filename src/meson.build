@@ -21,9 +21,9 @@ blueprints = custom_target('blueprints',
   command: [blueprint_compiler, 'batch-compile', '@OUTDIR@', '@CURRENT_SOURCE_DIR@', '@INPUT@'],
 )
 
-gnome.compile_resources('video-trimmer',
+gnome.compile_resources('quick-video-editor',
   configure_file(
-    input: 'video_trimmer.gresource.xml.in',
+    input: 'quick_video_editor.gresource.xml.in',
     output: '@BASENAME@',
     configuration: { 'appdata-file': appstream_file.full_path() },
   ),
@@ -39,7 +39,7 @@ conf.set_quoted('PKGDATADIR', pkgdatadir)
 conf.set_quoted('VERSION', meson.project_version() + version_suffix)
 conf.set_quoted('NAME_SUFFIX', name_suffix)
 conf.set_quoted('APP_ID', app_id)
-conf.set_quoted('G_LOG_DOMAIN', 'VideoTrimmer')
+conf.set_quoted('G_LOG_DOMAIN', 'QuickVideoEditor')
 conf.set_quoted('PROFILE', profile)
 
 configure_file(

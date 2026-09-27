@@ -36,7 +36,7 @@ mod imp {
             let obj = self.obj();
             self.parent_constructed();
 
-            // Translators: shown in --help usage line as: video-trimmer [OPTION…] [VIDEO]
+            // Translators: shown in --help usage line as: quick-video-editor [OPTION…] [VIDEO]
             obj.set_option_context_parameter_string(Some(&gettext("[VIDEO]")));
 
             obj.add_main_option(
@@ -220,7 +220,7 @@ impl VtApplication {
             .property("flags", flags)
             .property(
                 "resource-base-path",
-                "/org/gnome/gitlab/YaLTeR/VideoTrimmer",
+                "/io/github/jjolmo/QuickVideoEditor",
             )
             .build()
     }

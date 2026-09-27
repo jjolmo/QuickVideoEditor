@@ -1,19 +1,19 @@
 {
-    "app-id" : "org.gnome.gitlab.YaLTeR.VideoTrimmer.Devel",
+    "app-id" : "io.github.jjolmo.QuickVideoEditor.Devel",
     "runtime" : "org.gnome.Platform",
     "runtime-version" : "master",
     "sdk" : "org.gnome.Sdk",
     "sdk-extensions" : [
         "org.freedesktop.Sdk.Extension.rust-stable"
     ],
-    "command" : "video-trimmer",
+    "command" : "quick-video-editor",
     "tags" : [
         "nightly"
     ],
     "desktop-file-name-suffix" : " (Devel)",
     "finish-args" : [
         "--env=RUST_BACKTRACE=1",
-        "--env=G_MESSAGES_DEBUG=VideoTrimmer",
+        "--env=G_MESSAGES_DEBUG=QuickVideoEditor",
         "--share=ipc",
         "--socket=fallback-x11",
         "--socket=wayland",
@@ -31,7 +31,7 @@
     },
     "modules" : [
         {
-            "name" : "video-trimmer",
+            "name" : "quick-video-editor",
             "buildsystem" : "meson",
             "builddir" : true,
             "run-tests" : true,
