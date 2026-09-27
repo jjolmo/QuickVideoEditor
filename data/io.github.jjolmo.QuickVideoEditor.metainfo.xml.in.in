@@ -3,7 +3,7 @@
 <component type="desktop-application">
 	<id>@app_id@</id>
 	<name>Quick Video Editor</name>
-	<summary>Trim videos quickly</summary>
+	<summary>Edit videos quickly</summary>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0-or-later</project_license>
 	<launchable type="desktop-id">@app_id@.desktop</launchable>
@@ -38,213 +38,16 @@
 		<color type="primary" scheme_preference="dark">#1c3f68</color>
 	</branding>
 	<releases>
-		<release version="26.03.1" date="2026-05-26">
+		<release version="0.1.0" date="2026-09-27">
 			<description>
-				<p>Fixed known cases of the trimmed video containing earlier frames that only show up in some players (VLC, Firefox).</p>
-			</description>
-		</release>
-		<release version="26.03" date="2026-03-20">
-			<description>
-				<p>This release improves the default output file naming and adds command-line options.</p>
+				<p>First release of Quick Video Editor, a fork of Video Trimmer 26.03.1.</p>
 				<ul>
-					<li>The default output filename now includes start and end timestamps.</li>
-					<li>Added command-line flags for start and end timestamps, precise trimming, and removing audio.</li>
-					<li>Increased the default window size to make the video 960×540.</li>
-					<li>Updated to the GNOME 50 platform.</li>
-					<li>Updated translations.</li>
+					<li>Editor mode: cut, move, trim and speed up segments of one or more videos, with crossfades where they overlap, undo and redo.</li>
+					<li>Music tracks with a movable waveform, volume and fade-out, and a volume knob for the videos' own audio.</li>
+					<li>Speed control from 10% to 1000% that keeps the pitch.</li>
+					<li>Export frame rate and resolution options, and snapping to 0:59 for social networks.</li>
+					<li>Preview built on GStreamer Editing Services, so the preview matches the export.</li>
 				</ul>
-			</description>
-		</release>
-		<release version="25.03" date="2025-03-30">
-			<description>
-				<p>This release makes the trimming options more discoverable.</p>
-				<ul>
-					<li>Changed the versioning scheme to year.month.</li>
-					<li>Moved the accurate trimming and remove audio options from the save dialog to the main window.</li>
-					<li>Added , and . shortcuts for short video stepping.</li>
-					<li>Updated to the GNOME 48 platform.</li>
-					<li>Updated translations.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.9.0" date="2024-09-30">
-			<description>
-				<p>This release improves the behavior of shortcuts and does a minor visual refresh for GNOME 47.</p>
-				<ul>
-					<li>Added I and O shortcuts to set start and end trimming point.</li>
-					<li>Made all single-letter shortcuts work even when the time input fields are focused.</li>
-					<li>Changed the play/pause Ctrl+Space shortcut to just Space.</li>
-					<li>The video now starts paused after opening.</li>
-					<li>Updated to the GNOME 47 platform.</li>
-					<li>Updated translations.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.8.2" date="2023-10-08">
-			<description>
-				<p>This release contains a minor visual refresh for GNOME 45.</p>
-				<ul>
-					<li>Tweaked the visual style for the GNOME 45 release.</li>
-					<li>Fixed app crashing when ffprobe is missing.</li>
-					<li>Updated to the GNOME 45 platform.</li>
-					<li>Updated translations.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.8.1" date="2023-04-14">
-			<description>
-				<p>This release adds keyboard shortcuts and fixes a rare crash with some files.</p>
-				<ul>
-					<li>Added several keyboard shortcuts along with the shortcuts window listing them.</li>
-					<li>Fixed app crashing when opening files which involve invalid UTF-8.</li>
-					<li>Updated to the GNOME 44 platform.</li>
-					<li>Added Arabic translation (thanks tech-man).</li>
-					<li>Added Occitan translation (thanks Quentin PAGÈS).</li>
-					<li>Updated translations.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.8.0" date="2022-10-14">
-			<description>
-				<p>This release fixes app closing on inaccessible files and updates it to the GNOME 43 platform.</p>
-				<ul>
-					<li>Fixed app closing when trying to open inaccessible files.</li>
-					<li>Fixed crash when trying to open files from network locations.</li>
-					<li>Updated to the GNOME 43 platform, which brings the ability to drag-and-drop from Files on Flatpak and a refreshed About dialog.</li>
-					<li>Added Tamil translation (thanks K.B.Dharun Krishna).</li>
-					<li>Updated translations.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.7.1" date="2022-03-23">
-			<description>
-				<p>This release enables "Show in Files" for Flatpak and updates translations.</p>
-				<ul>
-					<li>The "Show in Files" button has been enabled for all Flatpak installs.</li>
-					<li>Added Czech translation (thanks Jakub Mach).</li>
-					<li>Added French translation.</li>
-					<li>Added Galician translation (thanks Fran Diéguez).</li>
-					<li>Added Turkish translation.</li>
-					<li>Added Ukrainian translation (thanks Andrij Mizyk).</li>
-					<li>Updated translations.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.7.0" date="2021-12-08">
-			<description>
-				<p>This release adds an accurate trimming with re-encoding option and refreshes the design a bit.</p>
-				<ul>
-					<li>Added a checkbox for accurate trimming with re-encoding to the output file selection dialog.</li>
-					<li>Updated the design to better match the newer version of the Adwaita theme.</li>
-					<li>Added dark style and high contrast support and made dark style the default.</li>
-					<li>Added a "Show in Files" button to the trimming done notification. Note: due to a limitation this is currently disabled on some Flatpak installs, but you can make it work by giving Quick Video Editor the filesystem=host permission (for example, using Flatseal).</li>
-					<li>Added Japanese translation (thanks Sibuya Kaz).</li>
-					<li>Added Polish translation (thanks Avery).</li>
-					<li>Added Portuguese translation (thanks Bio DevM).</li>
-					<li>Updated translations.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.6.1" date="2021-09-11">
-			<description>
-				<p>This release contains a few improvements and adds a number of translations.</p>
-				<ul>
-					<li>Added a checkbox to remove the audio track to the output file selection dialog.</li>
-					<li>The video is now automatically paused when the trim button is pressed.</li>
-					<li>The .mp4 output file extension is no longer default when it cannot be used (this affected videos from some Sony cameras).</li>
-					<li>Added a message when the opened file has no video track.</li>
-					<li>Updated libadwaita, which means slightly newer version of the Adwaita theme.</li>
-					<li>Fixed a crash after closing a window with a visible notification.</li>
-					<li>Added German translation (thanks Johannes Hayeß).</li>
-					<li>Added Basque translation (thanks Sergio).</li>
-					<li>Added Hungarian translation (thanks ovari).</li>
-					<li>Added Italian translation (thanks Albano Battistella).</li>
-					<li>Added Brazilian Portuguese translation (thanks Gustavo Costa).</li>
-					<li>Specified input device and screen size recommendations to improve display in the new GNOME Software.</li>
-					<li>Updated translations.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.6.0" date="2021-05-13">
-			<description>
-				<p>This release contains a few small improvements.</p>
-				<ul>
-					<li>The default name for the output video is now "input video name (trimmed)".</li>
-					<li>The default folder for the output video is now the input video's folder. Note: to make this work under Flatpak, you'll need to give Quick Video Editor the filesystem=host permission (for example, using Flatseal).</li>
-					<li>It's now possible to open a new Quick Video Editor window from the new primary menu.</li>
-					<li>The timestamp text fields are now arranged in a better way in RTL languages.</li>
-					<li>Quick Video Editor now uses libadwaita, which means a slightly updated visual style (rounded window corners!).</li>
-					<li>Updated translations.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.5.0" date="2021-03-29">
-			<description>
-				<p>Quick Video Editor is now a GTK 4 application!</p>
-				<ul>
-					<li>The GTK 4 port hopefully fixes video-driver-related crashes.</li>
-					<li>Improved window animations when opening videos.</li>
-					<li>Added Croatian translation (thanks milotype).</li>
-					<li>Updated translations.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.4.2" date="2021-02-25">
-			<description>
-				<p>This release fixes an error when trimming GoPro recordings.</p>
-				<ul>
-					<li>Data streams are no longer copied to the output file as a workaround to prevent errors on GoPro recordings.</li>
-					<li>Updated Spanish translation.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.4.1" date="2021-01-20">
-			<description>
-				<p>This release fixes an issue where not all streams from the input file were copied into the output file.</p>
-				<ul>
-					<li>All input file streams are now copied to the output file rather than just a single of each type. Subtitles are now copied too rather than skipped.</li>
-					<li>Added Swedish translation (thanks Åke Engelbrektson).</li>
-					<li>Added Spanish translation (thanks Óscar Fernández Díaz).</li>
-					<li>Made the commandline argument description translatable.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.4.0" date="2020-11-20">
-			<description>
-				<p>This release replaces the Done dialog with an in-app notification and adds a command-line argument to specify the output file.</p>
-				<ul>
-					<li>Added an --output or -o argument to specify the output video path. It will be pre-filled in the save dialog.</li>
-					<li>Added support for opening videos with DnD, although it doesn't work on Flatpak unless Quick Video Editor is given filesystem access.</li>
-					<li>Replaced the Done dialog with an in-app notification to better follow the GNOME HIG.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.3.1" date="2020-10-11">
-			<description>
-				<p>This release fixes file filter not working on Flatpak and possibly a related file chooser crash.</p>
-			</description>
-		</release>
-		<release version="0.3.0" date="2020-08-29">
-			<description>
-				<p>This release fixes crashes related to video preview errors, adds a Ctrl+Q exit shortcut and a Dutch translation.</p>
-				<ul>
-					<li>Added a Ctrl+Q shortcut to quit Quick Video Editor.</li>
-					<li>Added a Dutch translation.</li>
-					<li>Made video preview display an error message when it fails to load.</li>
-					<li>Fixed a crash when the GL runtime is not installed (e.g. when installing the Flathub package on clean Ubuntu 18.04 through Ubuntu Software).</li>
-					<li>Fixed a crash when required GStreamer plugins are not installed.</li>
-					<li>Fixed a crash on failing to change the playback position.</li>
-				</ul>
-			</description>
-		</release>
-		<release version="0.2.0" date="2020-07-06">
-			<description>
-				<p>This release adds a video preview and a timeline where the target region can be adjusted using the mouse.</p>
-			</description>
-		</release>
-		<release version="0.1.0" date="2020-04-29">
-			<description>
-				<p>First release.</p>
 			</description>
 		</release>
 	</releases>

@@ -1,0 +1,70 @@
+{
+    "app-id" : "io.github.jjolmo.QuickVideoEditor",
+    "runtime" : "org.gnome.Platform",
+    "runtime-version" : "50",
+    "sdk" : "org.gnome.Sdk",
+    "sdk-extensions" : [
+        "org.freedesktop.Sdk.Extension.rust-stable"
+    ],
+    "command" : "quick-video-editor",
+    "finish-args" : [
+        "--share=ipc",
+        "--socket=fallback-x11",
+        "--socket=wayland",
+        "--socket=pulseaudio",
+        "--device=dri",
+        "--filesystem=home"
+    ],
+    "build-options" : {
+        "append-path" : "/usr/lib/sdk/rust-stable/bin",
+        "build-args" : [
+            "--share=network"
+        ]
+    },
+    "cleanup" : [
+        "/include",
+        "/lib/pkgconfig",
+        "*.a"
+    ],
+    "modules" : [
+        {
+            "name" : "gst-editing-services",
+            "buildsystem" : "meson",
+            "config-opts" : [
+                "-Ddoc=disabled",
+                "-Dexamples=disabled",
+                "-Dintrospection=disabled",
+                "-Dtests=disabled",
+                "-Dtools=disabled",
+                "-Dbash-completion=disabled",
+                "-Dpython=disabled",
+                "-Dvalidate=disabled"
+            ],
+            "sources" : [
+                {
+                    "type" : "archive",
+                    "url" : "https://gstreamer.freedesktop.org/src/gst-editing-services/gst-editing-services-1.26.11.tar.xz",
+                    "sha256" : "a36e87900b44ac1608612f2d616fc032f9d7d920327c4d231affb6fe9349714d"
+                }
+            ]
+        },
+        {
+            "name" : "quick-video-editor",
+            "buildsystem" : "meson",
+            "builddir" : true,
+            "sources" : [
+                {
+                    "type" : "dir",
+                    "path" : "..",
+                    "skip" : [
+                        "build",
+                        "build-dev",
+                        ".flatpak-builder",
+                        "flatpak-build",
+                        "target"
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -9,16 +9,24 @@ use application::VtApplication;
 #[rustfmt::skip]
 mod config;
 use config::G_LOG_DOMAIN;
+mod editor_timeline;
+mod engine;
+mod knob;
+mod music_track;
+mod original_audio_track;
 mod parse;
 mod timeline;
 mod util;
 mod video_preview;
 mod window;
 
-/// NVDEC decoders intermittently hang the GtkMediaFile pipeline on seek, so prefer software
-/// decoding for the preview. Set before GTK initializes GStreamer; a user-provided value wins.
+/// NVDEC decoders intermittently hang the preview pipeline on seek, so prefer software decoding.
+/// avenc_aac, the only AAC encoder in the GNOME runtime, has no rank, so encodebin would never
+/// pick it for exports; higher-ranked encoders like fdkaacenc still win. Set before GTK
+/// initializes GStreamer; a user-provided value wins.
 const GST_RANK_OVERRIDES: &str = "nvh264dec:NONE,nvh265dec:NONE,nvav1dec:NONE,nvvp9dec:NONE,\
-                                  nvvp8dec:NONE,nvmpeg2videodec:NONE,nvmpeg4videodec:NONE";
+                                  nvvp8dec:NONE,nvmpeg2videodec:NONE,nvmpeg4videodec:NONE,\
+                                  avenc_aac:MARGINAL";
 
 fn main() -> glib::ExitCode {
     if env::var_os("GST_PLUGIN_FEATURE_RANK").is_none() {
@@ -32,6 +40,10 @@ fn main() -> glib::ExitCode {
     log::set_max_level(log::LevelFilter::Debug);
 
     info!("Quick Video Editor version {}", config::VERSION);
+
+    if let Err(err) = ges::init() {
+        glib::error!("could not initialize GStreamer Editing Services: {err}");
+    }
 
     setlocale(LocaleCategory::LcAll, "");
     if let Err(err) = bindtextdomain("quick-video-editor", config::LOCALEDIR) {
@@ -51,8 +63,10 @@ fn main() -> glib::ExitCode {
     ));
 
     let res = match env::var("MESON_DEVENV") {
-        Err(_) => gio::Resource::load(config::PKGDATADIR.to_owned() + "/quick-video-editor.gresource")
-            .expect("could not load the gresource file"),
+        Err(_) => {
+            gio::Resource::load(config::PKGDATADIR.to_owned() + "/quick-video-editor.gresource")
+                .expect("could not load the gresource file")
+        }
         Ok(_) => {
             let mut resource_path = env::current_exe().expect("unable to get executable path");
             resource_path.pop();
@@ -63,6 +77,8 @@ fn main() -> glib::ExitCode {
     };
 
     gio::resources_register(&res);
+
+    video_preview::VtVideoPreview::remove_stale_music_previews();
 
     let app = VtApplication::new();
     app.run()

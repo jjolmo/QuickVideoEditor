@@ -8,16 +8,20 @@ export OUTPUT="$3"
 export APP_ID_SUFFIX="$4"
 export APP_BIN="$5"
 
+# Copy via a temporary file so the build succeeds while the app is running.
+
 if [ "$APP_ID_SUFFIX" = ".Devel" ]
 then
     echo "DEBUG MODE"
     cargo build --manifest-path \
         "$MESON_SOURCE_ROOT"/Cargo.toml && \
-        cp "$CARGO_TARGET_DIR"/debug/"$APP_BIN" "$OUTPUT"
+        cp "$CARGO_TARGET_DIR"/debug/"$APP_BIN" "$OUTPUT.tmp" && \
+        mv -f "$OUTPUT.tmp" "$OUTPUT"
 else
     echo "RELEASE MODE"
     cargo build --manifest-path \
         "$MESON_SOURCE_ROOT"/Cargo.toml --release && \
-        cp "$CARGO_TARGET_DIR"/release/"$APP_BIN" "$OUTPUT"
+        cp "$CARGO_TARGET_DIR"/release/"$APP_BIN" "$OUTPUT.tmp" && \
+        mv -f "$OUTPUT.tmp" "$OUTPUT"
 fi
 

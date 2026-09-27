@@ -7,9 +7,17 @@ license = "GPL-3.0-or-later"
 [dependencies]
 adw = { version = "0.9", package = "libadwaita", features = ["v1_8"] }
 futures-util = "0.3"
+ges = { version = "0.25", package = "gstreamer-editing-services", features = ["v1_24"] }
 gettext-rs = { version = "0.7", features = ["gettext-system"] }
 glib = { version = "0.22", features = ["log", "log_macros"] }
+gst = { version = "0.25", package = "gstreamer" }
+gst-controller = { version = "0.25", package = "gstreamer-controller" }
+gst-pbutils = { version = "0.25", package = "gstreamer-pbutils" }
 gtk = { version = "0.11", package = "gtk4", features = ["v4_16"] }
 json = "0.12"
 log = "0.4"
 mime_guess = "2"
+
+# Keep the development build responsive (waveform computation, drawing).
+[profile.dev]
+opt-level = 1

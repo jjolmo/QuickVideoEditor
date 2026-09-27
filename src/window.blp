@@ -38,6 +38,87 @@ Popover popover_options {
       /* Translators: Options menu entry that strips audio from the video file. */
       title: _("Remove Audio");
     }
+
+    Adw.SwitchRow switch_row_social_snap {
+      /* Translators: Options menu entry: snap the length to 0:59. */
+      title: _("Snap to 0:59");
+      /* Translators: Options menu entry subtitle for snapping the length to 0:59. */
+      subtitle: _("Keeps videos under a minute for social networks");
+    }
+
+    Adw.ComboRow combo_row_fps {
+      /* Translators: Options menu entry: frame rate of the exported video. */
+      title: _("Frame Rate");
+
+      model: StringList {
+        strings [
+          /* Translators: Frame rate option that keeps the source video's. */
+          _("Same as Source"),
+          "24",
+          "25",
+          "30",
+          "50",
+          "60",
+          /* Translators: Frame rate option to type a value. */
+          _("Custom"),
+        ]
+      };
+    }
+
+    Adw.SpinRow spin_row_fps {
+      visible: false;
+      /* Translators: Options menu entry: custom frames per second of the exported video. */
+      title: _("Frames per Second");
+
+      adjustment: Adjustment {
+        lower: 1;
+        upper: 240;
+        step-increment: 1;
+        value: 30;
+      };
+    }
+
+    Adw.ComboRow combo_row_resolution {
+      /* Translators: Options menu entry: size of the exported video. */
+      title: _("Resolution");
+
+      model: StringList {
+        strings [
+          /* Translators: Resolution option that keeps the source video's. */
+          _("Same as Source"),
+          "1080p",
+          "720p",
+          /* Translators: Resolution option to type a width and height. */
+          _("Custom"),
+        ]
+      };
+    }
+
+    Adw.SpinRow spin_row_width {
+      visible: false;
+      /* Translators: Options menu entry: width of the exported video in pixels. */
+      title: _("Width");
+
+      adjustment: Adjustment {
+        lower: 16;
+        upper: 7680;
+        step-increment: 2;
+        value: 1920;
+      };
+    }
+
+    Adw.SpinRow spin_row_height {
+      visible: false;
+      /* Translators: Options menu entry: height of the exported video in pixels. */
+      title: _("Height");
+
+      adjustment: Adjustment {
+        lower: 16;
+        upper: 4320;
+        step-increment: 2;
+        value: 1080;
+      };
+    }
   };
 }
 
@@ -74,7 +155,7 @@ template $VtWindow : Adw.ApplicationWindow {
           icon-name: "quick-video-editor-symbolic";
 
           /* Translators: Title text on the window when no files are open. */
-          title: _("Trim Videos");
+          title: _("Edit Videos");
 
           /* Translators: Description text on the window when no files are open. */
           description: _("Drag and drop a video here");
@@ -113,6 +194,27 @@ template $VtWindow : Adw.ApplicationWindow {
             tooltip-text: _("Trim Video");
 
             styles ["suggested-action"]
+          }
+
+          Adw.ToggleGroup toggle_mode {
+            valign: center;
+            active-name: "trimmer";
+
+            Adw.Toggle {
+              name: "trimmer";
+              /* Translators: Mode switch entry for trimming a single video. */
+              label: _("Trimmer");
+              /* Translators: Tooltip of the Trimmer mode switch. */
+              tooltip: _("Trim one video without re-encoding");
+            }
+
+            Adw.Toggle {
+              name: "editor";
+              /* Translators: Mode switch entry for editing segments of one or more videos. */
+              label: _("Editor");
+              /* Translators: Tooltip of the Editor mode switch. */
+              tooltip: _("Cut, move, speed up and crossfade segments of one or more videos");
+            }
           }
 
           [end]
@@ -176,6 +278,7 @@ template $VtWindow : Adw.ApplicationWindow {
             }
 
             Entry entry_start {
+              valign: center;
               max-width-chars: 7;
               width-chars: 5;
               placeholder-text: "0:00";
@@ -193,6 +296,7 @@ template $VtWindow : Adw.ApplicationWindow {
             }
 
             Entry entry_end {
+              valign: center;
               max-width-chars: 7;
               width-chars: 5;
               placeholder-text: "0:00";
@@ -201,12 +305,65 @@ template $VtWindow : Adw.ApplicationWindow {
             }
           }
 
+          $VtKnob knob_speed {
+            valign: center;
+          }
+
           MenuButton button_options {
             styles ["circular"]
 
             icon-name: "nautilus-file-chooser-options-symbolic";
             popover: popover_options;
           }
+        }
+
+        [bottom]
+        Box box_editor {
+          visible: false;
+          halign: center;
+          margin-start: 18;
+          margin-end: 18;
+          margin-top: 12;
+          margin-bottom: 12;
+          spacing: 12;
+
+          Button button_add_video {
+            /* Translators: Tooltip of the button that appends a video to the edit. */
+            tooltip-text: _("Add a Video at the End");
+
+            child: Adw.ButtonContent {
+              icon-name: "list-add-symbolic";
+              /* Translators: Button that appends a video to the edit. */
+              label: _("Add Video…");
+            };
+          }
+
+          Button button_split {
+            /* Translators: Tooltip of the button that splits the segment under the playhead. */
+            tooltip-text: _("Split at Playhead (S)");
+
+            child: Adw.ButtonContent {
+              icon-name: "edit-cut-symbolic";
+              /* Translators: Button that splits the segment under the playhead. */
+              label: _("Split");
+            };
+          }
+
+          Button button_delete_segment {
+            sensitive: false;
+            icon-name: "user-trash-symbolic";
+            /* Translators: Tooltip of the button that deletes the selected segment. */
+            tooltip-text: _("Delete Selected Segment (Delete)");
+          }
+
+          CheckButton check_end_fade {
+            /* Translators: Checkbox that fades the end of the edited video to black. */
+            label: _("Fade Out at End");
+            /* Translators: Tooltip of the checkbox that fades the end of the edited video. */
+            tooltip-text: _("Fade the last second of the video to black and silence");
+          }
+
+          Box box_editor_options {}
         }
       };
     }

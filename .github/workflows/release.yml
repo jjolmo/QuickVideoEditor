@@ -1,0 +1,154 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  flatpak:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-50
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: QuickVideoEditor.flatpak
+          manifest-path: build-aux/io.github.jjolmo.QuickVideoEditor.json
+          cache-key: flatpak-builder-${{ github.sha }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flatpak
+          path: QuickVideoEditor.flatpak
+
+  deb:
+    runs-on: ubuntu-latest
+    container: ubuntu:26.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build dependencies
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends ca-certificates curl build-essential \
+            meson ninja-build pkg-config gettext desktop-file-utils appstream \
+            blueprint-compiler libgtk-4-dev libadwaita-1-dev libges-1.0-dev \
+            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+      - name: Build
+        run: packaging/build-native.sh "$PWD/pkgroot"
+      - name: Package
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          case "$version" in [0-9]*) ;; *) version=0.0.0;; esac
+          mkdir -p pkgroot/DEBIAN
+          cat > pkgroot/DEBIAN/control <<EOF
+          Package: quick-video-editor
+          Version: $version
+          Architecture: amd64
+          Maintainer: jjolmo <olmogil@gmail.com>
+          Depends: libgtk-4-1 (>= 4.16), libadwaita-1-0 (>= 1.8), libges-1.0-0 (>= 1.24), gstreamer1.0-plugins-base, gstreamer1.0-plugins-good, gstreamer1.0-plugins-bad, gstreamer1.0-plugins-ugly, gstreamer1.0-libav, gstreamer1.0-gtk4, ffmpeg
+          Section: video
+          Priority: optional
+          Homepage: https://github.com/jjolmo/QuickVideoEditor
+          Description: Trim, cut, speed up and crossfade videos, with music
+           Quick Video Editor trims videos without re-encoding and edits segments of
+           one or more videos with speed changes, crossfades and music.
+          EOF
+          sed -i 's/^          //' pkgroot/DEBIAN/control
+          dpkg-deb --root-owner-group --build pkgroot "quick-video-editor_${version}_amd64.deb"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deb
+          path: "*.deb"
+
+  rpm:
+    runs-on: ubuntu-latest
+    container: fedora:43
+    steps:
+      - name: Install build dependencies
+        run: |
+          dnf install -y git curl gcc meson ninja-build pkgconf gettext desktop-file-utils \
+            appstream blueprint-compiler gtk4-devel libadwaita-devel \
+            gstreamer1-devel gstreamer1-plugins-base-devel gst-editing-services-devel \
+            rpm-build
+      - uses: actions/checkout@v4
+      - name: Build
+        run: packaging/build-native.sh "$PWD/pkgroot"
+      - name: Package
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          case "$version" in [0-9]*) ;; *) version=0.0.0;; esac
+          mkdir -p rpmbuild/SPECS
+          cat > rpmbuild/SPECS/quick-video-editor.spec <<EOF
+          Name: quick-video-editor
+          Version: $version
+          Release: 1
+          Summary: Trim, cut, speed up and crossfade videos, with music
+          License: GPL-3.0-or-later
+          URL: https://github.com/jjolmo/QuickVideoEditor
+          Requires: gtk4 >= 4.16, libadwaita >= 1.8, gst-editing-services, gstreamer1-plugins-base, gstreamer1-plugins-good, gstreamer1-plugins-bad-free, gstreamer1-plugin-gtk4, ffmpeg-free
+          %description
+          Quick Video Editor trims videos without re-encoding and edits segments of one or
+          more videos with speed changes, crossfades and music.
+          %install
+          cp -a $PWD/pkgroot/. %{buildroot}/
+          %files
+          /usr/bin/quick-video-editor
+          /usr/share/quick-video-editor
+          /usr/share/applications/*.desktop
+          /usr/share/metainfo/*.xml
+          /usr/share/glib-2.0/schemas/*.xml
+          /usr/share/icons/hicolor/*/apps/*
+          /usr/share/locale/*/LC_MESSAGES/*.mo
+          EOF
+          sed -i 's/^          //' rpmbuild/SPECS/quick-video-editor.spec
+          rpmbuild --define "_topdir $PWD/rpmbuild" -bb rpmbuild/SPECS/quick-video-editor.spec
+          cp rpmbuild/RPMS/*/*.rpm .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rpm
+          path: "*.rpm"
+
+  arch:
+    runs-on: ubuntu-latest
+    container: archlinux:base-devel
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build
+        run: |
+          pacman -Syu --noconfirm --needed git meson rust blueprint-compiler gtk4 libadwaita \
+            gst-editing-services gst-plugins-base gst-plugins-good gst-plugins-bad \
+            gst-plugins-ugly gst-libav gst-plugin-gtk4 ffmpeg
+          useradd -m builder
+          cp -r packaging/arch /home/builder/pkg
+          version="${GITHUB_REF_NAME#v}"
+          case "$version" in [0-9]*) ;; *) version=0.1.0;; esac
+          sed -i "s/^pkgver=.*/pkgver=$version/" /home/builder/pkg/PKGBUILD
+          chown -R builder /home/builder/pkg
+          su builder -c "cd /home/builder/pkg && makepkg --nodeps"
+          cp /home/builder/pkg/*.pkg.tar.zst .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: arch
+          path: "*.pkg.tar.zst"
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [flatpak, deb, rpm, arch]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true

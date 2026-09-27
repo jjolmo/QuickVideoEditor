@@ -11,4 +11,4 @@ src/config.rs
 /*.flatpak
 /_build/
 /_repo/
-/subprojects/blueprint-compiler
+/subprojects/blueprint-compiler/flatpak-build/

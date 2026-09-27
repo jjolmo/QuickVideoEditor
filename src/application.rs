@@ -17,11 +17,18 @@ mod imp {
     #[derive(Default)]
     pub struct VtApplication {
         input_file: Cell<Option<gio::File>>,
+        /// Further videos from the command line, added to the edit.
+        extra_files: RefCell<Vec<gio::File>>,
         output_file: Cell<Option<gio::File>>,
+        music_file: Cell<Option<gio::File>>,
+        export_file: Cell<Option<gio::File>>,
         start: RefCell<Option<String>>,
         end: RefCell<Option<String>>,
         precise: Cell<bool>,
         remove_audio: Cell<bool>,
+        speed: Cell<Option<f64>>,
+        export_fps: Cell<Option<i32>>,
+        export_size: RefCell<Option<String>>,
     }
 
     #[glib::object_subclass]
@@ -37,7 +44,7 @@ mod imp {
             self.parent_constructed();
 
             // Translators: shown in --help usage line as: quick-video-editor [OPTION…] [VIDEO]
-            obj.set_option_context_parameter_string(Some(&gettext("[VIDEO]")));
+            obj.set_option_context_parameter_string(Some(&gettext("[VIDEO…]")));
 
             obj.add_main_option(
                 "output",
@@ -47,6 +54,28 @@ mod imp {
                 // Translators: --output commandline option description.
                 &gettext("Output file path"),
                 // Translators: --output commandline option arg description.
+                Some(&gettext("PATH")),
+            );
+
+            obj.add_main_option(
+                "music",
+                glib::Char::from(b'm'),
+                glib::OptionFlags::NONE,
+                glib::OptionArg::String,
+                // Translators: --music commandline option description.
+                &gettext("Music to lay over the video"),
+                // Translators: --music commandline option arg description.
+                Some(&gettext("PATH")),
+            );
+
+            obj.add_main_option(
+                "export",
+                glib::Char::from(b'x'),
+                glib::OptionFlags::NONE,
+                glib::OptionArg::String,
+                // Translators: --export commandline option description.
+                &gettext("Export the videos, edited together, to PATH and quit"),
+                // Translators: --export commandline option arg description.
                 Some(&gettext("PATH")),
             );
 
@@ -82,6 +111,37 @@ mod imp {
             );
 
             obj.add_main_option(
+                "speed",
+                glib::Char::from(0u8),
+                glib::OptionFlags::NONE,
+                glib::OptionArg::Double,
+                // Translators: --speed commandline option description.
+                &gettext("Speed of the trimmed video, 1 being normal (0.1 to 10)"),
+                // Translators: --speed commandline option arg description.
+                Some(&gettext("FACTOR")),
+            );
+
+            obj.add_main_option(
+                "fps",
+                glib::Char::from(0u8),
+                glib::OptionFlags::NONE,
+                glib::OptionArg::Int,
+                // Translators: --fps commandline option description.
+                &gettext("Frame rate of the export"),
+                Some("FPS"),
+            );
+
+            obj.add_main_option(
+                "size",
+                glib::Char::from(0u8),
+                glib::OptionFlags::NONE,
+                glib::OptionArg::String,
+                // Translators: --size commandline option description.
+                &gettext("Size of the export, e.g. 1280x720"),
+                Some("WIDTHxHEIGHT"),
+            );
+
+            obj.add_main_option(
                 "remove-audio",
                 glib::Char::from(b'r'),
                 glib::OptionFlags::NONE,
@@ -109,9 +169,26 @@ mod imp {
             if self.remove_audio.get() {
                 window.set_remove_audio(true);
             }
+            if let Some(speed) = self.speed.take() {
+                window.set_speed(speed);
+            }
+            let size = self.export_size.take().and_then(|size| {
+                let (width, height) = size.split_once('x')?;
+                Some((width.parse().ok()?, height.parse().ok()?))
+            });
+            window.set_export_options(self.export_fps.take(), size);
+            if let Some(music) = self.music_file.take() {
+                window.set_music(music);
+            }
+            if let Some(export) = self.export_file.take() {
+                window.export_when_ready(export);
+            }
 
             if let Some(file) = self.input_file.take() {
                 window.open(file);
+                for file in self.extra_files.take() {
+                    window.add_video(file);
+                }
             } else {
                 window.present();
             }
@@ -127,6 +204,7 @@ mod imp {
             );
 
             self.input_file.set(Some(files[0].clone()));
+            self.extra_files.replace(files[1..].to_vec());
 
             self.obj().activate();
         }
@@ -184,6 +262,20 @@ mod imp {
                     .map(gio::File::for_path),
             );
 
+            self.export_file.set(
+                options
+                    .lookup_value("export", None)
+                    .and_then(|x| x.get::<String>())
+                    .map(gio::File::for_path),
+            );
+
+            self.music_file.set(
+                options
+                    .lookup_value("music", None)
+                    .and_then(|x| x.get::<String>())
+                    .map(gio::File::for_path),
+            );
+
             *self.start.borrow_mut() = options
                 .lookup_value("start", None)
                 .and_then(|x| x.get::<String>());
@@ -195,6 +287,21 @@ mod imp {
             self.precise.set(options.contains("precise"));
 
             self.remove_audio.set(options.contains("remove-audio"));
+
+            self.export_fps.set(
+                options
+                    .lookup_value("fps", None)
+                    .and_then(|x| x.get::<i32>()),
+            );
+            *self.export_size.borrow_mut() = options
+                .lookup_value("size", None)
+                .and_then(|x| x.get::<String>());
+
+            self.speed.set(
+                options
+                    .lookup_value("speed", None)
+                    .and_then(|x| x.get::<f64>()),
+            );
 
             self.parent_handle_local_options(options)
         }
@@ -218,10 +325,7 @@ impl VtApplication {
             .property("application-id", config::APP_ID)
             .property("version", config::VERSION)
             .property("flags", flags)
-            .property(
-                "resource-base-path",
-                "/io/github/jjolmo/QuickVideoEditor",
-            )
+            .property("resource-base-path", "/io/github/jjolmo/QuickVideoEditor")
             .build()
     }
 }

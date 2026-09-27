@@ -23,15 +23,22 @@ template $VtVideoPreview : Widget {
   }
 }
 
-Box box_playback_controls {
+Grid box_playback_controls {
   margin-start: 18;
   margin-end: 18;
   margin-top: 12;
   margin-bottom: 12;
+  column-spacing: 8;
+  row-spacing: 8;
 
   Button button_play_pause {
     receives-default: true;
-    margin-end: 8;
+    valign: center;
+
+    layout {
+      column: 0;
+      row: 0;
+    }
 
     Image button_play_pause_image {
       icon-name: "media-playback-start-symbolic";
@@ -39,14 +46,139 @@ Box box_playback_controls {
   }
 
   Label label_current_time {
-    margin-end: 8;
     label: "0:00";
     width-chars: 5;
 
     styles ["numeric"]
+
+    layout {
+      column: 1;
+      row: 0;
+    }
   }
 
   $VtTimeline timeline {
     hexpand: "1";
+
+    layout {
+      column: 2;
+      row: 0;
+    }
+  }
+
+  $VtEditorTimeline editor_timeline {
+    visible: false;
+    hexpand: "1";
+    /* Translators: Tooltip of the Editor timeline. */
+    tooltip-text: _("Drag segments to move them, their edges to trim, Ctrl+edges to change speed. Overlap segments to crossfade. Ctrl+scroll to zoom.");
+
+    layout {
+      column: 2;
+      row: 0;
+    }
+  }
+
+  Image image_original_audio {
+    visible: false;
+    icon-name: "audio-volume-high-symbolic";
+    /* Translators: Tooltip of the track with the videos' own audio. */
+    tooltip-text: _("Original Audio");
+
+    layout {
+      column: 1;
+      row: 1;
+    }
+  }
+
+  $VtOriginalAudioTrack original_audio_track {
+    visible: false;
+    hexpand: "1";
+    /* Translators: Tooltip of the track with the videos' own audio. */
+    tooltip-text: _("Audio of the videos");
+
+    layout {
+      column: 2;
+      row: 1;
+    }
+  }
+
+  $VtKnob knob_original_volume {
+    visible: false;
+    halign: start;
+    valign: center;
+
+    layout {
+      column: 3;
+      row: 1;
+    }
+  }
+
+  Button button_remove_music {
+    visible: false;
+    valign: center;
+    icon-name: "user-trash-symbolic";
+    /* Translators: Tooltip of the button that removes the added music track. */
+    tooltip-text: _("Remove Music");
+
+    styles ["flat"]
+
+    layout {
+      column: 0;
+      row: 2;
+    }
+  }
+
+  Image image_music {
+    visible: false;
+    icon-name: "audio-x-generic-symbolic";
+
+    layout {
+      column: 1;
+      row: 2;
+    }
+  }
+
+  Adw.Spinner spinner_music {
+    visible: false;
+
+    layout {
+      column: 1;
+      row: 2;
+    }
+  }
+
+  $VtMusicTrack music_track {
+    visible: false;
+    hexpand: "1";
+    /* Translators: Tooltip of the music track. */
+    tooltip-text: _("Drag to line the music up with the video");
+
+    layout {
+      column: 2;
+      row: 2;
+    }
+  }
+
+  Box box_music_controls {
+    visible: false;
+    valign: center;
+    spacing: 8;
+
+    layout {
+      column: 3;
+      row: 2;
+    }
+
+    $VtKnob knob_music_volume {
+      valign: center;
+    }
+
+    CheckButton check_fade_out {
+      valign: center;
+      /* Translators: Checkbox that fades the music out at the end of the trimmed video. */
+      label: _("Fade Out");
+      /* Translators: Tooltip of the music fade-out checkbox. */
+      tooltip-text: _("Fade the music out during the last second of the trim");
+    }
   }
 }

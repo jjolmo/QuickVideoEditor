@@ -1,6 +1,6 @@
 project('quick-video-editor',
         'rust',
-          version: '26.03.1',
+          version: '0.1.0',
     meson_version: '>= 0.59.0',
           license: 'GPL3+',
 )

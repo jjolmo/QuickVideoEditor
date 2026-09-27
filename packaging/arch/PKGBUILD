@@ -1,0 +1,24 @@
+# Maintainer: jjolmo <olmogil@gmail.com>
+pkgname=quick-video-editor
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Trim, cut, speed up and crossfade videos, with music"
+arch=('x86_64' 'aarch64')
+url="https://github.com/jjolmo/QuickVideoEditor"
+license=('GPL-3.0-or-later')
+depends=('gtk4' 'libadwaita' 'gst-editing-services' 'gst-plugins-base' 'gst-plugins-good'
+         'gst-plugins-bad' 'gst-plugins-ugly' 'gst-libav' 'gst-plugin-gtk4' 'ffmpeg')
+makedepends=('meson' 'rust' 'blueprint-compiler' 'git')
+source=("$pkgname-$pkgver.tar.gz::$url/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+build() {
+    cd "QuickVideoEditor-$pkgver"
+    arch-meson build
+    meson compile -C build
+}
+
+package() {
+    cd "QuickVideoEditor-$pkgver"
+    meson install -C build --destdir "$pkgdir"
+}

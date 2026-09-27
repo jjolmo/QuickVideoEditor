@@ -4,9 +4,12 @@ use std::time::Duration;
 
 mod imp {
     use super::*;
-    use crate::parse::{self, time_to_entry_text};
+    use crate::{
+        engine::VtEngine,
+        parse::{self, time_to_entry_text},
+    };
     use glib::{subclass::Signal, Properties};
-    use gtk::{gdk, prelude::*, subclass::prelude::*, CompositeTemplate};
+    use gtk::{gdk, graphene, gsk, prelude::*, subclass::prelude::*, CompositeTemplate};
     use std::{
         cell::{Cell, OnceCell},
         sync::OnceLock,
@@ -14,11 +17,29 @@ mod imp {
 
     const TOLERANCE: f64 = 5.;
 
+    pub const MIN_SPEED: f64 = 0.25;
+    pub const MAX_SPEED: f64 = 4.;
+    /// Speeds this close to 100% snap to it, so it is easy to go back to normal speed.
+    const SPEED_SNAP: f64 = 0.03;
+    /// Number of coils in the drawn spring.
+    const SPRING_COILS: usize = 10;
+
+    /// Which trim edge stays in place while the other one stretches or compresses the video.
+    #[derive(Debug, Clone, Copy, Eq, PartialEq)]
+    enum SpeedAnchor {
+        Start,
+        End,
+    }
+
     #[derive(Debug, Clone, Copy, Eq, PartialEq)]
     enum DragType {
         Playback,
         Start,
         End,
+        /// Ctrl-dragging the start edge: changes the speed, the end stays in place.
+        SpeedStart,
+        /// Ctrl-dragging the end edge: changes the speed, the start stays in place.
+        SpeedEnd,
     }
 
     #[derive(Debug, Clone, Copy, Eq, PartialEq)]
@@ -46,7 +67,7 @@ mod imp {
         box_timeline_selection: TemplateChild<gtk::Box>,
 
         #[property(set = Self::set_media_file)]
-        media_file: OnceCell<gtk::MediaFile>,
+        media_file: OnceCell<gtk::MediaStream>,
         frame_time_approx: Cell<Option<Duration>>,
         position: Cell<i64>,
         duration: Cell<i64>,
@@ -55,6 +76,12 @@ mod imp {
         drag_start: Cell<f64>,
         drag_type: Cell<DragType>,
         cursor_type: Cell<CursorType>,
+        speed: Cell<f64>,
+        speed_anchor: Cell<SpeedAnchor>,
+        /// Ctrl-dragging a trim edge changes the speed. Off in the Trimmer, which has a knob.
+        speed_drag_enabled: Cell<bool>,
+        /// Snaps the selection to 59 s, the length limit of many social networks.
+        social_snap: Cell<bool>,
     }
 
     #[glib::object_subclass]
@@ -86,6 +113,10 @@ mod imp {
                 drag_start: Cell::new(0.),
                 drag_type: Cell::new(DragType::Playback),
                 cursor_type: Cell::new(CursorType::Normal),
+                speed: Cell::new(1.),
+                speed_anchor: Cell::new(SpeedAnchor::Start),
+                speed_drag_enabled: Cell::new(false),
+                social_snap: Cell::new(false),
             }
         }
     }
@@ -104,7 +135,7 @@ mod imp {
         }
 
         fn signals() -> &'static [Signal] {
-            static SIGNALS: OnceLock<[Signal; 3]> = OnceLock::new();
+            static SIGNALS: OnceLock<[Signal; 4]> = OnceLock::new();
             SIGNALS.get_or_init(|| {
                 [
                     Signal::builder("set-start-end")
@@ -115,6 +146,9 @@ mod imp {
                         .build(),
                     Signal::builder("set-end")
                         .param_types([glib::Type::U32])
+                        .build(),
+                    Signal::builder("set-speed")
+                        .param_types([glib::Type::F64])
                         .build(),
                 ]
             })
@@ -138,9 +172,13 @@ mod imp {
                 move |gesture, x, y| {
                     gesture.set_state(gtk::EventSequenceState::Claimed);
 
+                    let ctrl = gesture
+                        .current_event_state()
+                        .contains(gdk::ModifierType::CONTROL_MASK);
+
                     let obj = obj.upgrade().unwrap();
                     let imp = obj.imp();
-                    imp.on_drag_start(x, y);
+                    imp.on_drag_start(x, y, ctrl);
                 }
             });
             gesture_drag.connect_drag_update({
@@ -149,6 +187,13 @@ mod imp {
                     let obj = obj.upgrade().unwrap();
                     let imp = obj.imp();
                     imp.on_drag_update(offset_x, offset_y);
+                }
+            });
+            gesture_drag.connect_drag_end({
+                let obj = obj.downgrade();
+                move |_, _, _| {
+                    let obj = obj.upgrade().unwrap();
+                    obj.imp().on_drag_end();
                 }
             });
             obj.add_controller(gesture_drag.clone());
@@ -175,6 +220,62 @@ mod imp {
     }
 
     impl WidgetImpl for VtTimeline {
+        fn snapshot(&self, snapshot: &gtk::Snapshot) {
+            self.parent_snapshot(snapshot);
+
+            let Some((x0, x1)) = self.speed_extent() else {
+                return;
+            };
+            let obj = self.obj();
+            let height = obj.height() as f32;
+            let fg = obj.color();
+
+            // The span the trimmed video will occupy after the speed change.
+            snapshot.append_color(
+                &with_alpha(&fg, 0.12),
+                &graphene::Rect::new(x0, 0., x1 - x0, height),
+            );
+
+            let middle = height / 2.;
+            let amplitude = height * 0.12;
+            let builder = gsk::PathBuilder::new();
+            builder.move_to(x0, middle);
+            let steps = SPRING_COILS * 2;
+            for step in 0..steps {
+                let x = x0 + (x1 - x0) * (step as f32 + 0.5) / steps as f32;
+                let y = if step % 2 == 0 {
+                    middle - amplitude
+                } else {
+                    middle + amplitude
+                };
+                builder.line_to(x, y);
+            }
+            builder.line_to(x1, middle);
+            snapshot.append_stroke(
+                &builder.to_path(),
+                &gsk::Stroke::new(2.),
+                &with_alpha(&fg, 0.9),
+            );
+
+            let label = format!("{:.0}%", self.speed.get() * 100.);
+            let layout = obj.create_pango_layout(Some(&label));
+            let (label_width, label_height) = layout.pixel_size();
+            let (label_width, label_height) = (label_width as f32, label_height as f32);
+            let label_x = ((x0 + x1 - label_width) / 2.)
+                .clamp(0., (obj.width() as f32 - label_width).max(0.));
+            let label_y = (height - label_height) / 2.;
+            let background =
+                graphene::Rect::new(label_x - 4., label_y, label_width + 8., label_height);
+            let accent = adw::StyleManager::default().accent_color_rgba();
+            snapshot.push_rounded_clip(&gsk::RoundedRect::from_rect(background, 6.));
+            snapshot.append_color(&accent, &background);
+            snapshot.pop();
+            snapshot.save();
+            snapshot.translate(&graphene::Point::new(label_x, label_y));
+            snapshot.append_layout(&layout, &gdk::RGBA::WHITE);
+            snapshot.restore();
+        }
+
         fn size_allocate(&self, width: i32, height: i32, baseline: i32) {
             let duration = self.duration.get();
             if duration == 0 {
@@ -222,7 +323,7 @@ mod imp {
     }
 
     impl VtTimeline {
-        fn set_media_file(&self, media_file: gtk::MediaFile) {
+        fn set_media_file(&self, media_file: gtk::MediaStream) {
             let obj = self.obj();
 
             media_file.connect_timestamp_notify({
@@ -313,16 +414,28 @@ mod imp {
             self.box_timeline_selection
                 .set_child_visible(self.start_end.get().is_some());
 
-            if !media_file.is_seeking() {
+            let dragging = self
+                .gesture_drag
+                .get()
+                .is_some_and(|gesture| gesture.is_active());
+            if !media_file.is_seeking() && !dragging {
                 self.position.set(media_file.timestamp());
             }
 
             obj.queue_allocate();
         }
 
-        fn on_drag_start(&self, x: f64, _y: f64) {
+        fn on_drag_start(&self, x: f64, _y: f64, ctrl: bool) {
             self.drag_start.set(x);
             self.drag_type.set(DragType::Playback);
+
+            if ctrl && self.speed_drag_enabled.get() {
+                if let Some((drag_type, edge)) = self.speed_handle_at(x) {
+                    self.drag_type.set(drag_type);
+                    self.drag_start.set(edge);
+                    return;
+                }
+            }
 
             if self.start_end.get().is_some() {
                 if let Some(bounds) = self.box_timeline_selection.compute_bounds(&*self.obj()) {
@@ -356,7 +469,20 @@ mod imp {
             let duration = media_file.duration();
             if duration != 0 {
                 let time = (duration as f64 * value) as i64;
-                media_file.seek(time);
+
+                if matches!(
+                    self.drag_type.get(),
+                    DragType::SpeedStart | DragType::SpeedEnd
+                ) {
+                    self.on_speed_drag(time);
+                    return;
+                }
+
+                // Keyframe seeks keep up with the pointer; the exact frame is sought on release.
+                match media_file.downcast_ref::<VtEngine>() {
+                    Some(engine) => engine.seek_fast(time),
+                    None => media_file.seek(time),
+                }
 
                 // Update the position for responsive seeking.
                 self.position.set(time);
@@ -406,9 +532,119 @@ mod imp {
                     _ => return,
                 };
 
+                let (start, end) = self.snap_social(start, end);
                 self.obj()
                     .emit_by_name::<()>("set-start-end", &[&start, &end]);
             };
+        }
+
+        /// With social snapping on, a selection close to 59 s long becomes exactly that long.
+        fn snap_social(&self, start: u32, end: u32) -> (u32, u32) {
+            const SOCIAL_LENGTH: u32 = 59_000;
+            let width = self.obj().width().max(1) as f64;
+            let duration_ms = self.duration.get() as f64 / 1000.;
+            let tolerance = (TOLERANCE * 2. * duration_ms / width) as u32;
+            if !self.social_snap.get() || end - start == SOCIAL_LENGTH {
+                return (start, end);
+            }
+            if (end - start).abs_diff(SOCIAL_LENGTH) > tolerance {
+                return (start, end);
+            }
+            match self.drag_type.get() {
+                DragType::Start if end >= SOCIAL_LENGTH => (end - SOCIAL_LENGTH, end),
+                DragType::End => (start, start + SOCIAL_LENGTH),
+                _ => (start, end),
+            }
+        }
+
+        pub fn set_social_snap(&self, enabled: bool) {
+            self.social_snap.set(enabled);
+        }
+
+        /// Finds the edge under `x` that a Ctrl-drag would grab: a trim edge, or the moving edge
+        /// of the current speed span.
+        fn speed_handle_at(&self, x: f64) -> Option<(DragType, f64)> {
+            let bounds = self.box_timeline_selection.compute_bounds(&*self.obj())?;
+            let mut edges = vec![
+                (DragType::SpeedStart, bounds.x() as f64),
+                (DragType::SpeedEnd, (bounds.x() + bounds.width()) as f64),
+            ];
+            if let Some((x0, x1)) = self.speed_extent() {
+                match self.speed_anchor.get() {
+                    SpeedAnchor::Start => edges.push((DragType::SpeedEnd, x1 as f64)),
+                    SpeedAnchor::End => edges.push((DragType::SpeedStart, x0 as f64)),
+                }
+            }
+            edges
+                .into_iter()
+                .filter(|(_, edge)| (x - edge).abs() <= TOLERANCE)
+                .min_by(|(_, a), (_, b)| (x - a).abs().total_cmp(&(x - b).abs()))
+        }
+
+        fn on_speed_drag(&self, time: i64) {
+            let Some((start, end)) = self.start_end.get() else {
+                return;
+            };
+            let (start, end) = (i64::from(start) * 1000, i64::from(end) * 1000);
+            let source_length = (end - start) as f64;
+
+            let (output_length, anchor) = match self.drag_type.get() {
+                DragType::SpeedEnd => (time - start, SpeedAnchor::Start),
+                _ => (end - time, SpeedAnchor::End),
+            };
+            let mut speed = if output_length > 0 {
+                (source_length / output_length as f64).clamp(MIN_SPEED, MAX_SPEED)
+            } else {
+                MAX_SPEED
+            };
+            if (speed - 1.).abs() < SPEED_SNAP {
+                speed = 1.;
+            }
+
+            self.speed_anchor.set(anchor);
+            if speed != self.speed.get() {
+                self.speed.set(speed);
+                self.obj().queue_draw();
+                self.obj().emit_by_name::<()>("set-speed", &[&speed]);
+            }
+        }
+
+        pub fn set_speed(&self, speed: f64) {
+            self.speed.set(speed);
+            self.obj().queue_draw();
+        }
+
+        /// Horizontal span of the trimmed video after the speed change, if the speed isn't 100%.
+        fn speed_extent(&self) -> Option<(f32, f32)> {
+            let speed = self.speed.get();
+            let duration = self.duration.get();
+            let (start, end) = self.start_end.get()?;
+            if speed == 1. || duration == 0 {
+                return None;
+            }
+
+            let width = self.obj().width() as f64;
+            let (start, end) = (i64::from(start) * 1000, i64::from(end) * 1000);
+            let output_length = (end - start) as f64 / speed;
+            let (from, to) = match self.speed_anchor.get() {
+                SpeedAnchor::Start => (start as f64, start as f64 + output_length),
+                SpeedAnchor::End => (end as f64 - output_length, end as f64),
+            };
+            let x_of = |time: f64| (time / duration as f64 * width) as f32;
+            Some((x_of(from), x_of(to)))
+        }
+
+        fn on_drag_end(&self) {
+            if matches!(
+                self.drag_type.get(),
+                DragType::SpeedStart | DragType::SpeedEnd
+            ) {
+                return;
+            }
+            let media_file = self.media_file.get().unwrap();
+            if media_file.duration() != 0 {
+                media_file.seek(self.position.get());
+            }
         }
 
         fn on_motion(&self, x: f64, _y: f64) {
@@ -447,6 +683,15 @@ mod imp {
     }
 }
 
+fn with_alpha(color: &gtk::gdk::RGBA, alpha: f32) -> gtk::gdk::RGBA {
+    gtk::gdk::RGBA::new(
+        color.red(),
+        color.green(),
+        color.blue(),
+        color.alpha() * alpha,
+    )
+}
+
 glib::wrapper! {
     pub struct VtTimeline(ObjectSubclass<imp::VtTimeline>)
         @extends gtk::Widget,
@@ -471,5 +716,11 @@ impl VtTimeline {
     }
     pub fn set_end_as_position(&self) {
         self.imp().set_end_as_position();
+    }
+    pub fn set_speed(&self, speed: f64) {
+        self.imp().set_speed(speed);
+    }
+    pub fn set_social_snap(&self, enabled: bool) {
+        self.imp().set_social_snap(enabled);
     }
 }

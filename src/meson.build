@@ -59,7 +59,12 @@ run_command(
 sources += files(
   'application.rs',
   'config.rs',
+  'editor_timeline.rs',
+  'engine.rs',
+  'knob.rs',
   'main.rs',
+  'music_track.rs',
+  'original_audio_track.rs',
   'parse.rs',
   'timeline.rs',
   'video_preview.rs',

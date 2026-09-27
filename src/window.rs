@@ -23,6 +23,9 @@ mod imp {
 
     use crate::{
         config::{self, G_LOG_DOMAIN},
+        engine::{ExportSettings, RenderEvent},
+        knob::VtKnob,
+        music_track::FADE_OUT_DURATION,
         parse::{self, time_to_entry_text},
         util::{gettext_f, with_recursive_children},
         video_preview::VtVideoPreview,
@@ -109,6 +112,36 @@ mod imp {
         switch_row_reencode: TemplateChild<adw::SwitchRow>,
         #[template_child]
         switch_row_remove_audio: TemplateChild<adw::SwitchRow>,
+        #[template_child]
+        combo_row_fps: TemplateChild<adw::ComboRow>,
+        #[template_child]
+        spin_row_fps: TemplateChild<adw::SpinRow>,
+        #[template_child]
+        switch_row_social_snap: TemplateChild<adw::SwitchRow>,
+        #[template_child]
+        combo_row_resolution: TemplateChild<adw::ComboRow>,
+        #[template_child]
+        spin_row_width: TemplateChild<adw::SpinRow>,
+        #[template_child]
+        spin_row_height: TemplateChild<adw::SpinRow>,
+        #[template_child]
+        knob_speed: TemplateChild<VtKnob>,
+        #[template_child]
+        button_options: TemplateChild<gtk::MenuButton>,
+        #[template_child]
+        toggle_mode: TemplateChild<adw::ToggleGroup>,
+        #[template_child]
+        box_editor: TemplateChild<gtk::Box>,
+        #[template_child]
+        box_editor_options: TemplateChild<gtk::Box>,
+        #[template_child]
+        button_add_video: TemplateChild<gtk::Button>,
+        #[template_child]
+        button_split: TemplateChild<gtk::Button>,
+        #[template_child]
+        button_delete_segment: TemplateChild<gtk::Button>,
+        #[template_child]
+        check_end_fade: TemplateChild<gtk::CheckButton>,
 
         #[property(get = Self::is_playing, set = Self::set_is_playing, explicit_notify)]
         is_playing: PhantomData<bool>,
@@ -118,6 +151,19 @@ mod imp {
         #[property(set, construct_only)]
         output_file: RefCell<Option<gio::File>>,
         do_not_default_to_mp4: Cell<bool>,
+        has_audio: Cell<bool>,
+        /// Music requested before the video duration was known.
+        pending_music: RefCell<Option<PathBuf>>,
+        /// Videos to add once the first one is ready.
+        pending_videos: RefCell<Vec<gio::File>>,
+        pending_speed: Cell<Option<f64>>,
+        /// Command-line export to run once everything is loaded.
+        pending_export: RefCell<Option<PathBuf>>,
+        speed: Cell<f64>,
+        /// Width and height of the first video.
+        source_size: Cell<Option<(i32, i32)>>,
+        /// Set while the mode switch is changed from code, so its handler ignores it.
+        updating_mode: Cell<bool>,
     }
 
     impl VtWindow {
@@ -143,6 +189,26 @@ mod imp {
 
         pub fn set_remove_audio(&self, value: bool) {
             self.switch_row_remove_audio.set_active(value);
+        }
+
+        pub fn set_music(&self, file: gio::File) {
+            debug!("music: requested {}", file.uri());
+            let Some(path) = file.path() else {
+                warn!("music must be a local file: {}", file.uri());
+                return;
+            };
+
+            if self.video_preview.duration() > 0 {
+                self.video_preview.set_music(path);
+            } else {
+                self.pending_music.replace(Some(path));
+            }
+        }
+
+        fn on_speed_changed(&self, speed: f64) {
+            self.speed.set(speed);
+            self.knob_speed.set_value(speed);
+            self.video_preview.set_speed(speed);
         }
 
         fn on_entry_changed(&self) {
@@ -235,17 +301,8 @@ mod imp {
         }
 
         fn show_open_dialog(&self) {
-            if self.input_path.borrow().is_some() {
-                // FIXME: replace the current file when that is supported.
-                let app = self.obj().application().unwrap();
-                let window = super::VtWindow::new(&app, None);
-                let group = gtk::WindowGroup::new();
-                group.add_window(&window);
-                window.present();
-                window.imp().show_open_dialog();
-                return;
-            }
-
+            // With a video open, the chosen video is added to the edit.
+            let add = self.input_path.borrow().is_some();
             let obj = self.obj().clone();
 
             let filter = gtk::FileFilter::new();
@@ -281,7 +338,11 @@ Please choose another file.",
                             return;
                         }
 
-                        obj.open(file);
+                        if add {
+                            obj.imp().add_video(file);
+                        } else {
+                            obj.open(file);
+                        }
                     }
                     Err(err) => {
                         if !err.matches(gtk::DialogError::Dismissed) {
@@ -294,7 +355,389 @@ Please choose another file.",
             glib::MainContext::default().spawn_local(future);
         }
 
+        pub fn queue_speed(&self, speed: f64) {
+            let speed = speed.clamp(crate::knob::MIN_SPEED, crate::knob::MAX_SPEED);
+            if self.video_preview.duration() > 0 {
+                self.on_speed_changed(speed);
+            } else {
+                self.pending_speed.set(Some(speed));
+            }
+        }
+
+        pub fn queue_export(&self, file: gio::File) {
+            if let Some(path) = file.path() {
+                self.pending_export.replace(Some(path));
+            }
+        }
+
+        /// Renders the edit without dialogs and quits, for `--export`.
+        fn export_headless(&self, path: PathBuf) {
+            if !self.video_preview.is_editor() {
+                self.video_preview.set_editor_mode(true);
+                self.show_mode(true);
+            }
+            let app = self.obj().application().unwrap();
+            let hold = app.hold();
+            let result = self
+                .video_preview
+                .engine()
+                .render(&path, self.export_settings(), {
+                    let path = path.clone();
+                    move |event| match event {
+                        RenderEvent::Progress(fraction) => {
+                            debug!("export: {:.0}%", fraction * 100.);
+                        }
+                        RenderEvent::Done => {
+                            println!("{}", path.display());
+                            let _ = (&hold, &app);
+                            // Quitting normally right after a render can crash while GES tears the
+                            // pipeline down; the file is complete, so leave at once.
+                            std::process::exit(0);
+                        }
+                        RenderEvent::Failed(message) => {
+                            eprintln!("export failed: {message}");
+                            std::process::exit(1);
+                        }
+                    }
+                });
+            if let Err(err) = result {
+                eprintln!("export failed: {err}");
+                std::process::exit(1);
+            }
+        }
+
+        pub fn queue_video(&self, file: gio::File) {
+            if self.video_preview.duration() > 0 {
+                self.add_video(file);
+            } else {
+                self.pending_videos.borrow_mut().push(file);
+            }
+        }
+
+        /// Appends a video to the edit, switching to the Editor.
+        fn add_video(&self, file: gio::File) {
+            if file.path().is_none() {
+                self.show_error(&gettext(
+                    // Translators: error dialog text.
+                    "Quick Video Editor can only operate on local files. \
+Please choose another file.",
+                ));
+                return;
+            }
+            match self.video_preview.add_video(&file) {
+                Ok(()) => self.show_mode(true),
+                Err(err) => {
+                    warn!("could not add {}: {err}", file.uri());
+                    self.show_error(&gettext_f(
+                        // Translators: error dialog text; the placeholder is the error.
+                        "Could not add the video: {}",
+                        &[&err.to_string()],
+                    ));
+                }
+            }
+        }
+
+        fn show_error(&self, body: &str) {
+            let dialog = adw::AlertDialog::builder()
+                // Translators: error dialog title.
+                .heading(gettext("Error"))
+                .body(body)
+                .build();
+            // Translators: error dialog button.
+            dialog.add_response("ok", &gettext("_OK"));
+            dialog.present(Some(&*self.obj()));
+        }
+
+        /// Updates the controls for the Trimmer or the Editor.
+        fn show_mode(&self, editor: bool) {
+            self.updating_mode.set(true);
+            self.toggle_mode
+                .set_active_name(Some(if editor { "editor" } else { "trimmer" }));
+            self.updating_mode.set(false);
+
+            self.box_start_end.set_visible(!editor);
+            self.box_editor.set_visible(editor);
+            let options: &gtk::Widget = self.button_options.upcast_ref();
+            let target: &gtk::Box = if editor {
+                &self.box_editor_options
+            } else {
+                &self.box_start_end
+            };
+            if options.parent().as_ref() != Some(target.upcast_ref()) {
+                options.unparent();
+                target.append(options);
+            }
+            self.switch_row_reencode.set_sensitive(!editor);
+
+            if editor {
+                // Translators: the main button in the Editor, which renders the edit.
+                self.button_trim.set_label(&gettext("Export"));
+                // Translators: tooltip of the main button in the Editor.
+                self.button_trim
+                    .set_tooltip_text(Some(&gettext("Export the Edited Video")));
+            } else {
+                self.button_trim.set_label(&gettext("Trim"));
+                self.button_trim
+                    .set_tooltip_text(Some(&gettext("Trim Video")));
+            }
+            self.on_edit_changed();
+        }
+
+        /// Refreshes the controls that depend on the edit.
+        fn on_edit_changed(&self) {
+            let editor = self.video_preview.is_editor();
+            let sources = self.video_preview.source_count();
+            if let Some(trimmer) = self.toggle_mode.toggle_by_name("trimmer") {
+                trimmer.set_enabled(sources <= 1);
+            }
+            if editor {
+                self.button_trim
+                    .set_sensitive(self.video_preview.segment_count() > 0);
+                if sources > 1 {
+                    self.title.set_subtitle(&gettext_f(
+                        // Translators: window subtitle; the placeholder is how many videos.
+                        "{} videos",
+                        &[&sources.to_string()],
+                    ));
+                }
+            } else {
+                self.on_entry_changed();
+            }
+            // Deletes the selected segment, or the one under the playhead.
+            self.button_delete_segment
+                .set_sensitive(editor && self.video_preview.segment_count() > 1);
+        }
+
+        fn on_mode_toggled(&self) {
+            if self.updating_mode.get() {
+                return;
+            }
+            let editor = self.toggle_mode.active_name().as_deref() == Some("editor");
+            if editor == self.video_preview.is_editor() {
+                return;
+            }
+            if editor {
+                self.video_preview.set_editor_mode(true);
+                self.show_mode(true);
+                return;
+            }
+            if self.video_preview.source_count() > 1 {
+                self.show_mode(true);
+                return;
+            }
+            if self.video_preview.segment_count() <= 1 {
+                self.leave_editor();
+                return;
+            }
+
+            let dialog = adw::AlertDialog::builder()
+                // Translators: dialog heading when switching from the Editor to the Trimmer.
+                .heading(gettext("Discard the Edit?"))
+                .body(gettext(
+                    // Translators: dialog text when switching from the Editor to the Trimmer.
+                    "The Trimmer works on the whole video. Cuts, moves and speed changes \
+will be lost.",
+                ))
+                .close_response("cancel")
+                .build();
+            // Translators: dialog button.
+            dialog.add_response("cancel", &gettext("_Cancel"));
+            // Translators: dialog button that discards the edit.
+            dialog.add_response("discard", &gettext("_Discard"));
+            dialog.set_response_appearance("discard", adw::ResponseAppearance::Destructive);
+            let obj = self.obj().clone();
+            dialog.connect_response(None, move |_, response| {
+                let imp = obj.imp();
+                if response == "discard" {
+                    imp.leave_editor();
+                } else {
+                    imp.show_mode(true);
+                }
+            });
+            dialog.present(Some(&*self.obj()));
+        }
+
+        fn leave_editor(&self) {
+            self.video_preview.set_editor_mode(false);
+            self.speed.set(1.);
+            self.knob_speed.set_value(1.);
+            self.show_mode(false);
+        }
+
+        pub fn set_export_options(&self, fps: Option<i32>, size: Option<(i32, i32)>) {
+            if let Some(fps) = fps {
+                match [24, 25, 30, 50, 60]
+                    .iter()
+                    .position(|&preset| preset == fps)
+                {
+                    Some(index) => self.combo_row_fps.set_selected(index as u32 + 1),
+                    None => {
+                        self.combo_row_fps.set_selected(6);
+                        self.spin_row_fps.set_value(fps.into());
+                    }
+                }
+            }
+            if let Some((width, height)) = size {
+                self.combo_row_resolution.set_selected(3);
+                self.spin_row_width.set_value(width.into());
+                self.spin_row_height.set_value(height.into());
+            }
+        }
+
+        /// Export frame rate and size chosen in the options menu.
+        fn export_settings(&self) -> ExportSettings {
+            let fps = match self.combo_row_fps.selected() {
+                1 => Some((24, 1)),
+                2 => Some((25, 1)),
+                3 => Some((30, 1)),
+                4 => Some((50, 1)),
+                5 => Some((60, 1)),
+                6 => Some((self.spin_row_fps.value().round() as i32, 1)),
+                _ => None,
+            };
+            // Presets keep the source's aspect ratio; sizes are even, as encoders require.
+            let even = |value: f64| ((value / 2.).round() as i32 * 2).max(2);
+            let preset = |height: i32| {
+                let (width, source_height) = self.source_size.get().unwrap_or((16, 9));
+                (
+                    even(height as f64 * width as f64 / source_height as f64),
+                    height,
+                )
+            };
+            let size = match self.combo_row_resolution.selected() {
+                1 => Some(preset(1080)),
+                2 => Some(preset(720)),
+                3 => Some((
+                    even(self.spin_row_width.value()),
+                    even(self.spin_row_height.value()),
+                )),
+                _ => None,
+            };
+            ExportSettings { fps, size }
+        }
+
+        fn export_edit(&self) {
+            self.video_preview.pause();
+            let input_path = self.input_path.borrow().clone().unwrap_or_default();
+            let extension = input_path
+                .extension()
+                .and_then(OsStr::to_str)
+                .filter(|extension| matches!(*extension, "webm" | "mkv"))
+                .unwrap_or("mp4");
+            let name = format!(
+                "{}{}.{extension}",
+                input_path.file_stem().and_then(OsStr::to_str).unwrap_or(""),
+                // Translators: appended to the file name of an exported edit, e.g.
+                // "my video (edited).mp4".
+                gettext(" (edited)"),
+            );
+
+            let file_dialog = gtk::FileDialog::builder()
+                .modal(true)
+                .initial_name(name)
+                .build();
+            if let Some(parent) = input_path.parent().filter(|p| !p.as_os_str().is_empty()) {
+                file_dialog.set_initial_folder(Some(&gio::File::for_path(parent)));
+            }
+
+            let obj = self.obj().clone();
+            glib::MainContext::default().spawn_local(async move {
+                match file_dialog.save_future(Some(&obj)).await {
+                    Ok(file) => match file.path() {
+                        Some(path) => obj.imp().render_edit(path),
+                        None => obj.imp().show_error(&gettext(
+                            // Translators: error dialog text.
+                            "Quick Video Editor can only operate on local files. \
+Please choose another file.",
+                        )),
+                    },
+                    Err(err) => {
+                        if !err.matches(gtk::DialogError::Dismissed) {
+                            warn!("file dialog error: {err:?}");
+                        }
+                    }
+                }
+            });
+        }
+
+        fn render_edit(&self, path: PathBuf) {
+            let progress = gtk::ProgressBar::builder().show_text(true).build();
+            let dialog = adw::AlertDialog::builder()
+                // Translators: dialog heading while the edited video is exported.
+                .heading(gettext("Exporting…"))
+                .extra_child(&progress)
+                .build();
+            // Translators: export dialog button.
+            dialog.add_response("cancel", &gettext("_Cancel"));
+
+            let engine = self.video_preview.engine();
+            let obj = self.obj().clone();
+            // The engine's pipeline renders instead of previewing; keep the frame on screen.
+            self.video_preview.set_preview_frozen(true);
+            let result = engine.render(&path, self.export_settings(), {
+                let dialog = dialog.clone();
+                let path = path.clone();
+                move |event| match event {
+                    RenderEvent::Progress(fraction) => progress.set_fraction(fraction),
+                    RenderEvent::Done => {
+                        obj.imp().video_preview.set_preview_frozen(false);
+                        dialog.close();
+                        obj.imp().show_saved_toast(path.clone());
+                    }
+                    RenderEvent::Failed(message) => {
+                        obj.imp().video_preview.set_preview_frozen(false);
+                        dialog.close();
+                        if message != "cancelled" {
+                            warn!("export failed: {message}");
+                            obj.imp().show_error(&gettext_f(
+                                // Translators: error dialog text; the placeholder is the error.
+                                "Could not export the video: {}",
+                                &[&message],
+                            ));
+                        }
+                    }
+                }
+            });
+            if let Err(err) = result {
+                self.video_preview.set_preview_frozen(false);
+                self.show_error(&err);
+                return;
+            }
+
+            dialog.connect_response(None, move |_, _| engine.cancel_render());
+            dialog.present(Some(&*self.obj()));
+        }
+
+        fn show_saved_toast(&self, output_path: PathBuf) {
+            let file_name = output_path
+                .file_name()
+                .map(|file_name| file_name.to_string_lossy().into_owned())
+                .unwrap_or_else(|| output_path.to_string_lossy().into_owned());
+            let toast = adw::Toast::new(&gettext_f(
+                // Translators: text on the toast after trimming was done.
+                // The placeholder is the video filename.
+                "{} has been saved",
+                &[&file_name],
+            ));
+            // Translators: text on the button of the toast after trimming was done to show the
+            // output file in the file manager.
+            toast.set_button_label(Some(&gettext("Show in Files")));
+            toast.set_action_name(Some("toast.show-in-files"));
+            toast.set_action_target(Some(&output_path.into_os_string().into_vec()));
+
+            if self.stack_video_preview.visible_child_name().as_deref() == Some("page_error") {
+                self.overlay_error_page.add_toast(toast);
+            } else {
+                self.video_preview.overlay().add_toast(toast);
+            }
+        }
+
         fn verify_and_trim(&self) {
+            if self.video_preview.is_editor() {
+                self.export_edit();
+                return;
+            }
+
             if validate_entries(&self.entry_start, &self.entry_end).is_none() {
                 debug!("the timestamps are invalid");
                 return;
@@ -422,6 +865,7 @@ Please choose another file.",
             let obj = self.obj().clone();
             let reencode = self.switch_row_reencode.is_active();
             let no_audio = self.switch_row_remove_audio.is_active();
+            let music = self.video_preview.music();
 
             let future = async move {
                 let output_path = match file_dialog.save_future(Some(&obj)).await {
@@ -453,7 +897,15 @@ Please choose another file.",
                 };
 
                 let imp = obj.imp();
-                imp.do_trim(&input_path, output_path, no_audio, reencode, start, end);
+                imp.do_trim(
+                    &input_path,
+                    output_path,
+                    no_audio,
+                    reencode,
+                    music,
+                    start,
+                    end,
+                );
             };
 
             glib::MainContext::default().spawn_local(future);
@@ -465,12 +917,33 @@ Please choose another file.",
             output_path: PathBuf,
             no_audio: bool,
             reencode: bool,
+            music: Option<(PathBuf, i64, bool, f64)>,
             start: glib::GString,
             end: glib::GString,
         ) {
             let obj = self.obj().clone();
 
             debug!("output path: {:?}", output_path);
+
+            let speed = self.speed.get();
+            let video_filters = self.export_settings().ffmpeg_filters();
+            let filter = if music.is_some() || speed != 1. || !video_filters.is_empty() {
+                parse::timestamp(&start)
+                    .zip(parse::timestamp(&end))
+                    .map(|(start, end)| {
+                        FilterArgs::new(
+                            speed,
+                            &video_filters,
+                            music,
+                            start,
+                            end,
+                            self.has_audio.get() && !no_audio,
+                            &output_path,
+                        )
+                    })
+            } else {
+                None
+            };
 
             let mut args: Vec<&OsStr> = [
                 "ffmpeg".as_ref(),
@@ -482,11 +955,6 @@ Please choose another file.",
                 end.as_ref(),
                 "-i".as_ref(),
                 input_path.as_ref(),
-                // By default FFmpeg selects only a single ("best") stream of each type. We'd rather
-                // include all of them, however. This also fixes our trimmed down FFmpeg not including
-                // the subtitle track by default.
-                "-map".as_ref(),
-                "0".as_ref(),
                 // GoPro recordings include data streams with "none" tag which FFmpeg fails to process.
                 // It fails to even simply copy them over, so I'm assuming this is an FFmpeg bug and
                 // disabling data stream copying altogether as a workaround.
@@ -511,11 +979,25 @@ Please choose another file.",
                 "-y".as_ref(),
             ]
             .to_vec();
-            if !reencode {
-                args.push("-c".as_ref());
-                args.push("copy".as_ref());
+            if let Some(filter) = &filter {
+                args.extend(filter.args.iter().map(OsString::as_os_str));
+                if !filter.reencode_video && !reencode {
+                    args.push("-c:v".as_ref());
+                    args.push("copy".as_ref());
+                }
+            } else {
+                // By default FFmpeg selects only a single ("best") stream of each type. We'd rather
+                // include all of them, however. This also fixes our trimmed down FFmpeg not including
+                // the subtitle track by default.
+                args.push("-map".as_ref());
+                args.push("0".as_ref());
+                if !reencode {
+                    args.push("-c".as_ref());
+                    args.push("copy".as_ref());
+                }
             }
             if reencode
+                && !filter.as_ref().is_some_and(|filter| filter.reencode_video)
                 && output_path
                     .extension()
                     .map(|x| x == "mp4" || x == "mkv")
@@ -526,7 +1008,7 @@ Please choose another file.",
                 args.push("-c:v".as_ref());
                 args.push("libvpx-vp9".as_ref());
             }
-            if no_audio {
+            if no_audio && filter.is_none() {
                 args.push("-an".as_ref());
             }
             if output_path.extension().map(|x| x == "mp4").unwrap_or(false) {
@@ -557,36 +1039,7 @@ Please choose another file.",
                                 if subprocess_clone.has_exited()
                                     && subprocess_clone.exit_status() == 0
                                 {
-                                    let file_name = output_path
-                                        .file_name()
-                                        .map(|file_name| file_name.to_string_lossy())
-                                        .unwrap_or_else(|| output_path.to_string_lossy());
-
-                                    let imp = obj.imp();
-                                    let toast = adw::Toast::new(&gettext_f(
-                                        // Translators: text on the toast after trimming was done.
-                                        // The placeholder is the video filename.
-                                        "{} has been saved",
-                                        &[&file_name],
-                                    ));
-
-                                    // Translators: text on the button of the toast after
-                                    // trimming was done to show the output file in the file
-                                    // manager.
-                                    toast.set_button_label(Some(&gettext("Show in Files")));
-                                    toast.set_action_name(Some("toast.show-in-files"));
-                                    toast.set_action_target(Some(
-                                        &output_path.into_os_string().into_vec(),
-                                    ));
-
-                                    if imp.stack_video_preview.visible_child_name().as_deref()
-                                        == Some("page_error")
-                                    {
-                                        imp.overlay_error_page.add_toast(toast);
-                                    } else {
-                                        imp.video_preview.overlay().add_toast(toast);
-                                    }
-
+                                    obj.imp().show_saved_toast(output_path);
                                     trimming_dialog_clone.close();
                                     return;
                                 } else {
@@ -805,7 +1258,10 @@ Please choose another file.",
                                                 None
                                             }
                                         })
-                                        .inspect(|name| debug!("audio codec: {}", name));
+                                        .inspect(|name| debug!("audio codec: {}", name))
+                                        .peekable();
+
+                                    imp.has_audio.set(audio_formats.peek().is_some());
 
                                     // Some Sony cameras produce .mp4 videos with PCM audio. This is invalid
                                     // according to the MP4 standard, so FFmpeg refuses to mux them back. To work
@@ -829,6 +1285,26 @@ Please choose another file.",
                                         })
                                         .inspect(|value| debug!("r_frame_rate: {value}"))
                                         .and_then(|frame_rate| frame_rate.split_once('/'));
+
+                                    let size = streams
+                                        .members()
+                                        .find(|stream| {
+                                            stream["codec_type"].as_str() == Some("video")
+                                        })
+                                        .and_then(|stream| {
+                                            Some((
+                                                stream["width"].as_i32()?,
+                                                stream["height"].as_i32()?,
+                                            ))
+                                        });
+                                    if let Some((width, height)) = size {
+                                        imp.source_size.set(Some((width, height)));
+                                        // Suggest the source size, unless a custom one was set.
+                                        if imp.combo_row_resolution.selected() != 3 {
+                                            imp.spin_row_width.set_value(width.into());
+                                            imp.spin_row_height.set_value(height.into());
+                                        }
+                                    }
 
                                     let mut frame_time = None;
                                     if let Some((numerator, denominator)) = frame_rate_fraction {
@@ -889,6 +1365,7 @@ Please choose another file.",
         type ParentType = adw::ApplicationWindow;
 
         fn class_init(klass: &mut Self::Class) {
+            VtKnob::ensure_type();
             Self::bind_template(klass);
 
             klass.install_property_action("win.play-pause", "is-playing");
@@ -913,7 +1390,7 @@ Please choose another file.",
             klass.install_action("win.about", None, |window, _, _| {
                 let resource_path = "/io/github/jjolmo/QuickVideoEditor/\
                                      io.github.jjolmo.QuickVideoEditor.metainfo.xml";
-                let about_window = adw::AboutDialog::from_appdata(resource_path, Some("26.03"));
+                let about_window = adw::AboutDialog::from_appdata(resource_path, Some("0.1.0"));
                 about_window.set_version(config::VERSION);
                 // Translators: shown in the About dialog, put your name here.
                 about_window.set_translator_credits(&gettext("translator-credits"));
@@ -971,6 +1448,36 @@ Please choose another file.",
 
             // Add these here instead of set_accels_for_action so that they don't override typing in
             // the time entries.
+            klass.install_action("win.split", None, |window, _, _| {
+                window.imp().video_preview.split_at_playhead();
+            });
+            klass.install_action("win.delete-segment", None, |window, _, _| {
+                window.imp().video_preview.delete_selected_segment();
+            });
+            klass.install_action("win.undo", None, |window, _, _| {
+                let engine = window.imp().video_preview.engine();
+                if engine.is_editor() {
+                    engine.undo();
+                }
+            });
+            klass.install_action("win.redo", None, |window, _, _| {
+                let engine = window.imp().video_preview.engine();
+                if engine.is_editor() {
+                    engine.redo();
+                }
+            });
+            klass.add_binding_action(Key::z, ModifierType::CONTROL_MASK, "win.undo");
+            klass.add_binding_action(
+                Key::Z,
+                ModifierType::CONTROL_MASK | ModifierType::SHIFT_MASK,
+                "win.redo",
+            );
+            klass.add_binding_action(Key::y, ModifierType::CONTROL_MASK, "win.redo");
+            klass.add_binding_action(Key::s, ModifierType::empty(), "win.split");
+            klass.add_binding_action(Key::S, ModifierType::SHIFT_MASK, "win.split");
+            for key in [Key::Delete, Key::KP_Delete, Key::BackSpace] {
+                klass.add_binding_action(key, ModifierType::empty(), "win.delete-segment");
+            }
             klass.add_binding_action(Key::period, ModifierType::empty(), "win.step-forward");
             klass.add_binding_action(Key::comma, ModifierType::empty(), "win.step-back");
         }
@@ -1009,6 +1516,64 @@ Please choose another file.",
             self.toolbar_view
                 .add_bottom_bar(self.video_preview.box_playback_controls());
             self.toolbar_view.add_bottom_bar(&*self.box_start_end);
+            self.toolbar_view.remove(&*self.box_editor);
+            self.toolbar_view.add_bottom_bar(&*self.box_editor);
+
+            self.toggle_mode.connect_active_name_notify({
+                let obj = obj.downgrade();
+                move |_| {
+                    let obj = obj.upgrade().unwrap();
+                    obj.imp().on_mode_toggled();
+                }
+            });
+            self.button_add_video.connect_clicked({
+                let obj = obj.downgrade();
+                move |_| {
+                    let obj = obj.upgrade().unwrap();
+                    obj.imp().show_open_dialog();
+                }
+            });
+            self.button_split.connect_clicked({
+                let obj = obj.downgrade();
+                move |_| {
+                    let obj = obj.upgrade().unwrap();
+                    obj.imp().video_preview.split_at_playhead();
+                }
+            });
+            self.button_delete_segment.connect_clicked({
+                let obj = obj.downgrade();
+                move |_| {
+                    let obj = obj.upgrade().unwrap();
+                    obj.imp().video_preview.delete_selected_segment();
+                }
+            });
+            self.check_end_fade.connect_active_notify({
+                let obj = obj.downgrade();
+                move |check| {
+                    let obj = obj.upgrade().unwrap();
+                    obj.imp().video_preview.set_end_fade(check.is_active());
+                }
+            });
+            self.video_preview
+                .engine()
+                .connect_local("timeline-changed", false, {
+                    let obj = obj.downgrade();
+                    move |_| {
+                        let obj = obj.upgrade().unwrap();
+                        obj.imp().on_edit_changed();
+                        None
+                    }
+                });
+            self.video_preview
+                .editor_timeline()
+                .connect_local("selection-changed", false, {
+                    let obj = obj.downgrade();
+                    move |_| {
+                        let obj = obj.upgrade().unwrap();
+                        obj.imp().on_edit_changed();
+                        None
+                    }
+                });
 
             self.video_preview
                 .connect_local("notify::duration", false, {
@@ -1028,6 +1593,19 @@ Please choose another file.",
                         }
 
                         imp.on_got_duration(duration);
+
+                        if let Some(speed) = imp.pending_speed.take() {
+                            imp.on_speed_changed(speed);
+                        }
+                        for file in imp.pending_videos.take() {
+                            imp.add_video(file);
+                        }
+                        if let Some(music) = imp.pending_music.take() {
+                            imp.video_preview.set_music(music);
+                        }
+                        if let Some(path) = imp.pending_export.take() {
+                            imp.export_headless(path);
+                        }
 
                         None
                     }
@@ -1143,14 +1721,13 @@ Please choose another file.",
                     if let Ok(file) = data.get::<gio::File>() {
                         let obj = obj.upgrade().unwrap();
 
+                        if obj.imp().input_path.borrow().is_some() && is_audio_file(&file) {
+                            obj.imp().set_music(file);
+                            return true;
+                        }
+
                         if obj.imp().input_path.borrow().is_some() {
-                            // FIXME: replace the current file when that is supported.
-                            let app = obj.application().unwrap();
-                            let window = super::VtWindow::new(&app, None);
-                            window.open(file);
-                            let group = gtk::WindowGroup::new();
-                            group.add_window(&window);
-                            window.present();
+                            obj.imp().add_video(file);
                             return true;
                         }
 
@@ -1162,6 +1739,51 @@ Please choose another file.",
                 }
             });
             self.stack.add_controller(drop_target);
+
+            self.speed.set(1.);
+            self.knob_speed.connect_local("value-changed", false, {
+                let obj = obj.downgrade();
+                move |args| {
+                    let speed = args[1].get::<f64>().unwrap();
+                    let obj = obj.upgrade().unwrap();
+                    obj.imp().on_speed_changed(speed);
+                    None
+                }
+            });
+
+            self.combo_row_fps.connect_selected_notify({
+                let obj = obj.downgrade();
+                move |row| {
+                    let obj = obj.upgrade().unwrap();
+                    obj.imp().spin_row_fps.set_visible(row.selected() == 6);
+                }
+            });
+            self.switch_row_social_snap.connect_active_notify({
+                let obj = obj.downgrade();
+                move |row| {
+                    let obj = obj.upgrade().unwrap();
+                    obj.imp().video_preview.set_social_snap(row.is_active());
+                }
+            });
+
+            self.combo_row_resolution.connect_selected_notify({
+                let obj = obj.downgrade();
+                move |row| {
+                    let obj = obj.upgrade().unwrap();
+                    let imp = obj.imp();
+                    let custom = row.selected() == 3;
+                    imp.spin_row_width.set_visible(custom);
+                    imp.spin_row_height.set_visible(custom);
+                }
+            });
+
+            self.switch_row_remove_audio.connect_active_notify({
+                let obj = obj.downgrade();
+                move |row| {
+                    let obj = obj.upgrade().unwrap();
+                    obj.imp().video_preview.set_video_muted(row.is_active());
+                }
+            });
 
             // HACK: Make options popover action row subtitles wrap eagerly to ensure that they fit
             // into the mobile window widths even with especially long translations, etc.
@@ -1179,6 +1801,175 @@ Please choose another file.",
     impl WindowImpl for VtWindow {}
     impl ApplicationWindowImpl for VtWindow {}
     impl AdwApplicationWindowImpl for VtWindow {}
+
+    /// Only local files are accepted, since ffmpeg needs a path.
+    fn is_audio_file(file: &gio::File) -> bool {
+        let Some(path) = file.path() else {
+            return false;
+        };
+        let (content_type, _) = gio::content_type_guess(Some(&path), None);
+        gio::content_type_is_a(&content_type, "audio/*")
+    }
+
+    /// Extra FFmpeg arguments for a speed change and/or music laid over the trimmed video.
+    pub(super) struct FilterArgs {
+        pub(super) args: Vec<OsString>,
+        /// Whether the video goes through filters and is encoded rather than copied.
+        pub(super) reencode_video: bool,
+    }
+
+    impl FilterArgs {
+        /// `music` holds the path, the video timestamp in microseconds where the music starts and
+        /// whether to fade it out; `start` and `end` are the trim bounds in milliseconds.
+        pub(super) fn new(
+            speed: f64,
+            video_filters: &[String],
+            music: Option<(PathBuf, i64, bool, f64)>,
+            start: u32,
+            end: u32,
+            keep_video_audio: bool,
+            output_path: &Path,
+        ) -> Self {
+            let output_duration = f64::from(end - start) / 1000. / speed;
+            let extension = output_path.extension().and_then(OsStr::to_str);
+
+            let mut args: Vec<OsString> = Vec::new();
+            let mut filters: Vec<String> = Vec::new();
+            let mut maps: Vec<String> = Vec::new();
+
+            let mut video_chain: Vec<String> = Vec::new();
+            if speed != 1. {
+                video_chain.push(format!("setpts=PTS/{speed:.6}"));
+            }
+            video_chain.extend(video_filters.iter().cloned());
+            let reencode_video = !video_chain.is_empty();
+            if reencode_video {
+                filters.push(format!("[0:v:0]{}[vout]", video_chain.join(",")));
+                maps.push("[vout]".to_owned());
+            } else {
+                maps.push("0:v".to_owned());
+            }
+
+            let video_audio = keep_video_audio.then(|| {
+                if speed != 1. {
+                    filters.push(format!("[0:a:0]{}[vaudio]", atempo_chain(speed)));
+                    "[vaudio]"
+                } else {
+                    "[0:a:0]"
+                }
+            });
+
+            let music = music.map(|(path, offset, fade_out, volume)| {
+                // Where the music starts in the output. The music keeps its own speed.
+                let relative = (offset - i64::from(start) * 1000) as f64 / speed;
+                if relative < 0. {
+                    args.push("-ss".into());
+                    args.push(format!("{:.3}", -relative / 1_000_000.).into());
+                }
+                args.push("-i".into());
+                args.push(path.into());
+
+                let mut chain = String::from("[1:a]");
+                if relative > 0. {
+                    chain.push_str(&format!(
+                        "adelay=delays={}:all=1,",
+                        (relative / 1000.) as i64
+                    ));
+                }
+                chain.push_str(&format!("atrim=end={output_duration:.3}"));
+                if volume != 1. {
+                    chain.push_str(&format!(",volume={volume:.3}"));
+                }
+                if fade_out {
+                    let fade = (FADE_OUT_DURATION as f64 / 1_000_000.).min(output_duration);
+                    chain.push_str(&format!(
+                        ",afade=t=out:st={:.3}:d={fade:.3}",
+                        output_duration - fade
+                    ));
+                }
+                filters.push(format!("{chain}[music]"));
+                "[music]"
+            });
+
+            let audio = match (video_audio, music) {
+                (Some(video_audio), Some(music)) => {
+                    filters.push(format!(
+                        "{video_audio}{music}amix=inputs=2:duration=first:\
+dropout_transition=0:normalize=0[aout]"
+                    ));
+                    Some("[aout]")
+                }
+                (video_audio, music) => music.or(video_audio),
+            };
+            match audio {
+                // Unfiltered input streams are mapped without brackets.
+                Some(label) if label.starts_with("[0:") => {
+                    maps.push(label.trim_matches(['[', ']']).to_owned())
+                }
+                Some(label) => maps.push(label.to_owned()),
+                None => {}
+            }
+
+            if !filters.is_empty() {
+                args.push("-filter_complex".into());
+                args.push(filters.join(";").into());
+            }
+            for map in maps {
+                args.push("-map".into());
+                args.push(map.into());
+            }
+
+            if reencode_video {
+                let video_codec: &[&str] = match extension {
+                    Some("webm") => &[
+                        "-c:v",
+                        "libvpx-vp9",
+                        "-crf",
+                        "32",
+                        "-b:v",
+                        "0",
+                        "-row-mt",
+                        "1",
+                    ],
+                    _ => &[
+                        "-c:v", "libx264", "-preset", "faster", "-crf", "17", "-pix_fmt", "yuv420p",
+                    ],
+                };
+                args.extend(video_codec.iter().map(OsString::from));
+            }
+
+            if audio.is_some() {
+                let audio_codec = match extension {
+                    Some("webm" | "ogg" | "ogv") => "libopus",
+                    _ => "aac",
+                };
+                args.extend(["-c:a", audio_codec, "-b:a", "192k"].map(OsString::from));
+            } else {
+                args.push("-an".into());
+            }
+
+            Self {
+                args,
+                reencode_video,
+            }
+        }
+    }
+
+    /// `atempo` only accepts factors between 0.5 and 2, so larger changes are chained.
+    pub(super) fn atempo_chain(speed: f64) -> String {
+        let mut remaining = speed;
+        let mut parts = Vec::new();
+        while remaining > 2. {
+            parts.push("atempo=2".to_owned());
+            remaining /= 2.;
+        }
+        while remaining < 0.5 {
+            parts.push("atempo=0.5".to_owned());
+            remaining /= 0.5;
+        }
+        parts.push(format!("atempo={remaining:.6}"));
+        parts.join(",")
+    }
 
     fn validate_entries(entry_start: &gtk::Entry, entry_end: &gtk::Entry) -> Option<(u32, u32)> {
         entry_start.remove_css_class("error");
@@ -1238,7 +2029,113 @@ impl VtWindow {
         self.imp().set_remove_audio(value);
     }
 
+    pub fn set_music(&self, file: gio::File) {
+        self.imp().set_music(file);
+    }
+
+    /// Selects the export frame rate and size, as the options menu does.
+    pub fn set_export_options(&self, fps: Option<i32>, size: Option<(i32, i32)>) {
+        self.imp().set_export_options(fps, size);
+    }
+
+    /// Sets the Trimmer speed once the video is loaded.
+    pub fn set_speed(&self, speed: f64) {
+        self.imp().queue_speed(speed);
+    }
+
+    /// Exports the edit to `file` and quits once the videos are loaded.
+    pub fn export_when_ready(&self, file: gio::File) {
+        self.imp().queue_export(file);
+    }
+
+    /// Adds a video to the edit, once the first video is ready.
+    pub fn add_video(&self, file: gio::File) {
+        self.imp().queue_video(file);
+    }
+
     pub fn open(&self, file: gio::File) {
         self.imp().open(file);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::imp::{atempo_chain, FilterArgs};
+    use std::path::{Path, PathBuf};
+
+    fn args(filter: &FilterArgs) -> Vec<String> {
+        filter
+            .args
+            .iter()
+            .map(|arg| arg.to_string_lossy().into_owned())
+            .collect()
+    }
+
+    #[test]
+    fn export_settings_scale_and_resample_in_ffmpeg() {
+        let settings = crate::engine::ExportSettings {
+            fps: Some((30, 1)),
+            size: Some((1280, 720)),
+        };
+        let filters = settings.ffmpeg_filters();
+        let filter = FilterArgs::new(1., &filters, None, 0, 4000, true, Path::new("out.mp4"));
+        let args = args(&filter);
+        let graph = &args[args.iter().position(|a| a == "-filter_complex").unwrap() + 1];
+        assert_eq!(
+            graph,
+            "[0:v:0]scale=1280:720:force_original_aspect_ratio=decrease,\
+             pad=1280:720:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=30/1[vout]"
+        );
+        assert!(filter.reencode_video);
+        assert!(args.windows(2).any(|w| w == ["-c:v", "libx264"]));
+    }
+
+    #[test]
+    fn atempo_chains_factors_out_of_range() {
+        assert_eq!(atempo_chain(1.5), "atempo=1.500000");
+        assert_eq!(atempo_chain(4.), "atempo=2,atempo=2.000000");
+        assert_eq!(atempo_chain(0.25), "atempo=0.5,atempo=0.500000");
+    }
+
+    #[test]
+    fn speed_without_music_reencodes_video_and_audio() {
+        let filter = FilterArgs::new(2., &[], None, 2000, 7000, true, Path::new("out.mp4"));
+        let args = args(&filter);
+        let graph = &args[args.iter().position(|a| a == "-filter_complex").unwrap() + 1];
+        assert_eq!(
+            graph,
+            "[0:v:0]setpts=PTS/2.000000[vout];[0:a:0]atempo=2.000000[vaudio]"
+        );
+        assert!(args.windows(2).any(|w| w == ["-map", "[vout]"]));
+        assert!(args.windows(2).any(|w| w == ["-map", "[vaudio]"]));
+        assert!(args.windows(2).any(|w| w == ["-c:v", "libx264"]));
+    }
+
+    #[test]
+    fn music_offset_and_fade_follow_the_output_timeline() {
+        // Music starts 1 s of source after the trim start; at 50% speed that is 2 s of output.
+        let music = Some((PathBuf::from("m.mp3"), 3_000_000, true, 1.));
+        let filter = FilterArgs::new(0.5, &[], music, 2000, 7000, false, Path::new("out.mkv"));
+        let args = args(&filter);
+        let graph = &args[args.iter().position(|a| a == "-filter_complex").unwrap() + 1];
+        assert_eq!(
+            graph,
+            "[0:v:0]setpts=PTS/0.500000[vout];\
+             [1:a]adelay=delays=2000:all=1,atrim=end=10.000,afade=t=out:st=9.000:d=1.000[music]"
+        );
+        assert!(args.windows(2).any(|w| w == ["-map", "[music]"]));
+    }
+
+    #[test]
+    fn music_at_normal_speed_keeps_video_stream_mapping() {
+        let music = Some((PathBuf::from("m.mp3"), 500_000, false, 0.5));
+        let filter = FilterArgs::new(1., &[], music, 2000, 7000, true, Path::new("out.mp4"));
+        let args = args(&filter);
+        assert!(args.windows(2).any(|w| w == ["-ss", "1.500"]));
+        let graph = &args[args.iter().position(|a| a == "-filter_complex").unwrap() + 1];
+        assert!(graph.starts_with("[1:a]atrim=end=5.000,volume=0.500[music];"));
+        assert!(args.windows(2).any(|w| w == ["-map", "0:v"]));
+        assert!(args.windows(2).any(|w| w == ["-map", "[aout]"]));
+        assert!(!args.iter().any(|a| a == "libx264"));
     }
 }

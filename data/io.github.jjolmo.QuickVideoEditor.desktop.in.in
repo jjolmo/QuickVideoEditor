@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Quick Video Editor
-Comment=Trim videos quickly
+Comment=Edit videos quickly
 # Translators: search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 Keywords=Cut;Movie;Film;Clip;
 Exec=quick-video-editor %u
