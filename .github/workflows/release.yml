@@ -131,6 +131,10 @@ jobs:
           version="${GITHUB_REF_NAME#v}"
           case "$version" in [0-9]*) ;; *) version=0.1.0;; esac
           sed -i "s/^pkgver=.*/pkgver=$version/" /home/builder/pkg/PKGBUILD
+          # makepkg uses a source file that is already there, so package this checkout.
+          git config --global --add safe.directory "$PWD"
+          git archive --prefix="QuickVideoEditor-$version/" \
+            -o "/home/builder/pkg/quick-video-editor-$version.tar.gz" HEAD
           chown -R builder /home/builder/pkg
           su builder -c "cd /home/builder/pkg && makepkg --nodeps"
           cp /home/builder/pkg/*.pkg.tar.zst .
