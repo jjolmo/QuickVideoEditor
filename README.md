@@ -8,7 +8,9 @@ This is a fork of [Video Trimmer](https://gitlab.gnome.org/YaLTeR/video-trimmer)
 - A **speed knob** speeds the trimmed video up or slows it down (10%–1000%); drag it up or down or scroll, double-click to reset. The preview plays at the chosen speed. A speed change re-encodes the video (x264, or VP9 for WebM) and time-stretches the audio without changing its pitch.
 - The preview runs on GStreamer Editing Services instead of GtkMediaFile: scrubbing uses keyframe seeks and lands on the exact frame on release, and playback no longer gets stuck after seeking. NVDEC hardware decoders are avoided, since they intermittently hang on seek; set `GST_PLUGIN_FEATURE_RANK` yourself to override this.
 
-![Screenshot of the window.](https://gitlab.gnome.org/-/project/11135/uploads/f6e5a36b50822816e1aa191b63bab3b5/Screenshot_from_2025-03-28_15-32-23.png)
+![The Trimmer: a selection on the timeline with the speed knob.](data/screenshots/trimmer.png)
+
+![The Editor: two videos on the timeline, their audio track and a music track.](data/screenshots/editor.png)
 
 ## Installing
 

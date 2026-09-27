@@ -29,8 +29,12 @@
 	</description>
 	<screenshots>
 		<screenshot type="default">
-			<image>https://gitlab.gnome.org/-/project/11135/uploads/f6e5a36b50822816e1aa191b63bab3b5/Screenshot_from_2025-03-28_15-32-23.png</image>
-			<caption>Main Window</caption>
+			<image>https://raw.githubusercontent.com/jjolmo/QuickVideoEditor/main/data/screenshots/trimmer.png</image>
+			<caption>Trimmer</caption>
+		</screenshot>
+		<screenshot>
+			<image>https://raw.githubusercontent.com/jjolmo/QuickVideoEditor/main/data/screenshots/editor.png</image>
+			<caption>Editor with music</caption>
 		</screenshot>
 	</screenshots>
 	<branding>
